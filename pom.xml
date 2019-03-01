@@ -15,8 +15,24 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <!-- Application dependencies -->
+        <assertj.version>3.11.1</assertj.version>
+
+        <!-- Maven plugins -->
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
     </properties>
+
+    <dependencies>
+
+        <!-- Tests -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
 
     <build>
         <plugins>
