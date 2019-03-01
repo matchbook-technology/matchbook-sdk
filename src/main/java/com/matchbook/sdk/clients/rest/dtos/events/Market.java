@@ -13,6 +13,7 @@ public class Market {
     private boolean inRunning;
     private boolean allowLiveBetting;
     private Double value;
+    private Integer winners;
     private List<Runner> runners;
 
     public Market() {
@@ -81,6 +82,14 @@ public class Market {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    public Integer getWinners() {
+        return winners;
+    }
+
+    public void setWinners(Integer winners) {
+        this.winners = winners;
     }
 
     public List<Runner> getRunners() {
