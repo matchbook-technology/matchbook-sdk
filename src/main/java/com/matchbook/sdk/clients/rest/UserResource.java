@@ -4,7 +4,7 @@ import com.matchbook.sdk.clients.rest.dtos.LoginRequest;
 import com.matchbook.sdk.clients.rest.dtos.LoginResponse;
 import com.matchbook.sdk.clients.rest.dtos.LogoutResponse;
 
-public interface UserReource {
+public interface UserResource {
 
     LoginResponse login(LoginRequest loginRequest);
 
