@@ -17,6 +17,7 @@
         <!-- Application dependencies -->
         <spring.framework.version>5.1.5.RELEASE</spring.framework.version>
         <okhttp.version>2.7.5</okhttp.version>
+        <jackson.version>2.9.8</jackson.version>
         <assertj.version>3.11.1</assertj.version>
         <wiremock.version>2.21.0</wiremock.version>
 
@@ -24,23 +25,22 @@
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-framework-bom</artifactId>
-                <version>${spring.framework.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
-        <!-- Spring -->
+        <!-- Jackson -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!-- Clients -->
