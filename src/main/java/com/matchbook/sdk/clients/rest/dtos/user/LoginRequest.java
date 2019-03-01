@@ -1,6 +1,8 @@
-package com.matchbook.sdk.clients.rest.dtos;
+package com.matchbook.sdk.clients.rest.dtos.user;
 
-public class LoginRequest {
+import com.matchbook.sdk.clients.rest.dtos.MatchbookRequest;
+
+public class LoginRequest implements MatchbookRequest {
 
     private final String username;
     private final char[] password;
