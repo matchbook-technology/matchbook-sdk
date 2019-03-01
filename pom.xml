@@ -8,7 +8,6 @@
     <artifactId>sdk</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 
-
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -18,6 +17,7 @@
         <!-- Application dependencies -->
         <spring.framework.version>5.1.5.RELEASE</spring.framework.version>
         <okhttp.version>2.7.5</okhttp.version>
+        <jackson.version>2.9.8</jackson.version>
         <assertj.version>3.11.1</assertj.version>
         <wiremock.version>2.21.0</wiremock.version>
 
@@ -25,32 +25,30 @@
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
     </properties>
 
-
     <dependencies>
         <!-- Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.9.8</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.9.8</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.8</version>
+            <version>${jackson.version}</version>
         </dependency>
 
-        <!--Clients -->
+        <!-- Clients -->
         <dependency>
             <groupId>com.squareup.okhttp</groupId>
             <artifactId>okhttp</artifactId>
             <version>${okhttp.version}</version>
         </dependency>
-
 
         <!-- Tests -->
         <dependency>
@@ -66,7 +64,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 
     <build>
         <plugins>

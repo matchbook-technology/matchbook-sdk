@@ -1,4 +1,4 @@
-package com.matchbook.sdk.clients.rest.dtos;
+package com.matchbook.sdk.clients.rest.dtos.user;
 
 import java.math.BigDecimal;
 
@@ -9,7 +9,7 @@ public class Account {
     private BigDecimal balance;
     private BigDecimal exposure;
     private BigDecimal freeFunds;
-    private BigDecimal commissionCredit;
+    private BigDecimal commissionReserve;
     private String currency;
 
 }
