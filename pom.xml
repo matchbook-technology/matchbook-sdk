@@ -8,7 +8,6 @@
     <artifactId>sdk</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 
-
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -37,7 +36,6 @@
         </dependencies>
     </dependencyManagement>
 
-
     <dependencies>
         <!-- Spring -->
         <dependency>
@@ -45,13 +43,12 @@
             <artifactId>spring-context</artifactId>
         </dependency>
 
-        <!--Clients -->
+        <!-- Clients -->
         <dependency>
             <groupId>com.squareup.okhttp</groupId>
             <artifactId>okhttp</artifactId>
             <version>${okhttp.version}</version>
         </dependency>
-
 
         <!-- Tests -->
         <dependency>
@@ -67,7 +64,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 
     <build>
         <plugins>
