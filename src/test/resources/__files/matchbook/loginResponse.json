@@ -1,0 +1,55 @@
+{
+  "session-token": "000000_8beb227cee56ae515f7e312330456789",
+  "user-id": 4242424242,
+  "role": "USER",
+  "account": {
+    "email": "sergii@volkodav.ie",
+    "username": "sergii",
+    "balance": 0,
+    "exposure": -2.00000102,
+    "language": "English",
+    "address": {
+      "country": {
+        "country-id": 204,
+        "name": "United Kingdom",
+        "country-code": "GB"
+      },
+      "address-id": 1000001,
+      "address-line-1": "42 Street, Cork, Ireland",
+      "address-line-2": "-",
+      "region-name": "Cork",
+      "post-code": "T42 4242"
+    },
+    "currency": "GBP",
+    "id": 101042,
+    "name": {
+      "title": "Mr",
+      "first": "Sergii",
+      "last": "Volkodav",
+      "title-id": "MR"
+    },
+    "date-of-birth": "1940-01-01T01:00:00.000Z",
+    "phone-number": "+35342424242",
+    "free-funds": 0,
+    "commission-credit": 0,
+    "language-id": 1,
+    "currency-id": 3,
+    "odds-type-id": "DECIMAL",
+    "odds-type": "DECIMAL",
+    "bet-confirmation": false,
+    "display-p-and-l": true,
+    "exchange-type-id": "BACKLAY",
+    "exchange-type": "back-lay",
+    "odds-rounding": true,
+    "user-security-question": {
+      "user-security-question-id": 10100,
+      "question": {
+        "security-question-id": 4,
+        "security-question": "Your first love?"
+      },
+      "answer": "Java"
+    },
+    "bet-slip-pinned": true
+  },
+  "last-login": "2010-02-01T20:00:00.000Z"
+}
