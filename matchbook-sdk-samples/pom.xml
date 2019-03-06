@@ -11,12 +11,4 @@
 
     <artifactId>matchbook-sdk-samples</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>matchbook-sdk-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
-
 </project>
