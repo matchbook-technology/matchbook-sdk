@@ -13,7 +13,7 @@ jobs:
           paths:
             - ~/.m2
           key: matchbook-sdk-{{ checksum "pom.xml" }}
-      - run: mvn package
+      - run: mvn install
 
       - store_test_results:
           path: target/surefire-reports
