@@ -1,20 +1,54 @@
 package com.matchbook.sdk;
 
+import java.util.Arrays;
+
 public class ClientConfig {
 
-    private String url;
-    private String loginUrl;
-    private char[] username;
-    private char[] password;
+    private final char[] username;
+    private final char[] password;
+    private final String url;
+    private final String loginUrl;
 
-    private ClientConfig() {
+    private ClientConfig(ClientConfig.Builder builder) {
+        this.username = builder.username;
+        this.password = builder.password;
+        this.url = builder.url;
+        this.loginUrl = builder.loginUrl;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public char[] getUsername() {
+        return username;
+    }
+
+    public char[] getPassword() {
+        return password;
+    }
+
+    public String getLoginUrl() {
+        return loginUrl;
+    }
+
+    @Override
+    public String toString() {
+        return ClientConfig.class.getSimpleName() + "{" +
+                "username=" + Arrays.toString(username) +
+                ", password='" + Arrays.toString(password) +
+                ", url=" + url +
+                ", loginUrl=" + loginUrl +
+                "}";
     }
 
     public static class Builder {
+
+        private final char[] username;
+        private final char[] password;
+
         private String url;
         private String loginUrl;
-        private char[] username;
-        private char[] password;
 
         public Builder(char[] username, char[] password) {
             this.username = username;
@@ -32,28 +66,7 @@ public class ClientConfig {
         }
 
         public ClientConfig build() {
-            ClientConfig clientConfig = new ClientConfig();
-            clientConfig.url = url;
-            clientConfig.username = username;
-            clientConfig.password = password;
-            clientConfig.loginUrl = loginUrl;
-            return clientConfig;
+            return new ClientConfig(this);
         }
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public char[] getUsername() {
-        return username;
-    }
-
-    public char[] getPassword() {
-        return password;
-    }
-
-    public String getLoginUrl() {
-        return loginUrl;
     }
 }
