@@ -72,4 +72,5 @@ public class UserRestClientImpl implements UserRestClient {
     public void logout(String sessionToken, StreamObserver<LogoutResponse> response) {
         throw new UnsupportedOperationException("Not implemented");
     }
+
 }
