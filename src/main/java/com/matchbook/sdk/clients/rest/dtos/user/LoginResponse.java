@@ -1,9 +1,7 @@
 package com.matchbook.sdk.clients.rest.dtos.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.matchbook.sdk.clients.rest.dtos.MatchbookResponse;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginResponse implements MatchbookResponse {
 
     private String sessionToken;

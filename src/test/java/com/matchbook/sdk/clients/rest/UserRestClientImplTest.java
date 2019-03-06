@@ -18,12 +18,12 @@ import com.matchbook.sdk.clients.rest.dtos.user.LoginResponse;
 import com.matchbook.sdk.exceptions.MatchbookSDKException;
 import org.junit.Test;
 
-public class UserResponseImplTest extends MatchbookSDKClientTest {
+public class UserRestClientImplTest extends MatchbookSDKClientTest {
 
-    private final UserResource userResource;
+    private final UserRestClient userRestClient;
 
-    public UserResponseImplTest() {
-        this.userResource = new UserResponseImpl(clientConnectionManager);
+    public UserRestClientImplTest() {
+        this.userRestClient = new UserRestClientImpl(clientConnectionManager);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class UserResponseImplTest extends MatchbookSDKClientTest {
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         LoginRequest loginRequest = new LoginRequest("username".toCharArray(), "password".toCharArray());
-        userResource.login(loginRequest, new StreamObserver<LoginResponse>() {
+        userRestClient.login(loginRequest, new StreamObserver<LoginResponse>() {
             @Override
             public void onNext(LoginResponse loginResponse) {
                 assertThat(loginResponse.getSessionToken()).isNotEmpty();

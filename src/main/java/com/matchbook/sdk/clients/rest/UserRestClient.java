@@ -5,7 +5,7 @@ import com.matchbook.sdk.clients.rest.dtos.user.LoginRequest;
 import com.matchbook.sdk.clients.rest.dtos.user.LoginResponse;
 import com.matchbook.sdk.clients.rest.dtos.user.LogoutResponse;
 
-public interface UserResource {
+public interface UserRestClient {
 
     void login(LoginRequest loginRequest, StreamObserver<LoginResponse> response);
 

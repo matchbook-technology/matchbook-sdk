@@ -2,6 +2,8 @@ package com.matchbook.sdk.exceptions;
 
 public class MatchbookSDKHTTPException extends MatchbookSDKException {
 
+    private static final long serialVersionUID = 110769081415471678L;
+
     public MatchbookSDKHTTPException(String message, Throwable cause) {
         super(message, cause, ErrorCode.HTTP_ERROR);
     }
