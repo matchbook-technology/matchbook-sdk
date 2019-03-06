@@ -1,15 +1,12 @@
 package com.matchbook.sdk.clients.rest.dtos.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.matchbook.sdk.clients.rest.dtos.MatchbookResponse;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginResponse implements MatchbookResponse {
 
-    @JsonProperty("session-token")
     private String sessionToken;
-    @JsonProperty("user-id")
     private long userId;
     private Account account;
 

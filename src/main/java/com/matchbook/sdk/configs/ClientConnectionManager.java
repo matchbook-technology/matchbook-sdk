@@ -2,6 +2,7 @@ package com.matchbook.sdk.configs;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.matchbook.sdk.ClientConfig;
 import com.squareup.okhttp.OkHttpClient;
@@ -20,8 +21,8 @@ public final class ClientConnectionManager {
 
     private ObjectMapper buildObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         return mapper;
     }
