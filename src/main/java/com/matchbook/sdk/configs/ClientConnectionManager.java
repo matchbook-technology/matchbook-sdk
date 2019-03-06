@@ -1,5 +1,7 @@
 package com.matchbook.sdk.configs;
 
+import java.util.concurrent.TimeUnit;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -28,7 +30,12 @@ public final class ClientConnectionManager {
     }
 
     private OkHttpClient buildOkHttpClient() {
-        return new OkHttpClient();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(5, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
+        okHttpClient.setFollowRedirects(false);
+        return okHttpClient;
     }
 
     public ClientConfig getClientConfig() {
