@@ -21,16 +21,6 @@ public class ClientConfig {
             this.password = password;
         }
 
-        public Builder username(char[] user) {
-            this.username = user;
-            return this;
-        }
-
-        public Builder password(char[] password) {
-            this.password = password;
-            return this;
-        }
-
         public Builder url(String url) {
             this.url = url;
             return this;

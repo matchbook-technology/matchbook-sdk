@@ -17,7 +17,7 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
 
-public class UserResponseImpl implements UserResource {
+public class UserRestClientImpl implements UserRestClient {
 
     private final MediaType mediaType;
     private final ClientConnectionManager clientConnectionManager;
@@ -25,7 +25,7 @@ public class UserResponseImpl implements UserResource {
     private final ObjectReader loginResponseReader;
     private final ObjectWriter loginResponseWriter;
 
-    public UserResponseImpl(ClientConnectionManager clientConnectionManager) {
+    public UserRestClientImpl(ClientConnectionManager clientConnectionManager) {
         this.clientConnectionManager = clientConnectionManager;
         this.loginResponseReader = clientConnectionManager.getMapper().readerFor(LoginResponse.class);
         this.loginResponseWriter = clientConnectionManager.getMapper().writerFor(LoginRequest.class);
@@ -56,9 +56,10 @@ public class UserResponseImpl implements UserResource {
                     try (ResponseBody responseBody = response.body()) {
                         if (!response.isSuccessful()) {
                             observer.onError(new MatchbookSDKHTTPException(("Unexpected HTTP code " + response)));
+                        } else {
+                            observer.onNext(loginResponseReader.readValue(responseBody.byteStream()));
+                            observer.onCompleted();
                         }
-                        observer.onNext(loginResponseReader.readValue(responseBody.byteStream()));
-                        observer.onCompleted();
                     }
                 }
             });
@@ -69,6 +70,6 @@ public class UserResponseImpl implements UserResource {
 
     @Override
     public void logout(String sessionToken, StreamObserver<LogoutResponse> response) {
-
+        throw new UnsupportedOperationException("Not implemented");
     }
 }

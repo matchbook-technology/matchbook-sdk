@@ -22,7 +22,6 @@ public class LoginRequest implements MatchbookRequest {
         return password;
     }
 
-
     @Override
     public String toString() {
         return "LoginRequest{" +
