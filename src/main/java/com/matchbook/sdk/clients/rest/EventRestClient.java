@@ -13,7 +13,7 @@ import com.matchbook.sdk.clients.rest.dtos.events.RunnerResponse;
 import com.matchbook.sdk.clients.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.clients.rest.dtos.events.RunnersResponse;
 
-public interface EventResource {
+public interface EventRestClient extends MatchbookRestClient {
 
     EventResponse getEvent(EventRequest eventRequest);
 
