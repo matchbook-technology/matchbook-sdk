@@ -16,4 +16,4 @@ jobs:
       - run: mvn install
 
       - store_test_results:
-          path: target/surefire-reports
+          path: matchbook-sdk-core/target/surefire-reports
