@@ -15,10 +15,10 @@ jobs:
           key: matchbook-sdk-{{ checksum "pom.xml" }}
 
       - run:
-        name: Install SDK
-        command: |
-          mvn install
-          mvn surefire-report:report-only
+          name: Install SDK
+          command: |
+            mvn install
+            mvn surefire-report:report-only
 
       - run:
           name: Publish coverage reports
