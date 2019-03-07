@@ -21,4 +21,4 @@ jobs:
 
       - store_artifacts:
           path: matchbook-sdk-core/target/site
-          destination: reports
+          destination: matchbook-sdk-core/reports
