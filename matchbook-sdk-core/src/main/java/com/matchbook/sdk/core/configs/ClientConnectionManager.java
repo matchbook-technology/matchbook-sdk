@@ -11,7 +11,6 @@ import com.squareup.okhttp.OkHttpClient;
 
 public final class ClientConnectionManager {
 
-    private String TOKEN;
     private final ClientConfig clientConfig;
     private final OkHttpClient httpClient;
     private final ObjectMapper mapper;

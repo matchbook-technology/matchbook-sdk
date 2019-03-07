@@ -6,10 +6,8 @@
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/matchbook-sdk/community)
 [![Open Source Love svg2](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
-
 ## License
 -------
-
     MIT License
     
     Permission is hereby granted, free of charge, to any person obtaining a copy
