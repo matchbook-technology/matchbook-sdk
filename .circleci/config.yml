@@ -16,16 +16,15 @@ jobs:
       - run: mvn install
       - run: mvn surefire-report:report-only
 
+      - run:
+          name: Publish coverage reports
+          command: |
+            wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets[0].browser_download_url')
+            java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r matchbook-sdk-core/target/site/jacoco/jacoco.xml
+
       - store_test_results:
           path: matchbook-sdk-core/target/surefire-reports
 
       - store_artifacts:
           path: matchbook-sdk-core/target/site
           destination: matchbook-sdk-core/reports
-
-      - run:
-          name: Publish coverage reports
-          command: |
-            apt-get install jq
-#            wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets[0].browser_download_url')
-
