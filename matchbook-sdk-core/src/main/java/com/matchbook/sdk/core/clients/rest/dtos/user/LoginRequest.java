@@ -9,11 +9,24 @@ public class LoginRequest implements MatchbookRequest {
     private final char[] username;
     private final char[] password;
 
-    public LoginRequest(char[] username, char[] password) {
-        this.username = username;
-        this.password = password;
+    private LoginRequest(LoginRequest.Builder builder) {
+        this.username = builder.username;
+        this.password = builder.password;
     }
 
+    public static class Builder {
+        private final char[] username;
+        private final char[] password;
+
+        public Builder(char[] username, char[] password) {
+            this.username = username;
+            this.password = password;
+        }
+
+        public LoginRequest build(){
+            return new LoginRequest(this);
+        }
+    }
     public char[] getUsername() {
         return username;
     }

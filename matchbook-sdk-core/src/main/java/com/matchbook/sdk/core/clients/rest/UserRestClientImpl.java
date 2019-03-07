@@ -19,6 +19,7 @@ import com.squareup.okhttp.ResponseBody;
 
 public class UserRestClientImpl implements UserRestClient {
 
+    private static final String JSON_TYPE = "application/json";
     private final MediaType mediaType;
     private final ClientConnectionManager clientConnectionManager;
     private final String loginURL;
@@ -30,7 +31,7 @@ public class UserRestClientImpl implements UserRestClient {
         this.loginResponseReader = clientConnectionManager.getMapper().readerFor(LoginResponse.class);
         this.loginResponseWriter = clientConnectionManager.getMapper().writerFor(LoginRequest.class);
         this.loginURL = clientConnectionManager.getClientConfig().getLoginUrl();
-        this.mediaType = MediaType.parse("application/json");
+        this.mediaType = MediaType.parse(JSON_TYPE);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class UserRestClientImpl implements UserRestClient {
 
             Request request = new Request.Builder()
                     .url(loginURL)
-                    .addHeader("Accept", "application/json")
+                    .addHeader("Accept", JSON_TYPE)
                     .post(requestBody)
                     .build();
 

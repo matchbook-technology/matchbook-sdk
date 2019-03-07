@@ -37,7 +37,9 @@ public class UserRestClientImplTest extends MatchbookSDKClientTest {
                         .withBodyFile("matchbook/loginSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        LoginRequest loginRequest = new LoginRequest("username".toCharArray(), "password".toCharArray());
+        LoginRequest loginRequest = new LoginRequest.Builder("username".toCharArray(),
+                "password".toCharArray())
+                .build();
         userRestClient.login(loginRequest, new StreamObserver<LoginResponse>() {
             @Override
             public void onNext(LoginResponse loginResponse) {
