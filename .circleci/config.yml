@@ -13,8 +13,12 @@ jobs:
           paths:
             - ~/.m2
           key: matchbook-sdk-{{ checksum "pom.xml" }}
-      - run: mvn install
-      - run: mvn surefire-report:report-only
+
+      - run:
+        name: Install SDK
+        command: |
+          mvn install
+          mvn surefire-report:report-only
 
       - run:
           name: Publish coverage reports
