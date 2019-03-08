@@ -11,7 +11,6 @@ import com.matchbook.sdk.core.clients.rest.dtos.errors.Errors;
 import com.matchbook.sdk.core.exceptions.ErrorCode;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHTTPException;
 import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
 
 public abstract class AbstractRestClient {
 
@@ -46,7 +45,6 @@ public abstract class AbstractRestClient {
     private <T> void publishHTTPError(Response response, StreamObserver<T> observer) {
         observer.onError(new MatchbookSDKHTTPException(("Unexpected HTTP code " + response)));
     }
-
 
     private <T> void publishUnauthenticatedError(StreamObserver<T> observer) {
         observer.onError(new MatchbookSDKHTTPException("Incorrect username or password", ErrorCode.UNAUTHENTICATED));
