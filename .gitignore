@@ -19,7 +19,7 @@ logs/
 ## MAVEN
 ##
 # Build folder #
-/target
+**/target
 
 ##
 ## IntelliJ

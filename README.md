@@ -2,11 +2,12 @@
 
 [![CircleCI](https://circleci.com/gh/volkodavs/matchbook-sdk.svg?style=svg)](https://circleci.com/gh/volkodavs/matchbook-sdk)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f91f929fa3184482abb2704f98615f46)](https://www.codacy.com/app/volkodav_s/matchbook-sdk?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=volkodavs/matchbook-sdk&amp;utm_campaign=Badge_Grade)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/matchbook-sdk/community)
+[![Open Source Love svg2](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
-License
+## License
 -------
-
     MIT License
     
     Permission is hereby granted, free of charge, to any person obtaining a copy
