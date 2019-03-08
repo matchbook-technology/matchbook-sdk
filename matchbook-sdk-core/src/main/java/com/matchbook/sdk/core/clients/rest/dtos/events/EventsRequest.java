@@ -3,9 +3,9 @@ package com.matchbook.sdk.core.clients.rest.dtos.events;
 import java.time.Instant;
 import java.util.Set;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookPageableRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.prices.AbstractPricesRequest;
 
-public class EventsRequest extends MatchbookPageableRequest {
+public class EventsRequest extends AbstractPricesRequest {
 
     private Instant after;
     private Instant before;

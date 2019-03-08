@@ -2,9 +2,9 @@ package com.matchbook.sdk.core.clients.rest.dtos.events;
 
 import java.util.Set;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookPageableRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.prices.AbstractPricesRequest;
 
-public class MarketsRequest extends MatchbookPageableRequest {
+public class MarketsRequest extends AbstractPricesRequest {
 
     private Long eventId;
     private Set<MarketType> types;

@@ -5,7 +5,7 @@ import com.matchbook.sdk.core.clients.rest.dtos.MatchbookResponse;
 public class LoginResponse implements MatchbookResponse {
 
     private String sessionToken;
-    private long userId;
+    private Long userId;
     private Account account;
 
     public String getSessionToken() {
