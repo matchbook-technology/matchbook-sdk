@@ -1,7 +1,7 @@
 package com.matchbook.sdk.core.clients.rest.dtos.prices;
 
-public enum Side {
+public enum PriceMode {
 
-    BACK, LAY
+    AGGREGATED, EXPANDED
 
 }
