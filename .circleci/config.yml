@@ -8,12 +8,27 @@ jobs:
       - checkout
       - restore_cache:
           key: matchbook-sdk-{{ checksum "pom.xml" }}
-      - run: mvn dependency:go-offline
+      - run: mvn --fail-never dependency:go-offline || true
       - save_cache:
           paths:
             - ~/.m2
           key: matchbook-sdk-{{ checksum "pom.xml" }}
-      - run: mvn package
+
+      - run:
+          name: Build Matchbook SDK
+          command: |
+            mvn install
+            mvn surefire-report:report-only
+
+      - run:
+          name: Publish coverage reports
+          command: |
+            wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets[0].browser_download_url')
+            java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r matchbook-sdk-core/target/site/jacoco/jacoco.xml
 
       - store_test_results:
-          path: target/surefire-reports
+          path: matchbook-sdk-core/target/surefire-reports
+
+      - store_artifacts:
+          path: matchbook-sdk-core/target/site
+          destination: matchbook-sdk-core/reports
