@@ -1,5 +1,10 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.matchbook.sdk.core.clients.rest.dtos.prices.Price;
+
 public class Runner {
 
     private Long id;
@@ -10,6 +15,11 @@ public class Runner {
     private RunnerStatus status;
     private boolean withdrawn;
     private Double value;
+    private List<Price> prices;
+
+    public Runner() {
+        prices = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
@@ -73,6 +83,14 @@ public class Runner {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    public List<Price> getPrices() {
+        return prices;
+    }
+
+    public void setPrices(List<Price> prices) {
+        this.prices = prices;
     }
 
 }
