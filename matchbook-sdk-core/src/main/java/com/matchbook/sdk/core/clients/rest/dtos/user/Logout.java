@@ -2,11 +2,11 @@ package com.matchbook.sdk.core.clients.rest.dtos.user;
 
 import com.matchbook.sdk.core.clients.rest.dtos.MatchbookResponse;
 
-public class LoginResponse implements MatchbookResponse {
+public class Logout implements MatchbookResponse {
 
     private String sessionToken;
     private Long userId;
-    private Account account;
+    private String username;
 
     public String getSessionToken() {
         return sessionToken;
@@ -16,7 +16,7 @@ public class LoginResponse implements MatchbookResponse {
         this.sessionToken = sessionToken;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
@@ -24,25 +24,20 @@ public class LoginResponse implements MatchbookResponse {
         this.userId = userId;
     }
 
-    public Account getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
     public String toString() {
-        return "LoginResponse{" +
+        return "LogoutResponse{" +
                 "sessionToken='" + sessionToken + '\'' +
                 ", userId=" + userId +
-                ", account=" + account +
+                ", username='" + username + '\'' +
                 '}';
     }
-
 }
