@@ -1,6 +1,7 @@
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Currency;
@@ -16,6 +17,10 @@ public class Offers {
     private BigDecimal availableAmount;
     private BigDecimal exposure;
     private List<Offer> offers;
+
+    public Offers() {
+        offers = new ArrayList<>();
+    }
 
     public OddsType getOddsType() {
         return oddsType;

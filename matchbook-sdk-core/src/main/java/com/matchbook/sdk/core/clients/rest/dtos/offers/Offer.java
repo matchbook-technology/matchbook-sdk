@@ -1,6 +1,7 @@
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,11 @@ public class Offer {
     private String status;
     private List<MatchedBet> matchedBets;
     private List<Error> errors;
+
+    public Offer() {
+        matchedBets = new ArrayList<>();
+        errors = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;

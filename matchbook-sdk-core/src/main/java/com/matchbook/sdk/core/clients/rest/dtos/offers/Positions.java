@@ -1,11 +1,16 @@
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Positions {
 
     private Long userId;
     private List<Position> positions;
+
+    public Positions() {
+        positions = new ArrayList<>();
+    }
 
     public Long getUserId() {
         return userId;
