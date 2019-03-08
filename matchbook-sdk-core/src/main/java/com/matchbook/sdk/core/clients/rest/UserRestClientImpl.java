@@ -17,7 +17,7 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
 
-public class UserRestClientImpl implements UserRestClient {
+public class UserRestClientImpl extends AbstractRestClient implements UserRestClient {
 
     private static final String JSON_TYPE = "application/json";
     private final MediaType mediaType;
@@ -27,6 +27,8 @@ public class UserRestClientImpl implements UserRestClient {
     private final ObjectWriter loginResponseWriter;
 
     public UserRestClientImpl(ClientConnectionManager clientConnectionManager) {
+        super(clientConnectionManager.getMapper());
+
         this.clientConnectionManager = clientConnectionManager;
         this.loginResponseReader = clientConnectionManager.getMapper().readerFor(LoginResponse.class);
         this.loginResponseWriter = clientConnectionManager.getMapper().writerFor(LoginRequest.class);
@@ -56,11 +58,11 @@ public class UserRestClientImpl implements UserRestClient {
                 public void onResponse(Response response) throws IOException {
                     try (ResponseBody responseBody = response.body()) {
                         if (!response.isSuccessful()) {
-                            observer.onError(new MatchbookSDKHTTPException(("Unexpected HTTP code " + response)));
-                        } else {
-                            observer.onNext(loginResponseReader.readValue(responseBody.byteStream()));
-                            observer.onCompleted();
+                            errorHandler(response, observer);
+                            return;
                         }
+                        observer.onNext(loginResponseReader.readValue(responseBody.byteStream()));
+                        observer.onCompleted();
                     }
                 }
             });
