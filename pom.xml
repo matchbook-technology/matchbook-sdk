@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.matchbook</groupId>
-    <artifactId>matchbook-build</artifactId>
+    <artifactId>matchbook-sdk</artifactId>
     <packaging>pom</packaging>
     <version>0.1.0-SNAPSHOT</version>
     <modules>
