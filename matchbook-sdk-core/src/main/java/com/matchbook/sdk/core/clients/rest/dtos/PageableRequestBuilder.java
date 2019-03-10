@@ -5,8 +5,8 @@ public abstract class PageableRequestBuilder {
     private static final int DEFAULT_OFFSET = 0;
     private static final int DEFAULT_PER_PAGE = 20;
 
-    int offset = DEFAULT_OFFSET;
-    int perPage = DEFAULT_PER_PAGE;
+    protected int offset = DEFAULT_OFFSET;
+    protected int perPage = DEFAULT_PER_PAGE;
 
     public PageableRequestBuilder offset(int offset) {
         this.offset = offset;

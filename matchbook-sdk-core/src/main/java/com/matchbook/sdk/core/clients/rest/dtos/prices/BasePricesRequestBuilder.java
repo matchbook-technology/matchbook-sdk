@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 
 public abstract class BasePricesRequestBuilder {
 
-    OddsType oddsType;
-    Side side;
-    Currency currency;
-    BigDecimal minimumLiquidity;
-    PriceMode priceMode;
+    protected OddsType oddsType;
+    protected Side side;
+    protected Currency currency;
+    protected BigDecimal minimumLiquidity;
+    protected PriceMode priceMode;
 
     public BasePricesRequestBuilder oddsType(OddsType oddsType) {
         this.oddsType = oddsType;
