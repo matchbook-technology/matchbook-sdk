@@ -1,8 +1,8 @@
 package com.matchbook.sdk.core.clients.rest.dtos.user;
 
-import java.util.Arrays;
-
 import com.matchbook.sdk.core.clients.rest.dtos.MatchbookRequest;
+
+import java.util.Arrays;
 
 public class LoginRequest implements MatchbookRequest {
 
@@ -14,19 +14,6 @@ public class LoginRequest implements MatchbookRequest {
         this.password = builder.password;
     }
 
-    public static class Builder {
-        private final char[] username;
-        private final char[] password;
-
-        public Builder(char[] username, char[] password) {
-            this.username = username;
-            this.password = password;
-        }
-
-        public LoginRequest build(){
-            return new LoginRequest(this);
-        }
-    }
     public char[] getUsername() {
         return username;
     }
@@ -42,4 +29,19 @@ public class LoginRequest implements MatchbookRequest {
                 ", password=" + Arrays.toString(password) +
                 '}';
     }
+
+    public static class Builder {
+        private final char[] username;
+        private final char[] password;
+
+        public Builder(char[] username, char[] password) {
+            this.username = username;
+            this.password = password;
+        }
+
+        public LoginRequest build(){
+            return new LoginRequest(this);
+        }
+    }
+
 }

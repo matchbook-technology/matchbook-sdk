@@ -2,12 +2,12 @@ package com.matchbook.sdk.core.clients.rest.dtos;
 
 public abstract class MatchbookPageableRequest implements MatchbookRequest {
 
-    private int offset;
-    private int perPage;
+    protected final int offset;
+    protected final int perPage;
 
-    protected MatchbookPageableRequest() {
-        offset = 0;
-        perPage = 20;
+    protected <B extends PageableRequestBuilder> MatchbookPageableRequest(B builder) {
+        this.offset = builder.offset;
+        this.perPage = builder.perPage;
     }
 
     public int getOffset() {
