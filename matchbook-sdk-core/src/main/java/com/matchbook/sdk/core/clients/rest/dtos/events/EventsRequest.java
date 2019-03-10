@@ -38,7 +38,7 @@ public class EventsRequest extends PageablePricesRequest {
         return before;
     }
 
-    public Set<Long> getIds() {
+    public Set<Long> getEventIds() {
         return eventIds;
     }
 
@@ -60,6 +60,29 @@ public class EventsRequest extends PageablePricesRequest {
 
     public boolean includePrices() {
         return includePrices;
+    }
+
+    @Override
+    public String toString() {
+        return EventsRequest.class.getSimpleName() + " {" +
+                "after=" + after +
+                ", before=" + before +
+                ", eventIds=" + eventIds +
+                ", sportIds=" + sportIds +
+                ", categoryIds=" + categoryIds +
+                ", statuses=" + statuses +
+                ", includeEventParticipants=" + includeEventParticipants +
+                ", includePrices=" + includePrices +
+                (includePrices ? (
+                    ", oddsType=" + oddsType +
+                    ", side=" + side +
+                    ", currency=" + currency +
+                    ", minimumLiquidity=" + minimumLiquidity +
+                    ", priceMode=" + priceMode
+                ) : "") +
+                ", offset=" + offset +
+                ", perPage=" + perPage +
+                "}";
     }
 
     public static class Builder extends PageablePricesRequestBuilder {

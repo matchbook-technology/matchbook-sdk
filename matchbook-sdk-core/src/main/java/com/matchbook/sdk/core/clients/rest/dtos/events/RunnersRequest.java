@@ -43,6 +43,26 @@ public class RunnersRequest extends PageablePricesRequest {
         return includePrices;
     }
 
+    @Override
+    public String toString() {
+        return RunnersRequest.class.getSimpleName() + " {" +
+                "eventId=" + eventId +
+                ", marketId=" + marketId +
+                ", statuses=" + statuses +
+                ", includeWithdrawn=" + includeWithdrawn +
+                ", includePrices=" + includePrices +
+                (includePrices ? (
+                    ", oddsType=" + oddsType +
+                    ", side=" + side +
+                    ", currency=" + currency +
+                    ", minimumLiquidity=" + minimumLiquidity +
+                    ", priceMode=" + priceMode
+                ) : "") +
+                ", offset=" + offset +
+                ", perPage=" + perPage +
+                "}";
+    }
+
     public static class Builder extends PageablePricesRequestBuilder {
 
         private final Long eventId;

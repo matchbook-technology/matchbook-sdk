@@ -17,7 +17,7 @@ public class MarketRequest extends BasePricesRequest {
         this.includePrices = builder.includePrices;
     }
 
-    public Long getId() {
+    public Long getMarketId() {
         return marketId;
     }
 
@@ -27,6 +27,22 @@ public class MarketRequest extends BasePricesRequest {
 
     public boolean includePrices() {
         return includePrices;
+    }
+
+    @Override
+    public String toString() {
+        return MarketRequest.class.getSimpleName() + " {" +
+                "marketId=" + marketId +
+                ", eventId=" + eventId +
+                ", includePrices=" + includePrices +
+                (includePrices ? (
+                    ", oddsType=" + oddsType +
+                    ", side=" + side +
+                    ", currency=" + currency +
+                    ", minimumLiquidity=" + minimumLiquidity +
+                    ", priceMode=" + priceMode
+                ) : "") +
+                "}";
     }
 
     public static class Builder extends BasePricesRequestBuilder {

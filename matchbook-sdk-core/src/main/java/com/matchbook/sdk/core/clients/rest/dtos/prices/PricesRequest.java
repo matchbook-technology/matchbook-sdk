@@ -26,6 +26,20 @@ public class PricesRequest extends BasePricesRequest {
         return runnerId;
     }
 
+    @Override
+    public String toString() {
+        return PricesRequest.class.getSimpleName() + " {" +
+                "eventId=" + eventId +
+                ", marketId=" + marketId +
+                ", runnerId=" + runnerId +
+                ", oddsType=" + oddsType +
+                ", side=" + side +
+                ", currency=" + currency +
+                ", minimumLiquidity=" + minimumLiquidity +
+                ", priceMode=" + priceMode +
+                "}";
+    }
+
     public static class Builder extends BasePricesRequestBuilder {
 
         private final Long eventId;

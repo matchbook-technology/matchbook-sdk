@@ -10,8 +10,11 @@ public class RunnerResponse implements MatchbookResponse {
         return runner;
     }
 
-    public void setRunner(Runner runner) {
-        this.runner = runner;
+    @Override
+    public String toString() {
+        return RunnerResponse.class.getSimpleName() + " {" +
+                "runner=" + runner +
+                "}";
     }
 
 }

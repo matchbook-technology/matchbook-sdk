@@ -19,7 +19,7 @@ public class RunnerRequest extends BasePricesRequest {
         this.includePrices = builder.includePrices;
     }
 
-    public Long getId() {
+    public Long getRunnerId() {
         return runnerId;
     }
 
@@ -33,6 +33,23 @@ public class RunnerRequest extends BasePricesRequest {
 
     public boolean includePrices() {
         return includePrices;
+    }
+
+    @Override
+    public String toString() {
+        return RunnerRequest.class.getSimpleName() + " {" +
+                "runnerId=" + runnerId +
+                ", eventId=" + eventId +
+                ", marketId=" + marketId +
+                ", includePrices=" + includePrices +
+                (includePrices ? (
+                    ", oddsType=" + oddsType +
+                    ", side=" + side +
+                    ", currency=" + currency +
+                    ", minimumLiquidity=" + minimumLiquidity +
+                    ", priceMode=" + priceMode
+                ) : "") +
+                "}";
     }
 
     public static class Builder extends BasePricesRequestBuilder {

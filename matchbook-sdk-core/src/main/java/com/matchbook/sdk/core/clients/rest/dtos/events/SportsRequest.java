@@ -9,6 +9,14 @@ public class SportsRequest extends MatchbookPageableRequest {
         super(builder);
     }
 
+    @Override
+    public String toString() {
+        return SportsRequest.class.getSimpleName() + " {" +
+                "offset=" + offset +
+                ", perPage=" + perPage +
+                "}";
+    }
+
     public static class Builder extends PageablePricesRequestBuilder {
 
         public SportsRequest build() {

@@ -24,10 +24,10 @@ public class LoginRequest implements MatchbookRequest {
 
     @Override
     public String toString() {
-        return "LoginRequest{" +
+        return LoginRequest.class.getSimpleName() + " {" +
                 "username=" + Arrays.toString(username) +
                 ", password=" + Arrays.toString(password) +
-                '}';
+                "}";
     }
 
     public static class Builder {

@@ -10,8 +10,11 @@ public class EventResponse implements MatchbookResponse {
         return event;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    @Override
+    public String toString() {
+        return EventResponse.class.getSimpleName() + " {" +
+                "event=" + event +
+                "}";
     }
 
 }
