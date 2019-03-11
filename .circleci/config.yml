@@ -17,7 +17,7 @@ jobs:
       - run:
           name: Build Matchbook SDK
           command: |
-            mvn install
+            mvn clean install
             mvn surefire-report:report-only
 
       - run:

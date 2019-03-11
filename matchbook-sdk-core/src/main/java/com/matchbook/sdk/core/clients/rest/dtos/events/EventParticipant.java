@@ -57,4 +57,16 @@ public class EventParticipant {
         this.number = number;
     }
 
+    @Override
+    public String toString() {
+        return EventParticipant.class.getSimpleName() + " {" +
+                "id=" + id +
+                ", eventId=" + eventId +
+                ", participantName=" + participantName +
+                ", jockeyName=" + jockeyName +
+                ", trainerName=" + trainerName +
+                ", number=" + number +
+                "}";
+    }
+
 }

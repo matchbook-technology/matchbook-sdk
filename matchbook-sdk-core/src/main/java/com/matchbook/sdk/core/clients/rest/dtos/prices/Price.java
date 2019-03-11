@@ -50,4 +50,15 @@ public class Price {
         this.odds = odds;
     }
 
+    @Override
+    public String toString() {
+        return Price.class.getSimpleName() + " {" +
+                "side=" + side +
+                ", oddsType=" + oddsType +
+                ", currency=" + currency +
+                ", amount=" + amount +
+                ", odds=" + odds +
+                "}";
+    }
+
 }

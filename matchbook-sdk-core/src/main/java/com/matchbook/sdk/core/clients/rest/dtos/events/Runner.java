@@ -1,9 +1,9 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
+import com.matchbook.sdk.core.clients.rest.dtos.prices.Price;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.matchbook.sdk.core.clients.rest.dtos.prices.Price;
 
 public class Runner {
 
@@ -91,6 +91,21 @@ public class Runner {
 
     public void setPrices(List<Price> prices) {
         this.prices = prices;
+    }
+
+    @Override
+    public String toString() {
+        return Runner.class.getSimpleName() + " {" +
+                "id=" + id +
+                ", eventId=" + eventId +
+                ", marketId=" + marketId +
+                ", eventParticipantId=" + eventParticipantId +
+                ", name=" + name +
+                ", status=" + status +
+                ", withdrawn=" + withdrawn +
+                ", value=" + value +
+                ", prices=" + prices +
+                "}";
     }
 
 }

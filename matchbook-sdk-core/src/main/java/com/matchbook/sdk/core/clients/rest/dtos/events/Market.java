@@ -100,4 +100,20 @@ public class Market {
         this.runners = runners;
     }
 
+    @Override
+    public String toString() {
+        return Market.class.getSimpleName() + " {" +
+                "id=" + id +
+                ", eventId=" + eventId +
+                ", name=" + name +
+                ", status=" + status +
+                ", type=" + type +
+                ", inRunning=" + inRunning +
+                ", allowLiveBetting=" + allowLiveBetting +
+                ", value=" + value +
+                ", winners=" + winners +
+                ", runners=" + runners +
+                "}";
+    }
+
 }

@@ -21,4 +21,12 @@ public class Sport {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return Sport.class.getSimpleName() + " {" +
+                "id=" + id +
+                ", name=" + name +
+                "}";
+    }
+
 }

@@ -102,4 +102,20 @@ public class Event {
         this.eventParticipants = eventParticipants;
     }
 
+    @Override
+    public String toString() {
+        return Event.class.getSimpleName() + " {" +
+                "id=" + id +
+                ", sportId=" + sportId +
+                ", categoryIds=" + categoryIds +
+                ", name=" + name +
+                ", status=" + status +
+                ", startTime=" + startTime +
+                ", inRunning=" + inRunning +
+                ", allowLiveBetting=" + allowLiveBetting +
+                ", markets=" + markets +
+                ", eventParticipants=" + eventParticipants +
+                "}";
+    }
+
 }
