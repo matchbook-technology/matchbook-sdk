@@ -3,7 +3,6 @@ package com.matchbook.sdk.core.clients.rest.dtos.errors;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Error {
     private List<String> messages = new ArrayList<>();
 

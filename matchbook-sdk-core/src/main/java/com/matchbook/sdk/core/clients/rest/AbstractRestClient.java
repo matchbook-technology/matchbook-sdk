@@ -21,34 +21,35 @@ public abstract class AbstractRestClient {
     }
 
     protected <T> void errorHandler(Response response, StreamObserver<T> observer) {
-        try {
-            if (Objects.nonNull(response.body())) {
+        if (Objects.nonNull(response.body())) {
+            try {
                 Errors errors = errorReader.readValue(response.body().byteStream());
                 if (Objects.nonNull(errors)) {
-                    String errorMessages = errors.getErrors().stream()
-                            .flatMap(error -> error.getMessages().stream())
-                            .map(String::toLowerCase)
-                            .collect(Collectors.joining("; "));
-
+                    String errorMessages = getErrorMessages(errors);
                     if (errorMessages.contains("cannot login")) {
                         publishUnauthenticatedError(observer);
                         return;
                     }
                 }
+            } catch (IOException e) {
+                publishHTTPError(response, observer);
             }
-            publishHTTPError(response, observer);
-        } catch (IOException e) {
-            publishHTTPError(response, observer);
         }
+        publishHTTPError(response, observer);
     }
 
     private <T> void publishHTTPError(Response response, StreamObserver<T> observer) {
-        observer.onError(new MatchbookSDKHTTPException(("Unexpected HTTP code " + response)));
+        observer.onError(new MatchbookSDKHTTPException("Unexpected HTTP code " + response));
     }
 
     private <T> void publishUnauthenticatedError(StreamObserver<T> observer) {
         observer.onError(new MatchbookSDKHTTPException("Incorrect username or password", ErrorCode.UNAUTHENTICATED));
     }
 
-
+    private String getErrorMessages(Errors errors) {
+        return errors.getErrors().stream()
+                .flatMap(error -> error.getMessages().stream())
+                .map(String::toLowerCase)
+                .collect(Collectors.joining("; "));
+    }
 }
