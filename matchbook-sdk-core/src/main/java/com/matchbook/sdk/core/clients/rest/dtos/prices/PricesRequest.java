@@ -33,6 +33,7 @@ public class PricesRequest extends BasePricesRequest {
                 ", marketId=" + marketId +
                 ", runnerId=" + runnerId +
                 ", oddsType=" + oddsType +
+                ", exchangeType=" + exchangeType +
                 ", side=" + side +
                 ", currency=" + currency +
                 ", minimumLiquidity=" + minimumLiquidity +

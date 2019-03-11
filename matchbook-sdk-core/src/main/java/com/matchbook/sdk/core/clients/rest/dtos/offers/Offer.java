@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Currency;
+import com.matchbook.sdk.core.clients.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Side;
 
@@ -21,6 +22,7 @@ public class Offer {
     private Long marketId;
     private Long runnerId;
     private OfferStatus status;
+    private ExchangeType exchangeType;
     private Side side;
     private OddsType oddsType;
     private Currency currency;
@@ -79,6 +81,14 @@ public class Offer {
 
     public void setStatus(OfferStatus status) {
         this.status = status;
+    }
+
+    public ExchangeType getExchangeType() {
+        return exchangeType;
+    }
+
+    public void setExchangeType(ExchangeType exchangeType) {
+        this.exchangeType = exchangeType;
     }
 
     public Side getSide() {
@@ -209,6 +219,7 @@ public class Offer {
                 ", marketId=" + marketId +
                 ", runnerId=" + runnerId +
                 ", status=" + status +
+                ", exchangeType=" + exchangeType +
                 ", side=" + side +
                 ", oddsType=" + oddsType +
                 ", currency=" + currency +

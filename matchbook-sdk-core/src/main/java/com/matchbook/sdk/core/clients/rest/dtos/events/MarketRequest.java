@@ -37,6 +37,7 @@ public class MarketRequest extends BasePricesRequest {
                 ", includePrices=" + includePrices +
                 (includePrices ? (
                     ", oddsType=" + oddsType +
+                    ", exchangeType=" + exchangeType +
                     ", side=" + side +
                     ", currency=" + currency +
                     ", minimumLiquidity=" + minimumLiquidity +

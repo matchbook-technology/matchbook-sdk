@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 public abstract class PageablePricesRequest extends PageableRequest {
 
     protected final OddsType oddsType;
+    protected final ExchangeType exchangeType;
     protected final Side side;
     protected final Currency currency;
     protected final BigDecimal minimumLiquidity;
@@ -16,6 +17,7 @@ public abstract class PageablePricesRequest extends PageableRequest {
         super(builder);
 
         this.oddsType = builder.oddsType;
+        this.exchangeType = builder.exchangeType;
         this.side = builder.side;
         this.currency = builder.currency;
         this.minimumLiquidity = builder.minimumLiquidity;
@@ -24,6 +26,10 @@ public abstract class PageablePricesRequest extends PageableRequest {
 
     public OddsType getOddsType() {
         return oddsType;
+    }
+
+    public ExchangeType getExchangeType() {
+        return exchangeType;
     }
 
     public Side getSide() {

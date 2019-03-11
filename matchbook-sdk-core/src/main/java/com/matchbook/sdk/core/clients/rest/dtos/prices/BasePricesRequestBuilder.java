@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public abstract class BasePricesRequestBuilder {
 
     protected OddsType oddsType;
+    protected ExchangeType exchangeType;
     protected Side side;
     protected Currency currency;
     protected BigDecimal minimumLiquidity;
@@ -12,6 +13,11 @@ public abstract class BasePricesRequestBuilder {
 
     public BasePricesRequestBuilder oddsType(OddsType oddsType) {
         this.oddsType = oddsType;
+        return this;
+    }
+
+    public BasePricesRequestBuilder exchangeType(ExchangeType exchangeType) {
+        this.exchangeType = exchangeType;
         return this;
     }
 
