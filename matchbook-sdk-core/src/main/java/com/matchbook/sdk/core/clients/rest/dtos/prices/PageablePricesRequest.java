@@ -1,10 +1,10 @@
 package com.matchbook.sdk.core.clients.rest.dtos.prices;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookPageableRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
 
 import java.math.BigDecimal;
 
-public abstract class PageablePricesRequest extends MatchbookPageableRequest {
+public abstract class PageablePricesRequest extends PageableRequest {
 
     protected final OddsType oddsType;
     protected final Side side;

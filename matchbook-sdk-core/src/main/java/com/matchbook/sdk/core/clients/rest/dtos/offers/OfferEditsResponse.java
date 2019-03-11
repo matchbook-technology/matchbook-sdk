@@ -5,9 +5,9 @@
 
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookPageableResponse;
+import com.matchbook.sdk.core.clients.rest.dtos.PageableResponse;
 
-public class OfferEditsResponse extends MatchbookPageableResponse<OfferEdit> {
+public class OfferEditsResponse extends PageableResponse<OfferEdit> {
 
     @Override
     public String toString() {

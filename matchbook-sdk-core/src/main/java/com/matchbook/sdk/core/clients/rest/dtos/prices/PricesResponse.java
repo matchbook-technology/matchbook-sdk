@@ -1,10 +1,10 @@
 package com.matchbook.sdk.core.clients.rest.dtos.prices;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookResponse;
+import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 
 import java.util.List;
 
-public class PricesResponse implements MatchbookResponse {
+public class PricesResponse implements RestResponse {
 
     private List<Price> prices;
 

@@ -5,10 +5,10 @@
 
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookPageableRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequestBuilder;
 
-public class OfferEditsRequest extends MatchbookPageableRequest {
+public class OfferEditsRequest extends PageableRequest {
 
     private final Long offerId;
 

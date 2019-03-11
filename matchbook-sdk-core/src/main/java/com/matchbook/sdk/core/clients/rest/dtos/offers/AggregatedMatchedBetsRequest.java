@@ -7,11 +7,11 @@ package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
 import java.util.Set;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookPageableRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequestBuilder;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Side;
 
-public class AggregatedMatchedBetsRequest extends MatchbookPageableRequest {
+public class AggregatedMatchedBetsRequest extends PageableRequest {
 
     private final Set<Long> eventIds;
     private final Set<Long> marketIds;

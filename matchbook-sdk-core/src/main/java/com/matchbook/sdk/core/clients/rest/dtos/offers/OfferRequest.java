@@ -5,9 +5,9 @@
 
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 
-public class OfferRequest implements MatchbookRequest {
+public class OfferRequest implements RestRequest {
 
     private final Long offerId;
     private final boolean includeEdits;

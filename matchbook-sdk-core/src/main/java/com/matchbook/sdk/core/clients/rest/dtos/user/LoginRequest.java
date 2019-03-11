@@ -1,10 +1,10 @@
 package com.matchbook.sdk.core.clients.rest.dtos.user;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 
 import java.util.Arrays;
 
-public class LoginRequest implements MatchbookRequest {
+public class LoginRequest implements RestRequest {
 
     private final char[] username;
     private final char[] password;

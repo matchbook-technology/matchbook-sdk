@@ -2,7 +2,7 @@ package com.matchbook.sdk.core.clients.rest.dtos;
 
 import java.util.List;
 
-public abstract class MatchbookPageableResponse<T> implements MatchbookResponse {
+public abstract class PageableResponse<T> implements RestResponse {
 
     protected int total;
     protected int offset;

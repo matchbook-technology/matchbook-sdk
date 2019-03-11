@@ -5,9 +5,9 @@
 
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookResponse;
+import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 
-public class OfferEditResponse implements MatchbookResponse {
+public class OfferEditResponse implements RestResponse {
 
     private OfferEdit offerEdit;
 
