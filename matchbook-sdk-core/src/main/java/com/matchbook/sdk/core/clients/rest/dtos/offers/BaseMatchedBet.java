@@ -1,12 +1,6 @@
-/*
- * Copyright (c) 2019 Triplebet Limited. All right reserved. Inchalla, Le Val, Alderney, GY9 3UL.
- * Company Registration Number: 1827.
- */
-
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Currency;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.OddsType;
