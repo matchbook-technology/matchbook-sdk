@@ -1,14 +1,13 @@
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
-import java.math.BigDecimal;
+import com.matchbook.sdk.core.clients.rest.dtos.prices.Side;
 
-public class Position {
+public class AggregatedMatchedBet extends BaseMatchedBet {
 
     private Long eventId;
     private Long marketId;
     private Long runnerId;
-    private BigDecimal potentialProfit;
-    private BigDecimal potentialLoss;
+    private Side side;
 
     public Long getEventId() {
         return eventId;
@@ -34,30 +33,28 @@ public class Position {
         this.runnerId = runnerId;
     }
 
-    public BigDecimal getPotentialProfit() {
-        return potentialProfit;
+    public Side getSide() {
+        return side;
     }
 
-    public void setPotentialProfit(BigDecimal potentialProfit) {
-        this.potentialProfit = potentialProfit;
-    }
-
-    public BigDecimal getPotentialLoss() {
-        return potentialLoss;
-    }
-
-    public void setPotentialLoss(BigDecimal potentialLoss) {
-        this.potentialLoss = potentialLoss;
+    public void setSide(Side side) {
+        this.side = side;
     }
 
     @Override
     public String toString() {
-        return Position.class.getSimpleName() + " {" +
+        return AggregatedMatchedBet.class.getSimpleName() + " {" +
                 "eventId=" + eventId +
                 ", marketId=" + marketId +
                 ", runnerId=" + runnerId +
+                ", status=" + status +
+                ", oddsType=" + oddsType +
+                ", currency=" + currency +
+                ", odds=" + odds +
+                ", stake=" + stake +
                 ", potentialProfit=" + potentialProfit +
-                ", potentialLoss=" + potentialLoss +
+                ", potentialLiability=" + potentialLiability +
+                ", side=" + side +
                 "}";
     }
 

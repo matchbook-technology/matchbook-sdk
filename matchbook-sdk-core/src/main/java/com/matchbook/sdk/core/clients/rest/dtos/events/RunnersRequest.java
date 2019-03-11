@@ -53,6 +53,7 @@ public class RunnersRequest extends PageablePricesRequest {
                 ", includePrices=" + includePrices +
                 (includePrices ? (
                     ", oddsType=" + oddsType +
+                    ", exchangeType=" + exchangeType +
                     ", side=" + side +
                     ", currency=" + currency +
                     ", minimumLiquidity=" + minimumLiquidity +

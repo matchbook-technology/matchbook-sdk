@@ -1,8 +1,8 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookResponse;
+import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 
-public class EventResponse implements MatchbookResponse {
+public class EventResponse implements RestResponse {
 
     private Event event;
 

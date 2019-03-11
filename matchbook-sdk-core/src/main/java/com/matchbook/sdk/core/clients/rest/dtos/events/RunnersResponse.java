@@ -1,8 +1,8 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookPageableResponse;
+import com.matchbook.sdk.core.clients.rest.dtos.PageableResponse;
 
-public class RunnersResponse extends MatchbookPageableResponse<Runner> {
+public class RunnersResponse extends PageableResponse<Runner> {
 
     @Override
     public String toString() {

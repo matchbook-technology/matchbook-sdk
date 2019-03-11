@@ -1,8 +1,8 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookPageableResponse;
+import com.matchbook.sdk.core.clients.rest.dtos.PageableResponse;
 
-public class MarketsResponse extends MatchbookPageableResponse<Market> {
+public class MarketsResponse extends PageableResponse<Market> {
 
     @Override
     public String toString() {

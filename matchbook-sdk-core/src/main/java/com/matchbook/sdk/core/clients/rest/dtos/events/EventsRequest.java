@@ -10,9 +10,9 @@ public class EventsRequest extends PageablePricesRequest {
 
     private final Instant after;
     private final Instant before;
-    private final Set<Long> eventIds;
     private final Set<Long> sportIds;
     private final Set<Long> categoryIds;
+    private final Set<Long> eventIds;
     private final Set<EventStatus> statuses;
     private final boolean includeEventParticipants;
     private final boolean includePrices;
@@ -22,9 +22,9 @@ public class EventsRequest extends PageablePricesRequest {
 
         this.after = builder.after;
         this.before = builder.before;
-        this.eventIds = builder.eventIds;
         this.sportIds = builder.sportIds;
         this.categoryIds = builder.categoryIds;
+        this.eventIds = builder.eventIds;
         this.statuses = builder.statuses;
         this.includeEventParticipants = builder.includeEventParticipants;
         this.includePrices = builder.includePrices;
@@ -38,16 +38,16 @@ public class EventsRequest extends PageablePricesRequest {
         return before;
     }
 
-    public Set<Long> getEventIds() {
-        return eventIds;
-    }
-
     public Set<Long> getSportIds() {
         return sportIds;
     }
 
     public Set<Long> getCategoryIds() {
         return categoryIds;
+    }
+
+    public Set<Long> getEventIds() {
+        return eventIds;
     }
 
     public Set<EventStatus> getStatuses() {
@@ -67,14 +67,15 @@ public class EventsRequest extends PageablePricesRequest {
         return EventsRequest.class.getSimpleName() + " {" +
                 "after=" + after +
                 ", before=" + before +
-                ", eventIds=" + eventIds +
                 ", sportIds=" + sportIds +
                 ", categoryIds=" + categoryIds +
+                ", eventIds=" + eventIds +
                 ", statuses=" + statuses +
                 ", includeEventParticipants=" + includeEventParticipants +
                 ", includePrices=" + includePrices +
                 (includePrices ? (
                     ", oddsType=" + oddsType +
+                    ", exchangeType=" + exchangeType +
                     ", side=" + side +
                     ", currency=" + currency +
                     ", minimumLiquidity=" + minimumLiquidity +
@@ -89,9 +90,9 @@ public class EventsRequest extends PageablePricesRequest {
 
         private Instant after;
         private Instant before;
-        private Set<Long> eventIds;
         private Set<Long> sportIds;
         private Set<Long> categoryIds;
+        private Set<Long> eventIds;
         private Set<EventStatus> statuses;
         private boolean includeEventParticipants;
         private boolean includePrices;
@@ -111,11 +112,6 @@ public class EventsRequest extends PageablePricesRequest {
             return this;
         }
 
-        public Builder eventIds(Set<Long> eventIds) {
-            this.eventIds = eventIds;
-            return this;
-        }
-
         public Builder sportIds(Set<Long> sportIds) {
             this.sportIds = sportIds;
             return this;
@@ -123,6 +119,11 @@ public class EventsRequest extends PageablePricesRequest {
 
         public Builder categoryIds(Set<Long> categoryIds) {
             this.categoryIds = categoryIds;
+            return this;
+        }
+
+        public Builder eventIds(Set<Long> eventIds) {
+            this.eventIds = eventIds;
             return this;
         }
 

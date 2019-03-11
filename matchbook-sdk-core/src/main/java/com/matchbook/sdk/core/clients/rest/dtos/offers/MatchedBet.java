@@ -1,22 +1,14 @@
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.Instant;
 
-import com.matchbook.sdk.core.clients.rest.dtos.prices.Currency;
-import com.matchbook.sdk.core.clients.rest.dtos.prices.OddsType;
-
-public class MatchedBet {
+public class MatchedBet extends BaseMatchedBet {
 
     private Long id;
     private Long offerId;
-    private BigDecimal odds;
-    private OddsType oddsType;
-    private BigDecimal decimalOdds;
-    private BigDecimal stake;
     private BigDecimal commission;
-    private Currency currency;
-    private Date created;
+    private Instant createdAt;
 
     public Long getId() {
         return id;
@@ -34,38 +26,6 @@ public class MatchedBet {
         this.offerId = offerId;
     }
 
-    public BigDecimal getOdds() {
-        return odds;
-    }
-
-    public void setOdds(BigDecimal odds) {
-        this.odds = odds;
-    }
-
-    public OddsType getOddsType() {
-        return oddsType;
-    }
-
-    public void setOddsType(OddsType oddsType) {
-        this.oddsType = oddsType;
-    }
-
-    public BigDecimal getDecimalOdds() {
-        return decimalOdds;
-    }
-
-    public void setDecimalOdds(BigDecimal decimalOdds) {
-        this.decimalOdds = decimalOdds;
-    }
-
-    public BigDecimal getStake() {
-        return stake;
-    }
-
-    public void setStake(BigDecimal stake) {
-        this.stake = stake;
-    }
-
     public BigDecimal getCommission() {
         return commission;
     }
@@ -74,19 +34,29 @@ public class MatchedBet {
         this.commission = commission;
     }
 
-    public Currency getCurrency() {
-        return currency;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Date getCreated() {
-        return created;
+    @Override
+    public String toString() {
+        return MatchedBet.class.getSimpleName() + " {" +
+                "id=" + id +
+                ", offerId=" + offerId +
+                ", status=" + status +
+                ", oddsType=" + oddsType +
+                ", currency=" + currency +
+                ", odds=" + odds +
+                ", stake=" + stake +
+                ", potentialProfit=" + potentialProfit +
+                ", potentialLiability=" + potentialLiability +
+                ", commission=" + commission +
+                ", createdAt=" + createdAt +
+                "}";
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
 }

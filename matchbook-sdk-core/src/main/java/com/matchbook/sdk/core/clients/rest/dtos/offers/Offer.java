@@ -1,12 +1,14 @@
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Currency;
+import com.matchbook.sdk.core.clients.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.OddsType;
+import com.matchbook.sdk.core.clients.rest.dtos.prices.Side;
 
 public class Offer {
 
@@ -14,27 +16,26 @@ public class Offer {
     private Long eventId;
     private Long marketId;
     private Long runnerId;
-    private String tempId;
-    private String exchangeType;
-    private BigDecimal odds;
+    private OfferStatus status;
+    private ExchangeType exchangeType;
+    private Side side;
     private OddsType oddsType;
-    private BigDecimal decimalOdds;
+    private Currency currency;
+    private BigDecimal odds;
     private BigDecimal stake;
     private BigDecimal remaining;
-    private BigDecimal potentialProfit;
-    private BigDecimal remainingPotentialProfit;
     private BigDecimal potentialLiability;
     private BigDecimal remainingPotentialLiability;
-    private Currency currency;
-    private String side;
-    private Date createdTime;
-    private String status;
+    private CommissionType commissionType;
+    private BigDecimal originatorCommissionRate;
+    private BigDecimal acceptorCommissionRate;
+    private BigDecimal commissionReserve;
+    private boolean inPlay;
+    private Instant createdAt;
     private List<MatchedBet> matchedBets;
-    private List<Error> errors;
 
     public Offer() {
         matchedBets = new ArrayList<>();
-        errors = new ArrayList<>();
     }
 
     public Long getId() {
@@ -69,28 +70,28 @@ public class Offer {
         this.runnerId = runnerId;
     }
 
-    public String getTempId() {
-        return tempId;
+    public OfferStatus getStatus() {
+        return status;
     }
 
-    public void setTempId(String tempId) {
-        this.tempId = tempId;
+    public void setStatus(OfferStatus status) {
+        this.status = status;
     }
 
-    public String getExchangeType() {
+    public ExchangeType getExchangeType() {
         return exchangeType;
     }
 
-    public void setExchangeType(String exchangeType) {
+    public void setExchangeType(ExchangeType exchangeType) {
         this.exchangeType = exchangeType;
     }
 
-    public BigDecimal getOdds() {
-        return odds;
+    public Side getSide() {
+        return side;
     }
 
-    public void setOdds(BigDecimal odds) {
-        this.odds = odds;
+    public void setSide(Side side) {
+        this.side = side;
     }
 
     public OddsType getOddsType() {
@@ -101,12 +102,20 @@ public class Offer {
         this.oddsType = oddsType;
     }
 
-    public BigDecimal getDecimalOdds() {
-        return decimalOdds;
+    public Currency getCurrency() {
+        return currency;
     }
 
-    public void setDecimalOdds(BigDecimal decimalOdds) {
-        this.decimalOdds = decimalOdds;
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
+    public BigDecimal getOdds() {
+        return odds;
+    }
+
+    public void setOdds(BigDecimal odds) {
+        this.odds = odds;
     }
 
     public BigDecimal getStake() {
@@ -125,22 +134,6 @@ public class Offer {
         this.remaining = remaining;
     }
 
-    public BigDecimal getPotentialProfit() {
-        return potentialProfit;
-    }
-
-    public void setPotentialProfit(BigDecimal potentialProfit) {
-        this.potentialProfit = potentialProfit;
-    }
-
-    public BigDecimal getRemainingPotentialProfit() {
-        return remainingPotentialProfit;
-    }
-
-    public void setRemainingPotentialProfit(BigDecimal remainingPotentialProfit) {
-        this.remainingPotentialProfit = remainingPotentialProfit;
-    }
-
     public BigDecimal getPotentialLiability() {
         return potentialLiability;
     }
@@ -157,36 +150,52 @@ public class Offer {
         this.remainingPotentialLiability = remainingPotentialLiability;
     }
 
-    public Currency getCurrency() {
-        return currency;
+    public CommissionType getCommissionType() {
+        return commissionType;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
+    public void setCommissionType(CommissionType commissionType) {
+        this.commissionType = commissionType;
     }
 
-    public String getSide() {
-        return side;
+    public BigDecimal getOriginatorCommissionRate() {
+        return originatorCommissionRate;
     }
 
-    public void setSide(String side) {
-        this.side = side;
+    public void setOriginatorCommissionRate(BigDecimal originatorCommissionRate) {
+        this.originatorCommissionRate = originatorCommissionRate;
     }
 
-    public Date getCreatedTime() {
-        return createdTime;
+    public BigDecimal getAcceptorCommissionRate() {
+        return acceptorCommissionRate;
     }
 
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
+    public void setAcceptorCommissionRate(BigDecimal acceptorCommissionRate) {
+        this.acceptorCommissionRate = acceptorCommissionRate;
     }
 
-    public String getStatus() {
-        return status;
+    public BigDecimal getCommissionReserve() {
+        return commissionReserve;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCommissionReserve(BigDecimal commissionReserve) {
+        this.commissionReserve = commissionReserve;
+    }
+
+    public boolean isInPlay() {
+        return inPlay;
+    }
+
+    public void setInPlay(boolean inPlay) {
+        this.inPlay = inPlay;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
     public List<MatchedBet> getMatchedBets() {
@@ -197,11 +206,31 @@ public class Offer {
         this.matchedBets = matchedBets;
     }
 
-    public List<Error> getErrors() {
-        return errors;
+    @Override
+    public String toString() {
+        return Offer.class.getSimpleName() + " {" +
+                "id=" + id +
+                ", eventId=" + eventId +
+                ", marketId=" + marketId +
+                ", runnerId=" + runnerId +
+                ", status=" + status +
+                ", exchangeType=" + exchangeType +
+                ", side=" + side +
+                ", oddsType=" + oddsType +
+                ", currency=" + currency +
+                ", odds=" + odds +
+                ", stake=" + stake +
+                ", remaining=" + remaining +
+                ", potentialLiability=" + potentialLiability +
+                ", remainingPotentialLiability=" + remainingPotentialLiability +
+                ", commissionType=" + commissionType +
+                ", originatorCommissionRate=" + originatorCommissionRate +
+                ", acceptorCommissionRate=" + acceptorCommissionRate +
+                ", commissionReserve=" + commissionReserve +
+                ", inPlay=" + inPlay +
+                ", createdAt=" + createdAt +
+                ", matchedBets=" + matchedBets +
+                "}";
     }
 
-    public void setErrors(List<Error> errors) {
-        this.errors = errors;
-    }
 }

@@ -1,9 +1,9 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookPageableRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequestBuilder;
 
-public class SportsRequest extends MatchbookPageableRequest {
+public class SportsRequest extends PageableRequest {
 
     private SportsRequest(SportsRequest.Builder builder) {
         super(builder);

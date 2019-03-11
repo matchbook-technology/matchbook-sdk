@@ -46,6 +46,7 @@ public class MarketsRequest extends PageablePricesRequest {
                 ", includePrices=" + includePrices +
                 (includePrices ? (
                     ", oddsType=" + oddsType +
+                    ", exchangeType=" + exchangeType +
                     ", side=" + side +
                     ", currency=" + currency +
                     ", minimumLiquidity=" + minimumLiquidity +

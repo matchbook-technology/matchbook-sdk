@@ -1,16 +1,16 @@
-package com.matchbook.sdk.core.clients.rest.dtos.events;
+package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
 import com.matchbook.sdk.core.clients.rest.dtos.PageableResponse;
 
-public class EventsResponse extends PageableResponse<Event> {
+public class CancelledMatchedBetsResponse extends PageableResponse<MatchedBet> {
 
     @Override
     public String toString() {
-        return EventsResponse.class.getSimpleName() + " {" +
+        return CancelledMatchedBetsResponse.class.getSimpleName() + " {" +
                 "total=" + total +
                 ", offset=" + offset +
                 ", perPage=" + perPage +
-                ", events=" + content +
+                ", matchedBets=" + content +
                 "}";
     }
 
