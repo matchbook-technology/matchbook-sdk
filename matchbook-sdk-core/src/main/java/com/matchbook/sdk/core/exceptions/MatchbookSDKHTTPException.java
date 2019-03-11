@@ -15,4 +15,8 @@ public class MatchbookSDKHTTPException extends MatchbookSDKException {
     public MatchbookSDKHTTPException(Throwable cause) {
         super(cause, ErrorCode.HTTP_ERROR);
     }
+
+    public MatchbookSDKHTTPException(String message, ErrorCode errorCode) {
+        super(message, errorCode);
+    }
 }

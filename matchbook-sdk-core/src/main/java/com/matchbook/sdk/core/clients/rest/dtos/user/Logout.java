@@ -2,31 +2,30 @@ package com.matchbook.sdk.core.clients.rest.dtos.user;
 
 import com.matchbook.sdk.core.clients.rest.dtos.MatchbookResponse;
 
-public class LoginResponse implements MatchbookResponse {
+public class Logout implements MatchbookResponse {
 
     private String sessionToken;
     private Long userId;
-    private Account account;
+    private String username;
 
     public String getSessionToken() {
         return sessionToken;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public Account getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
 
     @Override
     public String toString() {
-        return LoginResponse.class.getSimpleName() + " {" +
+        return Logout.class.getSimpleName() + " {" +
                 "sessionToken=" + sessionToken +
                 ", userId=" + userId +
-                ", account=" + account +
+                ", username=" + username +
                 "}";
     }
-
 }
