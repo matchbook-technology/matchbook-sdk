@@ -1,35 +1,79 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
-import com.matchbook.sdk.core.clients.rest.dtos.MatchbookRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.prices.BasePricesRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.prices.BasePricesRequestBuilder;
 
-public class RunnerRequest implements MatchbookRequest {
+public class RunnerRequest extends BasePricesRequest {
 
-    private Long id;
-    private Long eventId;
-    private Long marketId;
+    private final Long runnerId;
+    private final Long eventId;
+    private final Long marketId;
+    private final boolean includePrices;
 
-    public Long getId() {
-        return id;
+    private RunnerRequest(RunnerRequest.Builder builder) {
+        super(builder);
+
+        this.runnerId = builder.runnerId;
+        this.eventId = builder.eventId;
+        this.marketId = builder.marketId;
+        this.includePrices = builder.includePrices;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getRunnerId() {
+        return runnerId;
     }
 
     public Long getEventId() {
         return eventId;
     }
 
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
-    }
-
     public Long getMarketId() {
         return marketId;
     }
 
-    public void setMarketId(Long marketId) {
-        this.marketId = marketId;
+    public boolean includePrices() {
+        return includePrices;
+    }
+
+    @Override
+    public String toString() {
+        return RunnerRequest.class.getSimpleName() + " {" +
+                "runnerId=" + runnerId +
+                ", eventId=" + eventId +
+                ", marketId=" + marketId +
+                ", includePrices=" + includePrices +
+                (includePrices ? (
+                    ", oddsType=" + oddsType +
+                    ", side=" + side +
+                    ", currency=" + currency +
+                    ", minimumLiquidity=" + minimumLiquidity +
+                    ", priceMode=" + priceMode
+                ) : "") +
+                "}";
+    }
+
+    public static class Builder extends BasePricesRequestBuilder {
+
+        private final Long eventId;
+        private final Long marketId;
+        private final Long runnerId;
+        private boolean includePrices;
+
+        public Builder(Long eventId, Long marketId, Long runnerId) {
+            this.eventId = eventId;
+            this.marketId = marketId;
+            this.runnerId = runnerId;
+            includePrices = false;
+        }
+
+        public Builder includePrices(boolean includePrices) {
+            this.includePrices = includePrices;
+            return this;
+        }
+
+        public RunnerRequest build() {
+            return new RunnerRequest(this);
+        }
     }
 
 }

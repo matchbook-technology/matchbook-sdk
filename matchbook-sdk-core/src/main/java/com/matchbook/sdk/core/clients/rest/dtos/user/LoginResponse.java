@@ -12,33 +12,21 @@ public class LoginResponse implements MatchbookResponse {
         return sessionToken;
     }
 
-    public void setSessionToken(String sessionToken) {
-        this.sessionToken = sessionToken;
-    }
-
     public long getUserId() {
         return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Account getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
     @Override
     public String toString() {
-        return "LoginResponse{" +
-                "sessionToken='" + sessionToken + '\'' +
+        return LoginResponse.class.getSimpleName() + " {" +
+                "sessionToken=" + sessionToken +
                 ", userId=" + userId +
                 ", account=" + account +
-                '}';
+                "}";
     }
 
 }

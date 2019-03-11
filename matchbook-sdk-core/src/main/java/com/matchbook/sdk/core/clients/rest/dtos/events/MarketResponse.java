@@ -10,8 +10,11 @@ public class MarketResponse implements MatchbookResponse {
         return market;
     }
 
-    public void setMarket(Market market) {
-        this.market = market;
+    @Override
+    public String toString() {
+        return MarketResponse.class.getSimpleName() + " {" +
+                "market=" + market +
+                "}";
     }
 
 }

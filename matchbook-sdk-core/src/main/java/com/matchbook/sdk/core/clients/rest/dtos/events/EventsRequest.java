@@ -1,74 +1,149 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
+import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequestBuilder;
+
 import java.time.Instant;
 import java.util.Set;
 
-import com.matchbook.sdk.core.clients.rest.dtos.prices.AbstractPricesRequest;
+public class EventsRequest extends PageablePricesRequest {
 
-public class EventsRequest extends AbstractPricesRequest {
+    private final Instant after;
+    private final Instant before;
+    private final Set<Long> eventIds;
+    private final Set<Long> sportIds;
+    private final Set<Long> categoryIds;
+    private final Set<EventStatus> statuses;
+    private final boolean includeEventParticipants;
+    private final boolean includePrices;
 
-    private Instant after;
-    private Instant before;
-    private Set<Long> ids;
-    private Set<Long> sportIds;
-    private Set<Long> categoryIds;
-    private Set<EventStatus> statuses;
-    private boolean includeEventParticipants;
+    private EventsRequest(EventsRequest.Builder builder) {
+        super(builder);
+
+        this.after = builder.after;
+        this.before = builder.before;
+        this.eventIds = builder.eventIds;
+        this.sportIds = builder.sportIds;
+        this.categoryIds = builder.categoryIds;
+        this.statuses = builder.statuses;
+        this.includeEventParticipants = builder.includeEventParticipants;
+        this.includePrices = builder.includePrices;
+    }
 
     public Instant getAfter() {
         return after;
-    }
-
-    public void setAfter(Instant after) {
-        this.after = after;
     }
 
     public Instant getBefore() {
         return before;
     }
 
-    public void setBefore(Instant before) {
-        this.before = before;
-    }
-
-    public Set<Long> getIds() {
-        return ids;
-    }
-
-    public void setIds(Set<Long> ids) {
-        this.ids = ids;
+    public Set<Long> getEventIds() {
+        return eventIds;
     }
 
     public Set<Long> getSportIds() {
         return sportIds;
     }
 
-    public void setSportIds(Set<Long> sportIds) {
-        this.sportIds = sportIds;
-    }
-
     public Set<Long> getCategoryIds() {
         return categoryIds;
-    }
-
-    public void setCategoryIds(Set<Long> categoryIds) {
-        this.categoryIds = categoryIds;
     }
 
     public Set<EventStatus> getStatuses() {
         return statuses;
     }
 
-    public void setStatuses(Set<EventStatus> statuses) {
-        this.statuses = statuses;
-    }
-
-    public boolean isIncludeEventParticipants() {
+    public boolean includeEventParticipants() {
         return includeEventParticipants;
     }
 
-    public void setIncludeEventParticipants(boolean includeEventParticipants) {
-        this.includeEventParticipants = includeEventParticipants;
+    public boolean includePrices() {
+        return includePrices;
+    }
+
+    @Override
+    public String toString() {
+        return EventsRequest.class.getSimpleName() + " {" +
+                "after=" + after +
+                ", before=" + before +
+                ", eventIds=" + eventIds +
+                ", sportIds=" + sportIds +
+                ", categoryIds=" + categoryIds +
+                ", statuses=" + statuses +
+                ", includeEventParticipants=" + includeEventParticipants +
+                ", includePrices=" + includePrices +
+                (includePrices ? (
+                    ", oddsType=" + oddsType +
+                    ", side=" + side +
+                    ", currency=" + currency +
+                    ", minimumLiquidity=" + minimumLiquidity +
+                    ", priceMode=" + priceMode
+                ) : "") +
+                ", offset=" + offset +
+                ", perPage=" + perPage +
+                "}";
+    }
+
+    public static class Builder extends PageablePricesRequestBuilder {
+
+        private Instant after;
+        private Instant before;
+        private Set<Long> eventIds;
+        private Set<Long> sportIds;
+        private Set<Long> categoryIds;
+        private Set<EventStatus> statuses;
+        private boolean includeEventParticipants;
+        private boolean includePrices;
+
+        public Builder() {
+            includeEventParticipants = false;
+            includePrices = false;
+        }
+
+        public Builder after(Instant after) {
+            this.after = after;
+            return this;
+        }
+
+        public Builder before(Instant before) {
+            this.before = before;
+            return this;
+        }
+
+        public Builder eventIds(Set<Long> eventIds) {
+            this.eventIds = eventIds;
+            return this;
+        }
+
+        public Builder sportIds(Set<Long> sportIds) {
+            this.sportIds = sportIds;
+            return this;
+        }
+
+        public Builder categoryIds(Set<Long> categoryIds) {
+            this.categoryIds = categoryIds;
+            return this;
+        }
+
+        public Builder statuses(Set<EventStatus> statuses) {
+            this.statuses = statuses;
+            return this;
+        }
+
+        public Builder includeEventParticipants(boolean includeEventParticipants) {
+            this.includeEventParticipants = includeEventParticipants;
+            return this;
+        }
+
+        public Builder includePrices(boolean includePrices) {
+            this.includePrices = includePrices;
+            return this;
+        }
+
+        public EventsRequest build() {
+            return new EventsRequest(this);
+        }
     }
 
 }

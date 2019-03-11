@@ -70,14 +70,15 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" +
+        return Account.class.getSimpleName() + " {" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", username=" + username +
                 ", balance=" + balance +
                 ", exposure=" + exposure +
                 ", freeFunds=" + freeFunds +
                 ", commissionReserve=" + commissionReserve +
-                ", currency='" + currency + '\'' +
-                '}';
+                ", currency=" + currency +
+                "}";
     }
+
 }

@@ -4,10 +4,10 @@ import java.util.List;
 
 public abstract class MatchbookPageableResponse<T> implements MatchbookResponse {
 
-    private int total;
-    private int offset;
-    private int perPage;
-    private List<T> content;
+    protected int total;
+    protected int offset;
+    protected int perPage;
+    protected List<T> content;
 
     public int getTotal() {
         return total;
