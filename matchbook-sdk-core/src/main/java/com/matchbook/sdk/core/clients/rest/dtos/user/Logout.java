@@ -2,7 +2,7 @@ package com.matchbook.sdk.core.clients.rest.dtos.user;
 
 import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 
-public class LogoutResponse implements RestResponse {
+public class Logout implements RestResponse {
 
     private String sessionToken;
     private Long userId;
@@ -22,7 +22,7 @@ public class LogoutResponse implements RestResponse {
 
     @Override
     public String toString() {
-        return LogoutResponse.class.getSimpleName() + " {" +
+        return Logout.class.getSimpleName() + " {" +
                 "sessionToken=" + sessionToken +
                 ", userId=" + userId +
                 ", username=" + username +
