@@ -2,7 +2,9 @@ package com.matchbook.sdk.core.clients.rest.dtos.prices;
 
 import java.math.BigDecimal;
 
-public abstract class BasePricesRequest {
+import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
+
+public abstract class BasePricesRequest implements RestRequest {
 
     protected final OddsType oddsType;
     protected final ExchangeType exchangeType;
