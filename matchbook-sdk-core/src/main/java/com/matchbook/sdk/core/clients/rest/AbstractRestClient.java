@@ -1,6 +1,8 @@
 package com.matchbook.sdk.core.clients.rest;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -21,6 +23,7 @@ import com.squareup.okhttp.ResponseBody;
 abstract class AbstractRestClient {
 
     private static final String HTTP_HEADER_ACCEPT = "Accept";
+    private static final String HTTP_HEADER_CONTENT_TYPE = "Content-Type";
     private static final String JSON_TYPE = "application/json";
 
     private final MediaType jsonMediaType;
@@ -31,13 +34,27 @@ abstract class AbstractRestClient {
         this.errorReader = objectMapper.readerFor(Errors.class);
     }
 
-    protected Request buildRequest(String url, String body) {
-        RequestBody requestBody = RequestBody.create(jsonMediaType, body);
-        return new Request.Builder()
-                .url(url)
-                .addHeader(HTTP_HEADER_ACCEPT, jsonMediaType.toString())
-                .post(requestBody)
+    protected Request postRequest(String url, String body) {
+        return buildJsonRequest(url)
+                .post(RequestBody.create(jsonMediaType, body))
                 .build();
+    }
+
+    protected Request getRequest(String url, Map<String, String> parameters) {
+        List<String> queryParams = parameters.entrySet().stream()
+                .map(entry -> entry.getKey() + "=" + entry.getValue())
+                .collect(Collectors.toList());
+        String requestUrl = url + (queryParams.isEmpty() ? "" : "?" + String.join("&", queryParams));
+        return buildJsonRequest(requestUrl)
+                .get()
+                .build();
+    }
+
+    private Request.Builder buildJsonRequest(String url) {
+        return new Request.Builder()
+                .addHeader(HTTP_HEADER_CONTENT_TYPE, jsonMediaType.toString())
+                .addHeader(HTTP_HEADER_ACCEPT, jsonMediaType.toString())
+                .url(url);
     }
 
     protected class RestCallback<T> implements Callback {

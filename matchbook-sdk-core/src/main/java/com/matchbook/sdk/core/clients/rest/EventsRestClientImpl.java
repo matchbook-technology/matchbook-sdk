@@ -1,12 +1,9 @@
 package com.matchbook.sdk.core.clients.rest;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.events.Event;
 import com.matchbook.sdk.core.clients.rest.dtos.events.EventRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.events.EventResponse;
@@ -27,10 +24,7 @@ import com.matchbook.sdk.core.clients.rest.dtos.events.SportsRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.events.SportsResponse;
 import com.matchbook.sdk.core.configs.ClientConnectionManager;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHTTPException;
-import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
 
 public class EventsRestClientImpl extends AbstractRestClient implements EventsRestClient {
 
@@ -63,6 +57,7 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
         this.marketsRequestWriter = objectMapper.writerFor(MarketsRequest.class);
         this.runnerRequestWriter = objectMapper.writerFor(RunnerRequest.class);
         this.runnersRequestWriter = objectMapper.writerFor(RunnersRequest.class);
+
         this.sportsResponseReader = objectMapper.readerFor(SportsResponse.class);
         this.eventResponseReader = objectMapper.readerFor(EventResponse.class);
         this.eventsResponseReader = objectMapper.readerFor(EventsResponse.class);
@@ -70,7 +65,6 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
         this.marketsResponseReader = objectMapper.readerFor(MarketsResponse.class);
         this.runnerResponseReader = objectMapper.readerFor(RunnerResponse.class);
         this.runnersResponseReader = objectMapper.readerFor(RunnersResponse.class);
-
     }
 
     @Override
@@ -78,7 +72,7 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
         try {
             String sportsUrl = clientConnectionManager.getClientConfig().buildUrl("lookups/sports");
             String requestBody = sportsRequestWriter.writeValueAsString(sportsRequest);
-            Request request = buildRequest(sportsUrl, requestBody);
+            Request request = postRequest(sportsUrl, requestBody);
 
             clientConnectionManager.getHttpClient()
                     .newCall(request)
@@ -94,7 +88,7 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
             String path = "events/" + eventRequest.getEventId();
             String eventUrl = clientConnectionManager.getClientConfig().buildUrl(path);
             String requestBody = eventRequestWriter.writeValueAsString(eventRequest);
-            Request request = buildRequest(eventUrl, requestBody);
+            Request request = postRequest(eventUrl, requestBody);
 
             clientConnectionManager.getHttpClient()
                     .newCall(request)
@@ -110,7 +104,7 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
             String path = "events";
             String eventsUrl = clientConnectionManager.getClientConfig().buildUrl(path);
             String requestBody = eventsRequestWriter.writeValueAsString(eventsRequest);
-            Request request = buildRequest(eventsUrl, requestBody);
+            Request request = postRequest(eventsUrl, requestBody);
 
             clientConnectionManager.getHttpClient()
                     .newCall(request)
@@ -126,7 +120,7 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
             String path = "events/" + marketRequest.getEventId() + "/markets/" + marketRequest.getMarketId();
             String marketUrl = clientConnectionManager.getClientConfig().buildUrl(path);
             String requestBody = marketRequestWriter.writeValueAsString(marketRequest);
-            Request request = buildRequest(marketUrl, requestBody);
+            Request request = postRequest(marketUrl, requestBody);
 
             clientConnectionManager.getHttpClient()
                     .newCall(request)
@@ -142,7 +136,7 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
             String path = "events/" + marketsRequest.getEventId() + "/markets";
             String marketsUrl = clientConnectionManager.getClientConfig().buildUrl(path);
             String requestBody = marketsRequestWriter.writeValueAsString(marketsRequest);
-            Request request = buildRequest(marketsUrl, requestBody);
+            Request request = postRequest(marketsUrl, requestBody);
 
             clientConnectionManager.getHttpClient()
                     .newCall(request)
@@ -159,7 +153,7 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
                     + "/runners/" + runnerRequest.getRunnerId();
             String runnerUrl = clientConnectionManager.getClientConfig().buildUrl(path);
             String requestBody = runnerRequestWriter.writeValueAsString(runnerRequest);
-            Request request = buildRequest(runnerUrl, requestBody);
+            Request request = postRequest(runnerUrl, requestBody);
 
             clientConnectionManager.getHttpClient()
                     .newCall(request)
@@ -176,7 +170,7 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
                     + "/runners/";
             String runnersUrl = clientConnectionManager.getClientConfig().buildUrl(path);
             String requestBody = runnersRequestWriter.writeValueAsString(runnersRequest);
-            Request request = buildRequest(runnersUrl, requestBody);
+            Request request = postRequest(runnersUrl, requestBody);
 
             clientConnectionManager.getHttpClient()
                     .newCall(request)
@@ -184,37 +178,6 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
         } catch (Exception e) {
             runnersObserver.onError(new MatchbookSDKHTTPException(e.getCause()));
         }
-    }
-
-    private class RestCallback<T> implements Callback {
-
-        private final StreamObserver<T> observer;
-        private final ObjectReader objectReader;
-
-        private RestCallback(StreamObserver<T> observer, ObjectReader objectReader) {
-            this.observer = observer;
-            this.objectReader = objectReader;
-        }
-
-        @Override
-        public void onResponse(Response response) throws IOException {
-            try (ResponseBody responseBody = response.body()) {
-                if (!response.isSuccessful()) {
-                    errorHandler(response, observer);
-                    return;
-                }
-                RestResponse<T> restResponse = objectReader.readValue(responseBody.byteStream());
-                restResponse.getContent().forEach(observer::onNext);
-                observer.onCompleted();
-            }
-        }
-
-        @Override
-        public void onFailure(Request request, IOException e) {
-            MatchbookSDKHTTPException matchbookException = new MatchbookSDKHTTPException(e.getMessage(), e);
-            observer.onError(matchbookException);
-        }
-
     }
 
 }
