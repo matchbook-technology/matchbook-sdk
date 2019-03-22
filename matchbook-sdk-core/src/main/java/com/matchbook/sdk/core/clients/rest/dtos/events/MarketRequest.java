@@ -1,5 +1,8 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.matchbook.sdk.core.clients.rest.dtos.prices.BasePricesRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.BasePricesRequestBuilder;
 
@@ -27,6 +30,22 @@ public class MarketRequest extends BasePricesRequest {
 
     public boolean includePrices() {
         return includePrices;
+    }
+
+    @Override
+    public String resourcePath() {
+        return "events/" + eventId +
+                "/markets/" + marketId;
+    }
+
+    @Override
+    public Map<String, String> parameters() {
+        Map<String, String> parameters = new HashMap<>();
+        if (includePrices) {
+            parameters.put("include-prices", "true");
+            parameters.putAll(pricesParameters());
+        }
+        return parameters;
     }
 
     @Override

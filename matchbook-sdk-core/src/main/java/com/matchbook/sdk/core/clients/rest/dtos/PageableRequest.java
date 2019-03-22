@@ -1,5 +1,8 @@
 package com.matchbook.sdk.core.clients.rest.dtos;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class PageableRequest implements RestRequest {
 
     protected final int offset;
@@ -16,6 +19,13 @@ public abstract class PageableRequest implements RestRequest {
 
     public int getPerPage() {
         return perPage;
+    }
+
+    protected Map<String, String> pageParameters() {
+        Map<String, String> parameters = new HashMap<>(2);
+        parameters.put("offset", String.valueOf(offset));
+        parameters.put("perPage-mode", String.valueOf(perPage));
+        return parameters;
     }
 
 }

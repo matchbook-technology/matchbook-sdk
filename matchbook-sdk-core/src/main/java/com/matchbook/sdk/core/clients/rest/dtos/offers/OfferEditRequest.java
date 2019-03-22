@@ -1,5 +1,8 @@
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
+import java.util.Collections;
+import java.util.Map;
+
 import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 
 public class OfferEditRequest implements RestRequest {
@@ -18,6 +21,17 @@ public class OfferEditRequest implements RestRequest {
 
     public Long getOfferId() {
         return offerId;
+    }
+
+    @Override
+    public String resourcePath() {
+        return "v2/offers/" + offerId +
+                "/offer-edits/" + offerEditId;
+    }
+
+    @Override
+    public Map<String, String> parameters() {
+        return Collections.emptyMap();
     }
 
     @Override

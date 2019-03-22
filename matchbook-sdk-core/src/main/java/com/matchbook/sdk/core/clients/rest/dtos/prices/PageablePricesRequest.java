@@ -3,6 +3,9 @@ package com.matchbook.sdk.core.clients.rest.dtos.prices;
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public abstract class PageablePricesRequest extends PageableRequest {
 
@@ -46,6 +49,30 @@ public abstract class PageablePricesRequest extends PageableRequest {
 
     public PriceMode getPriceMode() {
         return priceMode;
+    }
+
+    protected Map<String, String> pricesParameters() {
+        Map<String, String> parameters = new HashMap<>();
+        if (Objects.nonNull(currency)) {
+            parameters.put("currency", currency.name());
+        }
+        if (Objects.nonNull(exchangeType)) {
+            parameters.put("exchange-type", exchangeType.name());
+        }
+        if (Objects.nonNull(oddsType)) {
+            parameters.put("odds-type", oddsType.name());
+        }
+        if (Objects.nonNull(side)) {
+            parameters.put("side", side.name());
+        }
+        if (Objects.nonNull(minimumLiquidity)) {
+            parameters.put("minimum-liquidity", minimumLiquidity.toPlainString());
+        }
+        if (Objects.nonNull(priceMode)) {
+            parameters.put("price-mode", priceMode.name());
+        }
+        parameters.putAll(pageParameters());
+        return parameters;
     }
 
 }

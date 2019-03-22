@@ -1,8 +1,10 @@
 package com.matchbook.sdk.core.clients.rest.dtos.user;
 
-import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
-
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
+
+import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 
 public class LoginRequest implements RestRequest {
 
@@ -20,6 +22,16 @@ public class LoginRequest implements RestRequest {
 
     public char[] getPassword() {
         return password;
+    }
+
+    @Override
+    public String resourcePath() {
+        return "security/session";
+    }
+
+    @Override
+    public Map<String, String> parameters() {
+        return Collections.emptyMap();
     }
 
     @Override

@@ -1,9 +1,13 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequestBuilder;
-
-import java.util.Set;
 
 public class MarketsRequest extends PageablePricesRequest {
 
@@ -35,6 +39,33 @@ public class MarketsRequest extends PageablePricesRequest {
 
     public boolean includePrices() {
         return includePrices;
+    }
+
+    @Override
+    public String resourcePath() {
+        return "events/" + eventId + "/markets";
+    }
+
+    @Override
+    public Map<String, String> parameters() {
+        Map<String, String> parameters = new HashMap<>();
+        if (!types.isEmpty()) {
+            List<String> marketTypes = types.stream()
+                    .map(Enum::name)
+                    .collect(Collectors.toList());
+            parameters.put("types", String.join(",", marketTypes));
+        }
+        if (!statuses.isEmpty()) {
+            List<String> states = statuses.stream()
+                    .map(Enum::name)
+                    .collect(Collectors.toList());
+            parameters.put("states", String.join(",", states));
+        }
+        if (includePrices) {
+            parameters.put("include-prices", "true");
+            parameters.putAll(pricesParameters());
+        }
+        return parameters;
     }
 
     @Override

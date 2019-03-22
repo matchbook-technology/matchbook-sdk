@@ -1,5 +1,7 @@
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
+import java.util.Map;
+
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequestBuilder;
 
@@ -15,6 +17,16 @@ public class OfferEditsRequest extends PageableRequest {
 
     public Long getOfferId() {
         return offerId;
+    }
+
+    @Override
+    public String resourcePath() {
+        return "v2/offers/" + offerId + "/offer-edits";
+    }
+
+    @Override
+    public Map<String, String> parameters() {
+        return pageParameters();
     }
 
     @Override

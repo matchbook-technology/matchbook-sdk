@@ -1,13 +1,24 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
+import java.util.Map;
+
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequestBuilder;
-import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequestBuilder;
 
 public class SportsRequest extends PageableRequest {
 
     private SportsRequest(SportsRequest.Builder builder) {
         super(builder);
+    }
+
+    @Override
+    public String resourcePath() {
+        return "sports";
+    }
+
+    @Override
+    public Map<String, String> parameters() {
+        return pageParameters();
     }
 
     @Override
@@ -23,6 +34,7 @@ public class SportsRequest extends PageableRequest {
         public SportsRequest build() {
             return new SportsRequest(this);
         }
+
     }
 
 }
