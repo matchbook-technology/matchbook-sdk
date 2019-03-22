@@ -1,14 +1,15 @@
 package com.matchbook.sdk.core.clients.rest.dtos.prices;
 
-import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
-
 import java.util.List;
 
-public class PricesResponse implements RestResponse {
+import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
+
+public class PricesResponse implements RestResponse<Price> {
 
     private List<Price> prices;
 
-    public List<Price> getPrices() {
+    @Override
+    public List<Price> getContent() {
         return prices;
     }
 
