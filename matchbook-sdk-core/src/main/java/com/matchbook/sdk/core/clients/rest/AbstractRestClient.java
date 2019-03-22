@@ -6,17 +6,17 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.errors.Errors;
-import com.matchbook.sdk.core.clients.rest.dtos.user.Login;
 import com.matchbook.sdk.core.exceptions.ErrorCode;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHTTPException;
+import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 
 abstract class AbstractRestClient {
 
@@ -40,36 +40,64 @@ abstract class AbstractRestClient {
                 .build();
     }
 
-    protected <T> void errorHandler(Response response, StreamObserver<T> observer) {
-        if (Objects.nonNull(response.body())) {
-            try {
-                Errors errors = errorReader.readValue(response.body().byteStream());
-                if (Objects.nonNull(errors)) {
-                    String errorMessages = getErrorMessages(errors);
-                    if (errorMessages.contains("cannot login")) {
-                        publishUnauthenticatedError(observer);
-                        return;
-                    }
+    protected class RestCallback<T> implements Callback {
+
+        private final StreamObserver<T> observer;
+        private final ObjectReader objectReader;
+
+        private RestCallback(StreamObserver<T> observer, ObjectReader objectReader) {
+            this.observer = observer;
+            this.objectReader = objectReader;
+        }
+
+        @Override
+        public void onResponse(Response response) throws IOException {
+            try (ResponseBody responseBody = response.body()) {
+                if (response.isSuccessful()) {
+                    RestResponse<T> restResponse = objectReader.readValue(responseBody.byteStream());
+                    restResponse.getContent().forEach(observer::onNext);
+                    observer.onCompleted();
+                } else {
+                    MatchbookSDKHTTPException matchbookException = getExceptionForResponse(response);
+                    observer.onError(matchbookException);
                 }
-            } catch (IOException e) {
-                publishHTTPError(response, observer);
             }
         }
-        publishHTTPError(response, observer);
+
+        @Override
+        public void onFailure(Request request, IOException e) {
+            MatchbookSDKHTTPException matchbookException = new MatchbookSDKHTTPException(e.getMessage(), e);
+            observer.onError(matchbookException);
+        }
+
+        private MatchbookSDKHTTPException getExceptionForResponse(Response response) {
+            if (Objects.nonNull(response.body())) {
+                try {
+                    Errors errors = errorReader.readValue(response.body().byteStream());
+                    if (Objects.nonNull(errors) && isAuthenticationErrorPresent(errors)) {
+                        return newUnauthenticatedException();
+                    }
+                } catch (IOException e) {
+                    return newHTTPException(response);
+                }
+            }
+            return newHTTPException(response);
+        }
+
+        private boolean isAuthenticationErrorPresent(Errors errors) {
+            return errors.getErrors().stream()
+                    .flatMap(error -> error.getMessages().stream())
+                    .anyMatch("cannot login"::equalsIgnoreCase);
+        }
+
+        private MatchbookSDKHTTPException newHTTPException(Response response) {
+            return new MatchbookSDKHTTPException("Unexpected HTTP code " + response, ErrorCode.HTTP_ERROR);
+        }
+
+        private MatchbookSDKHTTPException newUnauthenticatedException() {
+            return new MatchbookSDKHTTPException("Incorrect username or password", ErrorCode.UNAUTHENTICATED);
+        }
+
     }
 
-    private <T> void publishHTTPError(Response response, StreamObserver<T> observer) {
-        observer.onError(new MatchbookSDKHTTPException("Unexpected HTTP code " + response));
-    }
-
-    private <T> void publishUnauthenticatedError(StreamObserver<T> observer) {
-        observer.onError(new MatchbookSDKHTTPException("Incorrect username or password", ErrorCode.UNAUTHENTICATED));
-    }
-
-    private String getErrorMessages(Errors errors) {
-        return errors.getErrors().stream()
-                .flatMap(error -> error.getMessages().stream())
-                .map(String::toLowerCase)
-                .collect(Collectors.joining("; "));
-    }
 }
