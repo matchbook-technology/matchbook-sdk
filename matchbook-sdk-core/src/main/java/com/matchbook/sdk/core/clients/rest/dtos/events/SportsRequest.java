@@ -1,6 +1,7 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.PageableRequestBuilder;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequestBuilder;
 
 public class SportsRequest extends PageableRequest {
@@ -17,7 +18,7 @@ public class SportsRequest extends PageableRequest {
                 "}";
     }
 
-    public static class Builder extends PageablePricesRequestBuilder {
+    public static class Builder extends PageableRequestBuilder {
 
         public SportsRequest build() {
             return new SportsRequest(this);
