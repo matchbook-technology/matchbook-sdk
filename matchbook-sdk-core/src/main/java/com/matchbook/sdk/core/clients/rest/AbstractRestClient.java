@@ -6,11 +6,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.errors.Errors;
+import com.matchbook.sdk.core.configs.ClientConnectionManager;
 import com.matchbook.sdk.core.exceptions.ErrorCode;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHTTPException;
 import com.squareup.okhttp.Callback;
@@ -26,28 +26,32 @@ abstract class AbstractRestClient {
     private static final String HTTP_HEADER_CONTENT_TYPE = "Content-Type";
     private static final String JSON_TYPE = "application/json";
 
-    private final MediaType jsonMediaType;
+    protected final ClientConnectionManager clientConnectionManager;
     private final ObjectReader errorReader;
+    private final MediaType jsonMediaType;
 
-    protected AbstractRestClient(ObjectMapper objectMapper) {
+    protected AbstractRestClient(ClientConnectionManager clientConnectionManager) {
+        this.errorReader = clientConnectionManager.getMapper().readerFor(Errors.class);
+        this.clientConnectionManager = clientConnectionManager;
         this.jsonMediaType = MediaType.parse(JSON_TYPE);
-        this.errorReader = objectMapper.readerFor(Errors.class);
     }
 
-    protected Request postRequest(String url, String body) {
-        return buildJsonRequest(url)
+    protected <T> void postRequest(String url, String body, StreamObserver<T> observer, ObjectReader objectReader) {
+        Request request = buildJsonRequest(url)
                 .post(RequestBody.create(jsonMediaType, body))
                 .build();
+        sendHttpRequest(request, observer, objectReader);
     }
 
-    protected Request getRequest(String url, Map<String, String> parameters) {
+    protected <T> void getRequest(String url, Map<String, String> parameters, StreamObserver<T> observer, ObjectReader objectReader) {
         List<String> queryParams = parameters.entrySet().stream()
                 .map(entry -> entry.getKey() + "=" + entry.getValue())
                 .collect(Collectors.toList());
         String requestUrl = url + (queryParams.isEmpty() ? "" : "?" + String.join("&", queryParams));
-        return buildJsonRequest(requestUrl)
+        Request request = buildJsonRequest(requestUrl)
                 .get()
                 .build();
+        sendHttpRequest(request, observer, objectReader);
     }
 
     private Request.Builder buildJsonRequest(String url) {
@@ -55,6 +59,12 @@ abstract class AbstractRestClient {
                 .addHeader(HTTP_HEADER_CONTENT_TYPE, jsonMediaType.toString())
                 .addHeader(HTTP_HEADER_ACCEPT, jsonMediaType.toString())
                 .url(url);
+    }
+
+    private <T> void sendHttpRequest(Request request, StreamObserver<T> observer, ObjectReader objectReader) {
+        clientConnectionManager.getHttpClient()
+                .newCall(request)
+                .enqueue(new UserRestClientImpl.RestCallback<>(observer, objectReader));
     }
 
     protected class RestCallback<T> implements Callback {

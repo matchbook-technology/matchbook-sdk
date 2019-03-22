@@ -22,11 +22,9 @@ import com.matchbook.sdk.core.clients.rest.dtos.events.Sport;
 import com.matchbook.sdk.core.clients.rest.dtos.events.SportsRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.events.SportsResponse;
 import com.matchbook.sdk.core.configs.ClientConnectionManager;
-import com.squareup.okhttp.Request;
 
 public class EventsRestClientImpl extends AbstractRestClient implements EventsRestClient {
 
-    private final ClientConnectionManager clientConnectionManager;
     private final ObjectReader sportsResponseReader;
     private final ObjectReader eventResponseReader;
     private final ObjectReader eventsResponseReader;
@@ -36,9 +34,7 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
     private final ObjectReader runnersResponseReader;
 
     public EventsRestClientImpl(ClientConnectionManager clientConnectionManager) {
-        super(clientConnectionManager.getMapper());
-
-        this.clientConnectionManager = clientConnectionManager;
+        super(clientConnectionManager);
 
         ObjectMapper objectMapper = clientConnectionManager.getMapper();
         this.sportsResponseReader = objectMapper.readerFor(SportsResponse.class);
@@ -52,58 +48,44 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
 
     @Override
     public void getSports(SportsRequest sportsRequest, StreamObserver<Sport> sportsObserver) {
-        Request request = getRequest(sportsRequest.resourcePath(), sportsRequest.parameters());
-        clientConnectionManager.getHttpClient()
-                .newCall(request)
-                .enqueue(new RestCallback<>(sportsObserver, sportsResponseReader));
+        String url = clientConnectionManager.getClientConfig().buildUrl(sportsRequest.resourcePath());
+        getRequest(url, sportsRequest.parameters(), sportsObserver, sportsResponseReader);
     }
 
     @Override
     public void getEvent(EventRequest eventRequest, StreamObserver<Event> eventObserver) {
-        Request request = getRequest(eventRequest.resourcePath(), eventRequest.parameters());
-        clientConnectionManager.getHttpClient()
-                .newCall(request)
-                .enqueue(new RestCallback<>(eventObserver, eventResponseReader));
+        String url = clientConnectionManager.getClientConfig().buildUrl(eventRequest.resourcePath());
+        getRequest(url, eventRequest.parameters(), eventObserver, eventResponseReader);
     }
 
     @Override
     public void getEvents(EventsRequest eventsRequest, StreamObserver<Event> eventsObserver) {
-        Request request = getRequest(eventsRequest.resourcePath(), eventsRequest.parameters());
-        clientConnectionManager.getHttpClient()
-                .newCall(request)
-                .enqueue(new RestCallback<>(eventsObserver, eventsResponseReader));
+        String url = clientConnectionManager.getClientConfig().buildUrl(eventsRequest.resourcePath());
+        getRequest(url, eventsRequest.parameters(), eventsObserver, eventsResponseReader);
     }
 
     @Override
     public void getMarket(MarketRequest marketRequest, StreamObserver<Market> marketObserver) {
-        Request request = getRequest(marketRequest.resourcePath(), marketRequest.parameters());
-        clientConnectionManager.getHttpClient()
-                .newCall(request)
-                .enqueue(new RestCallback<>(marketObserver, marketResponseReader));
+        String url = clientConnectionManager.getClientConfig().buildUrl(marketRequest.resourcePath());
+        getRequest(url, marketRequest.parameters(), marketObserver, marketResponseReader);
     }
 
     @Override
     public void getMarkets(MarketsRequest marketsRequest, StreamObserver<Market> marketsObserver) {
-        Request request = getRequest(marketsRequest.resourcePath(), marketsRequest.parameters());
-        clientConnectionManager.getHttpClient()
-                .newCall(request)
-                .enqueue(new RestCallback<>(marketsObserver, marketsResponseReader));
+        String url = clientConnectionManager.getClientConfig().buildUrl(marketsRequest.resourcePath());
+        getRequest(url, marketsRequest.parameters(), marketsObserver, marketsResponseReader);
     }
 
     @Override
     public void getRunner(RunnerRequest runnerRequest, StreamObserver<Runner> runnerObserver) {
-        Request request = getRequest(runnerRequest.resourcePath(), runnerRequest.parameters());
-        clientConnectionManager.getHttpClient()
-                .newCall(request)
-                .enqueue(new RestCallback<>(runnerObserver, runnerResponseReader));
+        String url = clientConnectionManager.getClientConfig().buildUrl(runnerRequest.resourcePath());
+        getRequest(url, runnerRequest.parameters(), runnerObserver, runnerResponseReader);
     }
 
     @Override
     public void getRunners(RunnersRequest runnersRequest, StreamObserver<Runner> runnersObserver) {
-        Request request = getRequest(runnersRequest.resourcePath(), runnersRequest.parameters());
-        clientConnectionManager.getHttpClient()
-                .newCall(request)
-                .enqueue(new RestCallback<>(runnersObserver, runnersResponseReader));
+        String url = clientConnectionManager.getClientConfig().buildUrl(runnersRequest.resourcePath());
+        getRequest(url, runnersRequest.parameters(), runnersObserver, runnersResponseReader);
     }
 
 }

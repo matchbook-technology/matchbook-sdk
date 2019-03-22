@@ -1,8 +1,6 @@
 package com.matchbook.sdk.core.clients.rest.dtos.user;
 
-import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
-
-public class Logout implements RestResponse {
+public class Logout {
 
     private String sessionToken;
     private Long userId;

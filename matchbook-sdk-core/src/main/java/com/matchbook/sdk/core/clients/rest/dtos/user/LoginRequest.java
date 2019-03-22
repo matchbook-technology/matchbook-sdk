@@ -26,7 +26,7 @@ public class LoginRequest implements RestRequest {
 
     @Override
     public String resourcePath() {
-        return "security/session";
+        return "";
     }
 
     @Override
