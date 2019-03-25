@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 import com.matchbook.sdk.core.MatchbookSDKClientTest;
 import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.clients.rest.dtos.user.Login;
 import com.matchbook.sdk.core.clients.rest.dtos.user.LoginRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.user.LoginResponse;
 import com.matchbook.sdk.core.exceptions.ErrorCode;
@@ -30,7 +29,6 @@ public class UserAbstractRestClientImplTest extends MatchbookSDKClientTest {
 
     @Test
     public void successfulLoginTest() throws InterruptedException {
-
         stubFor(post(urlEqualTo("/bpapi/rest/security/session"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
@@ -39,12 +37,11 @@ public class UserAbstractRestClientImplTest extends MatchbookSDKClientTest {
                         .withBodyFile("matchbook/loginSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        LoginRequest loginRequest = new LoginRequest.Builder("username".toCharArray(),
-                "password".toCharArray())
+        LoginRequest loginRequest = new LoginRequest.Builder("username".toCharArray(), "password".toCharArray())
                 .build();
-        userRestClient.login(loginRequest, new StreamObserver<Login>() {
+        userRestClient.login(loginRequest, new StreamObserver<LoginResponse>() {
             @Override
-            public void onNext(Login login) {
+            public void onNext(LoginResponse login) {
                 assertThat(login.getSessionToken()).isNotEmpty();
                 assertThat(login.getUserId()).isNotZero();
                 countDownLatch.countDown();
@@ -65,24 +62,21 @@ public class UserAbstractRestClientImplTest extends MatchbookSDKClientTest {
         assertThat(await).isTrue();
     }
 
-
     @Test
     public void incorrectUserPasswordLoginTest() throws InterruptedException {
-
         stubFor(post(urlEqualTo("/bpapi/rest/security/session"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
-                        .withStatus(400)
+                        .withStatus(401)
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/loginFailedResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
-        LoginRequest loginRequest = new LoginRequest.Builder("wrongUser".toCharArray(),
-                "wrongPassword".toCharArray())
+        LoginRequest loginRequest = new LoginRequest.Builder("wrongUser".toCharArray(), "wrongPassword".toCharArray())
                 .build();
-        userRestClient.login(loginRequest, new StreamObserver<Login>() {
+        userRestClient.login(loginRequest, new StreamObserver<LoginResponse>() {
             @Override
-            public void onNext(Login loginResponse) {
+            public void onNext(LoginResponse loginResponse) {
                 fail();
             }
 
@@ -102,10 +96,8 @@ public class UserAbstractRestClientImplTest extends MatchbookSDKClientTest {
         assertThat(await).isTrue();
     }
 
-
     @Test
     public void emptyResponseBodyLoginTest() throws InterruptedException {
-
         stubFor(post(urlEqualTo("/bpapi/rest/security/session"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
@@ -114,12 +106,11 @@ public class UserAbstractRestClientImplTest extends MatchbookSDKClientTest {
                         .withBody("")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
-        LoginRequest loginRequest = new LoginRequest.Builder("wrongUser".toCharArray(),
-                "wrongPassword".toCharArray())
+        LoginRequest loginRequest = new LoginRequest.Builder("wrongUser".toCharArray(), "wrongPassword".toCharArray())
                 .build();
-        userRestClient.login(loginRequest, new StreamObserver<Login>() {
+        userRestClient.login(loginRequest, new StreamObserver<LoginResponse>() {
             @Override
-            public void onNext(Login loginResponse) {
+            public void onNext(LoginResponse loginResponse) {
                 fail();
             }
 
@@ -138,4 +129,5 @@ public class UserAbstractRestClientImplTest extends MatchbookSDKClientTest {
         boolean await = countDownLatch.await(2, TimeUnit.SECONDS);
         assertThat(await).isTrue();
     }
+
 }

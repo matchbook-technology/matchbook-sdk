@@ -5,23 +5,35 @@ import java.util.List;
 
 import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 
-public class LoginResponse implements RestResponse<Login> {
+public class LoginResponse implements RestResponse<LoginResponse> {
 
-    private Login login;
+    private String sessionToken;
+    private Long userId;
+    private Account account;
 
-    public Login getLogin() {
-        return login;
+    public String getSessionToken() {
+        return sessionToken;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public Account getAccount() {
+        return account;
     }
 
     @Override
-    public List<Login> getContent() {
-        return Collections.singletonList(login);
+    public List<LoginResponse> getContent() {
+        return Collections.singletonList(this);
     }
 
     @Override
     public String toString() {
         return LoginResponse.class.getSimpleName() + " {" +
-                "login=" + login +
+                "sessionToken=" + sessionToken +
+                ", userId=" + userId +
+                ", account=" + account +
                 "}";
     }
 

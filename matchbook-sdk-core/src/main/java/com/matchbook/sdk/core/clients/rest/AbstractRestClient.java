@@ -64,10 +64,10 @@ abstract class AbstractRestClient {
     private <T> void sendHttpRequest(Request request, StreamObserver<T> observer, ObjectReader objectReader) {
         clientConnectionManager.getHttpClient()
                 .newCall(request)
-                .enqueue(new UserRestClientImpl.RestCallback<>(observer, objectReader));
+                .enqueue(new RestCallback<>(observer, objectReader));
     }
 
-    protected class RestCallback<T> implements Callback {
+    private class RestCallback<T> implements Callback {
 
         private final StreamObserver<T> observer;
         private final ObjectReader objectReader;
@@ -114,7 +114,7 @@ abstract class AbstractRestClient {
         private boolean isAuthenticationErrorPresent(Errors errors) {
             return errors.getErrors().stream()
                     .flatMap(error -> error.getMessages().stream())
-                    .anyMatch("cannot login"::equalsIgnoreCase);
+                    .anyMatch(message -> message.toLowerCase().contains("cannot login"));
         }
 
         private MatchbookSDKHTTPException newHTTPException(Response response) {
