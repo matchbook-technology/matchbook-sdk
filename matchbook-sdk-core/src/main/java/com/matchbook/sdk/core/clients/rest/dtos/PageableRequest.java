@@ -24,7 +24,7 @@ public abstract class PageableRequest implements RestRequest {
     protected Map<String, String> pageParameters() {
         Map<String, String> parameters = new HashMap<>(2);
         parameters.put("offset", String.valueOf(offset));
-        parameters.put("perPage-mode", String.valueOf(perPage));
+        parameters.put("per-page", String.valueOf(perPage));
         return parameters;
     }
 

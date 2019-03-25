@@ -47,8 +47,8 @@ public class ClientConfig {
         private final char[] username;
         private final char[] password;
 
-        private String url = "https://api.matchbook.com/edge/rest/security/session";
-        private String loginUrl = "https://api.matchbook.com/bpapi/rest";
+        private String url = "https://api.matchbook.com/edge/rest";
+        private String loginUrl = "https://api.matchbook.com/bpapi/rest/security/session";
 
         public Builder(char[] username, char[] password) {
             this.username = username;
