@@ -1,5 +1,8 @@
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
+import java.util.Collections;
+import java.util.Map;
+
 import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 
 public class OfferRequest implements RestRequest {
@@ -18,6 +21,16 @@ public class OfferRequest implements RestRequest {
 
     public boolean includeEdits() {
         return includeEdits;
+    }
+
+    @Override
+    public String resourcePath() {
+        return "v2/offers/" + offerId;
+    }
+
+    @Override
+    public Map<String, String> parameters() {
+        return Collections.singletonMap("include-edits", String.valueOf(includeEdits));
     }
 
     @Override

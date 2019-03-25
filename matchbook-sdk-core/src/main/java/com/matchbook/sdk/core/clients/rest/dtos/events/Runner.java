@@ -1,11 +1,14 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Price;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Runner {
+public class Runner implements RestResponse<Runner> {
 
     private Long id;
     private Long eventId;
@@ -91,6 +94,11 @@ public class Runner {
 
     public void setPrices(List<Price> prices) {
         this.prices = prices;
+    }
+
+    @Override
+    public Set<Runner> getContent() {
+        return Collections.singleton(this);
     }
 
     @Override

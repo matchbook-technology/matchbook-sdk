@@ -4,7 +4,12 @@ import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequestBuilder;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class EventsRequest extends PageablePricesRequest {
 
@@ -60,6 +65,52 @@ public class EventsRequest extends PageablePricesRequest {
 
     public boolean includePrices() {
         return includePrices;
+    }
+
+    @Override
+    public String resourcePath() {
+        return "events";
+    }
+
+    @Override
+    public Map<String, String> parameters() {
+        Map<String, String> parameters = new HashMap<>();
+        if (Objects.nonNull(after)) {
+            parameters.put("after", after.toString());
+        }
+        if (Objects.nonNull(before)) {
+            parameters.put("before", before.toString());
+        }
+        if (!eventIds.isEmpty()) {
+            List<String> ids = eventIds.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+            parameters.put("ids", String.join(",", ids));
+        }
+        if (!categoryIds.isEmpty()) {
+            List<String> ids = categoryIds.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+            parameters.put("category-ids", String.join(",", ids));
+        }
+        if (!sportIds.isEmpty()) {
+            List<String> ids = sportIds.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+            parameters.put("sport-ids", String.join(",", ids));
+        }
+        if (!statuses.isEmpty()) {
+            List<String> states = statuses.stream()
+                    .map(Enum::name)
+                    .collect(Collectors.toList());
+            parameters.put("states", String.join(",", states));
+        }
+        parameters.put("include-event-participants", String.valueOf(includeEventParticipants));
+        if (includePrices) {
+            parameters.put("include-prices", "true");
+            parameters.putAll(pricesParameters());
+        }
+        return parameters;
     }
 
     @Override

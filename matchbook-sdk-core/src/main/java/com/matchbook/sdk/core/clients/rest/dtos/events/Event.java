@@ -2,9 +2,13 @@ package com.matchbook.sdk.core.clients.rest.dtos.events;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
-public class Event {
+import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
+
+public class Event implements RestResponse<Event> {
 
     private Long id;
     private Long sportId;
@@ -100,6 +104,11 @@ public class Event {
 
     public void setEventParticipants(List<EventParticipant> eventParticipants) {
         this.eventParticipants = eventParticipants;
+    }
+
+    @Override
+    public Set<Event> getContent() {
+        return Collections.singleton(this);
     }
 
     @Override

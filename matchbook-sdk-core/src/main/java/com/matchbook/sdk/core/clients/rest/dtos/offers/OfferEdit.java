@@ -2,10 +2,13 @@ package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Collections;
+import java.util.Set;
 
+import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.OddsType;
 
-public class OfferEdit {
+public class OfferEdit implements RestResponse<OfferEdit> {
 
     private Long id;
     private Long offerId;
@@ -105,6 +108,11 @@ public class OfferEdit {
 
     public void setEditTime(Instant editTime) {
         this.editTime = editTime;
+    }
+
+    @Override
+    public Set<OfferEdit> getContent() {
+        return Collections.singleton(this);
     }
 
     @Override

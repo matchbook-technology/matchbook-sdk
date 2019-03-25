@@ -16,16 +16,16 @@ public class ClientConfig {
         this.loginUrl = builder.loginUrl;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
     public char[] getUsername() {
         return username;
     }
 
     public char[] getPassword() {
         return password;
+    }
+
+    public String buildUrl(String path) {
+        return url + "/" + path;
     }
 
     public String getLoginUrl() {

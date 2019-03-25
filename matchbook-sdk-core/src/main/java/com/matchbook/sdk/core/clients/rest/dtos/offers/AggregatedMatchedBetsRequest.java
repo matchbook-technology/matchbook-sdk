@@ -1,6 +1,11 @@
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequestBuilder;
@@ -42,6 +47,42 @@ public class AggregatedMatchedBetsRequest extends PageableRequest {
 
     public AggregationType getAggregationType() {
         return aggregationType;
+    }
+
+    @Override
+    public String resourcePath() {
+        return "bets/matched/aggregated";
+    }
+
+    @Override
+    public Map<String, String> parameters() {
+        Map<String, String> parameters = new HashMap<>();
+        if (!eventIds.isEmpty()) {
+            List<String> ids = eventIds.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+            parameters.put("event-ids", String.join(",", ids));
+        }
+        if (!marketIds.isEmpty()) {
+            List<String> ids = marketIds.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+            parameters.put("market-ids", String.join(",", ids));
+        }
+        if (!runnersIds.isEmpty()) {
+            List<String> ids = runnersIds.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+            parameters.put("runner-ids", String.join(",", ids));
+        }
+        if (Objects.nonNull(side)) {
+            parameters.put("side", side.name());
+        }
+        if (Objects.nonNull(aggregationType)) {
+            parameters.put("aggregation-type", aggregationType.name());
+        }
+        parameters.putAll(pageParameters());
+        return parameters;
     }
 
     @Override

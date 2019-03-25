@@ -1,5 +1,8 @@
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
+import java.util.Collections;
+import java.util.Map;
+
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequestBuilder;
 
@@ -17,6 +20,16 @@ public class CancelledMatchedBetsRequest extends PageableRequest {
 
     public MatchedBetStatus getStatus() {
         return status;
+    }
+
+    @Override
+    public String resourcePath() {
+        return "bets";
+    }
+
+    @Override
+    public Map<String, String> parameters() {
+        return Collections.singletonMap("status", status.name());
     }
 
     @Override

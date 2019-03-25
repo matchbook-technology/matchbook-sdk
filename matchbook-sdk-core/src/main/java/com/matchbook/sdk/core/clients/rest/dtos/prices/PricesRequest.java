@@ -1,5 +1,9 @@
 package com.matchbook.sdk.core.clients.rest.dtos.prices;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 public class PricesRequest extends BasePricesRequest {
 
     private final Long eventId;
@@ -24,6 +28,37 @@ public class PricesRequest extends BasePricesRequest {
 
     public Long getRunnerId() {
         return runnerId;
+    }
+
+    @Override
+    public String resourcePath() {
+        return "events/" + eventId +
+                "/markets/" + marketId +
+                "/runners/" + runnerId + "/prices";
+    }
+
+    @Override
+    public Map<String, String> parameters() {
+        Map<String, String> parameters = new HashMap<>();
+        if (Objects.nonNull(currency)) {
+            parameters.put("currency", currency.name());
+        }
+        if (Objects.nonNull(exchangeType)) {
+            parameters.put("exchange-type", exchangeType.name());
+        }
+        if (Objects.nonNull(oddsType)) {
+            parameters.put("odds-type", oddsType.name());
+        }
+        if (Objects.nonNull(side)) {
+            parameters.put("side", side.name());
+        }
+        if (Objects.nonNull(minimumLiquidity)) {
+            parameters.put("minimum-liquidity", minimumLiquidity.toPlainString());
+        }
+        if (Objects.nonNull(priceMode)) {
+            parameters.put("price-mode", priceMode.name());
+        }
+        return parameters;
     }
 
     @Override
