@@ -1,9 +1,9 @@
 package com.matchbook.sdk.core.clients.rest.dtos;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface RestResponse<T> {
 
-    List<T> getContent();
+    Collection<T> getContent();
 
 }

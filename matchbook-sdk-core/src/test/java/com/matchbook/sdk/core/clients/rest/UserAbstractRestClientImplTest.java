@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 import com.matchbook.sdk.core.MatchbookSDKClientTest;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.clients.rest.dtos.user.LoginRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.user.LoginResponse;
+import com.matchbook.sdk.core.clients.rest.dtos.user.Login;
 import com.matchbook.sdk.core.exceptions.ErrorCode;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import org.junit.Test;
@@ -39,9 +39,9 @@ public class UserAbstractRestClientImplTest extends MatchbookSDKClientTest {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         LoginRequest loginRequest = new LoginRequest.Builder("username".toCharArray(), "password".toCharArray())
                 .build();
-        userRestClient.login(loginRequest, new StreamObserver<LoginResponse>() {
+        userRestClient.login(loginRequest, new StreamObserver<Login>() {
             @Override
-            public void onNext(LoginResponse login) {
+            public void onNext(Login login) {
                 assertThat(login.getSessionToken()).isNotEmpty();
                 assertThat(login.getUserId()).isNotZero();
                 countDownLatch.countDown();
@@ -74,9 +74,9 @@ public class UserAbstractRestClientImplTest extends MatchbookSDKClientTest {
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         LoginRequest loginRequest = new LoginRequest.Builder("wrongUser".toCharArray(), "wrongPassword".toCharArray())
                 .build();
-        userRestClient.login(loginRequest, new StreamObserver<LoginResponse>() {
+        userRestClient.login(loginRequest, new StreamObserver<Login>() {
             @Override
-            public void onNext(LoginResponse loginResponse) {
+            public void onNext(Login login) {
                 fail();
             }
 
@@ -108,9 +108,9 @@ public class UserAbstractRestClientImplTest extends MatchbookSDKClientTest {
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         LoginRequest loginRequest = new LoginRequest.Builder("wrongUser".toCharArray(), "wrongPassword".toCharArray())
                 .build();
-        userRestClient.login(loginRequest, new StreamObserver<LoginResponse>() {
+        userRestClient.login(loginRequest, new StreamObserver<Login>() {
             @Override
-            public void onNext(LoginResponse loginResponse) {
+            public void onNext(Login login) {
                 fail();
             }
 

@@ -3,14 +3,17 @@ package com.matchbook.sdk.core.clients.rest.dtos.offers;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
+import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Currency;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Side;
 
-public class Offer {
+public class Offer implements RestResponse<Offer> {
 
     private Long id;
     private Long eventId;
@@ -204,6 +207,11 @@ public class Offer {
 
     public void setMatchedBets(List<MatchedBet> matchedBets) {
         this.matchedBets = matchedBets;
+    }
+
+    @Override
+    public Set<Offer> getContent() {
+        return Collections.singleton(this);
     }
 
     @Override

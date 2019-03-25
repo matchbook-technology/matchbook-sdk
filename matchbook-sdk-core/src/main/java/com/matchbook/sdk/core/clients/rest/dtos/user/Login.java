@@ -1,39 +1,39 @@
 package com.matchbook.sdk.core.clients.rest.dtos.user;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 
-public class LogoutResponse implements RestResponse<LogoutResponse> {
+public class Login implements RestResponse<Login> {
 
     private String sessionToken;
     private Long userId;
-    private String username;
+    private Account account;
 
     public String getSessionToken() {
         return sessionToken;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public String getUsername() {
-        return username;
+    public Account getAccount() {
+        return account;
     }
 
     @Override
-    public List<LogoutResponse> getContent() {
-        return Collections.singletonList(this);
+    public Set<Login> getContent() {
+        return Collections.singleton(this);
     }
 
     @Override
     public String toString() {
-        return LogoutResponse.class.getSimpleName() + " {" +
+        return Login.class.getSimpleName() + " {" +
                 "sessionToken=" + sessionToken +
                 ", userId=" + userId +
-                ", username=" + username +
+                ", account=" + account +
                 "}";
     }
 

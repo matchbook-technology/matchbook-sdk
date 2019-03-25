@@ -5,17 +5,14 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.clients.rest.dtos.events.Event;
 import com.matchbook.sdk.core.clients.rest.dtos.events.EventRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.EventResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.events.EventsRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.events.EventsResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.events.Market;
 import com.matchbook.sdk.core.clients.rest.dtos.events.MarketRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.MarketResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.events.MarketsRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.events.MarketsResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.events.Runner;
 import com.matchbook.sdk.core.clients.rest.dtos.events.RunnerRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.RunnerResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.events.RunnersResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.events.Sport;
@@ -38,11 +35,11 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
 
         ObjectMapper objectMapper = clientConnectionManager.getMapper();
         this.sportsResponseReader = objectMapper.readerFor(SportsResponse.class);
-        this.eventResponseReader = objectMapper.readerFor(EventResponse.class);
+        this.eventResponseReader = objectMapper.readerFor(Event.class);
         this.eventsResponseReader = objectMapper.readerFor(EventsResponse.class);
-        this.marketResponseReader = objectMapper.readerFor(MarketResponse.class);
+        this.marketResponseReader = objectMapper.readerFor(Market.class);
         this.marketsResponseReader = objectMapper.readerFor(MarketsResponse.class);
-        this.runnerResponseReader = objectMapper.readerFor(RunnerResponse.class);
+        this.runnerResponseReader = objectMapper.readerFor(Runner.class);
         this.runnersResponseReader = objectMapper.readerFor(RunnersResponse.class);
     }
 
