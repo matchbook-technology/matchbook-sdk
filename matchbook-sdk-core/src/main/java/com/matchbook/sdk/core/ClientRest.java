@@ -6,6 +6,7 @@ import java.util.function.Function;
 import com.matchbook.sdk.core.configs.ClientConnectionManager;
 import com.matchbook.sdk.core.services.Auth;
 import com.matchbook.sdk.core.services.AuthRest;
+import com.matchbook.sdk.core.services.ClientService;
 
 public class ClientRest implements Client {
 
@@ -33,7 +34,7 @@ public class ClientRest implements Client {
     }
 
 
-    private <T extends AutoCloseable> T newClient(AtomicReference<T> reference,
+    private <T extends ClientService> T newClient(AtomicReference<T> reference,
             Function<ClientConnectionManager, T> factory) {
 
         T client = reference.get();
