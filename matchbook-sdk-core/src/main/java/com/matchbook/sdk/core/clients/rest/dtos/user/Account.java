@@ -82,5 +82,4 @@ public class Account {
                 ", currency=" + currency +
                 "}";
     }
-
 }
