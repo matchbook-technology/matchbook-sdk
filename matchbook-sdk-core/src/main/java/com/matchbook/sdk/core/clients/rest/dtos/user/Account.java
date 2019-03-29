@@ -2,6 +2,8 @@ package com.matchbook.sdk.core.clients.rest.dtos.user;
 
 import java.math.BigDecimal;
 
+import com.matchbook.sdk.core.clients.rest.dtos.prices.Currency;
+
 public class Account {
 
     private Long id;
@@ -10,7 +12,7 @@ public class Account {
     private BigDecimal exposure;
     private BigDecimal freeFunds;
     private BigDecimal commissionReserve;
-    private String currency;
+    private Currency currency;
 
     public Long getId() {
         return id;
@@ -60,11 +62,11 @@ public class Account {
         this.commissionReserve = commissionReserve;
     }
 
-    public String getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 

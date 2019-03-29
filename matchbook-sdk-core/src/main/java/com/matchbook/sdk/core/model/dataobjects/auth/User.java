@@ -1,40 +1,51 @@
 package com.matchbook.sdk.core.model.dataobjects.auth;
 
-import java.util.Arrays;
-
 public class User {
 
-    private final char[] username;
-    private final char[] password;
+    private String sessionToken;
+    private Long userId;
+    private Account account;
 
-    private User(User.Builder builder) {
-        this.username = builder.username;
-        this.password = builder.password;
+    private User(Builder builder) {
+        this.sessionToken = builder.sessionToken;
+        this.userId = builder.userId;
+        this.account = builder.account;
     }
 
-    public char[] getUsername() {
-        return username;
+    public String getSessionToken() {
+        return sessionToken;
     }
 
-    public char[] getPassword() {
-        return password;
+    public long getUserId() {
+        return userId;
+    }
+
+    public Account getAccount() {
+        return account;
     }
 
     @Override
     public String toString() {
-        return User.class.getSimpleName() + " {" +
-                "username=" + Arrays.toString(username) +
-                ", password=" + Arrays.toString(password) +
-                "}";
+        return "User{" +
+                "sessionToken='" + sessionToken + '\'' +
+                ", userId=" + userId +
+                ", account=" + account +
+                '}';
     }
 
     public static class Builder {
-        private final char[] username;
-        private final char[] password;
+        private final String sessionToken;
+        private final Long userId;
+        private Account account;
 
-        public Builder(char[] username, char[] password) {
-            this.username = username;
-            this.password = password;
+        public Builder(String sessionToken, Long userId) {
+            this.sessionToken = sessionToken;
+            this.userId = userId;
+        }
+
+        public Builder addAccount(Account account) {
+            this.account = account;
+            return this;
         }
 
         public User build() {

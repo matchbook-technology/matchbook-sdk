@@ -19,11 +19,11 @@ import com.matchbook.sdk.core.exceptions.ErrorCode;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import org.junit.Test;
 
-public class UserAbstractRestClientImplTest extends MatchbookSDKClientTest {
+public class CredentialsAbstractRestClientImplTest extends MatchbookSDKClientTest {
 
     private final UserRestClient userRestClient;
 
-    public UserAbstractRestClientImplTest() {
+    public CredentialsAbstractRestClientImplTest() {
         this.userRestClient = new UserRestClientImpl(clientConnectionManager);
     }
 

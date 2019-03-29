@@ -1,4 +1,4 @@
 package com.matchbook.sdk.core.model.dataobjects;
 
-public class Envelope {
+public abstract class Envelope {
 }
