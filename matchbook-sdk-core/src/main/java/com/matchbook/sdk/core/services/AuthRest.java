@@ -14,12 +14,10 @@ import com.matchbook.sdk.core.model.mappers.auth.MBLoginToUserMapper;
 
 public class AuthRest implements Auth {
 
-    private final ClientConnectionManager clientConnectionManager;
     private final UserRestClient userRestClient;
     private final MBLoginToUserMapper mapper;
 
     public AuthRest(ClientConnectionManager clientConnectionManager) {
-        this.clientConnectionManager = clientConnectionManager;
 
         this.userRestClient = new UserRestClientImpl(clientConnectionManager);
         this.mapper = new MBLoginToUserMapper();

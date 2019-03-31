@@ -12,11 +12,9 @@ public class ClientRest implements Client {
 
     private final AtomicReference<Auth> authClient;
 
-    private ClientConfig clientConfig;
     private ClientConnectionManager clientConnectionManager;
 
     public ClientRest(ClientConfig clientConfig) {
-        this.clientConfig = clientConfig;
         this.clientConnectionManager = new ClientConnectionManager(clientConfig);
 
         this.authClient = new AtomicReference<>();

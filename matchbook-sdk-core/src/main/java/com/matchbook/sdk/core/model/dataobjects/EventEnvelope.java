@@ -4,4 +4,7 @@ public class EventEnvelope extends Envelope {
 
     private EventMessageType eventMessageType;
 
+    public EventMessageType getEventMessageType() {
+        return eventMessageType;
+    }
 }
