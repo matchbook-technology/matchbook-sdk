@@ -4,7 +4,8 @@ import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.model.dataobjects.LoginEnvelope;
 import com.matchbook.sdk.core.model.dataobjects.auth.Credentials;
 
-public interface Auth extends ClientService {
+public interface AuthService extends ClientService {
 
     void login(Credentials credentials, StreamObserver<LoginEnvelope> streamObserver);
+
 }
