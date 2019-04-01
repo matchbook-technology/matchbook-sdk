@@ -2,7 +2,7 @@ package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Side;
 
-public class AggregatedMatchedBet extends BaseMatchedBet {
+public class AggregatedMatchedBet extends AbstractMatchedBet {
 
     private Long eventId;
     private Long marketId;

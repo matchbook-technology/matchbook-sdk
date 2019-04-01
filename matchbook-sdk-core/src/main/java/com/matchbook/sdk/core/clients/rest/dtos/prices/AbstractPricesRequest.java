@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 
-public abstract class BasePricesRequest implements RestRequest {
+public abstract class AbstractPricesRequest implements RestRequest {
 
     protected final OddsType oddsType;
     protected final ExchangeType exchangeType;
@@ -16,7 +16,7 @@ public abstract class BasePricesRequest implements RestRequest {
     protected final BigDecimal minimumLiquidity;
     protected final PriceMode priceMode;
 
-    protected <B extends BasePricesRequestBuilder> BasePricesRequest(B builder) {
+    protected <B extends AbstractPricesRequestBuilder> AbstractPricesRequest(B builder) {
         this.oddsType = builder.oddsType;
         this.exchangeType = builder.exchangeType;
         this.side = builder.side;
