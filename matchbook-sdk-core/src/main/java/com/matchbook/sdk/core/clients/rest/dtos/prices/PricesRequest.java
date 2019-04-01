@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class PricesRequest extends BasePricesRequest {
+public class PricesRequest extends AbstractPricesRequest {
 
     private final Long eventId;
     private final Long marketId;
@@ -76,7 +76,7 @@ public class PricesRequest extends BasePricesRequest {
                 "}";
     }
 
-    public static class Builder extends BasePricesRequestBuilder {
+    public static class Builder extends AbstractPricesRequestBuilder {
 
         private final Long eventId;
         private final Long marketId;

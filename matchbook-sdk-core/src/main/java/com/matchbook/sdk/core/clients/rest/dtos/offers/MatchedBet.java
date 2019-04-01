@@ -3,7 +3,7 @@ package com.matchbook.sdk.core.clients.rest.dtos.offers;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-public class MatchedBet extends BaseMatchedBet {
+public class MatchedBet extends AbstractMatchedBet {
 
     private Long id;
     private Long offerId;
