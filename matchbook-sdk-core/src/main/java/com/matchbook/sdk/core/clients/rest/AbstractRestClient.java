@@ -1,13 +1,18 @@
 package com.matchbook.sdk.core.clients.rest;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.matchbook.sdk.core.ClientConfig;
 import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.errors.Errors;
 import com.matchbook.sdk.core.configs.ClientConnectionManager;
@@ -26,32 +31,63 @@ abstract class AbstractRestClient {
     private static final String HTTP_HEADER_CONTENT_TYPE = "Content-Type";
     private static final String JSON_TYPE = "application/json";
 
-    protected final ClientConnectionManager clientConnectionManager;
+    private final ClientConnectionManager clientConnectionManager;
+    private final Map<Class<?>, ObjectWriter> objectWriters;
+    private final Map<Class<?>, ObjectReader> objectReaders;
     private final ObjectReader errorReader;
     private final MediaType jsonMediaType;
 
     protected AbstractRestClient(ClientConnectionManager clientConnectionManager) {
-        this.errorReader = clientConnectionManager.getMapper().readerFor(Errors.class);
         this.clientConnectionManager = clientConnectionManager;
+        this.errorReader = clientConnectionManager.getMapper().readerFor(Errors.class);
         this.jsonMediaType = MediaType.parse(JSON_TYPE);
+
+        objectWriters = new HashMap<>();
+        objectReaders = new HashMap<>();
     }
 
-    protected <T> void postRequest(String url, String body, StreamObserver<T> observer, ObjectReader objectReader) {
-        Request request = buildJsonRequest(url)
-                .post(RequestBody.create(jsonMediaType, body))
-                .build();
-        sendHttpRequest(request, observer, objectReader);
+    protected ClientConfig getClientConfig() {
+        return clientConnectionManager.getClientConfig();
     }
 
-    protected <T> void getRequest(String url, Map<String, String> parameters, StreamObserver<T> observer, ObjectReader objectReader) {
-        List<String> queryParams = parameters.entrySet().stream()
-                .map(entry -> entry.getKey() + "=" + entry.getValue())
-                .collect(Collectors.toList());
-        String requestUrl = url + (queryParams.isEmpty() ? "" : "?" + String.join("&", queryParams));
-        Request request = buildJsonRequest(requestUrl)
+    protected <R extends RestRequest, T> void postRequest(String url, R request, StreamObserver<T> observer, Class<T> observedResource) {
+        try {
+            ObjectWriter objectWriter = getObjectWriter(request.getClass());
+            String requestBody = objectWriter.writeValueAsString(request);
+            Request httpRequest = buildJsonRequest(url)
+                    .post(RequestBody.create(jsonMediaType, requestBody))
+                    .build();
+
+            ObjectReader objectReader = getObjectReader(observedResource);
+            sendHttpRequest(httpRequest, observer, objectReader);
+        } catch (JsonProcessingException e) {
+            observer.onError(new MatchbookSDKHTTPException((e.getCause())));
+        }
+    }
+
+    protected <R extends RestRequest, T> void getRequest(String url, R request, StreamObserver<T> observer, Class<T> observedResource) {
+        String requestUrl = buildUrl(url, request);
+        Request httpRequest = buildJsonRequest(requestUrl)
                 .get()
                 .build();
-        sendHttpRequest(request, observer, objectReader);
+
+        ObjectReader objectReader = getObjectReader(observedResource);
+        sendHttpRequest(httpRequest, observer, objectReader);
+    }
+
+    private ObjectWriter getObjectWriter(Class<?> clazz) {
+        return objectWriters.computeIfAbsent(clazz, c -> clientConnectionManager.getMapper().writerFor(c));
+    }
+
+    private ObjectReader getObjectReader(Class<?> clazz) {
+        return objectReaders.computeIfAbsent(clazz, c -> clientConnectionManager.getMapper().readerFor(c));
+    }
+
+    private <R extends RestRequest> String buildUrl(String baseUrl, R request) {
+        List<String> queryParams = request.parameters().entrySet().stream()
+                .map(entry -> entry.getKey() + "=" + entry.getValue())
+                .collect(Collectors.toList());
+        return baseUrl + (queryParams.isEmpty() ? "" : "?" + String.join("&", queryParams));
     }
 
     private Request.Builder buildJsonRequest(String url) {
