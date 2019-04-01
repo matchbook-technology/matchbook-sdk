@@ -6,7 +6,7 @@ import com.matchbook.sdk.core.model.dataobjects.auth.User;
 import com.matchbook.sdk.core.model.dataobjects.prices.Currency;
 import com.matchbook.sdk.core.model.mappers.Mapper;
 
-public class MBLoginToUserMapper implements Mapper<User, Login> {
+public class LoginToUserMapper implements Mapper<User, Login> {
 
     @Override
     public User mapToModel(Login login) {

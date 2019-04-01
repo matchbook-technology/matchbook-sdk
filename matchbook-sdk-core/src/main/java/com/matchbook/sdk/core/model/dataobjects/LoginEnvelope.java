@@ -2,16 +2,16 @@ package com.matchbook.sdk.core.model.dataobjects;
 
 import com.matchbook.sdk.core.model.dataobjects.auth.User;
 
-public class LoginEnvelope extends Envelope {
+public class LoginEnvelope implements Envelope {
 
-    private User user;
-
-    public User getUser() {
-        return user;
-    }
+    private final User user;
 
     private LoginEnvelope(Builder builder) {
         this.user = builder.user;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public static class Builder {

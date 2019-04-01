@@ -10,23 +10,22 @@ import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.core.model.dataobjects.LoginEnvelope;
 import com.matchbook.sdk.core.model.dataobjects.auth.Credentials;
 import com.matchbook.sdk.core.model.dataobjects.auth.User;
-import com.matchbook.sdk.core.model.mappers.auth.MBLoginToUserMapper;
+import com.matchbook.sdk.core.model.mappers.auth.LoginToUserMapper;
 
 public class AuthRest implements Auth {
 
     private final UserRestClient userRestClient;
-    private final MBLoginToUserMapper mapper;
+    private final LoginToUserMapper mapper;
 
     public AuthRest(ClientConnectionManager clientConnectionManager) {
-
         this.userRestClient = new UserRestClientImpl(clientConnectionManager);
-        this.mapper = new MBLoginToUserMapper();
+        this.mapper = new LoginToUserMapper();
     }
 
     @Override
     public void login(Credentials credentials, StreamObserver<LoginEnvelope> streamObserver) {
-
-        LoginRequest loginRequest = new LoginRequest.Builder(credentials.getUsername(), credentials.getPassword()).build();
+        LoginRequest loginRequest = new LoginRequest.Builder(credentials.getUsername(),
+                credentials.getPassword()).build();
 
         userRestClient.login(loginRequest, new StreamObserver<Login>() {
             @Override
@@ -48,5 +47,4 @@ public class AuthRest implements Auth {
             }
         });
     }
-
 }

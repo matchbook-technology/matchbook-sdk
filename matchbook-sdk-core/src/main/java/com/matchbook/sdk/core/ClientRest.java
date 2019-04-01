@@ -24,13 +24,10 @@ public class ClientRest implements Client {
         return newClient(authClient, AuthRest::new);
     }
 
-
     @Override
     public synchronized void close() {
-
         //TODO: close clients
     }
-
 
     private <T extends ClientService> T newClient(AtomicReference<T> reference,
             Function<ClientConnectionManager, T> factory) {
@@ -48,5 +45,4 @@ public class ClientRest implements Client {
         }
         return client;
     }
-
 }
