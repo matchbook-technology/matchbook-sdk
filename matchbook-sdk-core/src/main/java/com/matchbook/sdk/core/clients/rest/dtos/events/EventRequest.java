@@ -3,10 +3,10 @@ package com.matchbook.sdk.core.clients.rest.dtos.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.matchbook.sdk.core.clients.rest.dtos.prices.BasePricesRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.prices.BasePricesRequestBuilder;
+import com.matchbook.sdk.core.clients.rest.dtos.prices.AbstractPricesRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.prices.AbstractPricesRequestBuilder;
 
-public class EventRequest extends BasePricesRequest {
+public class EventRequest extends AbstractPricesRequest {
 
     private final Long eventId;
     private final boolean includeEventParticipants;
@@ -65,7 +65,7 @@ public class EventRequest extends BasePricesRequest {
                 "}";
     }
 
-    public static class Builder extends BasePricesRequestBuilder {
+    public static class Builder extends AbstractPricesRequestBuilder {
 
         private final Long eventId;
         private boolean includeEventParticipants;
