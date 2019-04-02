@@ -49,4 +49,5 @@ public final class ClientConnectionManager {
     public ObjectMapper getMapper() {
         return mapper;
     }
+
 }
