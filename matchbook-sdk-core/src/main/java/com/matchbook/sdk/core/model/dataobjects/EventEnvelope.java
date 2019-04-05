@@ -1,6 +1,6 @@
 package com.matchbook.sdk.core.model.dataobjects;
 
-public class EventEnvelope extends Envelope {
+public class EventEnvelope implements Envelope {
 
     private EventMessageType eventMessageType;
 

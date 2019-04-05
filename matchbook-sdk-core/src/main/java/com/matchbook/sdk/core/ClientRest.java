@@ -6,8 +6,8 @@ import java.util.function.Function;
 
 import com.matchbook.sdk.core.configs.ClientConfig;
 import com.matchbook.sdk.core.configs.ClientConnectionManager;
-import com.matchbook.sdk.core.services.AuthService;
 import com.matchbook.sdk.core.services.AuthRestService;
+import com.matchbook.sdk.core.services.AuthService;
 import com.matchbook.sdk.core.services.ClientService;
 
 public class ClientRest implements Client {
@@ -43,5 +43,4 @@ public class ClientRest implements Client {
         }
         return client;
     }
-
 }
