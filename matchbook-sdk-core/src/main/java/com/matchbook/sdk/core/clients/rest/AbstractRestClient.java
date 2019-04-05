@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.matchbook.sdk.core.ClientConfig;
+import com.matchbook.sdk.core.configs.ClientConfig;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
@@ -39,7 +39,7 @@ abstract class AbstractRestClient {
 
     protected AbstractRestClient(ClientConnectionManager clientConnectionManager) {
         this.clientConnectionManager = clientConnectionManager;
-        this.errorReader = clientConnectionManager.getMapper().readerFor(Errors.class);
+        this.errorReader = clientConnectionManager.getObjectMapper().readerFor(Errors.class);
         this.jsonMediaType = MediaType.parse(JSON_TYPE);
 
         objectWriters = new HashMap<>();
@@ -76,11 +76,11 @@ abstract class AbstractRestClient {
     }
 
     private ObjectWriter getObjectWriter(Class<?> clazz) {
-        return objectWriters.computeIfAbsent(clazz, c -> clientConnectionManager.getMapper().writerFor(c));
+        return objectWriters.computeIfAbsent(clazz, c -> clientConnectionManager.getObjectMapper().writerFor(c));
     }
 
     private ObjectReader getObjectReader(Class<?> clazz) {
-        return objectReaders.computeIfAbsent(clazz, c -> clientConnectionManager.getMapper().readerFor(c));
+        return objectReaders.computeIfAbsent(clazz, c -> clientConnectionManager.getObjectMapper().readerFor(c));
     }
 
     private <R extends RestRequest> String buildUrl(String baseUrl, R request) {

@@ -2,7 +2,8 @@ package com.matchbook.sdk.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.matchbook.sdk.core.services.Auth;
+import com.matchbook.sdk.core.configs.ClientConfig;
+import com.matchbook.sdk.core.services.AuthService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,10 +21,10 @@ public class ClientRestTest {
     public void reuseClientTest() {
         Client client = new ClientRest(clientConfig);
 
-        Auth authClient = client.getAuthClient();
-        Auth authClient2 = client.getAuthClient();
+        AuthService authService = client.getAuthService();
+        AuthService authService2 = client.getAuthService();
 
 
-        assertThat(authClient).isEqualTo(authClient2);
+        assertThat(authService).isEqualTo(authService2);
     }
 }
