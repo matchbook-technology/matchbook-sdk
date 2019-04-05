@@ -14,7 +14,7 @@ public abstract class MatchbookSDKClientTest {
 
     protected MatchbookSDKClientTest() {
         ClientConfig clientConfig = new ClientConfig.Builder("login".toCharArray(), "password".toCharArray())
-                .url("http://localhost:8089")
+                .url("http://localhost:8089/edge/rest")
                 .loginUrl("http://localhost:8089/bpapi/rest/security/session")
                 .build();
 
