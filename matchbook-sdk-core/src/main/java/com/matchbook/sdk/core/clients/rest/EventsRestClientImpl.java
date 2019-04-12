@@ -1,17 +1,7 @@
 package com.matchbook.sdk.core.clients.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.clients.rest.dtos.events.Event;
-import com.matchbook.sdk.core.clients.rest.dtos.events.EventRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.EventsRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.Market;
-import com.matchbook.sdk.core.clients.rest.dtos.events.MarketRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.MarketsRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.Runner;
-import com.matchbook.sdk.core.clients.rest.dtos.events.RunnerRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.RunnersRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.Sport;
-import com.matchbook.sdk.core.clients.rest.dtos.events.SportsRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.*;
 import com.matchbook.sdk.core.configs.ClientConnectionManager;
 
 public class EventsRestClientImpl extends AbstractRestClient implements EventsRestClient {
@@ -23,7 +13,7 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
     @Override
     public void getSports(SportsRequest sportsRequest, StreamObserver<Sport> sportsObserver) {
         String url = getClientConfig().buildUrl(sportsRequest.resourcePath());
-        getRequest(url, sportsRequest, sportsObserver, Sport.class);
+        getRequest(url, sportsRequest, sportsObserver, SportsResponse.class);
     }
 
     @Override

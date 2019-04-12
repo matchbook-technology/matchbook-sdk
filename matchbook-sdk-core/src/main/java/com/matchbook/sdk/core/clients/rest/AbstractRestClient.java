@@ -65,7 +65,8 @@ abstract class AbstractRestClient {
         }
     }
 
-    protected <R extends RestRequest, T> void getRequest(String url, R request, StreamObserver<T> observer, Class<T> observedResource) {
+    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T>
+            void getRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> observedResource) {
         String requestUrl = buildUrl(url, request);
         Request httpRequest = buildJsonRequest(requestUrl)
                 .get()
