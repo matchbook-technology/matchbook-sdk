@@ -50,7 +50,8 @@ abstract class AbstractRestClient {
         return clientConnectionManager.getClientConfig();
     }
 
-    protected <R extends RestRequest, T> void postRequest(String url, R request, StreamObserver<T> observer, Class<T> observedResource) {
+    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T>
+            void postRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> observedResource) {
         try {
             ObjectWriter objectWriter = getObjectWriter(request.getClass());
             String requestBody = objectWriter.writeValueAsString(request);
@@ -84,11 +85,10 @@ abstract class AbstractRestClient {
         return objectReaders.computeIfAbsent(clazz, c -> clientConnectionManager.getObjectMapper().readerFor(c));
     }
 
-    private <R extends RestRequest> String buildUrl(String baseUrl, R request) {
-        List<String> queryParams = request.parameters().entrySet().stream()
+    private <REQ extends RestRequest> String buildUrl(String baseUrl, REQ request) {
+        return baseUrl + "?" + request.parameters().entrySet().stream()
                 .map(entry -> entry.getKey() + "=" + entry.getValue())
-                .collect(Collectors.toList());
-        return baseUrl + (queryParams.isEmpty() ? "" : "?" + String.join("&", queryParams));
+                .collect(Collectors.joining("&"));
     }
 
     private Request.Builder buildJsonRequest(String url) {

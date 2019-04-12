@@ -1,0 +1,424 @@
+{
+  "id": 395729780570010,
+  "name": "CSKA Moscow vs Bayer 04 Leverkusen",
+  "sport-id": 15,
+  "start": "2016-11-22T17:00:00.000Z",
+  "in-running-flag": true,
+  "allow-live-betting": true,
+  "category-id": [
+    15,
+    394655963100010,
+    395729779790010,
+    395729779910010
+  ],
+  "status": "open",
+  "volume": 0,
+  "markets": [
+    {
+      "event-id": 395729780570010,
+      "id": 395729860260010,
+      "name": "Match Odds",
+      "runners": [
+        {
+          "withdrawn": false,
+          "prices": [
+            {
+              "available-amount": 20,
+              "currency": "EUR",
+              "odds-type": "DECIMAL",
+              "odds": 3,
+              "decimal-odds": 3,
+              "side": "lay",
+              "exchange-type": "back-lay"
+            }
+          ],
+          "event-id": 395729780570010,
+          "id": 395729860800010,
+          "market-id": 395729860260010,
+          "name": "CSKA Moscow",
+          "status": "open",
+          "volume": 0,
+          "event-participant-id": 395729781340010
+        },
+        {
+          "withdrawn": false,
+          "prices": [],
+          "event-id": 395729780570010,
+          "id": 395729861280010,
+          "market-id": 395729860260010,
+          "name": "Bayer 04 Leverkusen",
+          "status": "open",
+          "volume": 0,
+          "event-participant-id": 395729781460010
+        },
+        {
+          "withdrawn": false,
+          "prices": [
+            {
+              "available-amount": 60,
+              "currency": "EUR",
+              "odds-type": "DECIMAL",
+              "odds": 2,
+              "decimal-odds": 2,
+              "side": "lay",
+              "exchange-type": "back-lay"
+            }
+          ],
+          "event-id": 395729780570010,
+          "id": 395729861330010,
+          "market-id": 395729860260010,
+          "name": "DRAW (CSK/Bay)",
+          "status": "open",
+          "volume": 0,
+          "event-participant-id": 0
+        }
+      ],
+      "start": "2016-11-22T17:00:00.000Z",
+      "status": "open",
+      "market-type": "one_x_two",
+      "type": "multirunner",
+      "in-running-flag": false,
+      "allow-live-betting": true,
+      "volume": 0
+    },
+    {
+      "event-id": 395729780570010,
+      "id": 395729860390010,
+      "name": "Total",
+      "runners": [
+        {
+          "withdrawn": false,
+          "prices": [],
+          "event-id": 395729780570010,
+          "id": 395729860820010,
+          "market-id": 395729860390010,
+          "name": "OVER 0.5",
+          "status": "open",
+          "handicap": 0.5,
+          "volume": 0,
+          "event-participant-id": 0
+        },
+        {
+          "withdrawn": false,
+          "prices": [],
+          "event-id": 395729780570010,
+          "id": 395729861260010,
+          "market-id": 395729860390010,
+          "name": "UNDER 0.5",
+          "status": "open",
+          "handicap": 0.5,
+          "volume": 0,
+          "event-participant-id": 0
+        }
+      ],
+      "start": "2016-11-22T17:00:00.000Z",
+      "status": "open",
+      "market-type": "total",
+      "type": "binary",
+      "handicap": 0.5,
+      "in-running-flag": false,
+      "allow-live-betting": true,
+      "volume": 0
+    },
+    {
+      "event-id": 395729780570010,
+      "id": 395729860540010,
+      "name": "Total",
+      "runners": [
+        {
+          "withdrawn": false,
+          "prices": [
+            {
+              "available-amount": 19.80198,
+              "currency": "EUR",
+              "odds-type": "DECIMAL",
+              "odds": 2.01,
+              "decimal-odds": 2.01,
+              "side": "lay",
+              "exchange-type": "back-lay"
+            }
+          ],
+          "event-id": 395729780570010,
+          "id": 395729860820110,
+          "market-id": 395729860540010,
+          "name": "OVER 1.5",
+          "status": "open",
+          "handicap": 1.5,
+          "volume": 0,
+          "event-participant-id": 0
+        },
+        {
+          "withdrawn": false,
+          "prices": [
+            {
+              "available-amount": 20,
+              "currency": "EUR",
+              "odds-type": "DECIMAL",
+              "odds": 1.99009,
+              "decimal-odds": 1.99009,
+              "side": "back",
+              "exchange-type": "back-lay"
+            }
+          ],
+          "event-id": 395729780570010,
+          "id": 395729861320010,
+          "market-id": 395729860540010,
+          "name": "UNDER 1.5",
+          "status": "open",
+          "handicap": 1.5,
+          "volume": 0,
+          "event-participant-id": 0
+        }
+      ],
+      "start": "2016-11-22T17:00:00.000Z",
+      "status": "open",
+      "market-type": "total",
+      "type": "binary",
+      "handicap": 1.5,
+      "in-running-flag": false,
+      "allow-live-betting": true,
+      "volume": 0
+    },
+    {
+      "event-id": 395729780570010,
+      "id": 395729860640010,
+      "name": "Total",
+      "runners": [
+        {
+          "withdrawn": false,
+          "prices": [],
+          "event-id": 395729780570010,
+          "id": 395729860940010,
+          "market-id": 395729860640010,
+          "name": "OVER 2.5",
+          "status": "open",
+          "handicap": 2.5,
+          "volume": 0,
+          "event-participant-id": 0
+        },
+        {
+          "withdrawn": false,
+          "prices": [],
+          "event-id": 395729780570010,
+          "id": 395729861300010,
+          "market-id": 395729860640010,
+          "name": "UNDER 2.5",
+          "status": "open",
+          "handicap": 2.5,
+          "volume": 0,
+          "event-participant-id": 0
+        }
+      ],
+      "start": "2016-11-22T17:00:00.000Z",
+      "status": "open",
+      "market-type": "total",
+      "type": "binary",
+      "handicap": 2.5,
+      "in-running-flag": false,
+      "allow-live-betting": true,
+      "volume": 0
+    },
+    {
+      "event-id": 395729780570010,
+      "id": 395729860790010,
+      "name": "Total",
+      "runners": [
+        {
+          "withdrawn": false,
+          "prices": [],
+          "event-id": 395729780570010,
+          "id": 395729861110010,
+          "market-id": 395729860790010,
+          "name": "OVER 3.5",
+          "status": "open",
+          "handicap": 3.5,
+          "volume": 0,
+          "event-participant-id": 0
+        },
+        {
+          "withdrawn": false,
+          "prices": [],
+          "event-id": 395729780570010,
+          "id": 395729861330110,
+          "market-id": 395729860790010,
+          "name": "UNDER 3.5",
+          "status": "open",
+          "handicap": 3.5,
+          "volume": 0,
+          "event-participant-id": 0
+        }
+      ],
+      "start": "2016-11-22T17:00:00.000Z",
+      "status": "open",
+      "market-type": "total",
+      "type": "binary",
+      "handicap": 3.5,
+      "in-running-flag": false,
+      "allow-live-betting": true,
+      "volume": 0
+    },
+    {
+      "event-id": 395729780570010,
+      "id": 395729861030010,
+      "name": "Total",
+      "runners": [
+        {
+          "withdrawn": false,
+          "prices": [],
+          "event-id": 395729780570010,
+          "id": 395729861260110,
+          "market-id": 395729861030010,
+          "name": "OVER 4.5",
+          "status": "open",
+          "handicap": 4.5,
+          "volume": 0,
+          "event-participant-id": 0
+        },
+        {
+          "withdrawn": false,
+          "prices": [],
+          "event-id": 395729780570010,
+          "id": 395729861330210,
+          "market-id": 395729861030010,
+          "name": "UNDER 4.5",
+          "status": "open",
+          "handicap": 4.5,
+          "volume": 0,
+          "event-participant-id": 0
+        }
+      ],
+      "start": "2016-11-22T17:00:00.000Z",
+      "status": "open",
+      "market-type": "total",
+      "type": "binary",
+      "handicap": 4.5,
+      "in-running-flag": false,
+      "allow-live-betting": true,
+      "volume": 0
+    },
+    {
+      "event-id": 395729780570010,
+      "id": 395733247260010,
+      "name": "Total",
+      "runners": [
+        {
+          "withdrawn": false,
+          "prices": [
+            {
+              "available-amount": 50,
+              "currency": "EUR",
+              "odds-type": "DECIMAL",
+              "odds": 2,
+              "decimal-odds": 2,
+              "side": "lay",
+              "exchange-type": "back-lay"
+            }
+          ],
+          "event-id": 395729780570010,
+          "id": 395733247580010,
+          "market-id": 395733247260010,
+          "name": "OVER 5.5",
+          "status": "open",
+          "handicap": 5.5,
+          "volume": 0,
+          "event-participant-id": 0
+        },
+        {
+          "withdrawn": false,
+          "prices": [
+            {
+              "available-amount": 50,
+              "currency": "EUR",
+              "odds-type": "DECIMAL",
+              "odds": 2,
+              "decimal-odds": 2,
+              "side": "back",
+              "exchange-type": "back-lay"
+            }
+          ],
+          "event-id": 395729780570010,
+          "id": 395733247730010,
+          "market-id": 395733247260010,
+          "name": "UNDER 5.5",
+          "status": "open",
+          "handicap": 5.5,
+          "volume": 0,
+          "event-participant-id": 0
+        }
+      ],
+      "start": "2016-11-22T17:00:00.000Z",
+      "status": "open",
+      "market-type": "total",
+      "type": "binary",
+      "handicap": 5.5,
+      "in-running-flag": false,
+      "allow-live-betting": true,
+      "volume": 0
+    },
+    {
+      "event-id": 395729780570010,
+      "id": 395750978610010,
+      "name": "Total",
+      "runners": [
+        {
+          "withdrawn": false,
+          "prices": [],
+          "event-id": 395729780570010,
+          "id": 395750978870010,
+          "market-id": 395750978610010,
+          "name": "OVER 6.5",
+          "status": "open",
+          "handicap": 6.5,
+          "volume": 0,
+          "event-participant-id": 0
+        },
+        {
+          "withdrawn": false,
+          "prices": [],
+          "event-id": 395729780570010,
+          "id": 395750979000010,
+          "market-id": 395750978610010,
+          "name": "UNDER 6.5",
+          "status": "open",
+          "handicap": 6.5,
+          "volume": 0,
+          "event-participant-id": 0
+        }
+      ],
+      "start": "2016-11-22T17:00:00.000Z",
+      "status": "open",
+      "market-type": "total",
+      "type": "binary",
+      "handicap": 6.5,
+      "in-running-flag": false,
+      "allow-live-betting": true,
+      "volume": 0
+    }
+  ],
+  "meta-tags": [
+    {
+      "id": 15,
+      "name": "Soccer",
+      "type": "SPORT",
+      "url-name": "soccer"
+    },
+    {
+      "id": 394655963100010,
+      "name": "Europe",
+      "type": "COUNTRY",
+      "url-name": "europe"
+    },
+    {
+      "id": 395729779790010,
+      "name": "UEFA Champions League",
+      "type": "COMPETITION",
+      "url-name": "uefa-champions-league"
+    },
+    {
+      "id": 395729779910010,
+      "name": "2017-01-28",
+      "type": "DATE",
+      "url-name": "2017-01-28"
+    }
+  ]
+}

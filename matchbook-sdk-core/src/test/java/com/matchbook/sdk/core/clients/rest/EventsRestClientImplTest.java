@@ -2,6 +2,8 @@ package com.matchbook.sdk.core.clients.rest;
 
 import com.matchbook.sdk.core.MatchbookSDKClientTest;
 import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.core.clients.rest.dtos.events.Event;
+import com.matchbook.sdk.core.clients.rest.dtos.events.EventRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.events.Sport;
 import com.matchbook.sdk.core.clients.rest.dtos.events.SportsRequest;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
@@ -63,5 +65,38 @@ public class EventsRestClientImplTest extends MatchbookSDKClientTest {
         assertThat(await).isTrue();
     }
 
+    @Test
+    public void successulGetEventTest()  throws InterruptedException {
+        stubFor(get(urlPathEqualTo("/edge/rest/events/395729780570010"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/getEventSuccessfulResponse.json")));
 
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+        EventRequest eventRequest = new EventRequest.Builder(395729780570010L).build();
+
+        eventsRestClient.getEvent(eventRequest, new StreamObserver<Event>() {
+
+            @Override
+            public void onNext(Event event) {
+                assertThat(event.getId()).isNotNull();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+        });
+
+        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
 }

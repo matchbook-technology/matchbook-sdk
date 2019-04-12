@@ -13,7 +13,7 @@ public class Market implements RestResponse<Market> {
     private Long eventId;
     private String name;
     private MarketStatus status;
-    private MarketType type;
+    private MarketType marketType;
     private boolean inRunning;
     private boolean allowLiveBetting;
     private Double value;
@@ -56,12 +56,12 @@ public class Market implements RestResponse<Market> {
         this.status = status;
     }
 
-    public MarketType getType() {
-        return type;
+    public MarketType getMarketType() {
+        return marketType;
     }
 
-    public void setType(MarketType type) {
-        this.type = type;
+    public void setMarketType(MarketType marketType) {
+        this.marketType = marketType;
     }
 
     public boolean isInRunning() {
@@ -116,7 +116,7 @@ public class Market implements RestResponse<Market> {
                 ", eventId=" + eventId +
                 ", name=" + name +
                 ", status=" + status +
-                ", type=" + type +
+                ", marketType=" + marketType +
                 ", inRunning=" + inRunning +
                 ", allowLiveBetting=" + allowLiveBetting +
                 ", value=" + value +
