@@ -2,20 +2,30 @@ package com.matchbook.sdk.core.clients.rest;
 
 import com.matchbook.sdk.core.MatchbookSDKClientTest;
 import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.clients.rest.dtos.events.*;
+import com.matchbook.sdk.core.clients.rest.dtos.events.Event;
+import com.matchbook.sdk.core.clients.rest.dtos.events.EventRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.EventsRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.Market;
+import com.matchbook.sdk.core.clients.rest.dtos.events.MarketRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.MarketsRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.Runner;
+import com.matchbook.sdk.core.clients.rest.dtos.events.RunnerRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.RunnersRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.Sport;
+import com.matchbook.sdk.core.clients.rest.dtos.events.SportsRequest;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 public class EventsRestClientImplTest extends MatchbookSDKClientTest {
 

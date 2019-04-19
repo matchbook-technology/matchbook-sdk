@@ -1,10 +1,14 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequestBuilder;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class RunnersRequest extends PageablePricesRequest {
 

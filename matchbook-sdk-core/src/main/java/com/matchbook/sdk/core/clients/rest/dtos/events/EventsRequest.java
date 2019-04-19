@@ -4,7 +4,12 @@ import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequestBuilder;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class EventsRequest extends PageablePricesRequest {
