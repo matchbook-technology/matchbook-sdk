@@ -1,13 +1,27 @@
 package com.matchbook.sdk.core.clients.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.clients.rest.dtos.events.*;
-import com.matchbook.sdk.core.configs.ClientConnectionManager;
+import com.matchbook.sdk.core.clients.rest.dtos.events.Event;
+import com.matchbook.sdk.core.clients.rest.dtos.events.EventRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.EventsRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.EventsResponse;
+import com.matchbook.sdk.core.clients.rest.dtos.events.Market;
+import com.matchbook.sdk.core.clients.rest.dtos.events.MarketRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.MarketsRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.MarketsResponse;
+import com.matchbook.sdk.core.clients.rest.dtos.events.Runner;
+import com.matchbook.sdk.core.clients.rest.dtos.events.RunnerRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.RunnersRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.RunnersResponse;
+import com.matchbook.sdk.core.clients.rest.dtos.events.Sport;
+import com.matchbook.sdk.core.clients.rest.dtos.events.SportsRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.SportsResponse;
+import com.matchbook.sdk.core.configs.ConnectionManager;
 
 public class EventsRestClientImpl extends AbstractRestClient implements EventsRestClient {
 
-    public EventsRestClientImpl(ClientConnectionManager clientConnectionManager) {
-        super(clientConnectionManager);
+    public EventsRestClientImpl(ConnectionManager connectionManager) {
+        super(connectionManager);
     }
 
     @Override

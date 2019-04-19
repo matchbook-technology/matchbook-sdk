@@ -4,12 +4,12 @@ import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Price;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.PricesRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.PricesResponse;
-import com.matchbook.sdk.core.configs.ClientConnectionManager;
+import com.matchbook.sdk.core.configs.ConnectionManager;
 
 public class PricesRestClientImpl extends AbstractRestClient implements PricesRestClient {
 
-    public PricesRestClientImpl(ClientConnectionManager clientConnectionManager) {
-        super(clientConnectionManager);
+    public PricesRestClientImpl(ConnectionManager connectionManager) {
+        super(connectionManager);
     }
 
     @Override
