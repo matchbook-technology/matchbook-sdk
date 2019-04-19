@@ -4,11 +4,7 @@ import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequestBuilder;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EventsRequest extends PageablePricesRequest {
@@ -151,6 +147,10 @@ public class EventsRequest extends PageablePricesRequest {
         public Builder() {
             includeEventParticipants = false;
             includePrices = false;
+            sportIds = new HashSet<>();
+            categoryIds = new HashSet<>();
+            eventIds = new HashSet<>();
+            statuses = new HashSet<>();
         }
 
         public Builder after(Instant after) {

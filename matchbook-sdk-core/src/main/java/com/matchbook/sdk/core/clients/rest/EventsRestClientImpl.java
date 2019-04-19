@@ -25,7 +25,7 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
     @Override
     public void getEvents(EventsRequest eventsRequest, StreamObserver<Event> eventsObserver) {
         String url = getClientConfig().buildUrl(eventsRequest.resourcePath());
-        getRequest(url, eventsRequest, eventsObserver, Event.class);
+        getRequest(url, eventsRequest, eventsObserver, EventsResponse.class);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
     @Override
     public void getMarkets(MarketsRequest marketsRequest, StreamObserver<Market> marketsObserver) {
         String url = getClientConfig().buildUrl(marketsRequest.resourcePath());
-        getRequest(url, marketsRequest, marketsObserver, Market.class);
+        getRequest(url, marketsRequest, marketsObserver, MarketsResponse.class);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class EventsRestClientImpl extends AbstractRestClient implements EventsRe
     @Override
     public void getRunners(RunnersRequest runnersRequest, StreamObserver<Runner> runnersObserver) {
         String url = getClientConfig().buildUrl(runnersRequest.resourcePath());
-        getRequest(url, runnersRequest, runnersObserver, Runner.class);
+        getRequest(url, runnersRequest, runnersObserver, RunnersResponse.class);
     }
 
 }

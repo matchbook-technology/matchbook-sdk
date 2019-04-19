@@ -2,10 +2,7 @@ package com.matchbook.sdk.core.clients.rest;
 
 import com.matchbook.sdk.core.MatchbookSDKClientTest;
 import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.clients.rest.dtos.events.Event;
-import com.matchbook.sdk.core.clients.rest.dtos.events.EventRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.Sport;
-import com.matchbook.sdk.core.clients.rest.dtos.events.SportsRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.*;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import org.junit.Test;
 
@@ -66,7 +63,7 @@ public class EventsRestClientImplTest extends MatchbookSDKClientTest {
     }
 
     @Test
-    public void successulGetEventTest()  throws InterruptedException {
+    public void successulGetEventTest() throws InterruptedException {
         stubFor(get(urlPathEqualTo("/edge/rest/events/395729780570010"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
@@ -99,4 +96,40 @@ public class EventsRestClientImplTest extends MatchbookSDKClientTest {
         boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
         assertThat(await).isTrue();
     }
+
+    @Test
+    public void successulGetEventsTest() throws InterruptedException {
+        stubFor(get(urlPathEqualTo("/edge/rest/events"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/getEventsSuccessfulResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+        EventsRequest eventsRequest = new EventsRequest.Builder().build();
+
+        eventsRestClient.getEvents(eventsRequest, new StreamObserver<Event>() {
+
+            @Override
+            public void onNext(Event event) {
+                assertThat(event.getId()).isNotNull();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+        });
+
+        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
 }
