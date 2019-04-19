@@ -1,14 +1,33 @@
 package com.matchbook.sdk.core.configs;
 
 import com.matchbook.sdk.core.configs.wrappers.HttpClient;
+import com.matchbook.sdk.core.configs.wrappers.HttpClientWrapper;
 import com.matchbook.sdk.core.configs.wrappers.Serializer;
+import com.matchbook.sdk.core.configs.wrappers.SerializerWrapper;
 
-public interface ConnectionManager {
+public final class ConnectionManager {
 
-    ClientConfig getClientConfig();
+    private final ClientConfig clientConfig;
+    private final HttpClient httpClient;
+    private final Serializer serializer;
 
-    HttpClient getHttpClient();
+    public ConnectionManager(ClientConfig clientConfig) {
+        this.clientConfig = clientConfig;
 
-    Serializer getSerializer();
+        this.httpClient = new HttpClientWrapper();
+        this.serializer = new SerializerWrapper();
+    }
+
+    public ClientConfig getClientConfig() {
+        return clientConfig;
+    }
+
+    public HttpClient getHttpClient() {
+        return httpClient;
+    }
+
+    public Serializer getSerializer() {
+        return serializer;
+    }
 
 }

@@ -28,7 +28,7 @@ abstract class AbstractRestClient {
 
     private static final String HTTP_HEADER_ACCEPT = "Accept";
     private static final String HTTP_HEADER_CONTENT_TYPE = "Content-Type";
-    private static final String JSON_TYPE = "application/json";
+    private static final String JSON_MEDIA_TYPE = "application/json";
 
     private final ClientConnectionManager clientConnectionManager;
     private final Map<Class<?>, ObjectWriter> objectWriters;
@@ -39,7 +39,7 @@ abstract class AbstractRestClient {
     protected AbstractRestClient(ClientConnectionManager clientConnectionManager) {
         this.clientConnectionManager = clientConnectionManager;
         this.errorReader = clientConnectionManager.getObjectMapper().readerFor(Errors.class);
-        this.jsonMediaType = MediaType.parse(JSON_TYPE);
+        this.jsonMediaType = MediaType.parse(JSON_MEDIA_TYPE);
 
         objectWriters = new HashMap<>();
         objectReaders = new HashMap<>();
