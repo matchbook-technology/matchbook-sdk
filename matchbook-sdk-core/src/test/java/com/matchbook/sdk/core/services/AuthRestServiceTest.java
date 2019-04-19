@@ -13,6 +13,7 @@ import static org.junit.Assert.fail;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.matchbook.sdk.core.MatchbookSDKClientTest;
@@ -27,10 +28,11 @@ public class AuthRestServiceTest extends MatchbookSDKClientTest {
     private static final char[] PASSWORD = "password".toCharArray();
     private static final String LOGIN_URL = "/bpapi/rest/security/session";
 
-    private final AuthRestService authRestService;
+    private AuthRestService unit;
 
-    public AuthRestServiceTest() {
-        this.authRestService = new AuthRestService(clientConnectionManager);
+    @Before
+    public void setUp() throws Exception {
+        this.unit = new AuthRestService(clientConnectionManager);
     }
 
     @Test
@@ -39,7 +41,7 @@ public class AuthRestServiceTest extends MatchbookSDKClientTest {
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         Credentials credentials = new Credentials.Builder(USERNAME, PASSWORD).build();
-        authRestService.login(credentials, new StreamObserver<LoginEnvelope>() {
+        unit.login(credentials, new StreamObserver<LoginEnvelope>() {
             @Override
             public void onNext(LoginEnvelope loginEnvelope) {
                 assertThat(loginEnvelope.getUser().getUserId()).isNotZero();
@@ -66,7 +68,7 @@ public class AuthRestServiceTest extends MatchbookSDKClientTest {
     @Test
     public void sessionToken() {
         stubLoginResponse();
-        String sessiontoken = authRestService.sessionToken(USERNAME, PASSWORD);
+        String sessiontoken = unit.sessionToken(USERNAME, PASSWORD);
         verify(1, postRequestedFor(urlEqualTo(LOGIN_URL)));
         assertThat(sessiontoken).isEqualTo("000000_8beb227cee56ae515f7e312330456789");
     }
@@ -74,11 +76,11 @@ public class AuthRestServiceTest extends MatchbookSDKClientTest {
     @Test
     public void invalidateSessionToken_NewSessionRequestedAfterInvalidation() {
         stubLoginResponse();
-        authRestService.sessionToken(USERNAME, PASSWORD);
+        unit.sessionToken(USERNAME, PASSWORD);
 
-        authRestService.invalidateSessionToken();
+        unit.invalidateSessionToken();
 
-        authRestService.sessionToken(USERNAME, PASSWORD);
+        unit.sessionToken(USERNAME, PASSWORD);
 
         verify(2, postRequestedFor(urlEqualTo(LOGIN_URL)));
     }
@@ -86,9 +88,9 @@ public class AuthRestServiceTest extends MatchbookSDKClientTest {
     @Test
     public void invalidateSessionToken_NoSessionRequestedIfNoInvalidation() {
         stubLoginResponse();
-        authRestService.sessionToken(USERNAME, PASSWORD);
+        unit.sessionToken(USERNAME, PASSWORD);
 
-        authRestService.sessionToken(USERNAME, PASSWORD);
+        unit.sessionToken(USERNAME, PASSWORD);
 
         verify(1, postRequestedFor(urlEqualTo(LOGIN_URL)));
     }

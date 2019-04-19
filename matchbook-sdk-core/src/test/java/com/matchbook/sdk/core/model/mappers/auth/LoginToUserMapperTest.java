@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Currency;
@@ -24,7 +25,12 @@ public class LoginToUserMapperTest {
     private static final BigDecimal ACCOUNT_FREE_FUNDS = new BigDecimal("1400");
     private static final BigDecimal ACCOUNT_COMMISSION_RESERVE = new BigDecimal("0");
 
-    private final LoginToUserMapper loginToUserMapper = new LoginToUserMapper();
+    private LoginToUserMapper unit = new LoginToUserMapper();
+
+    @Before
+    public void setUp() throws Exception {
+        this.unit = new LoginToUserMapper();
+    }
 
     @Test
     public void mapToModel() {
@@ -42,7 +48,7 @@ public class LoginToUserMapperTest {
         when(account.getCurrency()).thenReturn(Currency.CAD);
         when(login.getAccount()).thenReturn(account);
 
-        User user = loginToUserMapper.mapToModel(login);
+        User user = unit.mapToModel(login);
 
         assertThat(user).isNotNull();
         assertThat(user.getSessionToken()).isEqualTo(SESSION_TOKEN);
@@ -67,7 +73,7 @@ public class LoginToUserMapperTest {
         when(account.getId()).thenReturn(null);
         when(login.getAccount()).thenReturn(account);
 
-        User user = loginToUserMapper.mapToModel(login);
+        User user = unit.mapToModel(login);
 
         assertThat(user).isNotNull();
         assertThat(user.getSessionToken()).isNull();
