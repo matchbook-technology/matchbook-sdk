@@ -22,7 +22,7 @@ public class EventsRestClientImplTest extends MatchbookSDKClientTest {
     private final EventsRestClient eventsRestClient;
 
     public EventsRestClientImplTest() {
-        this.eventsRestClient = new EventsRestClientImpl(clientConnectionManager);
+        this.eventsRestClient = new EventsRestClientImpl(connectionManager);
     }
 
     @Test

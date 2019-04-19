@@ -24,7 +24,7 @@ public class UserRestClientImplTest extends MatchbookSDKClientTest {
     private final UserRestClient userRestClient;
 
     public UserRestClientImplTest() {
-        this.userRestClient = new UserRestClientImpl(clientConnectionManager);
+        this.userRestClient = new UserRestClientImpl(connectionManager);
     }
 
     @Test

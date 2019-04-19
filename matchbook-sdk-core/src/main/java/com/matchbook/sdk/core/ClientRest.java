@@ -5,18 +5,18 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import com.matchbook.sdk.core.configs.ClientConfig;
-import com.matchbook.sdk.core.configs.ClientConnectionManager;
+import com.matchbook.sdk.core.configs.ConnectionManager;
 import com.matchbook.sdk.core.services.AuthRestService;
 import com.matchbook.sdk.core.services.AuthService;
 import com.matchbook.sdk.core.services.ClientService;
 
 public class ClientRest implements Client {
 
-    private final ClientConnectionManager clientConnectionManager;
+    private final ConnectionManager connectionManager;
     private final AtomicReference<AuthService> authServiceReference;
 
     public ClientRest(ClientConfig clientConfig) {
-        this.clientConnectionManager = new ClientConnectionManager(clientConfig);
+        this.connectionManager = new ConnectionManager(clientConfig);
         this.authServiceReference = new AtomicReference<>();
     }
 
@@ -30,13 +30,13 @@ public class ClientRest implements Client {
     }
 
     private <T extends ClientService> T getService(AtomicReference<T> serviceReference,
-            Function<ClientConnectionManager, T> serviceFactory) {
+            Function<ConnectionManager, T> serviceFactory) {
         T client = serviceReference.get();
         if (Objects.isNull(client)) {
             synchronized (serviceReference) {
                 client = serviceReference.get();
                 if (Objects.isNull(client)) {
-                    client = serviceFactory.apply(clientConnectionManager);
+                    client = serviceFactory.apply(connectionManager);
                     serviceReference.lazySet(client);
                 }
             }

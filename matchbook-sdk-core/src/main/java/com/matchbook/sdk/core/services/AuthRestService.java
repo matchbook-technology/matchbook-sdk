@@ -9,7 +9,7 @@ import com.matchbook.sdk.core.clients.rest.UserRestClient;
 import com.matchbook.sdk.core.clients.rest.UserRestClientImpl;
 import com.matchbook.sdk.core.clients.rest.dtos.user.Login;
 import com.matchbook.sdk.core.clients.rest.dtos.user.LoginRequest;
-import com.matchbook.sdk.core.configs.ClientConnectionManager;
+import com.matchbook.sdk.core.configs.ConnectionManager;
 import com.matchbook.sdk.core.configs.SessionManager;
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
@@ -25,8 +25,8 @@ public class AuthRestService implements AuthService, SessionManager {
 
     private String sessionToken;
 
-    public AuthRestService(ClientConnectionManager clientConnectionManager) {
-        this.userRestClient = new UserRestClientImpl(clientConnectionManager);
+    public AuthRestService(ConnectionManager connectionManager) {
+        this.userRestClient = new UserRestClientImpl(connectionManager);
         this.mapper = new LoginToUserMapper();
     }
 
