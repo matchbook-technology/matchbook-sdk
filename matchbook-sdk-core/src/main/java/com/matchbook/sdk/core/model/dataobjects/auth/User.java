@@ -26,11 +26,11 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "sessionToken='" + sessionToken + '\'' +
+        return User.class.getSimpleName() + "{" +
+                "sessionToken=" + sessionToken +
                 ", userId=" + userId +
                 ", account=" + account +
-                '}';
+                "}";
     }
 
     public static class Builder {

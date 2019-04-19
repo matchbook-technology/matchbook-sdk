@@ -13,15 +13,15 @@ import com.matchbook.sdk.core.services.ClientService;
 public class ClientRest implements Client {
 
     private final ClientConnectionManager clientConnectionManager;
-    private final AtomicReference<AuthService> authClient;
+    private final AtomicReference<AuthService> authServiceReference;
 
     public ClientRest(ClientConfig clientConfig) {
         this.clientConnectionManager = new ClientConnectionManager(clientConfig);
-        this.authClient = new AtomicReference<>();
+        this.authServiceReference = new AtomicReference<>();
     }
 
     public AuthService getAuthService() {
-        return getService(authClient, AuthRestService::new);
+        return getService(authServiceReference, AuthRestService::new);
     }
 
     @Override

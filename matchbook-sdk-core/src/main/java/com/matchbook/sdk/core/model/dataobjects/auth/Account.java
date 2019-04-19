@@ -54,7 +54,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return Account.class.getSimpleName() + " {" +
+        return Account.class.getSimpleName() + "{" +
                 "id=" + id +
                 ", username=" + username +
                 ", balance=" + balance +
