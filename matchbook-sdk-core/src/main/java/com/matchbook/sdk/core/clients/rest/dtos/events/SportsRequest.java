@@ -13,7 +13,7 @@ public class SportsRequest extends PageableRequest {
 
     @Override
     public String resourcePath() {
-        return "sports";
+        return "lookups/sports";
     }
 
     @Override
