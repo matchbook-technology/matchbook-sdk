@@ -11,7 +11,7 @@ import com.matchbook.sdk.core.clients.rest.dtos.user.Login;
 import com.matchbook.sdk.core.clients.rest.dtos.user.LoginRequest;
 import com.matchbook.sdk.core.configs.ClientConnectionManager;
 import com.matchbook.sdk.core.configs.SessionManager;
-import com.matchbook.sdk.core.exceptions.ErrorCode;
+import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.core.model.dataobjects.LoginEnvelope;
 import com.matchbook.sdk.core.model.dataobjects.auth.Credentials;
@@ -93,7 +93,7 @@ public class AuthRestService implements AuthService, SessionManager {
         try {
             return future.get();
         } catch (InterruptedException | ExecutionException e) {
-            throw new MatchbookSDKException(e, ErrorCode.UNAUTHENTICATED);
+            throw new MatchbookSDKException(e, ErrorType.UNAUTHENTICATED);
         }
     }
 

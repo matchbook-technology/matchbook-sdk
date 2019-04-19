@@ -4,24 +4,25 @@ public class MatchbookSDKException extends RuntimeException {
 
     private static final long serialVersionUID = -7090006730979505152L;
 
-    private final ErrorCode errorCode;
+    private final ErrorType errorType;
 
-    public MatchbookSDKException(String message, Throwable cause, ErrorCode errorCode) {
+    public MatchbookSDKException(String message, Throwable cause, ErrorType errorType) {
         super(message, cause);
-        this.errorCode = errorCode;
+        this.errorType = errorType;
     }
 
-    public MatchbookSDKException(String message, ErrorCode errorCode) {
+    public MatchbookSDKException(String message, ErrorType errorType) {
         super(message);
-        this.errorCode = errorCode;
+        this.errorType = errorType;
     }
 
-    public MatchbookSDKException(Throwable cause, ErrorCode errorCode) {
+    public MatchbookSDKException(Throwable cause, ErrorType errorType) {
         super(cause);
-        this.errorCode = errorCode;
+        this.errorType = errorType;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
+    public ErrorType getErrorType() {
+        return errorType;
     }
+
 }

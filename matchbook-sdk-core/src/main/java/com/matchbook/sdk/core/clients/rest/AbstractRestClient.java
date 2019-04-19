@@ -16,8 +16,8 @@ import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.errors.Errors;
 import com.matchbook.sdk.core.configs.ClientConnectionManager;
-import com.matchbook.sdk.core.exceptions.ErrorCode;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKHTTPException;
+import com.matchbook.sdk.core.exceptions.ErrorType;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
@@ -61,7 +61,7 @@ abstract class AbstractRestClient {
             ObjectReader objectReader = getObjectReader(observedResource);
             sendHttpRequest(httpRequest, observer, objectReader);
         } catch (JsonProcessingException e) {
-            observer.onError(new MatchbookSDKHTTPException((e.getCause())));
+            observer.onError(new MatchbookSDKHttpException((e.getCause())));
         }
     }
 
@@ -121,7 +121,7 @@ abstract class AbstractRestClient {
                     restResponse.getContent().forEach(observer::onNext);
                     observer.onCompleted();
                 } else {
-                    MatchbookSDKHTTPException matchbookException = getExceptionForResponse(response);
+                    MatchbookSDKHttpException matchbookException = getExceptionForResponse(response);
                     observer.onError(matchbookException);
                 }
             }
@@ -129,11 +129,11 @@ abstract class AbstractRestClient {
 
         @Override
         public void onFailure(Request request, IOException e) {
-            MatchbookSDKHTTPException matchbookException = new MatchbookSDKHTTPException(e.getMessage(), e);
+            MatchbookSDKHttpException matchbookException = new MatchbookSDKHttpException(e.getMessage(), e);
             observer.onError(matchbookException);
         }
 
-        private MatchbookSDKHTTPException getExceptionForResponse(Response response) {
+        private MatchbookSDKHttpException getExceptionForResponse(Response response) {
             if (Objects.nonNull(response.body())) {
                 try {
                     Errors errors = errorReader.readValue(response.body().byteStream());
@@ -153,12 +153,12 @@ abstract class AbstractRestClient {
                     .anyMatch(message -> message.toLowerCase().contains("cannot login"));
         }
 
-        private MatchbookSDKHTTPException newHTTPException(Response response) {
-            return new MatchbookSDKHTTPException("Unexpected HTTP code " + response, ErrorCode.HTTP_ERROR);
+        private MatchbookSDKHttpException newHTTPException(Response response) {
+            return new MatchbookSDKHttpException("Unexpected HTTP code " + response, ErrorType.HTTP);
         }
 
-        private MatchbookSDKHTTPException newUnauthenticatedException() {
-            return new MatchbookSDKHTTPException("Incorrect username or password", ErrorCode.UNAUTHENTICATED);
+        private MatchbookSDKHttpException newUnauthenticatedException() {
+            return new MatchbookSDKHttpException("Incorrect username or password", ErrorType.UNAUTHENTICATED);
         }
 
     }
