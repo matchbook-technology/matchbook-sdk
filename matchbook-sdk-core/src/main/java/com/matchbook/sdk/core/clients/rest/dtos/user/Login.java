@@ -15,7 +15,7 @@ public class Login implements RestResponse<Login> {
         return sessionToken;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
