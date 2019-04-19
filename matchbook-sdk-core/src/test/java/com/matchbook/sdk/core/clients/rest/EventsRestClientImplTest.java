@@ -169,5 +169,38 @@ public class EventsRestClientImplTest extends MatchbookSDKClientTest {
         assertThat(await).isTrue();
     }
 
+    @Test
+    public void successulGetMarketsTest() throws InterruptedException {
+        stubFor(get(urlPathEqualTo("/edge/rest/events/395729780570010/markets"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/getMarketsSuccessfulResponse.json")));
 
+        final CountDownLatch countDownLatch = new CountDownLatch(9);
+        MarketsRequest marketsRequest = new MarketsRequest.Builder(395729780570010L).build();
+
+        eventsRestClient.getMarkets(marketsRequest, new StreamObserver<Market>() {
+
+            @Override
+            public void onNext(Market market) {
+                assertThat(market.getId()).isNotNull();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+        });
+
+        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
 }

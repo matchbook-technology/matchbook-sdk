@@ -1,9 +1,6 @@
 package com.matchbook.sdk.core.clients.rest.dtos.events;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.matchbook.sdk.core.clients.rest.dtos.prices.PageablePricesRequest;
@@ -97,6 +94,8 @@ public class MarketsRequest extends PageablePricesRequest {
 
         public Builder(Long eventId) {
             this.eventId = eventId;
+            types = new HashSet<>();
+            statuses = new HashSet<>();
             includePrices = false;
         }
 
