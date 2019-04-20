@@ -1,4 +1,4 @@
-package com.matchbook.sdk.core.configs.wrappers;
+package com.matchbook.sdk.core.configs;
 
 import java.io.InputStream;
 

@@ -1,8 +1,6 @@
 package com.matchbook.sdk.core.configs;
 
-import com.matchbook.sdk.core.configs.wrappers.HttpClient;
 import com.matchbook.sdk.core.configs.wrappers.HttpClientWrapper;
-import com.matchbook.sdk.core.configs.wrappers.Serializer;
 import com.matchbook.sdk.core.configs.wrappers.SerializerWrapper;
 
 public final class ConnectionManager {

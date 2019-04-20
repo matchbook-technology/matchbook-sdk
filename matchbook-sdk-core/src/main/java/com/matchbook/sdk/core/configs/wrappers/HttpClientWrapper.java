@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import com.matchbook.sdk.core.configs.HttpCallback;
+import com.matchbook.sdk.core.configs.HttpClient;
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
 import com.squareup.okhttp.Callback;
@@ -105,7 +107,7 @@ public class HttpClientWrapper implements HttpClient {
         }
 
         private boolean isAuthenticationErrorPresent(ResponseBody body) throws IOException {
-            return new String(body.bytes()).contains("cannot login");
+            return new String(body.bytes()).toLowerCase().contains("cannot login");
         }
 
         private MatchbookSDKHttpException newHTTPException(Response response) {

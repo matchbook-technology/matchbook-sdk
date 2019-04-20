@@ -9,8 +9,8 @@ import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 import com.matchbook.sdk.core.configs.ClientConfig;
 import com.matchbook.sdk.core.configs.ConnectionManager;
-import com.matchbook.sdk.core.configs.wrappers.HttpCallback;
-import com.matchbook.sdk.core.configs.wrappers.Serializer;
+import com.matchbook.sdk.core.configs.HttpCallback;
+import com.matchbook.sdk.core.configs.Serializer;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
 
 abstract class AbstractRestClient {
