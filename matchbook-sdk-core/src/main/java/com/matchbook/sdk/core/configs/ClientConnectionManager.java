@@ -1,12 +1,22 @@
 package com.matchbook.sdk.core.configs;
 
-import java.util.concurrent.TimeUnit;
-
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.BeanDescription;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.squareup.okhttp.OkHttpClient;
+
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public final class ClientConnectionManager {
 
@@ -22,10 +32,32 @@ public final class ClientConnectionManager {
 
     private ObjectMapper buildObjectMapper() {
         final ObjectMapper mapper = new ObjectMapper();
+        final Module module = caseInsensitiveEnumModule();
+        mapper.registerModule(module);
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         return mapper;
+    }
+
+    private Module caseInsensitiveEnumModule() {
+        SimpleModule module = new SimpleModule();
+        module.setDeserializerModifier(new BeanDeserializerModifier() {
+
+            @Override
+            public JsonDeserializer<Enum> modifyEnumDeserializer(DeserializationConfig config, JavaType type,
+                    BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+                return new JsonDeserializer<Enum>() {
+
+                    @Override
+                    public Enum deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException {
+                        Class<? extends Enum> rawClass = (Class<Enum<?>>) type.getRawClass();
+                        return Enum.valueOf(rawClass, jsonParser.getValueAsString().toUpperCase());
+                    }
+                };
+            }
+        });
+        return module;
     }
 
     private OkHttpClient buildOkHttpClient() {
