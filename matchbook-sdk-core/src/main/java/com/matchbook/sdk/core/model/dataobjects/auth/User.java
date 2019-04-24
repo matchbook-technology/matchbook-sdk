@@ -16,7 +16,7 @@ public class User {
         return sessionToken;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
