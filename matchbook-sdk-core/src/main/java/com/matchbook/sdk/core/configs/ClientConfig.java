@@ -6,13 +6,13 @@ public class ClientConfig {
 
     private final char[] username;
     private final char[] password;
-    private final String url;
+    private final String sportsUrl;
     private final String loginUrl;
 
     private ClientConfig(ClientConfig.Builder builder) {
         this.username = builder.username;
         this.password = builder.password;
-        this.url = builder.url;
+        this.sportsUrl = builder.sportsUrl;
         this.loginUrl = builder.loginUrl;
     }
 
@@ -24,8 +24,8 @@ public class ClientConfig {
         return password;
     }
 
-    public String buildUrl(String path) {
-        return url + "/" + path;
+    public String getSportsUrl() {
+        return sportsUrl;
     }
 
     public String getLoginUrl() {
@@ -37,8 +37,8 @@ public class ClientConfig {
         return ClientConfig.class.getSimpleName() + "{" +
                 "username=" + Arrays.toString(username) +
                 ", password='" + Arrays.toString(password) +
-                ", url=" + url +
-                ", loginUrl=" + loginUrl +
+                ", buildSportsUrl=" + sportsUrl +
+                ", buildLoginUrl=" + loginUrl +
                 "}";
     }
 
@@ -47,7 +47,7 @@ public class ClientConfig {
         private final char[] username;
         private final char[] password;
 
-        private String url = "https://api.matchbook.com/edge/rest";
+        private String sportsUrl = "https://api.matchbook.com/edge/rest";
         private String loginUrl = "https://api.matchbook.com/bpapi/rest/security/session";
 
         public Builder(char[] username, char[] password) {
@@ -55,8 +55,8 @@ public class ClientConfig {
             this.password = password;
         }
 
-        public Builder url(String url) {
-            this.url = url;
+        public Builder sportsUrl(String sportsUrl) {
+            this.sportsUrl = sportsUrl;
             return this;
         }
 

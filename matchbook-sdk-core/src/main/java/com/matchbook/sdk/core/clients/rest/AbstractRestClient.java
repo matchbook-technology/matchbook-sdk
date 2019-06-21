@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
-import com.matchbook.sdk.core.configs.ClientConfig;
 import com.matchbook.sdk.core.configs.ConnectionManager;
 import com.matchbook.sdk.core.configs.HttpCallback;
 import com.matchbook.sdk.core.configs.Serializer;
@@ -19,10 +18,6 @@ abstract class AbstractRestClient {
 
     protected AbstractRestClient(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
-    }
-
-    protected ClientConfig getClientConfig() {
-        return connectionManager.getClientConfig();
     }
 
     protected <REQ extends RestRequest, RESP extends RestResponse<T>, T>
@@ -41,6 +36,14 @@ abstract class AbstractRestClient {
         String requestUrl = buildUrl(url, request);
         Serializer serializer = connectionManager.getSerializer();
         connectionManager.getHttpClient().get(requestUrl, new RestCallback<>(observer, responseClass, serializer));
+    }
+
+    protected String buildSportsUrl(String path) {
+        return connectionManager.getClientConfig().getSportsUrl() + "/" + path;
+    }
+
+    protected String buildLoginUrl() {
+        return connectionManager.getClientConfig().getLoginUrl();
     }
 
     private <REQ extends RestRequest> String buildUrl(String baseUrl, REQ request) {

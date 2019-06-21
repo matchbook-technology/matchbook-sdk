@@ -14,7 +14,7 @@ public class UserRestClientImpl extends AbstractRestClient implements UserRestCl
 
     @Override
     public void login(LoginRequest loginRequest, StreamObserver<Login> loginObserver) {
-        String url = getClientConfig().getLoginUrl();
+        String url = buildLoginUrl();
         postRequest(url, loginRequest, loginObserver, Login.class);
     }
 
