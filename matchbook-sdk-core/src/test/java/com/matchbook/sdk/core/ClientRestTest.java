@@ -19,11 +19,10 @@ public class ClientRestTest {
 
     @Test
     public void reuseClientTest() {
-        Client client = new ClientRest(clientConfig);
+        Client unit = new ClientRest(clientConfig);
 
-        AuthService authService = client.getAuthService();
-        AuthService authService2 = client.getAuthService();
-
+        AuthService authService = unit.getAuthService();
+        AuthService authService2 = unit.getAuthService();
 
         assertThat(authService).isEqualTo(authService2);
     }

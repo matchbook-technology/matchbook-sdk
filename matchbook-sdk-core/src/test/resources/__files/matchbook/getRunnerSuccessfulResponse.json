@@ -1,0 +1,21 @@
+{
+  "withdrawn": false,
+  "prices": [
+    {
+      "available-amount": 20,
+      "currency": "EUR",
+      "odds-type": "DECIMAL",
+      "odds": 3,
+      "decimal-odds": 3,
+      "side": "lay",
+      "exchange-type": "back-lay"
+    }
+  ],
+  "event-id": 395729780570010,
+  "id": 395729860800010,
+  "market-id": 395729860260010,
+  "name": "CSKA Moscow",
+  "status": "open",
+  "volume": 0,
+  "event-participant-id": 395729781340010
+}

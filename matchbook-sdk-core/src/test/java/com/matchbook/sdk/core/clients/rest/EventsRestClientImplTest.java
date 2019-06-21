@@ -1,21 +1,31 @@
 package com.matchbook.sdk.core.clients.rest;
 
-import com.matchbook.sdk.core.MatchbookSDKClientTest;
-import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.clients.rest.dtos.events.*;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import org.junit.Test;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import static org.junit.Assert.*;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import com.matchbook.sdk.core.MatchbookSDKClientTest;
+import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.core.clients.rest.dtos.events.Event;
+import com.matchbook.sdk.core.clients.rest.dtos.events.EventRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.EventsRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.Market;
+import com.matchbook.sdk.core.clients.rest.dtos.events.MarketRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.MarketsRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.Runner;
+import com.matchbook.sdk.core.clients.rest.dtos.events.RunnerRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.RunnersRequest;
+import com.matchbook.sdk.core.clients.rest.dtos.events.Sport;
+import com.matchbook.sdk.core.clients.rest.dtos.events.SportsRequest;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import org.junit.Test;
 
 public class EventsRestClientImplTest extends MatchbookSDKClientTest {
 
@@ -63,7 +73,7 @@ public class EventsRestClientImplTest extends MatchbookSDKClientTest {
     }
 
     @Test
-    public void successulGetEventTest() throws InterruptedException {
+    public void successfulGetEventTest() throws InterruptedException {
         stubFor(get(urlPathEqualTo("/edge/rest/events/395729780570010"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
@@ -98,7 +108,7 @@ public class EventsRestClientImplTest extends MatchbookSDKClientTest {
     }
 
     @Test
-    public void successulGetEventsTest() throws InterruptedException {
+    public void successfulGetEventsTest() throws InterruptedException {
         stubFor(get(urlPathEqualTo("/edge/rest/events"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
@@ -114,6 +124,162 @@ public class EventsRestClientImplTest extends MatchbookSDKClientTest {
             @Override
             public void onNext(Event event) {
                 assertThat(event.getId()).isNotNull();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+        });
+
+        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void successfulGetMarketTest() throws InterruptedException {
+        String testUrl = "/edge/rest/events/395729780570010/markets/395729860260010";
+        stubFor(get(urlPathEqualTo(testUrl))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/getMarketSuccessfulResponse.json")));
+
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+        MarketRequest marketRequest = new MarketRequest
+                .Builder(395729860260010L, 395729780570010L)
+                .build();
+
+        eventsRestClient.getMarket(marketRequest, new StreamObserver<Market>() {
+
+            @Override
+            public void onNext(Market market) {
+                assertThat(market.getId()).isNotNull();
+                assertThat(market.getEventId()).isNotNull();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+        });
+
+        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void successfulGetMarketsTest() throws InterruptedException {
+        String testUrl = "/edge/rest/events/395729780570010/markets";
+        stubFor(get(urlPathEqualTo(testUrl))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/getMarketsSuccessfulResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(9);
+        MarketsRequest marketsRequest = new MarketsRequest.Builder(395729780570010L).build();
+
+        eventsRestClient.getMarkets(marketsRequest, new StreamObserver<Market>() {
+
+            @Override
+            public void onNext(Market market) {
+                assertThat(market.getId()).isNotNull();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+        });
+
+        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void successfulGetRunnerTest() throws InterruptedException {
+        String testUrl = "/edge/rest/events/395729780570010/markets/395729860260010/runners/395729860800010";
+        stubFor(get(urlPathEqualTo(testUrl))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/getRunnerSuccessfulResponse.json")));
+
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+
+        RunnerRequest runnerRequest = new RunnerRequest
+                .Builder(395729780570010L, 395729860260010L, 395729860800010L)
+                .build();
+
+        eventsRestClient.getRunner(runnerRequest, new StreamObserver<Runner>() {
+
+            @Override
+            public void onNext(Runner runner) {
+                assertThat(runner.getId()).isNotNull();
+                assertThat(runner.getEventId()).isNotNull();
+                assertThat(runner.getMarketId()).isNotNull();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+        });
+
+        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void successfulGetRunnersTest() throws InterruptedException {
+        String testUrl = "/edge/rest/events/395729780570010/markets/395729860260010/runners";
+        stubFor(get(urlPathEqualTo(testUrl))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/getRunnersSuccessfulResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(4);
+        RunnersRequest runnersRequest = new RunnersRequest
+                .Builder(395729780570010L, 395729860260010L)
+                .build();
+
+        eventsRestClient.getRunners(runnersRequest, new StreamObserver<Runner>() {
+
+            @Override
+            public void onNext(Runner runner) {
+                assertThat(runner.getId()).isNotNull();
                 countDownLatch.countDown();
             }
 

@@ -1,0 +1,67 @@
+{
+  "event-id": 395729780570010,
+  "id": 395729860260010,
+  "name": "Match Odds",
+  "runners": [
+    {
+      "withdrawn": false,
+      "prices": [
+        {
+          "available-amount": 20,
+          "currency": "EUR",
+          "odds-type": "DECIMAL",
+          "odds": 3,
+          "decimal-odds": 3,
+          "side": "lay",
+          "exchange-type": "back-lay"
+        }
+      ],
+      "event-id": 395729780570010,
+      "id": 395729860800010,
+      "market-id": 395729860260010,
+      "name": "CSKA Moscow",
+      "status": "open",
+      "volume": 0,
+      "event-participant-id": 395729781340010
+    },
+    {
+      "withdrawn": false,
+      "prices": [],
+      "event-id": 395729780570010,
+      "id": 395729861280010,
+      "market-id": 395729860260010,
+      "name": "Bayer 04 Leverkusen",
+      "status": "open",
+      "volume": 0,
+      "event-participant-id": 395729781460010
+    },
+    {
+      "withdrawn": false,
+      "prices": [
+        {
+          "available-amount": 60,
+          "currency": "EUR",
+          "odds-type": "DECIMAL",
+          "odds": 2,
+          "decimal-odds": 2,
+          "side": "lay",
+          "exchange-type": "back-lay"
+        }
+      ],
+      "event-id": 395729780570010,
+      "id": 395729861330010,
+      "market-id": 395729860260010,
+      "name": "DRAW (CSK/Bay)",
+      "status": "open",
+      "volume": 0,
+      "event-participant-id": 0
+    }
+  ],
+  "start": "2016-11-22T17:00:00.000Z",
+  "status": "open",
+  "market-type": "one_x_two",
+  "type": "multirunner",
+  "in-running-flag": false,
+  "allow-live-betting": true,
+  "volume": 0
+}
