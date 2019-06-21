@@ -28,7 +28,7 @@ public class LoginToUserMapperTest {
     private LoginToUserMapper unit = new LoginToUserMapper();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.unit = new LoginToUserMapper();
     }
 

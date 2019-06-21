@@ -31,8 +31,8 @@ public class AuthRestServiceTest extends MatchbookSDKClientTest {
     private AuthRestService unit;
 
     @Before
-    public void setUp() throws Exception {
-        this.unit = new AuthRestService(clientConnectionManager);
+    public void setUp() {
+        this.unit = new AuthRestService(connectionManager);
     }
 
     @Test

@@ -12,9 +12,8 @@ public class ClientRestTest {
     private ClientConfig clientConfig;
 
     @Before
-    public void setUp() throws Exception {
-        this.clientConfig = new ClientConfig.Builder("user".toCharArray(),
-                "password".toCharArray()).build();
+    public void setUp() {
+        this.clientConfig = new ClientConfig.Builder("user".toCharArray(), "password".toCharArray()).build();
     }
 
     @Test
