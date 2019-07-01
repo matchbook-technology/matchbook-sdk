@@ -22,7 +22,7 @@ public class Credentials {
 
     @Override
     public String toString() {
-        return Credentials.class.getSimpleName() + " {" +
+        return Credentials.class.getSimpleName() + "{" +
                 "username=" + Arrays.toString(username) +
                 ", password=" + Arrays.toString(password) +
                 "}";

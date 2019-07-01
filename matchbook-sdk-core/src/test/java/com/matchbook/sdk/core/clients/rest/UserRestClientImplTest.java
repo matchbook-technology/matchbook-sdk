@@ -4,7 +4,7 @@ import com.matchbook.sdk.core.MatchbookSDKClientTest;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.clients.rest.dtos.user.Login;
 import com.matchbook.sdk.core.clients.rest.dtos.user.LoginRequest;
-import com.matchbook.sdk.core.exceptions.ErrorCode;
+import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import org.junit.Test;
 
@@ -24,7 +24,7 @@ public class UserRestClientImplTest extends MatchbookSDKClientTest {
     private final UserRestClient userRestClient;
 
     public UserRestClientImplTest() {
-        this.userRestClient = new UserRestClientImpl(clientConnectionManager);
+        this.userRestClient = new UserRestClientImpl(connectionManager);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class UserRestClientImplTest extends MatchbookSDKClientTest {
 
             @Override
             public void onError(MatchbookSDKException e) {
-                assertThat(e.getErrorCode()).isEqualTo(ErrorCode.UNAUTHENTICATED);
+                assertThat(e.getErrorType()).isEqualTo(ErrorType.UNAUTHENTICATED);
                 countDownLatch.countDown();
             }
 
@@ -116,7 +116,7 @@ public class UserRestClientImplTest extends MatchbookSDKClientTest {
 
             @Override
             public void onError(MatchbookSDKException e) {
-                assertThat(e.getErrorCode()).isEqualTo(ErrorCode.HTTP_ERROR);
+                assertThat(e.getErrorType()).isEqualTo(ErrorType.HTTP);
                 countDownLatch.countDown();
             }
 

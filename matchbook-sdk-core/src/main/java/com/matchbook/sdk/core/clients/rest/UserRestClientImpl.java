@@ -4,17 +4,17 @@ import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.clients.rest.dtos.user.Login;
 import com.matchbook.sdk.core.clients.rest.dtos.user.LoginRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.user.Logout;
-import com.matchbook.sdk.core.configs.ClientConnectionManager;
+import com.matchbook.sdk.core.configs.ConnectionManager;
 
 public class UserRestClientImpl extends AbstractRestClient implements UserRestClient {
 
-    public UserRestClientImpl(ClientConnectionManager clientConnectionManager) {
-        super(clientConnectionManager);
+    public UserRestClientImpl(ConnectionManager connectionManager) {
+        super(connectionManager);
     }
 
     @Override
     public void login(LoginRequest loginRequest, StreamObserver<Login> loginObserver) {
-        String url = getClientConfig().getLoginUrl();
+        String url = buildLoginUrl();
         postRequest(url, loginRequest, loginObserver, Login.class);
     }
 

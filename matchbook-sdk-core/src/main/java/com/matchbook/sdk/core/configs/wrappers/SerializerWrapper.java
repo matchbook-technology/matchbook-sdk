@@ -1,4 +1,9 @@
-package com.matchbook.sdk.core.configs;
+package com.matchbook.sdk.core.configs.wrappers;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.BeanDescription;
@@ -9,28 +14,28 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.squareup.okhttp.OkHttpClient;
+import com.matchbook.sdk.core.configs.Serializer;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
+public class SerializerWrapper implements Serializer {
 
-public final class ClientConnectionManager {
-
-    private final ClientConfig clientConfig;
-    private final OkHttpClient httpClient;
     private final ObjectMapper objectMapper;
+    private final Map<Class<?>, ObjectWriter> objectWriters;
+    private final Map<Class<?>, ObjectReader> objectReaders;
 
-    public ClientConnectionManager(ClientConfig clientConfig) {
-        this.clientConfig = clientConfig;
-        this.httpClient = buildOkHttpClient();
-        this.objectMapper = buildObjectMapper();
+    public SerializerWrapper() {
+        objectMapper = initObjectMapper();
+
+        objectWriters = new HashMap<>();
+        objectReaders = new HashMap<>();
     }
 
-    private ObjectMapper buildObjectMapper() {
+    private ObjectMapper initObjectMapper() {
         final ObjectMapper mapper = new ObjectMapper();
         final Module module = caseInsensitiveEnumModule();
         mapper.registerModule(module);
@@ -50,7 +55,7 @@ public final class ClientConnectionManager {
                 return new JsonDeserializer<Enum>() {
 
                     @Override
-                    public Enum deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException {
+                    public Enum<?> deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException {
                         Class<? extends Enum> rawClass = (Class<Enum<?>>) type.getRawClass();
                         return Enum.valueOf(rawClass, jsonParser.getValueAsString().toUpperCase());
                     }
@@ -60,25 +65,16 @@ public final class ClientConnectionManager {
         return module;
     }
 
-    private OkHttpClient buildOkHttpClient() {
-        final OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(5, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
-        okHttpClient.setFollowRedirects(false);
-        return okHttpClient;
+    @Override
+    public <T> String writeObjectAsString(T object) throws IOException {
+        ObjectWriter objectWriter = objectWriters.computeIfAbsent(object.getClass(), objectMapper::writerFor);
+        return objectWriter.writeValueAsString(object);
     }
 
-    public ClientConfig getClientConfig() {
-        return clientConfig;
-    }
-
-    public OkHttpClient getHttpClient() {
-        return httpClient;
-    }
-
-    public ObjectMapper getObjectMapper() {
-        return objectMapper;
+    @Override
+    public <T> T readObject(InputStream inputStream, Class<T> type) throws IOException {
+        ObjectReader objectReader = objectReaders.computeIfAbsent(type, objectMapper::readerFor);
+        return objectReader.readValue(inputStream);
     }
 
 }
