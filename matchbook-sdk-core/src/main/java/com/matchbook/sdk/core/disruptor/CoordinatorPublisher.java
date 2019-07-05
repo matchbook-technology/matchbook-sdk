@@ -20,7 +20,7 @@ public class CoordinatorPublisher implements DisruptorPublisher<CoordinatorMessa
 
             availableMessage.setMessageType(newMessage.getMessageType());
             availableMessage.setReceivedTime(System.nanoTime());
-            availableMessage.setSequence(sequence);
+            availableMessage.setId(sequence);
 
             availableMessage.setLoginDTO(newMessage.getLoginDTO());
         } finally {

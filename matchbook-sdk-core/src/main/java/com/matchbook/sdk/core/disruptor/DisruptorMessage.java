@@ -2,15 +2,13 @@ package com.matchbook.sdk.core.disruptor;
 
 public interface DisruptorMessage {
 
-    String getId();
-
     void setSkipped(boolean skipped);
 
     boolean isSkipped();
 
-    void setSequence(long sequence);
+    void setId(long sequence);
 
-    long getSequence();
+    long getId();
 
     void setReceivedTime(long receivedTime);
 

@@ -33,12 +33,12 @@ public abstract class AbstractDisruptorMessage implements DisruptorMessage {
     }
 
     @Override
-    public void setSequence(long sequence) {
+    public void setId(long sequence) {
         this.sequence = sequence;
     }
 
     @Override
-    public long getSequence() {
+    public long getId() {
         return sequence;
     }
 
