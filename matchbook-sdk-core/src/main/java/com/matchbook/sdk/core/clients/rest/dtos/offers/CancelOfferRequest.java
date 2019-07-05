@@ -30,7 +30,7 @@ public class CancelOfferRequest implements RestRequest {
     @Override
     public String toString() {
         return CancelOfferRequest.class.getSimpleName() + " {" +
-                ", offerId=" + offerId +
+                "offerId=" + offerId +
                 "}";
     }
 

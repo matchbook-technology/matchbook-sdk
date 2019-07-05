@@ -40,7 +40,7 @@ public class CancelOffersRequest implements RestRequest {
 
     @Override
     public String resourcePath() {
-        return "v2/offers/";
+        return "v2/offers";
     }
 
     @Override

@@ -37,6 +37,7 @@ public class Offer implements RestResponse<Offer> {
     private boolean keepInPlay;
     private Instant createdAt;
     private List<MatchedBet> matchedBets;
+    private OfferEdit offerEdit;
 
     public Offer() {
         matchedBets = new ArrayList<>();
@@ -218,6 +219,14 @@ public class Offer implements RestResponse<Offer> {
         this.matchedBets = matchedBets;
     }
 
+    public OfferEdit getOfferEdit() {
+        return offerEdit;
+    }
+
+    public void setOfferEdit(OfferEdit offerEdit) {
+        this.offerEdit = offerEdit;
+    }
+
     @Override
     public Set<Offer> getContent() {
         return Collections.singleton(this);
@@ -248,6 +257,7 @@ public class Offer implements RestResponse<Offer> {
                 ", keepInPlay=" + keepInPlay +
                 ", createdAt=" + createdAt +
                 ", matchedBets=" + matchedBets +
+                ", offerEdit=" + offerEdit +
                 "}";
     }
 
