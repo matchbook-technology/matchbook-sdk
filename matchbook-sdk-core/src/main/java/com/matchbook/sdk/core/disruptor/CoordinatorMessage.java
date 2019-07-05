@@ -3,12 +3,12 @@ package com.matchbook.sdk.core.disruptor;
 import java.util.Objects;
 
 import com.matchbook.sdk.core.clients.rest.dtos.user.Login;
-import com.matchbook.sdk.core.model.dataobjects.auth.Account;
+import com.matchbook.sdk.core.model.dataobjects.auth.User;
 
 public class CoordinatorMessage extends AbstractDisruptorMessage {
 
     private Login loginDTO;
-    private Account account;
+    private User user;
 
     @Override
     public String getId() {
@@ -30,18 +30,18 @@ public class CoordinatorMessage extends AbstractDisruptorMessage {
     public void reset() {
         setMessageType(null);
         setSkipped(false);
-        
-        account = null;
+
+        user = null;
         loginDTO = null;
     }
 
 
-    public Account getAccount() {
-        return account;
+    public User getUser() {
+        return user;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Login getLoginDTO() {

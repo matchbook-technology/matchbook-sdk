@@ -24,6 +24,7 @@ public class RestPoolerWorker implements PoolerWorker {
         this.connectionManager = connectionManager;
 
         authScheduler = Executors.newScheduledThreadPool(1);
+        //TODO: should be configurable
         eventsScheduler = Executors.newScheduledThreadPool(1);
     }
 

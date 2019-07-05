@@ -48,7 +48,7 @@ public class LoginToUserMapperTest {
         when(account.getCurrency()).thenReturn(Currency.CAD);
         when(login.getAccount()).thenReturn(account);
 
-        User user = unit.mapToModel(login);
+        User user = unit.mapLoginDTOToUser(login);
 
         assertThat(user).isNotNull();
         assertThat(user.getSessionToken()).isEqualTo(SESSION_TOKEN);
@@ -73,7 +73,7 @@ public class LoginToUserMapperTest {
         when(account.getId()).thenReturn(null);
         when(login.getAccount()).thenReturn(account);
 
-        User user = unit.mapToModel(login);
+        User user = unit.mapLoginDTOToUser(login);
 
         assertThat(user).isNotNull();
         assertThat(user.getSessionToken()).isNull();

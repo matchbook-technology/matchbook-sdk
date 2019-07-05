@@ -36,7 +36,7 @@ public class AuthenticationScheduler implements Runnable {
 
             @Override
             public void onCompleted() {
-                //TODO: we should wait until successful login
+                //do nothing
             }
 
             @Override

@@ -3,6 +3,7 @@ package com.matchbook.sdk.core.disruptor.handlers;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.LifecycleAware;
 import com.matchbook.sdk.core.disruptor.CoordinatorMessage;
+import com.matchbook.sdk.core.model.mappers.auth.LoginToUserMapper;
 
 public class TransformerHandler<T extends CoordinatorMessage> implements EventHandler<T>, LifecycleAware {
 
@@ -10,7 +11,12 @@ public class TransformerHandler<T extends CoordinatorMessage> implements EventHa
 
     @Override
     public void onEvent(T event, long sequence, boolean endOfBatch) throws Exception {
-        System.out.println("TransformerHandler: " + event + " sequence:" + sequence);
+        switch (event.getMessageType()) {
+            case AUTH:
+                event.setUser(LoginToUserMapper.mapLoginDTOToUser(event.getLoginDTO()));
+                break;
+            default:
+        }
     }
 
     @Override
