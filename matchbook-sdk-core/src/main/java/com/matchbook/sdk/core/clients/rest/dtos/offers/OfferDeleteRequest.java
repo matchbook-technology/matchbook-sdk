@@ -5,11 +5,11 @@ import java.util.Map;
 
 import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 
-public class CancelOfferRequest implements RestRequest {
+public class OfferDeleteRequest implements RestRequest {
 
     private final Long offerId;
 
-    private CancelOfferRequest(CancelOfferRequest.Builder builder) {
+    private OfferDeleteRequest(OfferDeleteRequest.Builder builder) {
         this.offerId = builder.offerId;
     }
 
@@ -29,7 +29,7 @@ public class CancelOfferRequest implements RestRequest {
 
     @Override
     public String toString() {
-        return CancelOfferRequest.class.getSimpleName() + " {" +
+        return OfferDeleteRequest.class.getSimpleName() + " {" +
                 "offerId=" + offerId +
                 "}";
     }
@@ -42,8 +42,8 @@ public class CancelOfferRequest implements RestRequest {
             this.offerId = offerId;
         }
 
-        public CancelOfferRequest build() {
-            return new CancelOfferRequest(this);
+        public OfferDeleteRequest build() {
+            return new OfferDeleteRequest(this);
         }
     }
 

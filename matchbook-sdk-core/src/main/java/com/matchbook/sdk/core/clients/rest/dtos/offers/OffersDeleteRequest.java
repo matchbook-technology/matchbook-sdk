@@ -8,14 +8,14 @@ import java.util.stream.Collectors;
 
 import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 
-public class CancelOffersRequest implements RestRequest {
+public class OffersDeleteRequest implements RestRequest {
 
     private final Set<Long> eventIds;
     private final Set<Long> marketIds;
     private final Set<Long> runnersIds;
     private final Set<Long> offerIds;
 
-    private CancelOffersRequest(CancelOffersRequest.Builder builder) {
+    private OffersDeleteRequest(OffersDeleteRequest.Builder builder) {
         this.eventIds = builder.eventIds;
         this.marketIds = builder.marketIds;
         this.runnersIds = builder.runnersIds;
@@ -75,7 +75,7 @@ public class CancelOffersRequest implements RestRequest {
 
     @Override
     public String toString() {
-        return CancelOffersRequest.class.getSimpleName() + " {" +
+        return OffersDeleteRequest.class.getSimpleName() + " {" +
                 "eventIds=" + eventIds +
                 ", marketIds=" + marketIds +
                 ", runnersIds=" + runnersIds +
@@ -110,8 +110,8 @@ public class CancelOffersRequest implements RestRequest {
             return this;
         }
 
-        public CancelOffersRequest build() {
-            return new CancelOffersRequest(this);
+        public OffersDeleteRequest build() {
+            return new OffersDeleteRequest(this);
         }
     }
 

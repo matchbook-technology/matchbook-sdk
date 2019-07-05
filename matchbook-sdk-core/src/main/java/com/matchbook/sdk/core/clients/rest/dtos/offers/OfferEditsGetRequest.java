@@ -5,11 +5,11 @@ import java.util.Map;
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequestBuilder;
 
-public class OfferEditsRequest extends PageableRequest {
+public class OfferEditsGetRequest extends PageableRequest {
 
     private final Long offerId;
 
-    private OfferEditsRequest(OfferEditsRequest.Builder builder) {
+    private OfferEditsGetRequest(OfferEditsGetRequest.Builder builder) {
         super(builder);
 
         this.offerId = builder.offerId;
@@ -31,7 +31,7 @@ public class OfferEditsRequest extends PageableRequest {
 
     @Override
     public String toString() {
-        return OfferEditsRequest.class.getSimpleName() + " {" +
+        return OfferEditsGetRequest.class.getSimpleName() + " {" +
                 "offerId=" + offerId +
                 ", offset=" + offset +
                 ", perPage=" + perPage +
@@ -46,8 +46,8 @@ public class OfferEditsRequest extends PageableRequest {
             this.offerId = offerId;
         }
 
-        public OfferEditsRequest build() {
-            return new OfferEditsRequest(this);
+        public OfferEditsGetRequest build() {
+            return new OfferEditsGetRequest(this);
         }
     }
 

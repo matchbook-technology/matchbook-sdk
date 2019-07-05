@@ -11,7 +11,7 @@ import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequestBuilder;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Side;
 
-public class OffersRequest extends PageableRequest {
+public class OffersGetRequest extends PageableRequest {
 
     private final Set<Long> sportIds;
     private final Set<Long> eventIds;
@@ -22,7 +22,7 @@ public class OffersRequest extends PageableRequest {
     private final Integer interval;
     private final boolean includeEdits;
 
-    private OffersRequest(OffersRequest.Builder builder) {
+    private OffersGetRequest(OffersGetRequest.Builder builder) {
         super(builder);
 
         this.sportIds = builder.sportIds;
@@ -118,7 +118,7 @@ public class OffersRequest extends PageableRequest {
 
     @Override
     public String toString() {
-        return OffersRequest.class.getSimpleName() + " {" +
+        return OffersGetRequest.class.getSimpleName() + " {" +
                 "sportIds=" + sportIds +
                 ", eventIds=" + eventIds +
                 ", marketIds=" + marketIds +
@@ -187,8 +187,8 @@ public class OffersRequest extends PageableRequest {
             return this;
         }
 
-        public OffersRequest build() {
-            return new OffersRequest(this);
+        public OffersGetRequest build() {
+            return new OffersGetRequest(this);
         }
     }
 
