@@ -34,6 +34,7 @@ public class Offer implements RestResponse<Offer> {
     private BigDecimal acceptorCommissionRate;
     private BigDecimal commissionReserve;
     private boolean inPlay;
+    private boolean keepInPlay;
     private Instant createdAt;
     private List<MatchedBet> matchedBets;
 
@@ -193,6 +194,14 @@ public class Offer implements RestResponse<Offer> {
         this.inPlay = inPlay;
     }
 
+    public boolean isKeepInPlay() {
+        return keepInPlay;
+    }
+
+    public void setKeepInPlay(boolean keepInPlay) {
+        this.keepInPlay = keepInPlay;
+    }
+
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -236,6 +245,7 @@ public class Offer implements RestResponse<Offer> {
                 ", acceptorCommissionRate=" + acceptorCommissionRate +
                 ", commissionReserve=" + commissionReserve +
                 ", inPlay=" + inPlay +
+                ", keepInPlay=" + keepInPlay +
                 ", createdAt=" + createdAt +
                 ", matchedBets=" + matchedBets +
                 "}";
