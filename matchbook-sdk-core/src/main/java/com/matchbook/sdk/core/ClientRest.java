@@ -7,7 +7,6 @@ import com.lmax.disruptor.util.DaemonThreadFactory;
 import com.matchbook.sdk.core.clients.rest.EventsRestClient;
 import com.matchbook.sdk.core.clients.rest.EventsRestClientImpl;
 import com.matchbook.sdk.core.clients.rest.dtos.events.SportsRequest;
-import com.matchbook.sdk.core.configs.ClientConfig;
 import com.matchbook.sdk.core.configs.ConnectionManager;
 import com.matchbook.sdk.core.disruptor.CoordinatorMessage;
 import com.matchbook.sdk.core.disruptor.CoordinatorPublisher;

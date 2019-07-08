@@ -1,5 +1,6 @@
 package com.matchbook.sdk.core.configs;
 
+import com.matchbook.sdk.core.ClientConfig;
 import com.matchbook.sdk.core.configs.wrappers.HttpClientWrapper;
 import com.matchbook.sdk.core.configs.wrappers.SerializerWrapper;
 
