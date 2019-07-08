@@ -1,5 +1,7 @@
 package com.matchbook.sdk.core;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -18,19 +20,26 @@ import com.matchbook.sdk.core.model.dataobjects.events.Sport;
 import com.matchbook.sdk.core.model.mappers.events.SportMapper;
 import com.matchbook.sdk.core.workers.PoolerWorker;
 import com.matchbook.sdk.core.workers.RestPoolerWorker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClientRest implements Client {
 
-    private final ConnectionManager connectionManager;
+    private static final Logger LOG = LoggerFactory.getLogger(ClientRest.class);
 
+    private final ConnectionManager connectionManager;
     private final Disruptor<CoordinatorMessage> disruptor;
     private final PoolerWorker poolerWorker;
     private final DisruptorCoordinator coordinator;
 
+    private final AtomicBoolean isShutdown;
+
     public ClientRest(ClientConfig clientConfig) {
         this.connectionManager = new ConnectionManager(clientConfig);
+        this.isShutdown = new AtomicBoolean();
 
-        this.disruptor = new Disruptor<>(CoordinatorMessage::new,
+        LOG.info("Matchbook client starting...");
+        disruptor = new Disruptor<>(CoordinatorMessage::new,
                 1024,
                 DaemonThreadFactory.INSTANCE,
                 ProducerType.MULTI,
@@ -42,6 +51,8 @@ public class ClientRest implements Client {
         CoordinatorPublisher coordinatorPublisher = new CoordinatorPublisher(disruptor);
         poolerWorker = new RestPoolerWorker(coordinatorPublisher, connectionManager);
         poolerWorker.init();
+
+        LOG.info("Matchbook client start completed.");
     }
 
     @Override
@@ -78,9 +89,15 @@ public class ClientRest implements Client {
     }
 
     @Override
-    public synchronized void close() {
+    public void close() {
+        if (isShutdown.getAndSet(true)) {
+            return;
+        }
+
+        LOG.info("Matchbook client shutdown initiated...");
         poolerWorker.halt();
         coordinator.halt();
+        LOG.info("Matchbook client shutdown completed.");
     }
 
 }
