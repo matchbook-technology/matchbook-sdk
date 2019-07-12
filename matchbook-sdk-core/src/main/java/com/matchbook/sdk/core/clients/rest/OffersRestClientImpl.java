@@ -72,27 +72,32 @@ public class OffersRestClientImpl extends AbstractRestClient implements OffersRe
 
     @Override
     public void submitOffers(OffersPostRequest offersPostRequest, StreamObserver<Offer> offersObserver) {
-
+        String url = buildSportsUrl(offersPostRequest.resourcePath());
+        postRequest(url, offersPostRequest, offersObserver, Offer.class);
     }
 
     @Override
     public void editOffer(OfferPutRequest offerPutRequest, StreamObserver<Offer> offerObserver) {
-
+        String url = buildSportsUrl(offerPutRequest.resourcePath());
+        putRequest(url, offerPutRequest, offerObserver, Offer.class);
     }
 
     @Override
     public void editOffers(OffersPutRequest offersPutRequest, StreamObserver<Offer> offersObserver) {
-
+        String url = buildSportsUrl(offersPutRequest.resourcePath());
+        putRequest(url, offersPutRequest, offersObserver, Offer.class);
     }
 
     @Override
     public void cancelOffer(OfferDeleteRequest offerDeleteRequest, StreamObserver<Offer> offerObserver) {
-
+        String url = buildSportsUrl(offerDeleteRequest.resourcePath());
+        deleteRequest(url, offerDeleteRequest, offerObserver, Offer.class);
     }
 
     @Override
     public void cancelOffers(OffersDeleteRequest offersDeleteRequest, StreamObserver<Offer> offersObserver) {
-
+        String url = buildSportsUrl(offersDeleteRequest.resourcePath());
+        deleteRequest(url, offersDeleteRequest, offersObserver, Offer.class);
     }
 
 }
