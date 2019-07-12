@@ -14,6 +14,6 @@ public class HeartbeatUnsubscribeRequest implements RestRequest {
 
     @Override
     public Map<String, String> parameters() {
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 }
