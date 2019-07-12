@@ -8,7 +8,6 @@ import com.matchbook.sdk.core.configs.HttpCallback;
 import com.matchbook.sdk.core.configs.HttpClient;
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -34,13 +33,12 @@ public class HttpClientWrapper implements HttpClient {
     }
 
     private OkHttpClient initHttpClient() {
-        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+        return new OkHttpClient.Builder()
             .connectTimeout(2, TimeUnit.SECONDS)
             .writeTimeout(5, TimeUnit.SECONDS)
             .readTimeout(2, TimeUnit.SECONDS)
             .followRedirects(false)
             .build();
-        return okHttpClient;
     }
 
     @Override
@@ -54,7 +52,15 @@ public class HttpClientWrapper implements HttpClient {
     @Override
     public void post(String url, String body, HttpCallback httpCallback) throws MatchbookSDKHttpException {
         Request request = buildRequest(url)
-                .post(RequestBody.create(jsonMediaType, body))
+                .post(RequestBody.create(body, jsonMediaType))
+                .build();
+        sendHttpRequest(request, httpCallback);
+    }
+
+    @Override
+    public void put(String url, String body, HttpCallback httpCallback) throws MatchbookSDKHttpException {
+        Request request = buildRequest(url)
+                .put(RequestBody.create(body, jsonMediaType))
                 .build();
         sendHttpRequest(request, httpCallback);
     }
