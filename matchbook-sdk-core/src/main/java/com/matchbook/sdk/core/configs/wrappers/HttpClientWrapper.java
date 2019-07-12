@@ -8,13 +8,15 @@ import com.matchbook.sdk.core.configs.HttpCallback;
 import com.matchbook.sdk.core.configs.HttpClient;
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class HttpClientWrapper implements HttpClient {
 
@@ -32,11 +34,12 @@ public class HttpClientWrapper implements HttpClient {
     }
 
     private OkHttpClient initHttpClient() {
-        final OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(2, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(5, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(2, TimeUnit.SECONDS);
-        okHttpClient.setFollowRedirects(false);
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .connectTimeout(2, TimeUnit.SECONDS)
+            .writeTimeout(5, TimeUnit.SECONDS)
+            .readTimeout(2, TimeUnit.SECONDS)
+            .followRedirects(false)
+            .build();
         return okHttpClient;
     }
 
@@ -76,7 +79,7 @@ public class HttpClientWrapper implements HttpClient {
         }
 
         @Override
-        public void onResponse(Response response) throws IOException {
+        public void onResponse(Call call, Response response) throws IOException {
             try (ResponseBody responseBody = response.body()) {
                 if (response.isSuccessful()) {
                     httpCallback.onResponse(responseBody.byteStream());
@@ -88,7 +91,7 @@ public class HttpClientWrapper implements HttpClient {
         }
 
         @Override
-        public void onFailure(Request request, IOException exception) {
+        public void onFailure(Call call, IOException exception) {
             MatchbookSDKHttpException matchbookException = new MatchbookSDKHttpException(exception.getMessage(), exception);
             httpCallback.onFailure(matchbookException);
         }
@@ -117,7 +120,6 @@ public class HttpClientWrapper implements HttpClient {
         private MatchbookSDKHttpException newUnauthenticatedException() {
             return new MatchbookSDKHttpException("Incorrect username or password", ErrorType.UNAUTHENTICATED);
         }
-
     }
 
 }
