@@ -7,6 +7,10 @@ import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 
 public class HeartbeatUnsubscribeRequest implements RestRequest {
 
+    private HeartbeatUnsubscribeRequest() {
+        // not visible
+    }
+
     @Override
     public String resourcePath() {
         return "v1/heartbeat";
@@ -14,6 +18,20 @@ public class HeartbeatUnsubscribeRequest implements RestRequest {
 
     @Override
     public Map<String, String> parameters() {
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
+
+    @Override
+    public String toString() {
+        return HeartbeatUnsubscribeRequest.class.getSimpleName();
+    }
+
+    public static class Builder {
+
+        public HeartbeatUnsubscribeRequest build() {
+            return new HeartbeatUnsubscribeRequest();
+        }
+
+    }
+
 }

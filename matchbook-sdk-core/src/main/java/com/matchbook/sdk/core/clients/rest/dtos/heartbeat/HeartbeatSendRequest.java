@@ -9,7 +9,7 @@ public class HeartbeatSendRequest implements RestRequest {
 
     private final Integer timeout;
 
-    public HeartbeatSendRequest(HeartbeatSendRequest.Builder builder) {
+    private HeartbeatSendRequest(HeartbeatSendRequest.Builder builder) {
         this.timeout = builder.timeout;
     }
 
@@ -20,7 +20,7 @@ public class HeartbeatSendRequest implements RestRequest {
 
     @Override
     public Map<String, String> parameters() {
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 
     @Override
@@ -41,5 +41,7 @@ public class HeartbeatSendRequest implements RestRequest {
         public HeartbeatSendRequest build() {
             return new HeartbeatSendRequest(this);
         }
+
     }
+
 }
