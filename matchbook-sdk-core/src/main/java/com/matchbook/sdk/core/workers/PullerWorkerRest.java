@@ -8,7 +8,6 @@ import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
-import com.matchbook.sdk.core.EventsFilter;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.clients.rest.UserRestClient;
 import com.matchbook.sdk.core.clients.rest.UserRestClientImpl;
@@ -18,7 +17,6 @@ import com.matchbook.sdk.core.disruptor.UserDisruptorPipeliner;
 import com.matchbook.sdk.core.disruptor.messages.UserMessage;
 import com.matchbook.sdk.core.disruptor.publisher.UserPublisher;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.core.model.dataobjects.events.Event;
 import com.matchbook.sdk.core.model.dataobjects.user.Balance;
 import com.matchbook.sdk.core.schedulers.AuthenticationScheduler;
 import com.matchbook.sdk.core.schedulers.BalanceScheduler;
@@ -91,31 +89,12 @@ public class PullerWorkerRest implements PullerWorker {
         };
     }
 
-    @Override
-    public StreamObserver<EventsFilter> observeEvents(StreamObserver<Event> observer) {
-
-        return new StreamObserver<EventsFilter>() {
-            @Override
-            public void onNext(EventsFilter eventsFilter) {
-
-            }
-
-            @Override
-            public void onCompleted() {
-            }
-
-            @Override
-            public <E extends MatchbookSDKException> void onError(E exception) {
-
-            }
-        };
-
-    }
 
     @Override
     public void close() {
+        // shutdown disruptor
         accountDisruptor.shutdown();
-
+        //shutdown schedulers
         authScheduler.shutdown();
         accountDisruptor.shutdown();
     }

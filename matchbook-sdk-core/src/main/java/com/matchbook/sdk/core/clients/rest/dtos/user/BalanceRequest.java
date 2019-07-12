@@ -1,5 +1,6 @@
 package com.matchbook.sdk.core.clients.rest.dtos.user;
 
+import java.util.Collections;
 import java.util.Map;
 
 import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
@@ -13,12 +14,12 @@ public class BalanceRequest extends PageableRequest {
 
     @Override
     public String resourcePath() {
-        return "/rest/account/balance";
+        return "account/balance";
     }
 
     @Override
     public Map<String, String> parameters() {
-        return null;
+        return Collections.emptyMap();
     }
 
     public static class Builder extends PageableRequestBuilder {

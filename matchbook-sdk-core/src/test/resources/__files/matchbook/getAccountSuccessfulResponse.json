@@ -1,0 +1,22 @@
+{
+  "id": 12345,
+  "username": "testuser",
+  "status": "ACTIVE",
+  "commission-type": "VOLUME",
+  "currency": "EUR",
+  "country": "IE",
+  "balance": 100,
+  "exposure": 5,
+  "commission-reserve": 4,
+  "free-funds": 3,
+  "language": "en",
+  "exchange-type": "back-lay",
+  "odds-type": "US",
+  "show-bet-confirmation": false,
+  "show-position": true,
+  "show-odds-rounding-message": true,
+  "bet-slip-pinned": true,
+  "roles": [
+    "USER"
+  ]
+}

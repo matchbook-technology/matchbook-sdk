@@ -1,0 +1,7 @@
+{
+  "id": 12345,
+  "balance": 100,
+  "exposure": 200,
+  "commission-reserve": 300,
+  "free-funds": 400
+}

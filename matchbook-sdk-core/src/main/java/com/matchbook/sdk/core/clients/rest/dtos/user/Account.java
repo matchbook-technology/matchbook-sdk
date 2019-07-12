@@ -1,10 +1,13 @@
 package com.matchbook.sdk.core.clients.rest.dtos.user;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Collections;
 
+import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Currency;
 
-public class Account {
+public class Account implements RestResponse<Account> {
 
     private Long id;
     private String username;
@@ -68,6 +71,12 @@ public class Account {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+
+    @Override
+    public Collection<Account> getContent() {
+        return Collections.singleton(this);
     }
 
     @Override

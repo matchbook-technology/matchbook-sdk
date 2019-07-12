@@ -1,8 +1,12 @@
 package com.matchbook.sdk.core.clients.rest.dtos.user;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Collections;
 
-public class Balance {
+import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
+
+public class Balance implements RestResponse<Balance> {
 
     private Long id;
     private BigDecimal balance;
@@ -48,6 +52,11 @@ public class Balance {
 
     public void setCommissionReserve(BigDecimal commissionReserve) {
         this.commissionReserve = commissionReserve;
+    }
+
+    @Override
+    public Collection<Balance> getContent() {
+        return Collections.singleton(this);
     }
 
     @Override
