@@ -56,6 +56,14 @@ public class HttpClientWrapper implements HttpClient {
         sendHttpRequest(request, httpCallback);
     }
 
+    @Override
+    public void delete(String url, HttpCallback httpCallback) throws MatchbookSDKHttpException {
+        Request request = buildRequest(url)
+            .delete()
+            .build();
+        sendHttpRequest(request, httpCallback);
+    }
+
     private Request.Builder buildRequest(String url) {
         return new Request.Builder()
                 .addHeader(HTTP_HEADER_CONTENT_TYPE, jsonMediaType.toString())
