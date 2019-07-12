@@ -130,5 +130,4 @@ public class UserRestClientImplTest extends MatchbookSDKClientTest {
         assertThat(await).isTrue();
     }
 
-
 }

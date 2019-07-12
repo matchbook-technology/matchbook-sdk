@@ -38,6 +38,13 @@ abstract class AbstractRestClient {
         connectionManager.getHttpClient().get(requestUrl, new RestCallback<>(observer, responseClass, serializer));
     }
 
+    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T>
+            void deleteRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> responseClass) {
+        String requestUrl = buildUrl(url, request);
+        Serializer serializer = connectionManager.getSerializer();
+        connectionManager.getHttpClient().delete(requestUrl, new RestCallback<>(observer, responseClass, serializer));
+    }
+
     protected String buildSportsUrl(String path) {
         return connectionManager.getClientConfig().getSportsUrl() + "/" + path;
     }
