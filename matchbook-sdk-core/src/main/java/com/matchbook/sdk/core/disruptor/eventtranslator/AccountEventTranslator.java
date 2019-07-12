@@ -14,5 +14,7 @@ public class AccountEventTranslator implements EventTranslator<UserMessage> {
     @Override
     public void translateTo(UserMessage event, long sequence) {
         event.setId(sequence);
+        event.setBalanceDTO(this.event.getBalanceDTO());
+        event.setBalance(this.event.getBalance());
     }
 }
