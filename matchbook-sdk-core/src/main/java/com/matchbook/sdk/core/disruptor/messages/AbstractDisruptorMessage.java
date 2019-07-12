@@ -1,10 +1,8 @@
-package com.matchbook.sdk.core.disruptor;
+package com.matchbook.sdk.core.disruptor.messages;
 
 public abstract class AbstractDisruptorMessage implements DisruptorMessage {
 
-    protected MessageType messageType;
     private boolean isSkipped;
-    private long receivedTime;
     private long sequence;
 
     protected AbstractDisruptorMessage() {
@@ -23,16 +21,6 @@ public abstract class AbstractDisruptorMessage implements DisruptorMessage {
     }
 
     @Override
-    public void setReceivedTime(long receivedTime) {
-        this.receivedTime = receivedTime;
-    }
-
-    @Override
-    public long getReceivedTime() {
-        return receivedTime;
-    }
-
-    @Override
     public void setId(long sequence) {
         this.sequence = sequence;
     }
@@ -40,14 +28,6 @@ public abstract class AbstractDisruptorMessage implements DisruptorMessage {
     @Override
     public long getId() {
         return sequence;
-    }
-
-    public void setMessageType(MessageType messageType) {
-        this.messageType = messageType;
-    }
-
-    public MessageType getMessageType() {
-        return messageType;
     }
 
 }

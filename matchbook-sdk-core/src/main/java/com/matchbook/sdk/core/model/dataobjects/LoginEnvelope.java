@@ -1,6 +1,6 @@
 package com.matchbook.sdk.core.model.dataobjects;
 
-import com.matchbook.sdk.core.model.dataobjects.auth.User;
+import com.matchbook.sdk.core.model.dataobjects.user.User;
 
 public class LoginEnvelope implements Envelope {
 

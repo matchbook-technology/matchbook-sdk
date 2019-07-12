@@ -27,11 +27,11 @@ import com.matchbook.sdk.core.clients.rest.dtos.events.SportsRequest;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import org.junit.Test;
 
-public class EventsRestClientImplTest extends MatchbookSDKClientTest {
+public class EventRestClientImplTest extends MatchbookSDKClientTest {
 
     private final EventsRestClient eventsRestClient;
 
-    public EventsRestClientImplTest() {
+    public EventRestClientImplTest() {
         this.eventsRestClient = new EventsRestClientImpl(connectionManager);
     }
 

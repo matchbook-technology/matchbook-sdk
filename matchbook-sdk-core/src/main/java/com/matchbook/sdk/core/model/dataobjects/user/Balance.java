@@ -1,35 +1,25 @@
-package com.matchbook.sdk.core.model.dataobjects.auth;
+package com.matchbook.sdk.core.model.dataobjects.user;
 
 import java.math.BigDecimal;
 
-import com.matchbook.sdk.core.model.dataobjects.prices.Currency;
+public class Balance {
 
-public class Account {
+    private final Long id;
+    private final BigDecimal balance;
+    private final BigDecimal exposure;
+    private final BigDecimal freeFunds;
+    private final BigDecimal commissionReserve;
 
-    private Long id;
-    private String username;
-    private BigDecimal balance;
-    private BigDecimal exposure;
-    private BigDecimal freeFunds;
-    private BigDecimal commissionReserve;
-    private Currency currency;
-
-    private Account(Builder builder) {
+    private Balance(Builder builder) {
         this.id = builder.id;
-        this.username = builder.username;
         this.balance = builder.balance;
         this.exposure = builder.exposure;
         this.freeFunds = builder.freeFunds;
         this.commissionReserve = builder.commissionReserve;
-        this.currency = builder.currency;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public BigDecimal getBalance() {
@@ -48,35 +38,26 @@ public class Account {
         return commissionReserve;
     }
 
-    public Currency getCurrency() {
-        return currency;
-    }
-
     @Override
     public String toString() {
-        return Account.class.getSimpleName() + "{" +
+        return "Balance{" +
                 "id=" + id +
-                ", username=" + username +
                 ", balance=" + balance +
                 ", exposure=" + exposure +
                 ", freeFunds=" + freeFunds +
                 ", commissionReserve=" + commissionReserve +
-                ", currency=" + currency +
-                "}";
+                '}';
     }
 
     public static class Builder {
         private Long id;
-        private String username;
         private BigDecimal balance;
         private BigDecimal exposure;
         private BigDecimal freeFunds;
         private BigDecimal commissionReserve;
-        private Currency currency;
 
-        public Builder(Long id, String username) {
+        public Builder(Long id) {
             this.id = id;
-            this.username = username;
         }
 
         public Builder addBalance(BigDecimal balance) {
@@ -99,13 +80,9 @@ public class Account {
             return this;
         }
 
-        public Builder addCurrency(Currency currency) {
-            this.currency = currency;
-            return this;
-        }
 
-        public Account build() {
-            return new Account(this);
+        public Balance build() {
+            return new Balance(this);
         }
     }
 }
