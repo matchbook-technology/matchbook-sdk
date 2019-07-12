@@ -27,6 +27,7 @@ public class PullerWorkerRest implements PullerWorker {
 
     private final ScheduledExecutorService authScheduler;
     private final ScheduledExecutorService balanceScheduler;
+    private final UserDisruptorPipeliner userDisruptorPipeliner;
 
     private Disruptor<UserMessage> accountDisruptor;
 
@@ -43,6 +44,7 @@ public class PullerWorkerRest implements PullerWorker {
                 DaemonThreadFactory.INSTANCE,
                 ProducerType.SINGLE,
                 new BlockingWaitStrategy());
+        userDisruptorPipeliner = new UserDisruptorPipeliner(accountDisruptor);
 
         keepAliveSession();
     }
@@ -60,12 +62,10 @@ public class PullerWorkerRest implements PullerWorker {
 
     @Override
     public StreamObserver<Void> observeBalance(StreamObserver<Balance> observer) {
-        UserRestClient userRestClient = new UserRestClientImpl(connectionManager);
-        UserPublisher userPublisher = new UserPublisher(accountDisruptor);
+        userDisruptorPipeliner.getUserPublisherHandler().registerStreamConsumer(observer);
 
-        UserDisruptorPipeliner userDisruptorPipeliner = new UserDisruptorPipeliner(accountDisruptor);
-
-        balanceScheduler.scheduleAtFixedRate(new BalanceScheduler(userRestClient, userPublisher),
+        balanceScheduler.scheduleAtFixedRate(new BalanceScheduler(new UserRestClientImpl(connectionManager),
+                        new UserPublisher(accountDisruptor)),
                 0,
                 5,
                 TimeUnit.SECONDS);
@@ -73,8 +73,7 @@ public class PullerWorkerRest implements PullerWorker {
         return new StreamObserver<Void>() {
             @Override
             public void onNext(Void aVoid) {
-                userDisruptorPipeliner.getUserPublisherHandler()
-                        .registerConsumer(observer);
+                //do nothing
             }
 
             @Override

@@ -18,7 +18,7 @@ public class UserPublisherHandler<T extends UserMessage> implements EventHandler
         return observer;
     }
 
-    public void registerConsumer(StreamObserver<Balance> observer) {
+    public void registerStreamConsumer(StreamObserver<Balance> observer) {
         this.observer = observer;
     }
 

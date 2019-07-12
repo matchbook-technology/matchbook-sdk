@@ -17,15 +17,14 @@ public class StreamClientRest implements StreamClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(StreamClientRest.class);
 
-    private final ConnectionManager connectionManager;
     private final PullerWorker pullerWorker;
 
     private final AtomicBoolean isShutdown;
 
     public StreamClientRest(ClientConfig clientConfig) {
-        this.connectionManager = new ConnectionManager(clientConfig);
         this.isShutdown = new AtomicBoolean();
 
+        ConnectionManager connectionManager = new ConnectionManager(clientConfig);
         LOG.info("Matchbook client starting...");
         pullerWorker = new PullerWorkerRest(connectionManager);
         LOG.info("Matchbook client start completed.");
