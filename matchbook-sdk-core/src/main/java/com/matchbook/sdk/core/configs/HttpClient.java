@@ -8,4 +8,6 @@ public interface HttpClient {
 
     void post(String url, String body, HttpCallback httpCallback) throws MatchbookSDKHttpException;
 
+    void delete(String url, HttpCallback httpCallback) throws MatchbookSDKHttpException;
+
 }
