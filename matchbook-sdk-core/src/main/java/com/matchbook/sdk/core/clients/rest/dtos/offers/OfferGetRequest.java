@@ -5,12 +5,12 @@ import java.util.Map;
 
 import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 
-public class OfferRequest implements RestRequest {
+public class OfferGetRequest implements RestRequest {
 
     private final Long offerId;
     private final boolean includeEdits;
 
-    private OfferRequest(OfferRequest.Builder builder) {
+    private OfferGetRequest(OfferGetRequest.Builder builder) {
         this.offerId = builder.eventId;
         this.includeEdits = builder.includeEdits;
     }
@@ -35,7 +35,7 @@ public class OfferRequest implements RestRequest {
 
     @Override
     public String toString() {
-        return OfferRequest.class.getSimpleName() + " {" +
+        return OfferGetRequest.class.getSimpleName() + " {" +
                 "offerId=" + offerId +
                 ", includeEdits=" + includeEdits +
                 "}";
@@ -56,8 +56,8 @@ public class OfferRequest implements RestRequest {
             return this;
         }
 
-        public OfferRequest build() {
-            return new OfferRequest(this);
+        public OfferGetRequest build() {
+            return new OfferGetRequest(this);
         }
     }
 

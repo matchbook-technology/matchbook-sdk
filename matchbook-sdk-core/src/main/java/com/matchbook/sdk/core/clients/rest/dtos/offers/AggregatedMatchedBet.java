@@ -1,8 +1,12 @@
 package com.matchbook.sdk.core.clients.rest.dtos.offers;
 
+import java.util.Collections;
+import java.util.Set;
+
+import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
 import com.matchbook.sdk.core.clients.rest.dtos.prices.Side;
 
-public class AggregatedMatchedBet extends AbstractMatchedBet {
+public class AggregatedMatchedBet extends AbstractMatchedBet implements RestResponse<AggregatedMatchedBet> {
 
     private Long eventId;
     private Long marketId;
@@ -39,6 +43,11 @@ public class AggregatedMatchedBet extends AbstractMatchedBet {
 
     public void setSide(Side side) {
         this.side = side;
+    }
+
+    @Override
+    public Set<AggregatedMatchedBet> getContent() {
+        return Collections.singleton(this);
     }
 
     @Override

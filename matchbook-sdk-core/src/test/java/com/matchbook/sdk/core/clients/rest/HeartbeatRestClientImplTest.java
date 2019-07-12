@@ -41,7 +41,7 @@ public class HeartbeatRestClientImplTest extends MatchbookSDKClientTest {
                 .withBodyFile("matchbook/getHeartbeatSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        HeartbeatGetRequest heartbeatGetRequest = new HeartbeatGetRequest();
+        HeartbeatGetRequest heartbeatGetRequest = new HeartbeatGetRequest.Builder().build();
         heartbeatRestClient.getHeartbeat(heartbeatGetRequest, new StreamObserver<Heartbeat>() {
             @Override
             public void onNext(Heartbeat heartbeatResponse) {
@@ -111,7 +111,7 @@ public class HeartbeatRestClientImplTest extends MatchbookSDKClientTest {
                 .withBodyFile("matchbook/unsubscribeHeartbeatSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        HeartbeatUnsubscribeRequest heartbeatUnsubscribeRequest = new HeartbeatUnsubscribeRequest();
+        HeartbeatUnsubscribeRequest heartbeatUnsubscribeRequest = new HeartbeatUnsubscribeRequest.Builder().build();
         heartbeatRestClient.unsubscribeHeartbeat(heartbeatUnsubscribeRequest, new StreamObserver<Heartbeat>() {
             @Override
             public void onNext(Heartbeat heartbeatResponse) {

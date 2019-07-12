@@ -21,6 +21,13 @@ abstract class AbstractRestClient {
     }
 
     protected <REQ extends RestRequest, RESP extends RestResponse<T>, T>
+            void getRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> responseClass) {
+        String requestUrl = buildUrl(url, request);
+        Serializer serializer = connectionManager.getSerializer();
+        connectionManager.getHttpClient().get(requestUrl, new RestCallback<>(observer, responseClass, serializer));
+    }
+
+    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T>
             void postRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> responseClass) {
         try {
             Serializer serializer = connectionManager.getSerializer();
@@ -32,10 +39,14 @@ abstract class AbstractRestClient {
     }
 
     protected <REQ extends RestRequest, RESP extends RestResponse<T>, T>
-            void getRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> responseClass) {
-        String requestUrl = buildUrl(url, request);
-        Serializer serializer = connectionManager.getSerializer();
-        connectionManager.getHttpClient().get(requestUrl, new RestCallback<>(observer, responseClass, serializer));
+            void putRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> responseClass) {
+        try {
+            Serializer serializer = connectionManager.getSerializer();
+            String requestBody = serializer.writeObjectAsString(request);
+            connectionManager.getHttpClient().put(url, requestBody, new RestCallback<>(observer, responseClass, serializer));
+        } catch (IOException e) {
+            observer.onError(new MatchbookSDKHttpException(e.getMessage(), e));
+        }
     }
 
     protected <REQ extends RestRequest, RESP extends RestResponse<T>, T>
