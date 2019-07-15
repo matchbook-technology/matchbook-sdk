@@ -10,7 +10,7 @@ import com.matchbook.sdk.core.model.dataobjects.user.Balance;
 
 public class UserPublisherHandler<T extends UserMessage> implements EventHandler<T>, LifecycleAware {
 
-    private String oldThreadName;
+    private String originalThreadName;
 
     private StreamObserver<Balance> observer;
 
@@ -32,12 +32,12 @@ public class UserPublisherHandler<T extends UserMessage> implements EventHandler
     @Override
     public void onStart() {
         final Thread currentThread = Thread.currentThread();
-        oldThreadName = currentThread.getName();
+        originalThreadName = currentThread.getName();
         currentThread.setName(UserPublisherHandler.class.getSimpleName());
     }
 
     @Override
     public void onShutdown() {
-        Thread.currentThread().setName(oldThreadName);
+        Thread.currentThread().setName(originalThreadName);
     }
 }

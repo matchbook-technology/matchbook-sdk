@@ -61,12 +61,12 @@ public class Balance implements RestResponse<Balance> {
 
     @Override
     public String toString() {
-        return "Balance{" +
+        return Balance.class.getSimpleName() + " {" +
                 "id=" + id +
                 ", balance=" + balance +
                 ", exposure=" + exposure +
                 ", freeFunds=" + freeFunds +
                 ", commissionReserve=" + commissionReserve +
-                '}';
+                "}";
     }
 }

@@ -31,7 +31,6 @@ public class PullerWorkerRest implements PullerWorker {
 
     private Disruptor<UserMessage> accountDisruptor;
 
-
     public PullerWorkerRest(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
 
@@ -58,7 +57,6 @@ public class PullerWorkerRest implements PullerWorker {
         authScheduler.scheduleAtFixedRate(new AuthenticationScheduler(userRestClient, loginRequest),
                 0, 4, TimeUnit.HOURS);
     }
-
 
     @Override
     public StreamObserver<Void> observeBalance(StreamObserver<Balance> observer) {
@@ -88,7 +86,6 @@ public class PullerWorkerRest implements PullerWorker {
         };
     }
 
-
     @Override
     public void close() {
         // shutdown disruptor
@@ -97,5 +94,4 @@ public class PullerWorkerRest implements PullerWorker {
         authScheduler.shutdown();
         accountDisruptor.shutdown();
     }
-
 }

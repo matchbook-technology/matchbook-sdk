@@ -27,9 +27,9 @@ public class UserMessage extends AbstractDisruptorMessage {
 
     @Override
     public String toString() {
-        return "UserMessage{" +
+        return UserMessage.class.getSimpleName() + " {" +
                 "balance=" + balance +
                 ", balanceDTO=" + balanceDTO +
-                '}';
+                "}";
     }
 }

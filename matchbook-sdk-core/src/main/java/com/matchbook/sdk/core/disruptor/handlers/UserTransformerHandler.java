@@ -7,7 +7,7 @@ import com.matchbook.sdk.core.model.mappers.user.UserModelMapper;
 
 public class UserTransformerHandler<T extends UserMessage> implements EventHandler<T>, LifecycleAware {
 
-    private String oldThreadName;
+    private String originalThreadName;
 
     private UserModelMapper userModelMapper;
 
@@ -23,12 +23,12 @@ public class UserTransformerHandler<T extends UserMessage> implements EventHandl
     @Override
     public void onStart() {
         final Thread currentThread = Thread.currentThread();
-        oldThreadName = currentThread.getName();
+        originalThreadName = currentThread.getName();
         currentThread.setName(UserTransformerHandler.class.getSimpleName());
     }
 
     @Override
     public void onShutdown() {
-        Thread.currentThread().setName(oldThreadName);
+        Thread.currentThread().setName(originalThreadName);
     }
 }

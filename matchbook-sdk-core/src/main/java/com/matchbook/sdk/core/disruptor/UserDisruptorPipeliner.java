@@ -17,10 +17,10 @@ public class UserDisruptorPipeliner implements AutoCloseable {
         this.userTransformerHandler = new UserTransformerHandler<>();
         this.userPublisherHandler = new UserPublisherHandler<>();
 
-        init();
+        initDisruptor();
     }
 
-    private void init() {
+    private void initDisruptor() {
         disruptor.handleEventsWith(userTransformerHandler)
                 .then(userPublisherHandler);
         disruptor.start();

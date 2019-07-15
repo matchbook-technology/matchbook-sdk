@@ -3,13 +3,11 @@ package com.matchbook.sdk.core.clients.rest.dtos.user;
 import java.util.Collections;
 import java.util.Map;
 
-import com.matchbook.sdk.core.clients.rest.dtos.PageableRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.PageableRequestBuilder;
+import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 
-public class AccountRequest extends PageableRequest {
+public class AccountRequest implements RestRequest {
 
-    private AccountRequest(AccountRequest.Builder builder) {
-        super(builder);
+    private AccountRequest() {
     }
 
     @Override
@@ -22,11 +20,11 @@ public class AccountRequest extends PageableRequest {
         return Collections.emptyMap();
     }
 
-    public static class Builder extends PageableRequestBuilder {
+    public static class Builder {
 
         public AccountRequest build() {
-            return new AccountRequest(this);
+            return new AccountRequest();
         }
-
     }
+    
 }
