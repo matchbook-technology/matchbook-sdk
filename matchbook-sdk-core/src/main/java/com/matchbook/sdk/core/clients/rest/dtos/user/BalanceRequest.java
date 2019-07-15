@@ -8,6 +8,7 @@ import com.matchbook.sdk.core.clients.rest.dtos.RestRequest;
 public class BalanceRequest implements RestRequest {
 
     private BalanceRequest() {
+        // not visible
     }
 
     @Override
@@ -20,8 +21,12 @@ public class BalanceRequest implements RestRequest {
         return Collections.emptyMap();
     }
 
-    public static class Builder {
+    @Override
+    public String toString() {
+        return BalanceRequest.class.getSimpleName();
+    }
 
+    public static class Builder {
         public BalanceRequest build() {
             return new BalanceRequest();
         }
