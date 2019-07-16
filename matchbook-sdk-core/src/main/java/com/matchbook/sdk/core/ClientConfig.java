@@ -1,4 +1,4 @@
-package com.matchbook.sdk.core.configs;
+package com.matchbook.sdk.core;
 
 import java.util.Arrays;
 

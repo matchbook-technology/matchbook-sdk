@@ -36,6 +36,13 @@
             <version>${okhttp.version}</version>
         </dependency>
 
+        <!-- LMAX -->
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>${lmax.version}</version>
+        </dependency>
+
         <!--Logs-->
         <dependency>
             <groupId>org.slf4j</groupId>

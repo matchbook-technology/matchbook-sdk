@@ -5,17 +5,14 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.matchbook.sdk.core.clients.rest.dtos.RestResponse;
-import com.matchbook.sdk.core.clients.rest.dtos.prices.Currency;
 
-public class Account implements RestResponse<Account> {
+public class Balance implements RestResponse<Balance> {
 
     private Long id;
-    private String username;
     private BigDecimal balance;
     private BigDecimal exposure;
     private BigDecimal freeFunds;
     private BigDecimal commissionReserve;
-    private Currency currency;
 
     public Long getId() {
         return id;
@@ -23,14 +20,6 @@ public class Account implements RestResponse<Account> {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public BigDecimal getBalance() {
@@ -65,30 +54,19 @@ public class Account implements RestResponse<Account> {
         this.commissionReserve = commissionReserve;
     }
 
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
-
-
     @Override
-    public Collection<Account> getContent() {
+    public Collection<Balance> getContent() {
         return Collections.singleton(this);
     }
 
     @Override
     public String toString() {
-        return Account.class.getSimpleName() + " {" +
+        return Balance.class.getSimpleName() + " {" +
                 "id=" + id +
-                ", username=" + username +
                 ", balance=" + balance +
                 ", exposure=" + exposure +
                 ", freeFunds=" + freeFunds +
                 ", commissionReserve=" + commissionReserve +
-                ", currency=" + currency +
                 "}";
     }
 }

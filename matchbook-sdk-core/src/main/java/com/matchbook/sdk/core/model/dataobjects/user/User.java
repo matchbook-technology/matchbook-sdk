@@ -1,4 +1,4 @@
-package com.matchbook.sdk.core.model.dataobjects.auth;
+package com.matchbook.sdk.core.model.dataobjects.user;
 
 public class User {
 

@@ -22,6 +22,7 @@
         <!-- Application dependencies -->
         <okhttp.version>4.0.1</okhttp.version>
         <jackson.version>2.9.8</jackson.version>
+        <lmax.version>3.4.2</lmax.version>
         <assertj.version>3.11.1</assertj.version>
         <wiremock.version>2.21.0</wiremock.version>
         <mockito.version>1.10.19</mockito.version>
