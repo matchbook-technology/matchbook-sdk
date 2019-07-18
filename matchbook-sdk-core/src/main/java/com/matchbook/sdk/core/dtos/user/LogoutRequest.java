@@ -7,7 +7,7 @@ import com.matchbook.sdk.core.dtos.RestRequest;
 
 public class LogoutRequest implements RestRequest {
 
-    private LogoutRequest(LogoutRequest.Builder builder) {
+    private LogoutRequest() {
     }
 
     @Override
@@ -28,7 +28,7 @@ public class LogoutRequest implements RestRequest {
     public static class Builder {
 
         public LogoutRequest build() {
-            return new LogoutRequest(this);
+            return new LogoutRequest();
         }
     }
 
