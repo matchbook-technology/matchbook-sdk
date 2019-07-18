@@ -8,6 +8,7 @@ import com.matchbook.sdk.core.dtos.user.BalanceRequest;
 import com.matchbook.sdk.core.dtos.user.Login;
 import com.matchbook.sdk.core.dtos.user.LoginRequest;
 import com.matchbook.sdk.core.dtos.user.Logout;
+import com.matchbook.sdk.core.dtos.user.LogoutRequest;
 
 public class UserRestClientImpl extends AbstractRestClient implements UserRestClient {
 
@@ -22,8 +23,9 @@ public class UserRestClientImpl extends AbstractRestClient implements UserRestCl
     }
 
     @Override
-    public void logout(String sessionToken, StreamObserver<Logout> response) {
-        throw new UnsupportedOperationException("Not implemented");
+    public void logout(LogoutRequest logoutRequest, StreamObserver<Logout> response) {
+        String url = buildLoginUrl();
+        deleteRequest(url, logoutRequest, response, Logout.class);
     }
 
     @Override

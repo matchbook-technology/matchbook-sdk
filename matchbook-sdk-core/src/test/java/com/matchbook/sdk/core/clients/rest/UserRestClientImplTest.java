@@ -1,6 +1,7 @@
 package com.matchbook.sdk.core.clients.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
@@ -14,6 +15,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import com.matchbook.sdk.common.StreamObserver;
+import com.matchbook.sdk.common.exceptions.ErrorType;
+import com.matchbook.sdk.common.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.core.MatchbookSDKClientTest;
 import com.matchbook.sdk.core.UserRestClient;
 import com.matchbook.sdk.core.UserRestClientImpl;
@@ -23,8 +26,8 @@ import com.matchbook.sdk.core.dtos.user.Balance;
 import com.matchbook.sdk.core.dtos.user.BalanceRequest;
 import com.matchbook.sdk.core.dtos.user.Login;
 import com.matchbook.sdk.core.dtos.user.LoginRequest;
-import com.matchbook.sdk.common.exceptions.ErrorType;
-import com.matchbook.sdk.common.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.core.dtos.user.Logout;
+import com.matchbook.sdk.core.dtos.user.LogoutRequest;
 import org.junit.Test;
 
 public class UserRestClientImplTest extends MatchbookSDKClientTest {
@@ -96,6 +99,40 @@ public class UserRestClientImplTest extends MatchbookSDKClientTest {
 
             @Override
             public void onCompleted() {
+                fail();
+            }
+        });
+
+        boolean await = countDownLatch.await(2, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void successfulLogoutTest() throws InterruptedException {
+        stubFor(delete(urlEqualTo("/bpapi/rest/security/session"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/logoutSuccessfulResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+        userRestClient.logout(new LogoutRequest.Builder().build(), new StreamObserver<Logout>() {
+            @Override
+            public void onNext(Logout logout) {
+                assertThat(logout.getSessionToken()).isNotEmpty();
+                assertThat(logout.getUserId()).isNotZero();
+                assertThat(logout.getUsername()).isNotEmpty();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public <E extends MatchbookSDKException> void onError(E exception) {
                 fail();
             }
         });
