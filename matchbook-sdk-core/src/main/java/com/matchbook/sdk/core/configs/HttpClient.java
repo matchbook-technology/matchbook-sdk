@@ -1,6 +1,6 @@
 package com.matchbook.sdk.core.configs;
 
-import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
+import com.matchbook.sdk.common.exceptions.MatchbookSDKHttpException;
 
 public interface HttpClient {
 

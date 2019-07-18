@@ -11,20 +11,22 @@ import static org.junit.Assert.fail;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import com.matchbook.sdk.common.StreamObserver;
+import com.matchbook.sdk.core.EventsRestClient;
+import com.matchbook.sdk.core.EventsRestClientImpl;
 import com.matchbook.sdk.core.MatchbookSDKClientTest;
-import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.clients.rest.dtos.events.Event;
-import com.matchbook.sdk.core.clients.rest.dtos.events.EventRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.EventsRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.Market;
-import com.matchbook.sdk.core.clients.rest.dtos.events.MarketRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.MarketsRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.Runner;
-import com.matchbook.sdk.core.clients.rest.dtos.events.RunnerRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.RunnersRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.events.Sport;
-import com.matchbook.sdk.core.clients.rest.dtos.events.SportsRequest;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.core.dtos.events.Event;
+import com.matchbook.sdk.core.dtos.events.EventRequest;
+import com.matchbook.sdk.core.dtos.events.EventsRequest;
+import com.matchbook.sdk.core.dtos.events.Market;
+import com.matchbook.sdk.core.dtos.events.MarketRequest;
+import com.matchbook.sdk.core.dtos.events.MarketsRequest;
+import com.matchbook.sdk.core.dtos.events.Runner;
+import com.matchbook.sdk.core.dtos.events.RunnerRequest;
+import com.matchbook.sdk.core.dtos.events.RunnersRequest;
+import com.matchbook.sdk.core.dtos.events.Sport;
+import com.matchbook.sdk.core.dtos.events.SportsRequest;
+import com.matchbook.sdk.common.exceptions.MatchbookSDKException;
 import org.junit.Test;
 
 public class EventRestClientImplTest extends MatchbookSDKClientTest {

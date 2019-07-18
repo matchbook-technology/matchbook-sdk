@@ -6,8 +6,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.matchbook.sdk.core.configs.HttpCallback;
 import com.matchbook.sdk.core.configs.HttpClient;
-import com.matchbook.sdk.core.exceptions.ErrorType;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
+import com.matchbook.sdk.common.exceptions.ErrorType;
+import com.matchbook.sdk.common.exceptions.MatchbookSDKHttpException;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;

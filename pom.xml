@@ -11,6 +11,8 @@
     <modules>
         <module>matchbook-sdk-samples</module>
         <module>matchbook-sdk-core</module>
+        <module>matchbook-sdk-stream</module>
+        <module>matchbook-sdk-common</module>
     </modules>
 
     <properties>

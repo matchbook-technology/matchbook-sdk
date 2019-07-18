@@ -13,16 +13,18 @@ import static org.junit.Assert.fail;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import com.matchbook.sdk.common.StreamObserver;
 import com.matchbook.sdk.core.MatchbookSDKClientTest;
-import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.clients.rest.dtos.user.Account;
-import com.matchbook.sdk.core.clients.rest.dtos.user.AccountRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.user.Balance;
-import com.matchbook.sdk.core.clients.rest.dtos.user.BalanceRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.user.Login;
-import com.matchbook.sdk.core.clients.rest.dtos.user.LoginRequest;
-import com.matchbook.sdk.core.exceptions.ErrorType;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.core.UserRestClient;
+import com.matchbook.sdk.core.UserRestClientImpl;
+import com.matchbook.sdk.core.dtos.user.Account;
+import com.matchbook.sdk.core.dtos.user.AccountRequest;
+import com.matchbook.sdk.core.dtos.user.Balance;
+import com.matchbook.sdk.core.dtos.user.BalanceRequest;
+import com.matchbook.sdk.core.dtos.user.Login;
+import com.matchbook.sdk.core.dtos.user.LoginRequest;
+import com.matchbook.sdk.common.exceptions.ErrorType;
+import com.matchbook.sdk.common.exceptions.MatchbookSDKException;
 import org.junit.Test;
 
 public class UserRestClientImplTest extends MatchbookSDKClientTest {

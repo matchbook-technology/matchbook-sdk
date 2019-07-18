@@ -13,16 +13,18 @@ import static org.junit.Assert.fail;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import com.matchbook.sdk.common.StreamObserver;
+import com.matchbook.sdk.core.HeartbeatRestClient;
+import com.matchbook.sdk.core.HeartbeatRestClientImpl;
 import org.junit.Test;
 
 import com.matchbook.sdk.core.MatchbookSDKClientTest;
-import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.clients.rest.dtos.heartbeat.ActionPerformed;
-import com.matchbook.sdk.core.clients.rest.dtos.heartbeat.Heartbeat;
-import com.matchbook.sdk.core.clients.rest.dtos.heartbeat.HeartbeatGetRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.heartbeat.HeartbeatSendRequest;
-import com.matchbook.sdk.core.clients.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.core.dtos.heartbeat.ActionPerformed;
+import com.matchbook.sdk.core.dtos.heartbeat.Heartbeat;
+import com.matchbook.sdk.core.dtos.heartbeat.HeartbeatGetRequest;
+import com.matchbook.sdk.core.dtos.heartbeat.HeartbeatSendRequest;
+import com.matchbook.sdk.core.dtos.heartbeat.HeartbeatUnsubscribeRequest;
+import com.matchbook.sdk.common.exceptions.MatchbookSDKException;
 
 public class HeartbeatRestClientImplTest extends MatchbookSDKClientTest {
     private final HeartbeatRestClient heartbeatRestClient;
