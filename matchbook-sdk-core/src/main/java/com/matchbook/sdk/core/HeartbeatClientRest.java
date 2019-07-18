@@ -6,9 +6,9 @@ import com.matchbook.sdk.core.dtos.heartbeat.HeartbeatGetRequest;
 import com.matchbook.sdk.core.dtos.heartbeat.HeartbeatSendRequest;
 import com.matchbook.sdk.core.dtos.heartbeat.HeartbeatUnsubscribeRequest;
 
-public class HeartbeatRestClientImpl extends AbstractRestClient implements HeartbeatRestClient {
+public class HeartbeatClientRest extends AbstractRestClient implements HeartbeatClient {
 
-    public HeartbeatRestClientImpl(ConnectionManager connectionManager) {
+    public HeartbeatClientRest(ConnectionManager connectionManager) {
         super(connectionManager);
     }
 

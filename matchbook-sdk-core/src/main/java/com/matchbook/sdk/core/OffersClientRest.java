@@ -19,9 +19,9 @@ import com.matchbook.sdk.core.dtos.offers.OffersPutRequest;
 import com.matchbook.sdk.core.dtos.offers.Position;
 import com.matchbook.sdk.core.dtos.offers.PositionsRequest;
 
-public class OffersRestClientImpl extends AbstractRestClient implements OffersRestClient {
+public class OffersClientRest extends AbstractRestClient implements OffersClient {
 
-    public OffersRestClientImpl(ConnectionManager connectionManager) {
+    public OffersClientRest(ConnectionManager connectionManager) {
         super(connectionManager);
     }
 

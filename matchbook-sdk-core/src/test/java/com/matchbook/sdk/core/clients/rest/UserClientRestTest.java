@@ -18,8 +18,8 @@ import com.matchbook.sdk.common.StreamObserver;
 import com.matchbook.sdk.common.exceptions.ErrorType;
 import com.matchbook.sdk.common.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.core.MatchbookSDKClientTest;
-import com.matchbook.sdk.core.UserRestClient;
-import com.matchbook.sdk.core.UserRestClientImpl;
+import com.matchbook.sdk.core.UserClient;
+import com.matchbook.sdk.core.UserClientRest;
 import com.matchbook.sdk.core.dtos.user.Account;
 import com.matchbook.sdk.core.dtos.user.AccountRequest;
 import com.matchbook.sdk.core.dtos.user.Balance;
@@ -30,12 +30,12 @@ import com.matchbook.sdk.core.dtos.user.Logout;
 import com.matchbook.sdk.core.dtos.user.LogoutRequest;
 import org.junit.Test;
 
-public class UserRestClientImplTest extends MatchbookSDKClientTest {
+public class UserClientRestTest extends MatchbookSDKClientTest {
 
-    private final UserRestClient userRestClient;
+    private final UserClient userRestClient;
 
-    public UserRestClientImplTest() {
-        this.userRestClient = new UserRestClientImpl(connectionManager);
+    public UserClientRestTest() {
+        this.userRestClient = new UserClientRest(connectionManager);
     }
 
     @Test

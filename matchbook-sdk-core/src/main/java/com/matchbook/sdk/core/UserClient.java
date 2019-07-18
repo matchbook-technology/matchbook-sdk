@@ -10,7 +10,7 @@ import com.matchbook.sdk.core.dtos.user.LoginRequest;
 import com.matchbook.sdk.core.dtos.user.Logout;
 import com.matchbook.sdk.core.dtos.user.LogoutRequest;
 
-public interface UserRestClient extends RestClient {
+public interface UserClient extends Client {
 
     void login(LoginRequest loginRequest, StreamObserver<Login> response);
 

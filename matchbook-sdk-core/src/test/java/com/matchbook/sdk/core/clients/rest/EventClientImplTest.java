@@ -12,8 +12,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import com.matchbook.sdk.common.StreamObserver;
-import com.matchbook.sdk.core.EventsRestClient;
-import com.matchbook.sdk.core.EventsRestClientImpl;
+import com.matchbook.sdk.core.EventsClient;
+import com.matchbook.sdk.core.EventsClientRest;
 import com.matchbook.sdk.core.MatchbookSDKClientTest;
 import com.matchbook.sdk.core.dtos.events.Event;
 import com.matchbook.sdk.core.dtos.events.EventRequest;
@@ -29,12 +29,12 @@ import com.matchbook.sdk.core.dtos.events.SportsRequest;
 import com.matchbook.sdk.common.exceptions.MatchbookSDKException;
 import org.junit.Test;
 
-public class EventRestClientImplTest extends MatchbookSDKClientTest {
+public class EventClientImplTest extends MatchbookSDKClientTest {
 
-    private final EventsRestClient eventsRestClient;
+    private final EventsClient eventsRestClient;
 
-    public EventRestClientImplTest() {
-        this.eventsRestClient = new EventsRestClientImpl(connectionManager);
+    public EventClientImplTest() {
+        this.eventsRestClient = new EventsClientRest(connectionManager);
     }
 
     @Test

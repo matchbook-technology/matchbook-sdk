@@ -19,7 +19,7 @@ import com.matchbook.sdk.core.dtos.offers.OffersPutRequest;
 import com.matchbook.sdk.core.dtos.offers.Position;
 import com.matchbook.sdk.core.dtos.offers.PositionsRequest;
 
-public interface OffersRestClient extends RestClient {
+public interface OffersClient extends Client {
 
     void getOffer(OfferGetRequest offerGetRequest, StreamObserver<Offer> offerObserver);
 

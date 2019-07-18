@@ -5,9 +5,9 @@ import com.matchbook.sdk.core.dtos.prices.Price;
 import com.matchbook.sdk.core.dtos.prices.PricesRequest;
 import com.matchbook.sdk.core.dtos.prices.PricesResponse;
 
-public class PricesRestClientImpl extends AbstractRestClient implements PricesRestClient {
+public class PricesClientRest extends AbstractRestClient implements PricesClient {
 
-    public PricesRestClientImpl(ConnectionManager connectionManager) {
+    public PricesClientRest(ConnectionManager connectionManager) {
         super(connectionManager);
     }
 

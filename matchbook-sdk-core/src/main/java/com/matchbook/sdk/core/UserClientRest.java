@@ -10,9 +10,9 @@ import com.matchbook.sdk.core.dtos.user.LoginRequest;
 import com.matchbook.sdk.core.dtos.user.Logout;
 import com.matchbook.sdk.core.dtos.user.LogoutRequest;
 
-public class UserRestClientImpl extends AbstractRestClient implements UserRestClient {
+public class UserClientRest extends AbstractRestClient implements UserClient {
 
-    public UserRestClientImpl(ConnectionManager connectionManager) {
+    public UserClientRest(ConnectionManager connectionManager) {
         super(connectionManager);
     }
 

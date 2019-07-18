@@ -13,7 +13,7 @@ import com.matchbook.sdk.core.dtos.events.RunnersRequest;
 import com.matchbook.sdk.core.dtos.events.Sport;
 import com.matchbook.sdk.core.dtos.events.SportsRequest;
 
-public interface EventsRestClient extends RestClient {
+public interface EventsClient extends Client {
 
     void getSports(SportsRequest sportsRequest, StreamObserver<Sport> sportsObserver);
 

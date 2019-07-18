@@ -9,8 +9,8 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 import com.matchbook.sdk.common.StreamObserver;
-import com.matchbook.sdk.core.UserRestClient;
-import com.matchbook.sdk.core.UserRestClientImpl;
+import com.matchbook.sdk.core.UserClient;
+import com.matchbook.sdk.core.UserClientRest;
 import com.matchbook.sdk.core.dtos.user.LoginRequest;
 import com.matchbook.sdk.core.ConnectionManager;
 import com.matchbook.sdk.stream.disruptor.UserDisruptorPipeliner;
@@ -49,7 +49,7 @@ public class PullerWorkerRest implements PullerWorker {
     }
 
     private void keepAliveSession() {
-        UserRestClient userRestClient = new UserRestClientImpl(connectionManager);
+        UserClient userRestClient = new UserClientRest(connectionManager);
         LoginRequest loginRequest =
                 new LoginRequest.Builder(connectionManager.getClientConfig().getUsername(),
                         connectionManager.getClientConfig().getPassword()).build();
@@ -62,7 +62,7 @@ public class PullerWorkerRest implements PullerWorker {
     public StreamObserver<Void> observeBalance(StreamObserver<Balance> observer) {
         userDisruptorPipeliner.getUserPublisherHandler().registerStreamConsumer(observer);
 
-        balanceScheduler.scheduleAtFixedRate(new BalanceScheduler(new UserRestClientImpl(connectionManager),
+        balanceScheduler.scheduleAtFixedRate(new BalanceScheduler(new UserClientRest(connectionManager),
                         new UserPublisher(accountDisruptor)),
                 0,
                 5,

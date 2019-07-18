@@ -14,8 +14,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import com.matchbook.sdk.common.StreamObserver;
-import com.matchbook.sdk.core.HeartbeatRestClient;
-import com.matchbook.sdk.core.HeartbeatRestClientImpl;
+import com.matchbook.sdk.core.HeartbeatClient;
+import com.matchbook.sdk.core.HeartbeatClientRest;
 import org.junit.Test;
 
 import com.matchbook.sdk.core.MatchbookSDKClientTest;
@@ -26,11 +26,11 @@ import com.matchbook.sdk.core.dtos.heartbeat.HeartbeatSendRequest;
 import com.matchbook.sdk.core.dtos.heartbeat.HeartbeatUnsubscribeRequest;
 import com.matchbook.sdk.common.exceptions.MatchbookSDKException;
 
-public class HeartbeatRestClientImplTest extends MatchbookSDKClientTest {
-    private final HeartbeatRestClient heartbeatRestClient;
+public class HeartbeatClientRestTest extends MatchbookSDKClientTest {
+    private final HeartbeatClient heartbeatClient;
 
-    public HeartbeatRestClientImplTest() {
-        this.heartbeatRestClient = new HeartbeatRestClientImpl(connectionManager);
+    public HeartbeatClientRestTest() {
+        this.heartbeatClient = new HeartbeatClientRest(connectionManager);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class HeartbeatRestClientImplTest extends MatchbookSDKClientTest {
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatGetRequest heartbeatGetRequest = new HeartbeatGetRequest.Builder().build();
-        heartbeatRestClient.getHeartbeat(heartbeatGetRequest, new StreamObserver<Heartbeat>() {
+        heartbeatClient.getHeartbeat(heartbeatGetRequest, new StreamObserver<Heartbeat>() {
             @Override
             public void onNext(Heartbeat heartbeatResponse) {
                 assertThat(heartbeatResponse.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_ACTIVATED);
@@ -79,7 +79,7 @@ public class HeartbeatRestClientImplTest extends MatchbookSDKClientTest {
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatSendRequest heartbeatSendRequest = new HeartbeatSendRequest.Builder(20).build();
-        heartbeatRestClient.sendHeartbeat(heartbeatSendRequest, new StreamObserver<Heartbeat>() {
+        heartbeatClient.sendHeartbeat(heartbeatSendRequest, new StreamObserver<Heartbeat>() {
             @Override
             public void onNext(Heartbeat heartbeatResponse) {
                 assertThat(heartbeatResponse.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_ACTIVATED);
@@ -114,7 +114,7 @@ public class HeartbeatRestClientImplTest extends MatchbookSDKClientTest {
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatUnsubscribeRequest heartbeatUnsubscribeRequest = new HeartbeatUnsubscribeRequest.Builder().build();
-        heartbeatRestClient.unsubscribeHeartbeat(heartbeatUnsubscribeRequest, new StreamObserver<Heartbeat>() {
+        heartbeatClient.unsubscribeHeartbeat(heartbeatUnsubscribeRequest, new StreamObserver<Heartbeat>() {
             @Override
             public void onNext(Heartbeat heartbeatResponse) {
                 assertThat(heartbeatResponse.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_TERMINATED);

@@ -17,9 +17,9 @@ import com.matchbook.sdk.core.dtos.events.Sport;
 import com.matchbook.sdk.core.dtos.events.SportsRequest;
 import com.matchbook.sdk.core.dtos.events.SportsResponse;
 
-public class EventsRestClientImpl extends AbstractRestClient implements EventsRestClient {
+public class EventsClientRest extends AbstractRestClient implements EventsClient {
 
-    public EventsRestClientImpl(ConnectionManager connectionManager) {
+    public EventsClientRest(ConnectionManager connectionManager) {
         super(connectionManager);
     }
 

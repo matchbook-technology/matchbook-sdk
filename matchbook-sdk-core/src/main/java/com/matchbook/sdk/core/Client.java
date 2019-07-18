@@ -1,5 +1,5 @@
 package com.matchbook.sdk.core;
 
-public interface RestClient {
+public interface Client {
 
 }
