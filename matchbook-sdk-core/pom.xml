@@ -12,6 +12,13 @@
     <artifactId>matchbook-sdk-core</artifactId>
 
     <dependencies>
+        <!--Matchbook SDK-->
+        <dependency>
+            <groupId>com.matchbook</groupId>
+            <artifactId>matchbook-sdk-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -34,13 +41,6 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>${okhttp.version}</version>
-        </dependency>
-
-        <!-- LMAX -->
-        <dependency>
-            <groupId>com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-            <version>${lmax.version}</version>
         </dependency>
 
         <!--Logs-->
@@ -67,7 +67,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -1,7 +1,6 @@
 package com.matchbook.sdk.core;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.matchbook.sdk.core.configs.ConnectionManager;
 import org.junit.Rule;
 
 public abstract class MatchbookSDKClientTest {

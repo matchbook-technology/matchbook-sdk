@@ -8,10 +8,28 @@
     <artifactId>matchbook-sdk</artifactId>
     <packaging>pom</packaging>
     <version>0.1.0-SNAPSHOT</version>
+    <description>Matchbook SDK</description>
+    <url>https://github.com/volkodavs/matchbook-sdk</url>
+
     <modules>
         <module>matchbook-sdk-samples</module>
         <module>matchbook-sdk-core</module>
+        <module>matchbook-sdk-stream</module>
+        <module>matchbook-sdk-common</module>
     </modules>
+
+    <issueManagement>
+        <url>https://github.com/volkodavs/matchbook-sdk/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -28,6 +46,7 @@
         <mockito.version>1.10.19</mockito.version>
         <slf4j.version>1.7.26</slf4j.version>
         <logback.version>1.2.3</logback.version>
+        <junit.version>4.12</junit.version>
 
         <!-- Maven plugins -->
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
