@@ -9,21 +9,38 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>matchbook-sdk-stream</artifactId>
+    <artifactId>matchbook-sdk-rest</artifactId>
 
     <dependencies>
         <!--Matchbook SDK-->
         <dependency>
             <groupId>com.matchbook</groupId>
-            <artifactId>matchbook-sdk-rest</artifactId>
+            <artifactId>matchbook-sdk-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
-        <!-- LMAX -->
+        <!-- Jackson -->
         <dependency>
-            <groupId>com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-            <version>${lmax.version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Clients -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.version}</version>
         </dependency>
 
         <!--Logs-->
@@ -72,4 +89,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
 </project>
