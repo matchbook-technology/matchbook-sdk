@@ -33,24 +33,29 @@ jobs:
       - image: circleci/openjdk:11-jdk
     working_directory: ~/matchbook-sdk
     steps:
+      - checkout
       - run: mvn clean install
 
-  reports:
-    docker:
-      - image: circleci/openjdk:8-jdk-browsers
-    working_directory: ~/matchbook-sdk
-    steps:
-       - run:
-           name: Publish coverage reports
-           command: |
-             wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets[0].browser_download_url')
-             java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r matchbook-sdk-rest/target/site/jacoco/jacoco.xml
+#  reports:
+#    docker:
+#      - image: circleci/openjdk:8-jdk-browsers
+#    working_directory: ~/matchbook-sdk
+#    steps:
+#       - run:
+#           name: Publish coverage reports
+#           command: |
+#             wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets[0].browser_download_url')
+#             java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r matchbook-sdk-rest/target/site/jacoco/jacoco.xml
 
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build-java8
-      - build-java11
-      - reports
+      - build-java11:
+          requires:
+            - build-java8
+#      - reports:
+#          requires:
+#             - build-java8
 
