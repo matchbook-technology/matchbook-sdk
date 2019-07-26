@@ -15,7 +15,6 @@ import org.junit.Test;
 
 public class UserModelMapperTest {
 
-
     private static final String SESSION_TOKEN = "736dhhfdy";
     private static final Long USER_ID = 12345L;
     private static final Long ACCOUNT_ID = 6372L;

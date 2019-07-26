@@ -31,26 +31,28 @@
     </licenses>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <!-- Maven compiler -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
         <!-- Application dependencies -->
-        <okhttp.version>4.0.1</okhttp.version>
-        <jackson.version>2.9.8</jackson.version>
-        <lmax.version>3.4.2</lmax.version>
-        <assertj.version>3.11.1</assertj.version>
-        <wiremock.version>2.21.0</wiremock.version>
-        <mockito.version>1.10.19</mockito.version>
-        <slf4j.version>1.7.26</slf4j.version>
-        <logback.version>1.2.3</logback.version>
+        <assertj.version>3.12.2</assertj.version>
+        <jackson.version>2.9.9</jackson.version>
         <junit.version>4.12</junit.version>
+        <lmax.version>3.4.2</lmax.version>
+        <logback.version>1.2.3</logback.version>
+        <mockito.version>2.28.2</mockito.version>
+        <okhttp.version>4.0.1</okhttp.version>
+        <slf4j.version>1.7.26</slf4j.version>
+        <wiremock.version>2.24.0</wiremock.version>
 
         <!-- Maven plugins -->
-        <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
-        <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
-        <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
+        <maven.jacoco.plugin.version>0.8.4</maven.jacoco.plugin.version>
     </properties>
 
     <build>
@@ -102,4 +104,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
