@@ -20,6 +20,12 @@ jobs:
             mvn clean install
             mvn surefire-report:report-only
 
+      - run:
+          name: Publish coverage reports
+          command: |
+            wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets[0].browser_download_url')
+            java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r matchbook-sdk-rest/reports/jacoco/jacoco.xml
+
       - store_test_results:
           path: matchbook-sdk-rest/target/surefire-reports
 
@@ -38,26 +44,13 @@ jobs:
           command: |
             mvn clean install
 
-  reports:
-    docker:
-      - image: circleci/openjdk:8-jdk-browsers
-    working_directory: ~/matchbook-sdk
-    steps:
-       - run:
-           name: Publish coverage reports
-           command: |
-             wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets[0].browser_download_url')
-             java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r matchbook-sdk-rest/reports/jacoco/jacoco.xml
-
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build-java8
-      - build-java11:
+      - build-java11
+      - build-java8:
           requires:
-            - build-java8
-      - reports:
-          requires:
-             - build-java8
+            - build-java11
+
 
