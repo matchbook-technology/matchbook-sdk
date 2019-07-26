@@ -6,9 +6,9 @@ import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 
-import com.matchbook.sdk.core.dtos.prices.Currency;
-import com.matchbook.sdk.core.dtos.user.Account;
-import com.matchbook.sdk.core.dtos.user.Login;
+import com.matchbook.sdk.rest.dtos.prices.Currency;
+import com.matchbook.sdk.rest.dtos.user.Account;
+import com.matchbook.sdk.rest.dtos.user.Login;
 import com.matchbook.sdk.stream.model.dataobjects.user.User;
 import org.junit.Before;
 import org.junit.Test;

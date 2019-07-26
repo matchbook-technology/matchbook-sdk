@@ -1,9 +1,0 @@
-package com.matchbook.sdk.core.dtos.events;
-
-public enum MarketType {
-
-    ONE_X_TWO, MONEY_LINE, TOTAL, HANDICAP,
-    HALF_TIME_FULL_TIME, BOTH_TEAMS_TO_SCORE, CORRECT_SCORE,
-    OUTRIGHT, OUTRIGHT_DED_FACT, PLACE, PLACE_DED_FACT, TO_QUALIFY
-
-}

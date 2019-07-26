@@ -7,7 +7,7 @@ public class UserMessage extends AbstractDisruptorMessage {
     private static final long serialVersionUID = -8425010391202208013L;
 
     private Balance balance;
-    private com.matchbook.sdk.core.dtos.user.Balance balanceDTO;
+    private com.matchbook.sdk.rest.dtos.user.Balance balanceDTO;
 
     public Balance getBalance() {
         return balance;
@@ -17,11 +17,11 @@ public class UserMessage extends AbstractDisruptorMessage {
         this.balance = balance;
     }
 
-    public com.matchbook.sdk.core.dtos.user.Balance getBalanceDTO() {
+    public com.matchbook.sdk.rest.dtos.user.Balance getBalanceDTO() {
         return balanceDTO;
     }
 
-    public void setBalanceDTO(com.matchbook.sdk.core.dtos.user.Balance balanceDTO) {
+    public void setBalanceDTO(com.matchbook.sdk.rest.dtos.user.Balance balanceDTO) {
         this.balanceDTO = balanceDTO;
     }
 

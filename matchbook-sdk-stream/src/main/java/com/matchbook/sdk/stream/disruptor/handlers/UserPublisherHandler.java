@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.LifecycleAware;
-import com.matchbook.sdk.common.StreamObserver;
+import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.stream.disruptor.messages.UserMessage;
 import com.matchbook.sdk.stream.model.dataobjects.user.Balance;
 

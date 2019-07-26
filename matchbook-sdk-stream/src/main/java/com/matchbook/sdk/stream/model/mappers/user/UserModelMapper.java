@@ -1,6 +1,6 @@
 package com.matchbook.sdk.stream.model.mappers.user;
 
-import com.matchbook.sdk.core.dtos.user.Login;
+import com.matchbook.sdk.rest.dtos.user.Login;
 import com.matchbook.sdk.stream.model.dataobjects.prices.Currency;
 import com.matchbook.sdk.stream.model.dataobjects.user.Account;
 import com.matchbook.sdk.stream.model.dataobjects.user.Balance;
@@ -8,7 +8,7 @@ import com.matchbook.sdk.stream.model.dataobjects.user.User;
 
 public class UserModelMapper {
 
-    public Account mapAccount(com.matchbook.sdk.core.dtos.user.Account mbAccount) {
+    public Account mapAccount(com.matchbook.sdk.rest.dtos.user.Account mbAccount) {
 
         Balance balance = new Balance.Builder(mbAccount.getId())
                 .addBalance(mbAccount.getBalance())
@@ -22,7 +22,7 @@ public class UserModelMapper {
                 .build();
     }
 
-    public Currency mapCurrency(com.matchbook.sdk.core.dtos.prices.Currency currency) {
+    public Currency mapCurrency(com.matchbook.sdk.rest.dtos.prices.Currency currency) {
         if (currency == null) {
             return null;
         }
@@ -34,7 +34,7 @@ public class UserModelMapper {
         }
     }
 
-    public Balance mapBalance(com.matchbook.sdk.core.dtos.user.Balance balanceDTO) {
+    public Balance mapBalance(com.matchbook.sdk.rest.dtos.user.Balance balanceDTO) {
         return new Balance.Builder(balanceDTO.getId())
                 .addBalance(balanceDTO.getBalance())
                 .addCommissionReserve(balanceDTO.getCommissionReserve())

@@ -2,10 +2,10 @@ package com.matchbook.sdk.stream;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.matchbook.sdk.common.StreamObserver;
-import com.matchbook.sdk.common.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.core.ClientConfig;
-import com.matchbook.sdk.core.ConnectionManager;
+import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.rest.ClientConfig;
+import com.matchbook.sdk.rest.ConnectionManager;
 import com.matchbook.sdk.stream.model.dataobjects.beeting.Offer;
 import com.matchbook.sdk.stream.model.dataobjects.beeting.Position;
 import com.matchbook.sdk.stream.model.dataobjects.events.Event;
