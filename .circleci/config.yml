@@ -1,6 +1,5 @@
 version: 2.1
 jobs:
-
   build-java8:
     docker:
       - image: circleci/openjdk:8-jdk-browsers
@@ -16,7 +15,7 @@ jobs:
           key: matchbook-sdk-{{ checksum "pom.xml" }}
 
       - run:
-          name: Trigger Build Jobs
+          name: Build Matchbook SDK on Java 8
           command: |
             mvn clean install
             mvn surefire-report:report-only
@@ -34,18 +33,21 @@ jobs:
     working_directory: ~/matchbook-sdk
     steps:
       - checkout
-      - run: mvn clean install
+      - run:
+          name: Build Matchbook SDK on Java 11
+          command: |
+            mvn clean install
 
-#  reports:
-#    docker:
-#      - image: circleci/openjdk:8-jdk-browsers
-#    working_directory: ~/matchbook-sdk
-#    steps:
-#       - run:
-#           name: Publish coverage reports
-#           command: |
-#             wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets[0].browser_download_url')
-#             java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r matchbook-sdk-rest/target/site/jacoco/jacoco.xml
+  reports:
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+    working_directory: ~/matchbook-sdk
+    steps:
+       - run:
+           name: Publish coverage reports
+           command: |
+             wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets[0].browser_download_url')
+             java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r matchbook-sdk-rest/target/site/jacoco/jacoco.xml
 
 workflows:
   version: 2
@@ -55,7 +57,7 @@ workflows:
       - build-java11:
           requires:
             - build-java8
-#      - reports:
-#          requires:
-#             - build-java8
+      - reports:
+          requires:
+             - build-java8
 
