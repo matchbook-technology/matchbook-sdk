@@ -23,9 +23,6 @@ jobs:
       - store_test_results:
           path: matchbook-sdk-rest/target/surefire-reports
 
-      - store_jacoco_results:
-          path: matchbook-sdk-rest/target/site/jacoco
-
       - store_artifacts:
           path: matchbook-sdk-rest/target/site
           destination: matchbook-sdk-rest/reports
@@ -50,7 +47,7 @@ jobs:
            name: Publish coverage reports
            command: |
              wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets[0].browser_download_url')
-             java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r matchbook-sdk-rest/target/site/jacoco/jacoco.xml
+             java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r matchbook-sdk-rest/reports/jacoco/jacoco.xml
 
 workflows:
   version: 2
