@@ -42,7 +42,7 @@ jobs:
       - run:
           name: Build Matchbook SDK on Java 11
           command: |
-            mvn clean install
+            mvn clean package -Dmaven.compiler.source=11 -Dmaven.compiler.target=11
 
 workflows:
   version: 2
