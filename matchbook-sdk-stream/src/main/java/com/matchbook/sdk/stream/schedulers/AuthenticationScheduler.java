@@ -1,10 +1,10 @@
 package com.matchbook.sdk.stream.schedulers;
 
-import com.matchbook.sdk.common.StreamObserver;
-import com.matchbook.sdk.core.UserClient;
-import com.matchbook.sdk.core.dtos.user.Login;
-import com.matchbook.sdk.core.dtos.user.LoginRequest;
-import com.matchbook.sdk.common.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.rest.UserClient;
+import com.matchbook.sdk.rest.dtos.user.Login;
+import com.matchbook.sdk.rest.dtos.user.LoginRequest;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 
 public class AuthenticationScheduler implements Runnable {
 

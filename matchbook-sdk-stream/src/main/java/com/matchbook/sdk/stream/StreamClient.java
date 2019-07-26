@@ -1,6 +1,6 @@
 package com.matchbook.sdk.stream;
 
-import com.matchbook.sdk.common.StreamObserver;
+import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.stream.model.dataobjects.beeting.Offer;
 import com.matchbook.sdk.stream.model.dataobjects.beeting.Position;
 import com.matchbook.sdk.stream.model.dataobjects.events.Event;

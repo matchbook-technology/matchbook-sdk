@@ -1,12 +1,12 @@
 package com.matchbook.sdk.stream.schedulers;
 
-import com.matchbook.sdk.common.StreamObserver;
-import com.matchbook.sdk.core.UserClient;
-import com.matchbook.sdk.core.dtos.user.Balance;
-import com.matchbook.sdk.core.dtos.user.BalanceRequest;
+import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.rest.UserClient;
+import com.matchbook.sdk.rest.dtos.user.Balance;
+import com.matchbook.sdk.rest.dtos.user.BalanceRequest;
 import com.matchbook.sdk.stream.disruptor.messages.UserMessage;
 import com.matchbook.sdk.stream.disruptor.publisher.UserPublisher;
-import com.matchbook.sdk.common.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 
 public class BalanceScheduler implements Runnable {
 
