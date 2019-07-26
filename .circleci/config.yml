@@ -23,6 +23,9 @@ jobs:
       - store_test_results:
           path: matchbook-sdk-rest/target/surefire-reports
 
+      - store_jacoco_results:
+          path: matchbook-sdk-rest/target/site/jacoco
+
       - store_artifacts:
           path: matchbook-sdk-rest/target/site
           destination: matchbook-sdk-rest/reports
