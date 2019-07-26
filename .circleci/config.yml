@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  build:
+  build-java8:
     docker:
       - image: circleci/openjdk:8-jdk-browsers
     working_directory: ~/matchbook-sdk
@@ -15,7 +15,7 @@ jobs:
           key: matchbook-sdk-{{ checksum "pom.xml" }}
 
       - run:
-          name: Build Matchbook SDK
+          name: Build Matchbook SDK on Java 8
           command: |
             mvn clean install
             mvn surefire-report:report-only
@@ -27,8 +27,30 @@ jobs:
             java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r matchbook-sdk-rest/target/site/jacoco/jacoco.xml
 
       - store_test_results:
-          path: matchbook-sdk-core/target/surefire-reports
+          path: matchbook-sdk-rest/target/surefire-reports
 
       - store_artifacts:
-          path: matchbook-sdk-core/target/site
-          destination: matchbook-sdk-core/reports
+          path: matchbook-sdk-rest/target/site
+          destination: matchbook-sdk-rest/reports
+
+  build-java11:
+    docker:
+      - image: circleci/openjdk:11-jdk
+    working_directory: ~/matchbook-sdk
+    steps:
+      - checkout
+      - run:
+          name: Build Matchbook SDK on Java 11
+          command: |
+            mvn clean package -Dmaven.compiler.source=11 -Dmaven.compiler.target=11
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build-java11
+      - build-java8:
+          requires:
+            - build-java11
+
+
