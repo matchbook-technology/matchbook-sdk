@@ -12,6 +12,7 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.CountDownLatch;
@@ -36,7 +37,7 @@ public class HeartbeatClientRestTest extends MatchbookSDKClientTest {
 
     public HeartbeatClientRestTest() {
         this.heartbeatClient = new HeartbeatClientRest(connectionManager);
-        this.dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss 'GMT'");
+        this.dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
         this.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
@@ -48,7 +49,7 @@ public class HeartbeatClientRestTest extends MatchbookSDKClientTest {
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/getHeartbeatSuccessfulResponse.json")));
-        Date expectedHBTimeout = dateFormat.parse("12 Jul 2019 10:01:00 GMT");
+        Instant expectedHBTimeout = dateFormat.parse("12 Jul 2019 10:01:00").toInstant();
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatGetRequest heartbeatGetRequest = new HeartbeatGetRequest.Builder().build();
@@ -84,7 +85,7 @@ public class HeartbeatClientRestTest extends MatchbookSDKClientTest {
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/sendHeartbeatSuccessfulResponse.json")));
-        Date expectedHBTimeout = dateFormat.parse("12 Jul 2019 10:01:00 GMT");
+        Instant expectedHBTimeout = dateFormat.parse("12 Jul 2019 10:01:00").toInstant();
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatSendRequest heartbeatSendRequest = new HeartbeatSendRequest.Builder(20).build();
