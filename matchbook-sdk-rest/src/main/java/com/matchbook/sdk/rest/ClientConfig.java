@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class ClientConfig {
 
@@ -8,12 +9,14 @@ public class ClientConfig {
     private final char[] password;
     private final String sportsUrl;
     private final String loginUrl;
+    private final HttpConfig httpConfig;
 
     private ClientConfig(ClientConfig.Builder builder) {
         this.username = builder.username;
         this.password = builder.password;
         this.sportsUrl = builder.sportsUrl;
         this.loginUrl = builder.loginUrl;
+        this.httpConfig = builder.httpConfig;
     }
 
     public char[] getUsername() {
@@ -32,13 +35,18 @@ public class ClientConfig {
         return loginUrl;
     }
 
+    public HttpConfig getHttpConfig() {
+        return httpConfig;
+    }
+
     @Override
     public String toString() {
-        return ClientConfig.class.getSimpleName() + "{" +
+        return ClientConfig.class.getSimpleName() + " {" +
                 "username=" + Arrays.toString(username) +
-                ", password='" + Arrays.toString(password) +
-                ", buildSportsUrl=" + sportsUrl +
-                ", buildLoginUrl=" + loginUrl +
+                ", password=" + Arrays.toString(password) +
+                ", sportsUrl=" + sportsUrl +
+                ", loginUrl=" + loginUrl +
+                ", httpClientConfig=" + httpConfig +
                 "}";
     }
 
@@ -49,6 +57,8 @@ public class ClientConfig {
 
         private String sportsUrl = "https://api.matchbook.com/edge/rest";
         private String loginUrl = "https://api.matchbook.com/bpapi/rest/security/session";
+
+        private HttpConfig httpConfig;
 
         public Builder(char[] username, char[] password) {
             this.username = username;
@@ -65,7 +75,15 @@ public class ClientConfig {
             return this;
         }
 
+        public Builder httpClientConfig(HttpConfig httpConfig) {
+            this.httpConfig = httpConfig;
+            return this;
+        }
+
         public ClientConfig build() {
+            if (Objects.isNull(httpConfig)) {
+                httpClientConfig(new HttpConfig.Builder().build());
+            }
             return new ClientConfig(this);
         }
     }

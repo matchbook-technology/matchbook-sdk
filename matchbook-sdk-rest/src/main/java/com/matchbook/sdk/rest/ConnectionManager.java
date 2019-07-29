@@ -14,7 +14,7 @@ public final class ConnectionManager {
     public ConnectionManager(ClientConfig clientConfig) {
         this.clientConfig = clientConfig;
 
-        this.httpClient = new HttpClientWrapper();
+        this.httpClient = new HttpClientWrapper(clientConfig.getHttpConfig());
         this.serializer = new SerializerWrapper();
     }
 
