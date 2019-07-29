@@ -1,28 +1,33 @@
 package com.matchbook.sdk.rest.configs;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Instant;
 
 public interface Parser extends AutoCloseable {
 
+    void startObject() throws IOException;
+
+    void startArray() throws IOException;
+
+    void moveToNext() throws IOException;
+
     boolean hasNext();
 
-    void moveToNext();
+    String getFieldName() throws IOException;
 
-    String getFieldName();
+    Boolean getBoolean() throws IOException;
 
-    Boolean getBoolean();
+    String getString() throws IOException;
 
-    String getText();
+    Integer getInteger() throws IOException;
 
-    Integer getInteger();
+    Long getLong() throws IOException;
 
-    Long getLong();
+    BigDecimal getDecimal() throws IOException;
 
-    BigDecimal getBigDecimal();
+    Instant getInstant() throws IOException;
 
-    Instant getInstant();
-
-    <T extends Enum<T>> Enum<T> getEnum(Class<Enum<T>> enumClass);
+    <T extends Enum<T>> Enum<T> getEnum(Class<T> enumClass) throws IOException;
 
 }

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.DeserializationConfig;
@@ -20,16 +21,19 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.matchbook.sdk.rest.configs.Parser;
 import com.matchbook.sdk.rest.configs.Serializer;
 
 public class SerializerWrapper implements Serializer {
 
     private final ObjectMapper objectMapper;
+    private final JsonFactory jsonFactory;
     private final Map<Class<?>, ObjectWriter> objectWriters;
     private final Map<Class<?>, ObjectReader> objectReaders;
 
     public SerializerWrapper() {
         objectMapper = initObjectMapper();
+        jsonFactory = new JsonFactory();
 
         objectWriters = new HashMap<>();
         objectReaders = new HashMap<>();
@@ -73,6 +77,12 @@ public class SerializerWrapper implements Serializer {
         return objectWriter.writeValueAsString(object);
     }
 
+    @Override
+    public Parser newParser(InputStream inputStream) throws IOException {
+        return new ParserWrapper(jsonFactory, inputStream);
+    }
+
+    @Deprecated
     @Override
     public <T> T readObject(InputStream inputStream, Class<T> type) throws IOException {
         ObjectReader objectReader = objectReaders.computeIfAbsent(type, objectMapper::readerFor);

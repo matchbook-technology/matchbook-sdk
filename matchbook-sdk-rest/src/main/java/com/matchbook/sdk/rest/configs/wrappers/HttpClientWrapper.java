@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import com.matchbook.sdk.rest.configs.HttpCallback;
-import com.matchbook.sdk.rest.configs.HttpClient;
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
+import com.matchbook.sdk.rest.configs.HttpCallback;
+import com.matchbook.sdk.rest.configs.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -84,7 +84,7 @@ public class HttpClientWrapper implements HttpClient {
         httpClient.newCall(request).enqueue(new RequestCallback(httpCallback));
     }
 
-    private class RequestCallback implements Callback {
+    private static class RequestCallback implements Callback {
 
         private final HttpCallback httpCallback;
 
@@ -93,9 +93,9 @@ public class HttpClientWrapper implements HttpClient {
         }
 
         @Override
-        public void onResponse(Call call, Response response) throws IOException {
+        public void onResponse(Call call, Response response) {
             try (ResponseBody responseBody = response.body()) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && Objects.nonNull(responseBody)) {
                     httpCallback.onResponse(responseBody.byteStream());
                 } else {
                     MatchbookSDKHttpException matchbookException = getExceptionForResponse(response);
@@ -111,24 +111,25 @@ public class HttpClientWrapper implements HttpClient {
         }
 
         private MatchbookSDKHttpException getExceptionForResponse(Response response) {
-            if (Objects.nonNull(response.body())) {
+            ResponseBody responseBody = response.body();
+            if (Objects.nonNull(responseBody)) {
                 try {
-                    if (isAuthenticationErrorPresent(response.body())) {
+                    if (isAuthenticationErrorPresent(responseBody)) {
                         return newUnauthenticatedException();
                     }
                 } catch (IOException e) {
-                    return newHTTPException(response);
+                    return newHTTPException(response.code());
                 }
             }
-            return newHTTPException(response);
+            return newHTTPException(response.code());
         }
 
         private boolean isAuthenticationErrorPresent(ResponseBody body) throws IOException {
             return new String(body.bytes()).toLowerCase().contains("cannot login");
         }
 
-        private MatchbookSDKHttpException newHTTPException(Response response) {
-            return new MatchbookSDKHttpException("Unexpected HTTP code " + response.code(), ErrorType.HTTP);
+        private MatchbookSDKHttpException newHTTPException(int responseCode) {
+            return new MatchbookSDKHttpException("Unexpected HTTP code " + responseCode, ErrorType.HTTP);
         }
 
         private MatchbookSDKHttpException newUnauthenticatedException() {
