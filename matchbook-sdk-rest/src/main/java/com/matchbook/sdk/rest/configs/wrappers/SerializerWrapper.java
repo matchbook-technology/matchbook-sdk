@@ -1,10 +1,5 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.DeserializationConfig;
@@ -21,6 +16,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.matchbook.sdk.rest.configs.Serializer;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SerializerWrapper implements Serializer {
 
@@ -59,7 +59,8 @@ public class SerializerWrapper implements Serializer {
                     public Enum<?> deserialize(JsonParser jsonParser,
                             DeserializationContext context) throws IOException {
                         Class<? extends Enum> rawClass = (Class<Enum<?>>) type.getRawClass();
-                        return Enum.valueOf(rawClass, jsonParser.getValueAsString().toUpperCase());
+                        String enumValue = jsonParser.getValueAsString().replaceAll("\\-", "_").toUpperCase();
+                        return Enum.valueOf(rawClass, enumValue);
                     }
                 };
             }

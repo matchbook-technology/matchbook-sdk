@@ -1,17 +1,7 @@
 package com.matchbook.sdk.rest.clients.rest;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.rest.EventsClient;
 import com.matchbook.sdk.rest.EventsClientRest;
 import com.matchbook.sdk.rest.MatchbookSDKClientTest;
@@ -26,8 +16,18 @@ import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import org.junit.Test;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 public class EventsClientRestTest extends MatchbookSDKClientTest {
 
@@ -96,7 +96,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
 
             @Override
             public void onError(MatchbookSDKException e) {
-                fail();
+                fail(e.getMessage());
             }
 
             @Override
