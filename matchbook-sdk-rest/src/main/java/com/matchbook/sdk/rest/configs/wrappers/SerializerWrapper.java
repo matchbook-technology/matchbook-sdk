@@ -1,5 +1,10 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.DeserializationConfig;
@@ -15,12 +20,10 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.matchbook.sdk.rest.configs.Serializer;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SerializerWrapper implements Serializer {
 
@@ -39,6 +42,10 @@ public class SerializerWrapper implements Serializer {
         final ObjectMapper mapper = new ObjectMapper();
         final Module module = caseInsensitiveEnumModule();
         mapper.registerModule(module);
+        mapper.registerModule(new ParameterNamesModule());
+        mapper.registerModule(new Jdk8Module());
+        mapper.registerModule(new JavaTimeModule());
+
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
