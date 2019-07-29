@@ -1,9 +1,9 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +35,7 @@ public class Offer implements RestResponse<Offer> {
     private BigDecimal commissionReserve;
     private boolean inPlay;
     private boolean keepInPlay;
-    private Instant createdAt;
+    private Date createdAt;
     private List<MatchedBet> matchedBets;
     private OfferEdit offerEdit;
 
@@ -203,11 +203,11 @@ public class Offer implements RestResponse<Offer> {
         this.keepInPlay = keepInPlay;
     }
 
-    public Instant getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 

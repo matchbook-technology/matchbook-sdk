@@ -1,8 +1,8 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Set;
 
 import com.matchbook.sdk.rest.dtos.RestResponse;
@@ -12,7 +12,7 @@ public class MatchedBet extends AbstractMatchedBet implements RestResponse<Match
     private Long id;
     private Long offerId;
     private BigDecimal commission;
-    private Instant createdAt;
+    private Date createdAt;
 
     public Long getId() {
         return id;
@@ -38,11 +38,11 @@ public class MatchedBet extends AbstractMatchedBet implements RestResponse<Match
         this.commission = commission;
     }
 
-    public Instant getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
