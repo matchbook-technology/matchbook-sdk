@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import com.matchbook.sdk.rest.configs.HttpCallback;
-import com.matchbook.sdk.rest.configs.HttpClient;
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
+import com.matchbook.sdk.rest.HttpConfig;
+import com.matchbook.sdk.rest.configs.HttpCallback;
+import com.matchbook.sdk.rest.configs.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -26,19 +27,19 @@ public class HttpClientWrapper implements HttpClient {
     private final OkHttpClient httpClient;
     private final MediaType jsonMediaType;
 
-    public HttpClientWrapper() {
-        httpClient = initHttpClient();
+    public HttpClientWrapper(HttpConfig httpConfig) {
+        httpClient = initHttpClient(httpConfig);
 
         this.jsonMediaType = MediaType.parse(MEDIA_TYPE_JSON);
     }
 
-    private OkHttpClient initHttpClient() {
+    private OkHttpClient initHttpClient(HttpConfig httpConfig) {
         return new OkHttpClient.Builder()
-            .connectTimeout(2, TimeUnit.SECONDS)
-            .writeTimeout(5, TimeUnit.SECONDS)
-            .readTimeout(2, TimeUnit.SECONDS)
-            .followRedirects(false)
-            .build();
+                .connectTimeout(httpConfig.getConnectionTimeout(), TimeUnit.MILLISECONDS)
+                .writeTimeout(httpConfig.getWriteTimeout(), TimeUnit.MILLISECONDS)
+                .readTimeout(httpConfig.getReadTimeout(), TimeUnit.MILLISECONDS)
+                .followRedirects(false)
+                .build();
     }
 
     @Override
@@ -68,8 +69,8 @@ public class HttpClientWrapper implements HttpClient {
     @Override
     public void delete(String url, HttpCallback httpCallback) throws MatchbookSDKHttpException {
         Request request = buildRequest(url)
-            .delete()
-            .build();
+                .delete()
+                .build();
         sendHttpRequest(request, httpCallback);
     }
 
