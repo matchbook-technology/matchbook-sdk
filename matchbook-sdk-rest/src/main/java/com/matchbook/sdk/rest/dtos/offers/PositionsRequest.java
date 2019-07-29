@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.matchbook.sdk.rest.dtos.PageableRequest;
-import com.matchbook.sdk.rest.dtos.PageableRequestBuilder;
 
 public class PositionsRequest extends PageableRequest {
 
@@ -15,13 +14,48 @@ public class PositionsRequest extends PageableRequest {
     private final Set<Long> marketIds;
     private final Set<Long> runnersIds;
 
-    private PositionsRequest(PositionsRequest.Builder builder) {
-        super(builder);
+    protected PositionsRequest(Init<?> init) {
+        super(init);
 
-        this.eventIds = builder.eventIds;
-        this.marketIds = builder.marketIds;
-        this.runnersIds = builder.runnersIds;
+        this.eventIds = init.eventIds;
+        this.marketIds = init.marketIds;
+        this.runnersIds = init.runnersIds;
     }
+
+    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+
+        private Set<Long> eventIds;
+        private Set<Long> marketIds;
+        private Set<Long> runnersIds;
+
+        public T eventIds(Set<Long> eventIds) {
+            this.eventIds = eventIds;
+            return self();
+        }
+
+        public T marketIds(Set<Long> marketIds) {
+            this.marketIds = marketIds;
+            return self();
+        }
+
+        public T runnersIds(Set<Long> runnersIds) {
+            this.runnersIds = runnersIds;
+            return self();
+        }
+
+        public PositionsRequest build() {
+            return new PositionsRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
+
 
     public Set<Long> getEventIds() {
         return eventIds;
@@ -75,31 +109,4 @@ public class PositionsRequest extends PageableRequest {
                 ", perPage=" + perPage +
                 "}";
     }
-
-    public static class Builder extends PageableRequestBuilder {
-
-        private Set<Long> eventIds;
-        private Set<Long> marketIds;
-        private Set<Long> runnersIds;
-
-        public Builder eventIds(Set<Long> eventIds) {
-            this.eventIds = eventIds;
-            return this;
-        }
-
-        public Builder marketIds(Set<Long> marketIds) {
-            this.marketIds = marketIds;
-            return this;
-        }
-
-        public Builder runnersIds(Set<Long> runnersIds) {
-            this.runnersIds = runnersIds;
-            return this;
-        }
-
-        public PositionsRequest build() {
-            return new PositionsRequest(this);
-        }
-    }
-
 }

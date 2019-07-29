@@ -8,9 +8,34 @@ public abstract class PageableRequest implements RestRequest {
     protected final int offset;
     protected final int perPage;
 
-    protected <B extends PageableRequestBuilder> PageableRequest(B builder) {
-        this.offset = builder.offset;
-        this.perPage = builder.perPage;
+    protected PageableRequest(Init<?> init) {
+        this.offset = init.offset;
+        this.perPage = init.perPage;
+    }
+
+    protected static abstract class Init<T extends Init<T>> {
+        private int offset;
+        private int perPage;
+
+        protected abstract T self();
+
+        public T offset(int offset) {
+            this.offset = offset;
+            return self();
+        }
+
+        public T perPage(int perPage) {
+            this.perPage = perPage;
+            return self();
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
     }
 
     public int getOffset() {

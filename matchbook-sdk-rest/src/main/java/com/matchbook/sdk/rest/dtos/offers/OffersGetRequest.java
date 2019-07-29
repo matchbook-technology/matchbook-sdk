@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.matchbook.sdk.rest.dtos.PageableRequest;
-import com.matchbook.sdk.rest.dtos.PageableRequestBuilder;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
 public class OffersGetRequest extends PageableRequest {
@@ -22,18 +21,88 @@ public class OffersGetRequest extends PageableRequest {
     private final Integer interval;
     private final boolean includeEdits;
 
-    private OffersGetRequest(OffersGetRequest.Builder builder) {
-        super(builder);
+    private OffersGetRequest(Init<?> init) {
+        super(init);
 
-        this.sportIds = builder.sportIds;
-        this.eventIds = builder.eventIds;
-        this.marketIds = builder.marketIds;
-        this.runnersIds = builder.runnersIds;
-        this.statuses = builder.statuses;
-        this.side = builder.side;
-        this.interval = builder.interval;
-        this.includeEdits = builder.includeEdits;
+        this.sportIds = init.sportIds;
+        this.eventIds = init.eventIds;
+        this.marketIds = init.marketIds;
+        this.runnersIds = init.runnersIds;
+        this.statuses = init.statuses;
+        this.side = init.side;
+        this.interval = init.interval;
+        this.includeEdits = init.includeEdits;
     }
+
+    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+
+        private Set<Long> sportIds;
+        private Set<Long> eventIds;
+        private Set<Long> marketIds;
+        private Set<Long> runnersIds;
+        private Set<OfferStatus> statuses;
+        private Side side;
+        private Integer interval;
+        private boolean includeEdits;
+
+        public Init() {
+            includeEdits = false;
+        }
+
+        public T sportIds(Set<Long> sportIds) {
+            this.sportIds = sportIds;
+            return self();
+        }
+
+        public T eventIds(Set<Long> eventIds) {
+            this.eventIds = eventIds;
+            return self();
+        }
+
+        public T marketIds(Set<Long> marketIds) {
+            this.marketIds = marketIds;
+            return self();
+        }
+
+        public T runnersIds(Set<Long> runnersIds) {
+            this.runnersIds = runnersIds;
+            return self();
+        }
+
+        public T statuses(Set<OfferStatus> statuses) {
+            this.statuses = statuses;
+            return self();
+        }
+
+        public T side(Side side) {
+            this.side = side;
+            return self();
+        }
+
+        public T interval(Integer interval) {
+            this.interval = interval;
+            return self();
+        }
+
+        public T includeEdits(boolean includeEdits) {
+            this.includeEdits = includeEdits;
+            return self();
+        }
+
+
+        public OffersGetRequest build() {
+            return new OffersGetRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
+
 
     public Set<Long> getSportIds() {
         return sportIds;
@@ -131,65 +200,4 @@ public class OffersGetRequest extends PageableRequest {
                 ", perPage=" + perPage +
                 "}";
     }
-
-    public static class Builder extends PageableRequestBuilder {
-
-        private Set<Long> sportIds;
-        private Set<Long> eventIds;
-        private Set<Long> marketIds;
-        private Set<Long> runnersIds;
-        private Set<OfferStatus> statuses;
-        private Side side;
-        private Integer interval;
-        private boolean includeEdits;
-
-        public Builder() {
-            includeEdits = false;
-        }
-
-        public Builder sportIds(Set<Long> sportIds) {
-            this.sportIds = sportIds;
-            return this;
-        }
-
-        public Builder eventIds(Set<Long> eventIds) {
-            this.eventIds = eventIds;
-            return this;
-        }
-
-        public Builder marketIds(Set<Long> marketIds) {
-            this.marketIds = marketIds;
-            return this;
-        }
-
-        public Builder runnersIds(Set<Long> runnersIds) {
-            this.runnersIds = runnersIds;
-            return this;
-        }
-
-        public Builder statuses(Set<OfferStatus> statuses) {
-            this.statuses = statuses;
-            return this;
-        }
-
-        public Builder side(Side side) {
-            this.side = side;
-            return this;
-        }
-
-        public Builder interval(Integer interval) {
-            this.interval = interval;
-            return this;
-        }
-
-        public Builder includeEdits(boolean includeEdits) {
-            this.includeEdits = includeEdits;
-            return this;
-        }
-
-        public OffersGetRequest build() {
-            return new OffersGetRequest(this);
-        }
-    }
-
 }

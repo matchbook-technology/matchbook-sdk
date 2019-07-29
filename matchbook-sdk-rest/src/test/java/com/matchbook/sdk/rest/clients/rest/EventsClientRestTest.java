@@ -12,6 +12,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.rest.EventsClient;
 import com.matchbook.sdk.rest.EventsClientRest;
 import com.matchbook.sdk.rest.MatchbookSDKClientTest;
@@ -26,7 +27,6 @@ import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import org.junit.Test;
 
 public class EventsClientRestTest extends MatchbookSDKClientTest {
@@ -195,6 +195,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
                         .withBodyFile("matchbook/getMarketsSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(9);
+
         MarketsRequest marketsRequest = new MarketsRequest.Builder(395729780570010L).build();
 
         eventsRestClient.getMarkets(marketsRequest, new StreamObserver<Market>() {
@@ -273,6 +274,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
                         .withBodyFile("matchbook/getRunnersSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(4);
+
         RunnersRequest runnersRequest = new RunnersRequest
                 .Builder(395729780570010L, 395729860260010L)
                 .build();

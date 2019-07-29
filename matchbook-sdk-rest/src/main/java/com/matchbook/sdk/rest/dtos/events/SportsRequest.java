@@ -3,12 +3,25 @@ package com.matchbook.sdk.rest.dtos.events;
 import java.util.Map;
 
 import com.matchbook.sdk.rest.dtos.PageableRequest;
-import com.matchbook.sdk.rest.dtos.PageableRequestBuilder;
 
 public class SportsRequest extends PageableRequest {
 
-    private SportsRequest(SportsRequest.Builder builder) {
-        super(builder);
+    protected SportsRequest(Init<?> init) {
+        super(init);
+    }
+
+    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+        public SportsRequest build() {
+            return new SportsRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
     }
 
     @Override
@@ -27,14 +40,6 @@ public class SportsRequest extends PageableRequest {
                 "offset=" + offset +
                 ", perPage=" + perPage +
                 "}";
-    }
-
-    public static class Builder extends PageableRequestBuilder {
-
-        public SportsRequest build() {
-            return new SportsRequest(this);
-        }
-
     }
 
 }
