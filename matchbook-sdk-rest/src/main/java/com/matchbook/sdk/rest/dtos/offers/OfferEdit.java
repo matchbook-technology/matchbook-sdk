@@ -1,8 +1,8 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Set;
 
 import com.matchbook.sdk.rest.dtos.RestResponse;
@@ -20,7 +20,7 @@ public class OfferEdit implements RestResponse<OfferEdit> {
     private BigDecimal stakeBefore;
     private BigDecimal stakeAfter;
     private BigDecimal delay;
-    private Instant editTime;
+    private Date editTime;
 
     public Long getId() {
         return id;
@@ -102,11 +102,11 @@ public class OfferEdit implements RestResponse<OfferEdit> {
         this.delay = delay;
     }
 
-    public Instant getEditTime() {
+    public Date getEditTime() {
         return editTime;
     }
 
-    public void setEditTime(Instant editTime) {
+    public void setEditTime(Date editTime) {
         this.editTime = editTime;
     }
 

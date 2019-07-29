@@ -1,12 +1,12 @@
 package com.matchbook.sdk.rest.dtos.events;
 
-import com.matchbook.sdk.rest.dtos.RestResponse;
-
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import com.matchbook.sdk.rest.dtos.RestResponse;
 
 public class Event implements RestResponse<Event> {
 
@@ -15,7 +15,7 @@ public class Event implements RestResponse<Event> {
     private Long[] categoryIds;
     private String name;
     private EventStatus status;
-    private Instant start;
+    private Date start;
     private boolean inRunning;
     private boolean allowLiveBetting;
     private List<Market> markets;
@@ -66,11 +66,11 @@ public class Event implements RestResponse<Event> {
         this.status = status;
     }
 
-    public Instant getStart() {
+    public Date getStart() {
         return start;
     }
 
-    public void setStart(Instant start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 

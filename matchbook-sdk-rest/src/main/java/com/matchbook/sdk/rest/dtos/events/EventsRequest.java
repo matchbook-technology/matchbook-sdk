@@ -1,9 +1,6 @@
 package com.matchbook.sdk.rest.dtos.events;
 
-import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequest;
-import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequestBuilder;
-
-import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,10 +9,13 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequest;
+import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequestBuilder;
+
 public class EventsRequest extends PageablePricesRequest {
 
-    private final Instant after;
-    private final Instant before;
+    private final Date after;
+    private final Date before;
     private final Set<Long> sportIds;
     private final Set<Long> categoryIds;
     private final Set<Long> eventIds;
@@ -36,11 +36,11 @@ public class EventsRequest extends PageablePricesRequest {
         this.includePrices = builder.includePrices;
     }
 
-    public Instant getAfter() {
+    public Date getAfter() {
         return after;
     }
 
-    public Instant getBefore() {
+    public Date getBefore() {
         return before;
     }
 
@@ -126,12 +126,12 @@ public class EventsRequest extends PageablePricesRequest {
                 ", includeEventParticipants=" + includeEventParticipants +
                 ", includePrices=" + includePrices +
                 (includePrices ? (
-                    ", oddsType=" + oddsType +
-                    ", exchangeType=" + exchangeType +
-                    ", side=" + side +
-                    ", currency=" + currency +
-                    ", minimumLiquidity=" + minimumLiquidity +
-                    ", priceMode=" + priceMode
+                        ", oddsType=" + oddsType +
+                                ", exchangeType=" + exchangeType +
+                                ", side=" + side +
+                                ", currency=" + currency +
+                                ", minimumLiquidity=" + minimumLiquidity +
+                                ", priceMode=" + priceMode
                 ) : "") +
                 ", offset=" + offset +
                 ", perPage=" + perPage +
@@ -140,8 +140,8 @@ public class EventsRequest extends PageablePricesRequest {
 
     public static class Builder extends PageablePricesRequestBuilder {
 
-        private Instant after;
-        private Instant before;
+        private Date after;
+        private Date before;
         private Set<Long> sportIds;
         private Set<Long> categoryIds;
         private Set<Long> eventIds;
@@ -158,12 +158,12 @@ public class EventsRequest extends PageablePricesRequest {
             statuses = new HashSet<>();
         }
 
-        public Builder after(Instant after) {
+        public Builder after(Date after) {
             this.after = after;
             return this;
         }
 
-        public Builder before(Instant before) {
+        public Builder before(Date before) {
             this.before = before;
             return this;
         }
