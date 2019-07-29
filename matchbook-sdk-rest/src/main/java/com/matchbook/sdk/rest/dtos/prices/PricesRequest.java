@@ -18,37 +18,6 @@ public class PricesRequest extends AbstractPricesRequest {
         this.runnerId = init.runnerId;
     }
 
-
-    protected static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
-        private final Long eventId;
-        private final Long marketId;
-        private final Long runnerId;
-
-        public Init(Long eventId, Long marketId, Long runnerId) {
-            this.eventId = eventId;
-            this.marketId = marketId;
-            this.runnerId = runnerId;
-        }
-
-        public PricesRequest build() {
-            return new PricesRequest(this);
-        }
-    }
-
-
-    public static class Builder extends Init<Builder> {
-
-        public Builder(Long eventId, Long marketId, Long runnerId) {
-            super(eventId, marketId, runnerId);
-        }
-
-        @Override
-        protected Builder self() {
-            return this;
-        }
-    }
-
-
     public Long getEventId() {
         return eventId;
     }
@@ -105,5 +74,34 @@ public class PricesRequest extends AbstractPricesRequest {
                 ", minimumLiquidity=" + minimumLiquidity +
                 ", priceMode=" + priceMode +
                 "}";
+    }
+
+    protected static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
+        private final Long eventId;
+        private final Long marketId;
+        private final Long runnerId;
+
+        public Init(Long eventId, Long marketId, Long runnerId) {
+            this.eventId = eventId;
+            this.marketId = marketId;
+            this.runnerId = runnerId;
+        }
+
+        public PricesRequest build() {
+            return new PricesRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+
+        public Builder(Long eventId, Long marketId, Long runnerId) {
+            super(eventId, marketId, runnerId);
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
+        }
     }
 }

@@ -27,55 +27,6 @@ public abstract class PageablePricesRequest extends PageableRequest {
         this.priceMode = init.priceMode;
     }
 
-    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
-
-        protected OddsType oddsType;
-        protected ExchangeType exchangeType;
-        protected Side side;
-        protected Currency currency;
-        protected BigDecimal minimumLiquidity;
-        protected PriceMode priceMode;
-
-        public T oddsType(OddsType oddsType) {
-            this.oddsType = oddsType;
-            return self();
-        }
-
-        public T exchangeType(ExchangeType exchangeType) {
-            this.exchangeType = exchangeType;
-            return self();
-        }
-
-        public T side(Side side) {
-            this.side = side;
-            return self();
-        }
-
-        public T currency(Currency currency) {
-            this.currency = currency;
-            return self();
-        }
-
-        public T minimumLiquidity(BigDecimal minimumLiquidity) {
-            this.minimumLiquidity = minimumLiquidity;
-            return self();
-        }
-
-        public T priceMode(PriceMode priceMode) {
-            this.priceMode = priceMode;
-            return self();
-        }
-    }
-
-
-    public static class Builder extends Init<Builder> {
-        @Override
-        protected Builder self() {
-            return this;
-        }
-    }
-
-
     public OddsType getOddsType() {
         return oddsType;
     }
@@ -125,4 +76,51 @@ public abstract class PageablePricesRequest extends PageableRequest {
         return parameters;
     }
 
+    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+
+        protected OddsType oddsType;
+        protected ExchangeType exchangeType;
+        protected Side side;
+        protected Currency currency;
+        protected BigDecimal minimumLiquidity;
+        protected PriceMode priceMode;
+
+        public T oddsType(OddsType oddsType) {
+            this.oddsType = oddsType;
+            return self();
+        }
+
+        public T exchangeType(ExchangeType exchangeType) {
+            this.exchangeType = exchangeType;
+            return self();
+        }
+
+        public T side(Side side) {
+            this.side = side;
+            return self();
+        }
+
+        public T currency(Currency currency) {
+            this.currency = currency;
+            return self();
+        }
+
+        public T minimumLiquidity(BigDecimal minimumLiquidity) {
+            this.minimumLiquidity = minimumLiquidity;
+            return self();
+        }
+
+        public T priceMode(PriceMode priceMode) {
+            this.priceMode = priceMode;
+            return self();
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
 }

@@ -34,76 +34,6 @@ public class OffersGetRequest extends PageableRequest {
         this.includeEdits = init.includeEdits;
     }
 
-    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
-
-        private Set<Long> sportIds;
-        private Set<Long> eventIds;
-        private Set<Long> marketIds;
-        private Set<Long> runnersIds;
-        private Set<OfferStatus> statuses;
-        private Side side;
-        private Integer interval;
-        private boolean includeEdits;
-
-        public Init() {
-            includeEdits = false;
-        }
-
-        public T sportIds(Set<Long> sportIds) {
-            this.sportIds = sportIds;
-            return self();
-        }
-
-        public T eventIds(Set<Long> eventIds) {
-            this.eventIds = eventIds;
-            return self();
-        }
-
-        public T marketIds(Set<Long> marketIds) {
-            this.marketIds = marketIds;
-            return self();
-        }
-
-        public T runnersIds(Set<Long> runnersIds) {
-            this.runnersIds = runnersIds;
-            return self();
-        }
-
-        public T statuses(Set<OfferStatus> statuses) {
-            this.statuses = statuses;
-            return self();
-        }
-
-        public T side(Side side) {
-            this.side = side;
-            return self();
-        }
-
-        public T interval(Integer interval) {
-            this.interval = interval;
-            return self();
-        }
-
-        public T includeEdits(boolean includeEdits) {
-            this.includeEdits = includeEdits;
-            return self();
-        }
-
-
-        public OffersGetRequest build() {
-            return new OffersGetRequest(this);
-        }
-    }
-
-
-    public static class Builder extends Init<Builder> {
-        @Override
-        protected Builder self() {
-            return this;
-        }
-    }
-
-
     public Set<Long> getSportIds() {
         return sportIds;
     }
@@ -199,5 +129,74 @@ public class OffersGetRequest extends PageableRequest {
                 ", offset=" + offset +
                 ", perPage=" + perPage +
                 "}";
+    }
+
+    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+
+        private Set<Long> sportIds;
+        private Set<Long> eventIds;
+        private Set<Long> marketIds;
+        private Set<Long> runnersIds;
+        private Set<OfferStatus> statuses;
+        private Side side;
+        private Integer interval;
+        private boolean includeEdits;
+
+        public Init() {
+            includeEdits = false;
+        }
+
+        public T sportIds(Set<Long> sportIds) {
+            this.sportIds = sportIds;
+            return self();
+        }
+
+        public T eventIds(Set<Long> eventIds) {
+            this.eventIds = eventIds;
+            return self();
+        }
+
+        public T marketIds(Set<Long> marketIds) {
+            this.marketIds = marketIds;
+            return self();
+        }
+
+        public T runnersIds(Set<Long> runnersIds) {
+            this.runnersIds = runnersIds;
+            return self();
+        }
+
+        public T statuses(Set<OfferStatus> statuses) {
+            this.statuses = statuses;
+            return self();
+        }
+
+        public T side(Side side) {
+            this.side = side;
+            return self();
+        }
+
+        public T interval(Integer interval) {
+            this.interval = interval;
+            return self();
+        }
+
+        public T includeEdits(boolean includeEdits) {
+            this.includeEdits = includeEdits;
+            return self();
+        }
+
+
+        public OffersGetRequest build() {
+            return new OffersGetRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
     }
 }

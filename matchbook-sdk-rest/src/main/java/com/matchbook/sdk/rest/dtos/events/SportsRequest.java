@@ -10,20 +10,6 @@ public class SportsRequest extends PageableRequest {
         super(init);
     }
 
-    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
-        public SportsRequest build() {
-            return new SportsRequest(this);
-        }
-    }
-
-
-    public static class Builder extends Init<Builder> {
-        @Override
-        protected Builder self() {
-            return this;
-        }
-    }
-
     @Override
     public String resourcePath() {
         return "lookups/sports";
@@ -42,4 +28,17 @@ public class SportsRequest extends PageableRequest {
                 "}";
     }
 
+    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+        public SportsRequest build() {
+            return new SportsRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
 }

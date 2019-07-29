@@ -13,6 +13,21 @@ public abstract class PageableRequest implements RestRequest {
         this.perPage = init.perPage;
     }
 
+    public int getOffset() {
+        return offset;
+    }
+
+    public int getPerPage() {
+        return perPage;
+    }
+
+    protected Map<String, String> pageParameters() {
+        Map<String, String> parameters = new HashMap<>(2);
+        parameters.put("offset", String.valueOf(offset));
+        parameters.put("per-page", String.valueOf(perPage));
+        return parameters;
+    }
+
     protected static abstract class Init<T extends Init<T>> {
         private int offset;
         private int perPage;
@@ -37,20 +52,4 @@ public abstract class PageableRequest implements RestRequest {
             return this;
         }
     }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public int getPerPage() {
-        return perPage;
-    }
-
-    protected Map<String, String> pageParameters() {
-        Map<String, String> parameters = new HashMap<>(2);
-        parameters.put("offset", String.valueOf(offset));
-        parameters.put("per-page", String.valueOf(perPage));
-        return parameters;
-    }
-
 }

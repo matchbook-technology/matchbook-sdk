@@ -22,41 +22,6 @@ public class PositionsRequest extends PageableRequest {
         this.runnersIds = init.runnersIds;
     }
 
-    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
-
-        private Set<Long> eventIds;
-        private Set<Long> marketIds;
-        private Set<Long> runnersIds;
-
-        public T eventIds(Set<Long> eventIds) {
-            this.eventIds = eventIds;
-            return self();
-        }
-
-        public T marketIds(Set<Long> marketIds) {
-            this.marketIds = marketIds;
-            return self();
-        }
-
-        public T runnersIds(Set<Long> runnersIds) {
-            this.runnersIds = runnersIds;
-            return self();
-        }
-
-        public PositionsRequest build() {
-            return new PositionsRequest(this);
-        }
-    }
-
-
-    public static class Builder extends Init<Builder> {
-        @Override
-        protected Builder self() {
-            return this;
-        }
-    }
-
-
     public Set<Long> getEventIds() {
         return eventIds;
     }
@@ -108,5 +73,39 @@ public class PositionsRequest extends PageableRequest {
                 ", offset=" + offset +
                 ", perPage=" + perPage +
                 "}";
+    }
+
+    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+
+        private Set<Long> eventIds;
+        private Set<Long> marketIds;
+        private Set<Long> runnersIds;
+
+        public T eventIds(Set<Long> eventIds) {
+            this.eventIds = eventIds;
+            return self();
+        }
+
+        public T marketIds(Set<Long> marketIds) {
+            this.marketIds = marketIds;
+            return self();
+        }
+
+        public T runnersIds(Set<Long> runnersIds) {
+            this.runnersIds = runnersIds;
+            return self();
+        }
+
+        public PositionsRequest build() {
+            return new PositionsRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
     }
 }

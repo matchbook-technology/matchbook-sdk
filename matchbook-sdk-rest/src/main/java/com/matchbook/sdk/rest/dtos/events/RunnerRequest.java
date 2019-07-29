@@ -21,43 +21,6 @@ public class RunnerRequest extends AbstractPricesRequest {
         this.includePrices = init.includePrices;
     }
 
-    protected static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
-        private final Long eventId;
-        private final Long marketId;
-        private final Long runnerId;
-        private boolean includePrices;
-
-        public Init(Long eventId, Long marketId, Long runnerId) {
-            this.eventId = eventId;
-            this.marketId = marketId;
-            this.runnerId = runnerId;
-            includePrices = false;
-        }
-
-        public T includePrices(boolean includePrices) {
-            this.includePrices = includePrices;
-            return self();
-        }
-
-        public RunnerRequest build() {
-            return new RunnerRequest(this);
-        }
-    }
-
-
-    public static class Builder extends Init<Builder> {
-
-        public Builder(Long eventId, Long marketId, Long runnerId) {
-            super(eventId, marketId, runnerId);
-        }
-
-        @Override
-        protected Builder self() {
-            return this;
-        }
-    }
-
-
     public Long getRunnerId() {
         return runnerId;
     }
@@ -107,5 +70,41 @@ public class RunnerRequest extends AbstractPricesRequest {
                                 ", priceMode=" + priceMode
                 ) : "") +
                 "}";
+    }
+
+    protected static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
+        private final Long eventId;
+        private final Long marketId;
+        private final Long runnerId;
+        private boolean includePrices;
+
+        public Init(Long eventId, Long marketId, Long runnerId) {
+            this.eventId = eventId;
+            this.marketId = marketId;
+            this.runnerId = runnerId;
+            includePrices = false;
+        }
+
+        public T includePrices(boolean includePrices) {
+            this.includePrices = includePrices;
+            return self();
+        }
+
+        public RunnerRequest build() {
+            return new RunnerRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+
+        public Builder(Long eventId, Long marketId, Long runnerId) {
+            super(eventId, marketId, runnerId);
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
+        }
     }
 }

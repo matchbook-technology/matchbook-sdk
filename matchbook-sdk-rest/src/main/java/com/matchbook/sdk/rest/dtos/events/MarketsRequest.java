@@ -25,56 +25,6 @@ public class MarketsRequest extends PageablePricesRequest {
         this.includePrices = init.includePrices;
     }
 
-    protected static abstract class Init<T extends Init<T>> extends PageablePricesRequest.Init<T> {
-
-        private Long eventId;
-        private Set<MarketType> types;
-        private Set<MarketStatus> statuses;
-        private boolean includePrices;
-
-        public Init(Long eventId) {
-            this.eventId = eventId;
-
-            types = new HashSet<>();
-            statuses = new HashSet<>();
-            includePrices = false;
-        }
-
-
-        public T types(Set<MarketType> types) {
-            this.types = types;
-            return self();
-        }
-
-        public T statuses(Set<MarketStatus> statuses) {
-            this.statuses = statuses;
-            return self();
-        }
-
-        public T includePrices(boolean includePrices) {
-            this.includePrices = includePrices;
-            return self();
-        }
-
-        public MarketsRequest build() {
-            return new MarketsRequest(this);
-        }
-    }
-
-
-    public static class Builder extends Init<Builder> {
-
-        public Builder(Long eventId) {
-            super(eventId);
-        }
-
-        @Override
-        protected Builder self() {
-            return this;
-        }
-    }
-
-
     public Long getEventId() {
         return eventId;
     }
@@ -136,5 +86,53 @@ public class MarketsRequest extends PageablePricesRequest {
                 ", offset=" + offset +
                 ", perPage=" + perPage +
                 "}";
+    }
+
+    protected static abstract class Init<T extends Init<T>> extends PageablePricesRequest.Init<T> {
+
+        private Long eventId;
+        private Set<MarketType> types;
+        private Set<MarketStatus> statuses;
+        private boolean includePrices;
+
+        public Init(Long eventId) {
+            this.eventId = eventId;
+
+            types = new HashSet<>();
+            statuses = new HashSet<>();
+            includePrices = false;
+        }
+
+        public T types(Set<MarketType> types) {
+            this.types = types;
+            return self();
+        }
+
+        public T statuses(Set<MarketStatus> statuses) {
+            this.statuses = statuses;
+            return self();
+        }
+
+        public T includePrices(boolean includePrices) {
+            this.includePrices = includePrices;
+            return self();
+        }
+
+        public MarketsRequest build() {
+            return new MarketsRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+
+        public Builder(Long eventId) {
+            super(eventId);
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
+        }
     }
 }

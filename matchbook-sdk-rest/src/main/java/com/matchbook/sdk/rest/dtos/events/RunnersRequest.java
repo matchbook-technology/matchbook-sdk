@@ -27,58 +27,6 @@ public class RunnersRequest extends PageablePricesRequest {
         this.includePrices = init.includePrices;
     }
 
-    protected static abstract class Init<T extends Init<T>> extends PageablePricesRequest.Init<T> {
-
-        private Long eventId;
-        private Long marketId;
-        private Set<RunnerStatus> statuses;
-        private boolean includeWithdrawn;
-        private boolean includePrices;
-
-        public Init(Long eventId, Long marketId) {
-            this.eventId = eventId;
-            this.marketId = marketId;
-
-            statuses = new HashSet<>();
-            includeWithdrawn = true;
-            includePrices = false;
-        }
-
-
-        public T statuses(Set<RunnerStatus> statuses) {
-            this.statuses = statuses;
-            return self();
-        }
-
-        public T includeWithdrawn(boolean includeWithdrawn) {
-            this.includeWithdrawn = includeWithdrawn;
-            return self();
-        }
-
-        public T includePrices(boolean includePrices) {
-            this.includePrices = includePrices;
-            return self();
-        }
-
-        public RunnersRequest build() {
-            return new RunnersRequest(this);
-        }
-    }
-
-
-    public static class Builder extends Init<Builder> {
-        
-        public Builder(Long eventId, Long marketId) {
-            super(eventId, marketId);
-        }
-
-        @Override
-        protected Builder self() {
-            return this;
-        }
-    }
-
-
     public Long getEventId() {
         return eventId;
     }
@@ -141,5 +89,56 @@ public class RunnersRequest extends PageablePricesRequest {
                 ", offset=" + offset +
                 ", perPage=" + perPage +
                 "}";
+    }
+
+    protected static abstract class Init<T extends Init<T>> extends PageablePricesRequest.Init<T> {
+
+        private Long eventId;
+        private Long marketId;
+        private Set<RunnerStatus> statuses;
+        private boolean includeWithdrawn;
+        private boolean includePrices;
+
+        public Init(Long eventId, Long marketId) {
+            this.eventId = eventId;
+            this.marketId = marketId;
+
+            statuses = new HashSet<>();
+            includeWithdrawn = true;
+            includePrices = false;
+        }
+
+
+        public T statuses(Set<RunnerStatus> statuses) {
+            this.statuses = statuses;
+            return self();
+        }
+
+        public T includeWithdrawn(boolean includeWithdrawn) {
+            this.includeWithdrawn = includeWithdrawn;
+            return self();
+        }
+
+        public T includePrices(boolean includePrices) {
+            this.includePrices = includePrices;
+            return self();
+        }
+
+        public RunnersRequest build() {
+            return new RunnersRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+
+        public Builder(Long eventId, Long marketId) {
+            super(eventId, marketId);
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
+        }
     }
 }

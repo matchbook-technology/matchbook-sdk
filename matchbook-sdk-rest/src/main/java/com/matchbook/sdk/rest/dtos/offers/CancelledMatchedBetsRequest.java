@@ -17,22 +17,6 @@ public class CancelledMatchedBetsRequest extends PageableRequest {
         this.status = DEFAULT_STATUS;
     }
 
-    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
-
-        public CancelledMatchedBetsRequest build() {
-            return new CancelledMatchedBetsRequest(this);
-        }
-    }
-
-
-    public static class Builder extends Init<Builder> {
-        @Override
-        protected Builder self() {
-            return this;
-        }
-    }
-
-
     public MatchedBetStatus getStatus() {
         return status;
     }
@@ -54,5 +38,20 @@ public class CancelledMatchedBetsRequest extends PageableRequest {
                 ", offset=" + offset +
                 ", perPage=" + perPage +
                 "}";
+    }
+
+    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+
+        public CancelledMatchedBetsRequest build() {
+            return new CancelledMatchedBetsRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
     }
 }

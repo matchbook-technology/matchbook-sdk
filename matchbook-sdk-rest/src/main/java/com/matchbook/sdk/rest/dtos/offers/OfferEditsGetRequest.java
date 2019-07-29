@@ -8,32 +8,10 @@ public class OfferEditsGetRequest extends PageableRequest {
 
     private final Long offerId;
 
-    private OfferEditsGetRequest(Init<?> builder) {
-        super(builder);
+    private OfferEditsGetRequest(Init<?> init) {
+        super(init);
 
-        this.offerId = builder.offerId;
-    }
-
-    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
-
-        private Long offerId;
-
-        public T offerID(Long offerId) {
-            this.offerId = offerId;
-            return self();
-        }
-
-        public OfferEditsGetRequest build() {
-            return new OfferEditsGetRequest(this);
-        }
-    }
-
-
-    public static class Builder extends Init<Builder> {
-        @Override
-        protected Builder self() {
-            return this;
-        }
+        this.offerId = init.offerId;
     }
 
     public Long getOfferId() {
@@ -58,4 +36,27 @@ public class OfferEditsGetRequest extends PageableRequest {
                 ", perPage=" + perPage +
                 "}";
     }
+
+    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+
+        private Long offerId;
+
+        public T offerID(Long offerId) {
+            this.offerId = offerId;
+            return self();
+        }
+
+        public OfferEditsGetRequest build() {
+            return new OfferEditsGetRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
+
 }

@@ -19,48 +19,6 @@ public class EventRequest extends AbstractPricesRequest {
         this.includePrices = init.includePrices;
     }
 
-
-    protected static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
-        private final Long eventId;
-        private boolean includeEventParticipants;
-        private boolean includePrices;
-
-        public Init(Long eventId) {
-            this.eventId = eventId;
-            includeEventParticipants = false;
-            includePrices = false;
-        }
-
-        public T includeEventParticipants(boolean includeEventParticipants) {
-            this.includeEventParticipants = includeEventParticipants;
-            return self();
-        }
-
-        public T includePrices(boolean includePrices) {
-            this.includePrices = includePrices;
-            return self();
-        }
-
-
-        public EventRequest build() {
-            return new EventRequest(this);
-        }
-    }
-
-
-    public static class Builder extends Init<Builder> {
-
-        public Builder(Long eventId) {
-            super(eventId);
-        }
-
-        @Override
-        protected Builder self() {
-            return this;
-        }
-    }
-
-
     public Long getEventId() {
         return eventId;
     }
@@ -104,6 +62,46 @@ public class EventRequest extends AbstractPricesRequest {
                                 ", priceMode=" + priceMode
                 ) : "") +
                 "}";
+    }
+
+    protected static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
+        private final Long eventId;
+        private boolean includeEventParticipants;
+        private boolean includePrices;
+
+        public Init(Long eventId) {
+            this.eventId = eventId;
+            includeEventParticipants = false;
+            includePrices = false;
+        }
+
+        public T includeEventParticipants(boolean includeEventParticipants) {
+            this.includeEventParticipants = includeEventParticipants;
+            return self();
+        }
+
+        public T includePrices(boolean includePrices) {
+            this.includePrices = includePrices;
+            return self();
+        }
+
+
+        public EventRequest build() {
+            return new EventRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+
+        public Builder(Long eventId) {
+            super(eventId);
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
+        }
     }
 
 }

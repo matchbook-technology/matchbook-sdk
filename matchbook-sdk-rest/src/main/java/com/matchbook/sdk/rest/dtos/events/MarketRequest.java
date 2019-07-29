@@ -19,43 +19,6 @@ public class MarketRequest extends AbstractPricesRequest {
         this.includePrices = init.includePrices;
     }
 
-    protected static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
-
-        private final Long marketId;
-        private final Long eventId;
-        private boolean includePrices;
-
-        public Init(Long marketId, Long eventId) {
-            this.eventId = eventId;
-            this.marketId = marketId;
-            includePrices = false;
-        }
-
-        public T includePrices(boolean includePrices) {
-            this.includePrices = includePrices;
-            return self();
-        }
-
-
-        public MarketRequest build() {
-            return new MarketRequest(this);
-        }
-    }
-
-
-    public static class Builder extends Init<Builder> {
-
-        public Builder(Long marketId, Long eventId) {
-            super(marketId, eventId);
-        }
-
-        @Override
-        protected Builder self() {
-            return this;
-        }
-    }
-
-
     public Long getMarketId() {
         return marketId;
     }
@@ -99,5 +62,41 @@ public class MarketRequest extends AbstractPricesRequest {
                                 ", priceMode=" + priceMode
                 ) : "") +
                 "}";
+    }
+
+    protected static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
+
+        private final Long marketId;
+        private final Long eventId;
+        private boolean includePrices;
+
+        public Init(Long marketId, Long eventId) {
+            this.eventId = eventId;
+            this.marketId = marketId;
+            includePrices = false;
+        }
+
+        public T includePrices(boolean includePrices) {
+            this.includePrices = includePrices;
+            return self();
+        }
+
+
+        public MarketRequest build() {
+            return new MarketRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+
+        public Builder(Long marketId, Long eventId) {
+            super(marketId, eventId);
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
+        }
     }
 }
