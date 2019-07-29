@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.matchbook.sdk.rest.dtos.prices.AbstractPricesRequest;
-import com.matchbook.sdk.rest.dtos.prices.AbstractPricesRequestBuilder;
 
 public class EventRequest extends AbstractPricesRequest {
 
@@ -12,13 +11,55 @@ public class EventRequest extends AbstractPricesRequest {
     private final boolean includeEventParticipants;
     private final boolean includePrices;
 
-    private EventRequest(EventRequest.Builder builder) {
-        super(builder);
+    private EventRequest(Init<?> init) {
+        super(init);
 
-        this.eventId = builder.eventId;
-        this.includeEventParticipants = builder.includeEventParticipants;
-        this.includePrices = builder.includePrices;
+        this.eventId = init.eventId;
+        this.includeEventParticipants = init.includeEventParticipants;
+        this.includePrices = init.includePrices;
     }
+
+
+    protected static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
+        private final Long eventId;
+        private boolean includeEventParticipants;
+        private boolean includePrices;
+
+        public Init(Long eventId) {
+            this.eventId = eventId;
+            includeEventParticipants = false;
+            includePrices = false;
+        }
+
+        public T includeEventParticipants(boolean includeEventParticipants) {
+            this.includeEventParticipants = includeEventParticipants;
+            return self();
+        }
+
+        public T includePrices(boolean includePrices) {
+            this.includePrices = includePrices;
+            return self();
+        }
+
+
+        public EventRequest build() {
+            return new EventRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+
+        public Builder(Long eventId) {
+            super(eventId);
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
+
 
     public Long getEventId() {
         return eventId;
@@ -55,41 +96,14 @@ public class EventRequest extends AbstractPricesRequest {
                 ", includeEventParticipants=" + includeEventParticipants +
                 ", includePrices=" + includePrices +
                 (includePrices ? (
-                    ", oddsType=" + oddsType +
-                    ", exchangeType=" + exchangeType +
-                    ", side=" + side +
-                    ", currency=" + currency +
-                    ", minimumLiquidity=" + minimumLiquidity +
-                    ", priceMode=" + priceMode
+                        ", oddsType=" + oddsType +
+                                ", exchangeType=" + exchangeType +
+                                ", side=" + side +
+                                ", currency=" + currency +
+                                ", minimumLiquidity=" + minimumLiquidity +
+                                ", priceMode=" + priceMode
                 ) : "") +
                 "}";
-    }
-
-    public static class Builder extends AbstractPricesRequestBuilder {
-
-        private final Long eventId;
-        private boolean includeEventParticipants;
-        private boolean includePrices;
-
-        public Builder(Long eventId) {
-            this.eventId = eventId;
-            includeEventParticipants = false;
-            includePrices = false;
-        }
-
-        public Builder includeEventParticipants(boolean includeEventParticipants) {
-            this.includeEventParticipants = includeEventParticipants;
-            return this;
-        }
-
-        public Builder includePrices(boolean includePrices) {
-            this.includePrices = includePrices;
-            return this;
-        }
-
-        public EventRequest build() {
-            return new EventRequest(this);
-        }
     }
 
 }

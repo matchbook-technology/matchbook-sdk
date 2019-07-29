@@ -10,13 +10,44 @@ public class PricesRequest extends AbstractPricesRequest {
     private final Long marketId;
     private final Long runnerId;
 
-    private PricesRequest(PricesRequest.Builder builder) {
-        super(builder);
+    private PricesRequest(Init<?> init) {
+        super(init);
 
-        this.eventId = builder.eventId;
-        this.marketId = builder.marketId;
-        this.runnerId = builder.runnerId;
+        this.eventId = init.eventId;
+        this.marketId = init.marketId;
+        this.runnerId = init.runnerId;
     }
+
+
+    protected static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
+        private final Long eventId;
+        private final Long marketId;
+        private final Long runnerId;
+
+        public Init(Long eventId, Long marketId, Long runnerId) {
+            this.eventId = eventId;
+            this.marketId = marketId;
+            this.runnerId = runnerId;
+        }
+
+        public PricesRequest build() {
+            return new PricesRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+
+        public Builder(Long eventId, Long marketId, Long runnerId) {
+            super(eventId, marketId, runnerId);
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
+
 
     public Long getEventId() {
         return eventId;
@@ -75,22 +106,4 @@ public class PricesRequest extends AbstractPricesRequest {
                 ", priceMode=" + priceMode +
                 "}";
     }
-
-    public static class Builder extends AbstractPricesRequestBuilder {
-
-        private final Long eventId;
-        private final Long marketId;
-        private final Long runnerId;
-
-        public Builder(Long eventId, Long marketId, Long runnerId) {
-            this.eventId = eventId;
-            this.marketId = marketId;
-            this.runnerId = runnerId;
-        }
-
-        public PricesRequest build() {
-            return new PricesRequest(this);
-        }
-    }
-
 }

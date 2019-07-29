@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.matchbook.sdk.rest.dtos.prices.AbstractPricesRequest;
-import com.matchbook.sdk.rest.dtos.prices.AbstractPricesRequestBuilder;
 
 public class RunnerRequest extends AbstractPricesRequest {
 
@@ -13,14 +12,51 @@ public class RunnerRequest extends AbstractPricesRequest {
     private final Long marketId;
     private final boolean includePrices;
 
-    private RunnerRequest(RunnerRequest.Builder builder) {
-        super(builder);
+    private RunnerRequest(Init<?> init) {
+        super(init);
 
-        this.runnerId = builder.runnerId;
-        this.eventId = builder.eventId;
-        this.marketId = builder.marketId;
-        this.includePrices = builder.includePrices;
+        this.runnerId = init.runnerId;
+        this.eventId = init.eventId;
+        this.marketId = init.marketId;
+        this.includePrices = init.includePrices;
     }
+
+    protected static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
+        private final Long eventId;
+        private final Long marketId;
+        private final Long runnerId;
+        private boolean includePrices;
+
+        public Init(Long eventId, Long marketId, Long runnerId) {
+            this.eventId = eventId;
+            this.marketId = marketId;
+            this.runnerId = runnerId;
+            includePrices = false;
+        }
+
+        public T includePrices(boolean includePrices) {
+            this.includePrices = includePrices;
+            return self();
+        }
+
+        public RunnerRequest build() {
+            return new RunnerRequest(this);
+        }
+    }
+
+
+    public static class Builder extends Init<Builder> {
+
+        public Builder(Long eventId, Long marketId, Long runnerId) {
+            super(eventId, marketId, runnerId);
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
+
 
     public Long getRunnerId() {
         return runnerId;
@@ -63,38 +99,13 @@ public class RunnerRequest extends AbstractPricesRequest {
                 ", marketId=" + marketId +
                 ", includePrices=" + includePrices +
                 (includePrices ? (
-                    ", oddsType=" + oddsType +
-                    ", exchangeType=" + exchangeType +
-                    ", side=" + side +
-                    ", currency=" + currency +
-                    ", minimumLiquidity=" + minimumLiquidity +
-                    ", priceMode=" + priceMode
+                        ", oddsType=" + oddsType +
+                                ", exchangeType=" + exchangeType +
+                                ", side=" + side +
+                                ", currency=" + currency +
+                                ", minimumLiquidity=" + minimumLiquidity +
+                                ", priceMode=" + priceMode
                 ) : "") +
                 "}";
     }
-
-    public static class Builder extends AbstractPricesRequestBuilder {
-
-        private final Long eventId;
-        private final Long marketId;
-        private final Long runnerId;
-        private boolean includePrices;
-
-        public Builder(Long eventId, Long marketId, Long runnerId) {
-            this.eventId = eventId;
-            this.marketId = marketId;
-            this.runnerId = runnerId;
-            includePrices = false;
-        }
-
-        public Builder includePrices(boolean includePrices) {
-            this.includePrices = includePrices;
-            return this;
-        }
-
-        public RunnerRequest build() {
-            return new RunnerRequest(this);
-        }
-    }
-
 }
