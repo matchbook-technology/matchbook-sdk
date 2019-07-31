@@ -17,7 +17,7 @@ public class Runner implements RestResponse<Runner> {
     private String name;
     private RunnerStatus status;
     private boolean withdrawn;
-    private Double value;
+    private Double volume;
     private List<Price> prices;
 
     public Runner() {
@@ -80,12 +80,12 @@ public class Runner implements RestResponse<Runner> {
         this.withdrawn = withdrawn;
     }
 
-    public Double getValue() {
-        return value;
+    public Double getVolume() {
+        return volume;
     }
 
-    public void setValue(Double value) {
-        this.value = value;
+    public void setVolume(Double volume) {
+        this.volume = volume;
     }
 
     public List<Price> getPrices() {
@@ -111,7 +111,7 @@ public class Runner implements RestResponse<Runner> {
                 ", name=" + name +
                 ", status=" + status +
                 ", withdrawn=" + withdrawn +
-                ", value=" + value +
+                ", volume=" + volume +
                 ", prices=" + prices +
                 "}";
     }
