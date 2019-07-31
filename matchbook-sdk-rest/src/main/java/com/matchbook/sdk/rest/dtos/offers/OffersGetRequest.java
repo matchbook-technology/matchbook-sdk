@@ -1,15 +1,16 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
+import com.matchbook.sdk.rest.dtos.PageableRequest;
+import com.matchbook.sdk.rest.dtos.PageableRequestBuilder;
+import com.matchbook.sdk.rest.dtos.prices.Side;
+
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.matchbook.sdk.rest.dtos.PageableRequest;
-import com.matchbook.sdk.rest.dtos.PageableRequestBuilder;
-import com.matchbook.sdk.rest.dtos.prices.Side;
 
 public class OffersGetRequest extends PageableRequest {
 
@@ -101,7 +102,7 @@ public class OffersGetRequest extends PageableRequest {
         }
         if (!statuses.isEmpty()) {
             List<String> states = statuses.stream()
-                    .map(Enum::name)
+                    .map(OfferStatus::name)
                     .collect(Collectors.toList());
             parameters.put("status", String.join(",", states));
         }
@@ -145,6 +146,11 @@ public class OffersGetRequest extends PageableRequest {
 
         public Builder() {
             includeEdits = false;
+            sportIds = new HashSet<>();
+            eventIds = new HashSet<>();
+            marketIds = new HashSet<>();
+            runnersIds = new HashSet<>();
+            statuses = new HashSet<>();
         }
 
         public Builder sportIds(Set<Long> sportIds) {

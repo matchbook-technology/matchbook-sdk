@@ -7,6 +7,7 @@ import com.matchbook.sdk.rest.OffersClient;
 import com.matchbook.sdk.rest.OffersClientRest;
 import com.matchbook.sdk.rest.dtos.offers.Offer;
 import com.matchbook.sdk.rest.dtos.offers.OfferGetRequest;
+import com.matchbook.sdk.rest.dtos.offers.OffersGetRequest;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -42,6 +43,43 @@ public class OffersClientRestTest extends MatchbookSDKClientTest {
         OfferGetRequest offerGetRequest = new OfferGetRequest.Builder(382937981320019L).build();
 
         offersRestClient.getOffer(offerGetRequest, new StreamObserver<Offer>() {
+            @Override
+            public void onNext(Offer offer) {
+                assertThat(offer.getId()).isNotNull();
+                assertThat(offer.getEventId()).isNotNull();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail(e.getMessage());
+            }
+
+        });
+
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void successfulGetOffersTest() throws InterruptedException {
+        stubFor(get(urlPathEqualTo("/edge/rest/v2/offers"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/getOffersSuccessfulResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+
+        OffersGetRequest offersGetRequest = new OffersGetRequest.Builder().build();
+
+        offersRestClient.getOffers(offersGetRequest, new StreamObserver<Offer>() {
             @Override
             public void onNext(Offer offer) {
                 assertThat(offer.getId()).isNotNull();

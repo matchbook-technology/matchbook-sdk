@@ -102,7 +102,7 @@ public class EventsRequest extends PageablePricesRequest {
         }
         if (!statuses.isEmpty()) {
             List<String> states = statuses.stream()
-                    .map(Enum::name)
+                    .map(EventStatus::name)
                     .collect(Collectors.toList());
             parameters.put("states", String.join(",", states));
         }
