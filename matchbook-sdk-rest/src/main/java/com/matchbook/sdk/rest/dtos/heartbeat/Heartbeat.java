@@ -1,7 +1,7 @@
 package com.matchbook.sdk.rest.dtos.heartbeat;
 
+import java.time.Instant;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Set;
 
 import com.matchbook.sdk.rest.dtos.RestResponse;
@@ -10,7 +10,7 @@ public class Heartbeat implements RestResponse<Heartbeat> {
 
     private ActionPerformed actionPerformed;
     private Integer actualTimeout;
-    private Date timeoutTime;
+    private Instant timeoutTime;
 
     public ActionPerformed getActionPerformed() {
         return actionPerformed;
@@ -28,11 +28,11 @@ public class Heartbeat implements RestResponse<Heartbeat> {
         this.actualTimeout = actualTimeout;
     }
 
-    public Date getTimeoutTime() {
+    public Instant getTimeoutTime() {
         return timeoutTime;
     }
 
-    public void setTimeoutTime(Date timeoutTime) {
+    public void setTimeoutTime(Instant timeoutTime) {
         this.timeoutTime = timeoutTime;
     }
 
@@ -44,10 +44,10 @@ public class Heartbeat implements RestResponse<Heartbeat> {
     @Override
     public String toString() {
         return Heartbeat.class.getSimpleName() + " {" +
-            "actionPerformed=" + actionPerformed +
-            ", actualTimeout=" + actualTimeout +
-            ", timeoutTime=" + timeoutTime +
-            "}";
+                "actionPerformed=" + actionPerformed +
+                ", actualTimeout=" + actualTimeout +
+                ", timeoutTime=" + timeoutTime +
+                "}";
     }
 
 }
