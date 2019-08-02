@@ -28,6 +28,15 @@ public class ParserWrapper implements Parser {
     }
 
     @Override
+    public boolean hasNext() {
+        if (terminationTokens.isEmpty() || jsonParser.hasToken(terminationTokens.peek())) {
+            terminationTokens.remove();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public void startObject() throws MatchbookSDKParsingException {
         if (jsonParser.isExpectedStartObjectToken()) {
             terminationTokens.add(JsonToken.END_OBJECT);
@@ -54,15 +63,6 @@ public class ParserWrapper implements Parser {
         } catch (IOException e) {
             throw new MatchbookSDKParsingException(e);
         }
-    }
-
-    @Override
-    public boolean hasNext() {
-        if (terminationTokens.isEmpty() || jsonParser.hasToken(terminationTokens.peek())) {
-            terminationTokens.remove();
-            return false;
-        }
-        return true;
     }
 
     @Override
