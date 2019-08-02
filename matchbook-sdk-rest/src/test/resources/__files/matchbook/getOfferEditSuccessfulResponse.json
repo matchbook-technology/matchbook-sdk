@@ -1,0 +1,16 @@
+{
+  "id": 925184068850125,
+  "offer-id": 925183846730025,
+  "runner-id": 500000000000092,
+  "odds-type": "DECIMAL",
+  "odds-before": 1.5,
+  "decimal-odds-before": 1.5,
+  "odds-after": 3,
+  "decimal-odds-after": 3,
+  "stake-before": 50,
+  "stake-after": 100,
+  "status": "failed",
+  "failure-reason": "market_status",
+  "delay": 6,
+  "edit-time": "2018-10-02T10:14:38.315Z"
+}

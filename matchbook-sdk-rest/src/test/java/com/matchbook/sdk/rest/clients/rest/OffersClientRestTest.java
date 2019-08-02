@@ -6,6 +6,8 @@ import com.matchbook.sdk.rest.MatchbookSDKClientTest;
 import com.matchbook.sdk.rest.OffersClient;
 import com.matchbook.sdk.rest.OffersClientRest;
 import com.matchbook.sdk.rest.dtos.offers.Offer;
+import com.matchbook.sdk.rest.dtos.offers.OfferEdit;
+import com.matchbook.sdk.rest.dtos.offers.OfferEditGetRequest;
 import com.matchbook.sdk.rest.dtos.offers.OfferGetRequest;
 import com.matchbook.sdk.rest.dtos.offers.OffersGetRequest;
 import org.junit.Test;
@@ -102,4 +104,41 @@ public class OffersClientRestTest extends MatchbookSDKClientTest {
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
     }
+
+    @Test
+    public void successfulGetOfferEditTest() throws InterruptedException {
+        stubFor(get(urlPathEqualTo("/edge/rest/v2/offers/925183846730025/offer-edits/925184068850125"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/getOfferEditSuccessfulResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+
+        OfferEditGetRequest offerEditGetRequest = new OfferEditGetRequest.Builder(925184068850125L, 925183846730025L).build();
+
+        offersRestClient.getOfferEdit(offerEditGetRequest, new StreamObserver<OfferEdit>() {
+            @Override
+            public void onNext(OfferEdit offerEdit) {
+                assertThat(offerEdit.getId()).isNotNull();
+                assertThat(offerEdit.getOfferId()).isNotNull();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail(e.getMessage());
+            }
+
+        });
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
 }
