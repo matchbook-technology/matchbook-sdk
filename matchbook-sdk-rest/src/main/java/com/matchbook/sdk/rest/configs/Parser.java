@@ -1,33 +1,34 @@
 package com.matchbook.sdk.rest.configs;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+
 public interface Parser extends AutoCloseable {
 
-    void startObject() throws IOException;
+    void startObject() throws MatchbookSDKParsingException;
 
-    void startArray() throws IOException;
+    void startArray() throws MatchbookSDKParsingException;
 
-    void moveToNext() throws IOException;
+    void moveToNext() throws MatchbookSDKParsingException;
 
     boolean hasNext();
 
-    String getFieldName() throws IOException;
+    String getFieldName() throws MatchbookSDKParsingException;
 
-    Boolean getBoolean() throws IOException;
+    Boolean getBoolean() throws MatchbookSDKParsingException;
 
-    String getString() throws IOException;
+    String getString() throws MatchbookSDKParsingException;
 
-    Integer getInteger() throws IOException;
+    Integer getInteger() throws MatchbookSDKParsingException;
 
-    Long getLong() throws IOException;
+    Long getLong() throws MatchbookSDKParsingException;
 
-    BigDecimal getDecimal() throws IOException;
+    BigDecimal getDecimal() throws MatchbookSDKParsingException;
 
-    Instant getInstant() throws IOException;
+    Instant getInstant() throws MatchbookSDKParsingException;
 
-    <T extends Enum<T>> Enum<T> getEnum(Class<T> enumClass) throws IOException;
+    <T extends Enum<T>> Enum<T> getEnum(Class<T> enumClass) throws MatchbookSDKParsingException;
 
 }

@@ -10,47 +10,55 @@ import java.util.Queue;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.configs.Parser;
 
 public class ParserWrapper implements Parser {
 
     private final JsonParser jsonParser;
+    private final Queue<JsonToken> terminationTokens;
 
-    private Queue<JsonToken> terminationTokens;
-
-    public ParserWrapper(JsonFactory jsonFactory, InputStream inputStream) throws IOException {
-        this.jsonParser = jsonFactory.createParser(inputStream);
+    public ParserWrapper(JsonFactory jsonFactory, InputStream inputStream) throws MatchbookSDKParsingException {
+        try {
+            this.jsonParser = jsonFactory.createParser(inputStream);
+        } catch (IOException e) {
+            throw new MatchbookSDKParsingException("Unable to create parser.", e);
+        }
         terminationTokens = new LinkedList<>();
     }
 
     @Override
-    public void startObject() throws IOException {
+    public void startObject() throws MatchbookSDKParsingException {
         if (jsonParser.isExpectedStartObjectToken()) {
             terminationTokens.add(JsonToken.END_OBJECT);
         } else {
-            throw new IOException(String.format("Unexpected token encountered! Start of object expected ('%s'), but found '%s'.",
+            throw new MatchbookSDKParsingException(String.format("Unexpected token encountered! Start of object expected ('%s'), but found '%s'.",
                     JsonToken.START_OBJECT.asString(), jsonParser.getCurrentToken().asString()));
         }
     }
 
     @Override
-    public void startArray() throws IOException {
+    public void startArray() throws MatchbookSDKParsingException {
         if (jsonParser.isExpectedStartArrayToken()) {
             terminationTokens.add(JsonToken.END_ARRAY);
         } else {
-            throw new IOException(String.format("Unexpected token encountered! Start of array expected ('%s'), but found '%s'.",
+            throw new MatchbookSDKParsingException(String.format("Unexpected token encountered! Start of array expected ('%s'), but found '%s'.",
                     JsonToken.START_ARRAY.asString(), jsonParser.getCurrentToken().asString()));
         }
     }
 
     @Override
-    public void moveToNext() throws IOException {
-        jsonParser.nextToken();
+    public void moveToNext() throws MatchbookSDKParsingException {
+        try {
+            jsonParser.nextToken();
+        } catch (IOException e) {
+            throw new MatchbookSDKParsingException(e);
+        }
     }
 
     @Override
     public boolean hasNext() {
-        if (!terminationTokens.isEmpty() && jsonParser.hasToken(terminationTokens.peek())) {
+        if (terminationTokens.isEmpty() || jsonParser.hasToken(terminationTokens.peek())) {
             terminationTokens.remove();
             return false;
         }
@@ -58,45 +66,95 @@ public class ParserWrapper implements Parser {
     }
 
     @Override
-    public String getFieldName() throws IOException {
-        return jsonParser.getCurrentName();
+    public String getFieldName() throws MatchbookSDKParsingException {
+        try {
+            return jsonParser.getCurrentName();
+        } catch (IOException e) {
+            throw new MatchbookSDKParsingException(e);
+        }
     }
 
     @Override
-    public Boolean getBoolean() throws IOException {
-        return isNotNullValue() ? jsonParser.getValueAsBoolean() : null;
-    }
-
-    @Override
-    public String getString() throws IOException {
-        return isNotNullValue() ? jsonParser.getValueAsString() : null;
-    }
-
-    @Override
-    public Integer getInteger() throws IOException {
-        return isNotNullValue() ? jsonParser.getValueAsInt() : null;
-    }
-
-    @Override
-    public Long getLong() throws IOException {
-        return isNotNullValue() ? jsonParser.getValueAsLong() : null;
-    }
-
-    @Override
-    public BigDecimal getDecimal() throws IOException {
-        return isNotNullValue() ? jsonParser.getDecimalValue() : null;
-    }
-
-    @Override
-    public Instant getInstant() throws IOException {
-        return isNotNullValue() ? Instant.parse(jsonParser.getValueAsString()) : null;
-    }
-
-    @Override
-    public <T extends Enum<T>> Enum<T> getEnum(Class<T> enumClass) throws IOException {
+    public Boolean getBoolean() throws MatchbookSDKParsingException {
         if (isNotNullValue()) {
-            String value = jsonParser.getValueAsString().toUpperCase().replace('-', '_');
-            return Enum.valueOf(enumClass, value);
+            try {
+                return jsonParser.getValueAsBoolean();
+            } catch (IOException e) {
+                throw new MatchbookSDKParsingException(e);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String getString() throws MatchbookSDKParsingException {
+        if (isNotNullValue()) {
+            try {
+                return jsonParser.getValueAsString();
+            } catch (IOException e) {
+                throw new MatchbookSDKParsingException(e);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Integer getInteger() throws MatchbookSDKParsingException {
+        if (isNotNullValue()) {
+            try {
+                return jsonParser.getValueAsInt();
+            } catch (IOException e) {
+                throw new MatchbookSDKParsingException(e);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Long getLong() throws MatchbookSDKParsingException {
+        if (isNotNullValue()) {
+            try {
+                return jsonParser.getValueAsLong();
+            } catch (IOException e) {
+                throw new MatchbookSDKParsingException(e);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public BigDecimal getDecimal() throws MatchbookSDKParsingException {
+        if (isNotNullValue()) {
+            try {
+                return jsonParser.getDecimalValue();
+            } catch (IOException e) {
+                throw new MatchbookSDKParsingException(e);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Instant getInstant() throws MatchbookSDKParsingException {
+        if (isNotNullValue()) {
+            try {
+                return Instant.parse(jsonParser.getValueAsString());
+            } catch (IOException e) {
+                throw new MatchbookSDKParsingException(e);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public <T extends Enum<T>> Enum<T> getEnum(Class<T> enumClass) throws MatchbookSDKParsingException {
+        if (isNotNullValue()) {
+            try {
+                String value = jsonParser.getValueAsString().toUpperCase().replace('-', '_');
+                return Enum.valueOf(enumClass, value);
+            } catch (IOException e) {
+                throw new MatchbookSDKParsingException(e);
+            }
         }
         return null;
     }
