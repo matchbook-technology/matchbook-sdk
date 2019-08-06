@@ -75,7 +75,7 @@ public class PositionsRequest extends PageableRequest {
                 "}";
     }
 
-    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+    private static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
 
         private Set<Long> eventIds;
         private Set<Long> marketIds;

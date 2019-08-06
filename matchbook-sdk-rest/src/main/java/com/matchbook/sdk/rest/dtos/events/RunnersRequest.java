@@ -91,7 +91,7 @@ public class RunnersRequest extends PageablePricesRequest {
                 "}";
     }
 
-    protected static abstract class Init<T extends Init<T>> extends PageablePricesRequest.Init<T> {
+    private static abstract class Init<T extends Init<T>> extends PageablePricesRequest.Init<T> {
 
         private Long eventId;
         private Long marketId;

@@ -139,7 +139,7 @@ public class EventsRequest extends PageablePricesRequest {
                 "}";
     }
 
-    protected static abstract class Init<T extends Init<T>> extends PageablePricesRequest.Init<T> {
+    private static abstract class Init<T extends Init<T>> extends PageablePricesRequest.Init<T> {
         private Instant after;
         private Instant before;
         private Set<Long> sportIds;

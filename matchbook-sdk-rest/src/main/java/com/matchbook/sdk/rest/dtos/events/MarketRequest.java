@@ -64,7 +64,7 @@ public class MarketRequest extends AbstractPricesRequest {
                 "}";
     }
 
-    protected static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
+    private static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
 
         private final Long marketId;
         private final Long eventId;

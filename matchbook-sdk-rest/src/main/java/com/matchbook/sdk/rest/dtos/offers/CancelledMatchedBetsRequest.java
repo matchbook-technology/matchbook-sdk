@@ -40,7 +40,7 @@ public class CancelledMatchedBetsRequest extends PageableRequest {
                 "}";
     }
 
-    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+    private static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
 
         public CancelledMatchedBetsRequest build() {
             return new CancelledMatchedBetsRequest(this);
