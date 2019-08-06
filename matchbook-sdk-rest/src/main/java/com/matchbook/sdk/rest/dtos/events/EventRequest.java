@@ -53,14 +53,12 @@ public class EventRequest extends AbstractPricesRequest {
                 "eventId=" + eventId +
                 ", includeEventParticipants=" + includeEventParticipants +
                 ", includePrices=" + includePrices +
-                (includePrices ? (
-                        ", oddsType=" + oddsType +
-                                ", exchangeType=" + exchangeType +
-                                ", side=" + side +
-                                ", currency=" + currency +
-                                ", minimumLiquidity=" + minimumLiquidity +
-                                ", priceMode=" + priceMode
-                ) : "") +
+                ", oddsType=" + oddsType +
+                ", exchangeType=" + exchangeType +
+                ", side=" + side +
+                ", currency=" + currency +
+                ", minimumLiquidity=" + minimumLiquidity +
+                ", priceMode=" + priceMode +
                 "}";
     }
 
