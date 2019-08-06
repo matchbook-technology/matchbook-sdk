@@ -1,8 +1,5 @@
 package com.matchbook.sdk.rest.dtos.events;
 
-import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequest;
-import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequestBuilder;
-
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,6 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequest;
 
 public class EventsRequest extends PageablePricesRequest {
 
@@ -23,17 +22,17 @@ public class EventsRequest extends PageablePricesRequest {
     private final boolean includeEventParticipants;
     private final boolean includePrices;
 
-    private EventsRequest(EventsRequest.Builder builder) {
-        super(builder);
+    private EventsRequest(Init<?> init) {
+        super(init);
 
-        this.after = builder.after;
-        this.before = builder.before;
-        this.sportIds = builder.sportIds;
-        this.categoryIds = builder.categoryIds;
-        this.eventIds = builder.eventIds;
-        this.statuses = builder.statuses;
-        this.includeEventParticipants = builder.includeEventParticipants;
-        this.includePrices = builder.includePrices;
+        this.after = init.after;
+        this.before = init.before;
+        this.sportIds = init.sportIds;
+        this.categoryIds = init.categoryIds;
+        this.eventIds = init.eventIds;
+        this.statuses = init.statuses;
+        this.includeEventParticipants = init.includeEventParticipants;
+        this.includePrices = init.includePrices;
     }
 
     public Instant getAfter() {
@@ -76,6 +75,7 @@ public class EventsRequest extends PageablePricesRequest {
     @Override
     public Map<String, String> parameters() {
         Map<String, String> parameters = new HashMap<>();
+
         if (Objects.nonNull(after)) {
             parameters.put("after", after.toString());
         }
@@ -109,8 +109,9 @@ public class EventsRequest extends PageablePricesRequest {
         parameters.put("include-event-participants", String.valueOf(includeEventParticipants));
         if (includePrices) {
             parameters.put("include-prices", "true");
-            parameters.putAll(pricesParameters());
         }
+        parameters.putAll(pricesParameters());
+
         return parameters;
     }
 
@@ -126,20 +127,19 @@ public class EventsRequest extends PageablePricesRequest {
                 ", includeEventParticipants=" + includeEventParticipants +
                 ", includePrices=" + includePrices +
                 (includePrices ? (
-                    ", oddsType=" + oddsType +
-                    ", exchangeType=" + exchangeType +
-                    ", side=" + side +
-                    ", currency=" + currency +
-                    ", minimumLiquidity=" + minimumLiquidity +
-                    ", priceMode=" + priceMode
+                        ", oddsType=" + oddsType +
+                                ", exchangeType=" + exchangeType +
+                                ", side=" + side +
+                                ", currency=" + currency +
+                                ", minimumLiquidity=" + minimumLiquidity +
+                                ", priceMode=" + priceMode
                 ) : "") +
                 ", offset=" + offset +
                 ", perPage=" + perPage +
                 "}";
     }
 
-    public static class Builder extends PageablePricesRequestBuilder {
-
+    private static abstract class Init<T extends Init<T>> extends PageablePricesRequest.Init<T> {
         private Instant after;
         private Instant before;
         private Set<Long> sportIds;
@@ -149,7 +149,7 @@ public class EventsRequest extends PageablePricesRequest {
         private boolean includeEventParticipants;
         private boolean includePrices;
 
-        public Builder() {
+        public Init() {
             includeEventParticipants = false;
             includePrices = false;
             sportIds = new HashSet<>();
@@ -158,44 +158,44 @@ public class EventsRequest extends PageablePricesRequest {
             statuses = new HashSet<>();
         }
 
-        public Builder after(Instant after) {
+        public T after(Instant after) {
             this.after = after;
-            return this;
+            return self();
         }
 
-        public Builder before(Instant before) {
+        public T before(Instant before) {
             this.before = before;
-            return this;
+            return self();
         }
 
-        public Builder sportIds(Set<Long> sportIds) {
+        public T sportIds(Set<Long> sportIds) {
             this.sportIds = sportIds;
-            return this;
+            return self();
         }
 
-        public Builder categoryIds(Set<Long> categoryIds) {
+        public T categoryIds(Set<Long> categoryIds) {
             this.categoryIds = categoryIds;
-            return this;
+            return self();
         }
 
-        public Builder eventIds(Set<Long> eventIds) {
+        public T eventIds(Set<Long> eventIds) {
             this.eventIds = eventIds;
-            return this;
+            return self();
         }
 
-        public Builder statuses(Set<EventStatus> statuses) {
+        public T statuses(Set<EventStatus> statuses) {
             this.statuses = statuses;
-            return this;
+            return self();
         }
 
-        public Builder includeEventParticipants(boolean includeEventParticipants) {
+        public T includeEventParticipants(boolean includeEventParticipants) {
             this.includeEventParticipants = includeEventParticipants;
-            return this;
+            return self();
         }
 
-        public Builder includePrices(boolean includePrices) {
+        public T includePrices(boolean includePrices) {
             this.includePrices = includePrices;
-            return this;
+            return self();
         }
 
         public EventsRequest build() {
@@ -203,4 +203,11 @@ public class EventsRequest extends PageablePricesRequest {
         }
     }
 
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
 }

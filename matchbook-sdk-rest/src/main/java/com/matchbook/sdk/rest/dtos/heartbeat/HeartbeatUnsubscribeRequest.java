@@ -33,5 +33,4 @@ public class HeartbeatUnsubscribeRequest implements RestRequest {
         }
 
     }
-
 }
