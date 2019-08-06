@@ -11,16 +11,16 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 **Code**
-Code snippet 
+Code snippet.
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
 **Actual Behavior**
-A clear and concise description of what is actual happen 
+A clear and concise description of what is is actually happening. 
 
 **Stacktrace**
-Stacktrace output
+Stacktrace output.
 
 **Environment**
-OS and Library versions
+OS and Library versions.
