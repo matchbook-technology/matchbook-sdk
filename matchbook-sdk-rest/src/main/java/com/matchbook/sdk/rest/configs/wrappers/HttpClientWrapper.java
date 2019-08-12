@@ -73,7 +73,7 @@ public class HttpClientWrapper implements HttpClient {
                 List<Cookie> cookies = cookieStore.get(url.host());
 
                 if (cookies == null) {
-                    return new ArrayList<Cookie>();
+                    return new ArrayList<>();
                 }
 
                 final long now = System.currentTimeMillis();
