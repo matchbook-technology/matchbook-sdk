@@ -2,11 +2,12 @@ package com.matchbook.sdk.rest.dtos;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class PageableRequest implements RestRequest {
 
-    protected final int offset;
-    protected final int perPage;
+    protected final Integer offset;
+    protected final Integer perPage;
 
     protected PageableRequest(Init<?> init) {
         this.offset = init.offset;
@@ -23,14 +24,18 @@ public abstract class PageableRequest implements RestRequest {
 
     protected Map<String, String> pageParameters() {
         Map<String, String> parameters = new HashMap<>(2);
-        parameters.put("offset", String.valueOf(offset));
-        parameters.put("per-page", String.valueOf(perPage));
+        if (Objects.nonNull(offset)) {
+            parameters.put("offset", String.valueOf(offset));
+        }
+        if (Objects.nonNull(perPage)) {
+            parameters.put("per-page", String.valueOf(perPage));
+        }
         return parameters;
     }
 
     protected static abstract class Init<T extends Init<T>> {
-        private int offset;
-        private int perPage;
+        private Integer offset;
+        private Integer perPage;
 
         protected abstract T self();
 

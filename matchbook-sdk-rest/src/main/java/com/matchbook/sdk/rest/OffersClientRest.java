@@ -18,6 +18,7 @@ import com.matchbook.sdk.rest.dtos.offers.OffersPostRequest;
 import com.matchbook.sdk.rest.dtos.offers.OffersPutRequest;
 import com.matchbook.sdk.rest.dtos.offers.Position;
 import com.matchbook.sdk.rest.dtos.offers.PositionsRequest;
+import com.matchbook.sdk.rest.dtos.offers.PositionsResponse;
 
 public class OffersClientRest extends AbstractRestClient implements OffersClient {
 
@@ -52,7 +53,7 @@ public class OffersClientRest extends AbstractRestClient implements OffersClient
     @Override
     public void getPositions(PositionsRequest positionsRequest, StreamObserver<Position> positionsRequestObserver) {
         String url = buildSportsUrl(positionsRequest.resourcePath());
-        getRequest(url, positionsRequest, positionsRequestObserver, Position.class);
+        getRequest(url, positionsRequest, positionsRequestObserver, PositionsResponse.class);
     }
 
     @Override
