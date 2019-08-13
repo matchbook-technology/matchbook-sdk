@@ -5,29 +5,29 @@ import java.io.InputStream;
 import java.util.stream.Collectors;
 
 import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.rest.dtos.RestRequest;
-import com.matchbook.sdk.rest.dtos.RestResponse;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.Serializer;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
+import com.matchbook.sdk.rest.dtos.RestRequest;
+import com.matchbook.sdk.rest.dtos.RestResponse;
 
 abstract class AbstractRestClient {
 
-    private final ConnectionManager connectionManager;
+    protected final ConnectionManager connectionManager;
 
     protected AbstractRestClient(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
 
     protected <REQ extends RestRequest, RESP extends RestResponse<T>, T>
-            void getRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> responseClass) {
+    void getRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> responseClass) {
         String requestUrl = buildUrl(url, request);
         Serializer serializer = connectionManager.getSerializer();
         connectionManager.getHttpClient().get(requestUrl, new RestCallback<>(observer, responseClass, serializer));
     }
 
     protected <REQ extends RestRequest, RESP extends RestResponse<T>, T>
-            void postRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> responseClass) {
+    void postRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> responseClass) {
         try {
             Serializer serializer = connectionManager.getSerializer();
             String requestBody = serializer.writeObjectAsString(request);
@@ -38,7 +38,7 @@ abstract class AbstractRestClient {
     }
 
     protected <REQ extends RestRequest, RESP extends RestResponse<T>, T>
-            void putRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> responseClass) {
+    void putRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> responseClass) {
         try {
             Serializer serializer = connectionManager.getSerializer();
             String requestBody = serializer.writeObjectAsString(request);
@@ -49,7 +49,7 @@ abstract class AbstractRestClient {
     }
 
     protected <REQ extends RestRequest, RESP extends RestResponse<T>, T>
-            void deleteRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> responseClass) {
+    void deleteRequest(String url, REQ request, StreamObserver<T> observer, Class<RESP> responseClass) {
         String requestUrl = buildUrl(url, request);
         Serializer serializer = connectionManager.getSerializer();
         connectionManager.getHttpClient().delete(requestUrl, new RestCallback<>(observer, responseClass, serializer));

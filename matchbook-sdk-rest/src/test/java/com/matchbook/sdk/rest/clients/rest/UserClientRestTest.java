@@ -16,8 +16,6 @@ import static org.junit.Assert.fail;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
-
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
@@ -25,13 +23,10 @@ import com.matchbook.sdk.rest.MatchbookSDKClientTest;
 import com.matchbook.sdk.rest.UserClient;
 import com.matchbook.sdk.rest.UserClientRest;
 import com.matchbook.sdk.rest.dtos.user.Account;
-import com.matchbook.sdk.rest.dtos.user.AccountRequest;
 import com.matchbook.sdk.rest.dtos.user.Balance;
-import com.matchbook.sdk.rest.dtos.user.BalanceRequest;
 import com.matchbook.sdk.rest.dtos.user.Login;
-import com.matchbook.sdk.rest.dtos.user.LoginRequest;
 import com.matchbook.sdk.rest.dtos.user.Logout;
-import com.matchbook.sdk.rest.dtos.user.LogoutRequest;
+import org.junit.Test;
 
 public class UserClientRestTest extends MatchbookSDKClientTest {
 
@@ -51,9 +46,8 @@ public class UserClientRestTest extends MatchbookSDKClientTest {
                         .withBodyFile("matchbook/loginSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        LoginRequest loginRequest = new LoginRequest.Builder("username".toCharArray(), "password".toCharArray())
-                .build();
-        userRestClient.login(loginRequest, new StreamObserver<Login>() {
+
+        userRestClient.login(new StreamObserver<Login>() {
             @Override
             public void onNext(Login login) {
                 assertThat(login.getSessionToken()).isNotEmpty();
@@ -86,9 +80,7 @@ public class UserClientRestTest extends MatchbookSDKClientTest {
                         .withBodyFile("matchbook/loginFailedResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
-        LoginRequest loginRequest = new LoginRequest.Builder("wrongUser".toCharArray(), "wrongPassword".toCharArray())
-                .build();
-        userRestClient.login(loginRequest, new StreamObserver<Login>() {
+        userRestClient.login(new StreamObserver<Login>() {
             @Override
             public void onNext(Login login) {
                 fail();
@@ -120,7 +112,7 @@ public class UserClientRestTest extends MatchbookSDKClientTest {
                         .withBodyFile("matchbook/logoutSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        userRestClient.logout(new LogoutRequest.Builder().build(), new StreamObserver<Logout>() {
+        userRestClient.logout(new StreamObserver<Logout>() {
             @Override
             public void onNext(Logout logout) {
                 assertThat(logout.getSessionToken()).isNotEmpty();
@@ -154,9 +146,8 @@ public class UserClientRestTest extends MatchbookSDKClientTest {
                         .withBody("")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
-        LoginRequest loginRequest = new LoginRequest.Builder("wrongUser".toCharArray(), "wrongPassword".toCharArray())
-                .build();
-        userRestClient.login(loginRequest, new StreamObserver<Login>() {
+
+        userRestClient.login(new StreamObserver<Login>() {
             @Override
             public void onNext(Login login) {
                 fail();
@@ -189,9 +180,7 @@ public class UserClientRestTest extends MatchbookSDKClientTest {
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-        AccountRequest accountRequest = new AccountRequest.Builder().build();
-
-        userRestClient.getAccount(accountRequest, new StreamObserver<Account>() {
+        userRestClient.getAccount(new StreamObserver<Account>() {
             @Override
             public void onNext(Account account) {
                 assertThat(account.getUsername()).isNotEmpty();
@@ -224,8 +213,7 @@ public class UserClientRestTest extends MatchbookSDKClientTest {
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-        BalanceRequest balanceRequest = new BalanceRequest.Builder().build();
-        userRestClient.getBalance(balanceRequest, new StreamObserver<Balance>() {
+        userRestClient.getBalance(new StreamObserver<Balance>() {
             @Override
             public void onNext(Balance balance) {
                 assertThat(balance.getId()).isNotNull();
@@ -256,37 +244,34 @@ public class UserClientRestTest extends MatchbookSDKClientTest {
         // We expect that the following GET balance includes the same cookie in the request
 
         stubFor(post(urlEqualTo("/bpapi/rest/security/session"))
-            .withHeader("Accept", equalTo("application/json"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withHeader("Set-Cookie", "session-token=2574_d4dcd1c54caacb4755a")
-                .withBodyFile("matchbook/loginSuccessfulResponse.json")));
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Set-Cookie", "session-token=2574_d4dcd1c54caacb4755a")
+                        .withBodyFile("matchbook/loginSuccessfulResponse.json")));
 
         stubFor(get(urlPathEqualTo("/edge/rest/account/balance"))
-            .withHeader("Accept", equalTo("application/json"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBodyFile("matchbook/getAccountBalanceSuccessfulResponse.json")));
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/getAccountBalanceSuccessfulResponse.json")));
 
         final CountDownLatch loginCountDownLatch = new CountDownLatch(1);
-        LoginRequest loginRequest = new LoginRequest.Builder("username".toCharArray(), "password".toCharArray())
-            .build();
-        userRestClient.login(loginRequest, buildStreamObserverWithCountdownLatch(loginCountDownLatch));
+        userRestClient.login(buildStreamObserverWithCountdownLatch(loginCountDownLatch));
 
         boolean await = loginCountDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         final CountDownLatch balanceCountDownLatch = new CountDownLatch(1);
-        BalanceRequest balanceRequest = new BalanceRequest.Builder().build();
-        userRestClient.getBalance(balanceRequest, buildStreamObserverWithCountdownLatch(balanceCountDownLatch));
+        userRestClient.getBalance(buildStreamObserverWithCountdownLatch(balanceCountDownLatch));
 
         await = balanceCountDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         verify(getRequestedFor(urlEqualTo("/edge/rest/account/balance"))
-            .withCookie("session-token", equalTo("2574_d4dcd1c54caacb4755a")));
+                .withCookie("session-token", equalTo("2574_d4dcd1c54caacb4755a")));
     }
 
     @Test
@@ -296,52 +281,48 @@ public class UserClientRestTest extends MatchbookSDKClientTest {
         // We expect that the following GET balance doesn't include the session-token cookie
 
         stubFor(post(urlEqualTo("/bpapi/rest/security/session"))
-            .withHeader("Accept", equalTo("application/json"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withHeader("Set-Cookie", "session-token=2574_d4dcd1c54caacb4755a")
-                .withBodyFile("matchbook/loginSuccessfulResponse.json")));
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Set-Cookie", "session-token=2574_d4dcd1c54caacb4755a")
+                        .withBodyFile("matchbook/loginSuccessfulResponse.json")));
 
         stubFor(delete(urlEqualTo("/bpapi/rest/security/session"))
-            .withHeader("Accept", equalTo("application/json"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withHeader("Set-Cookie", "session-token=2574_d4dcd1c54caacb4755a; Max-Age=0")
-                .withBodyFile("matchbook/logoutSuccessfulResponse.json")));
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Set-Cookie", "session-token=2574_d4dcd1c54caacb4755a; Max-Age=0")
+                        .withBodyFile("matchbook/logoutSuccessfulResponse.json")));
 
         stubFor(get(urlPathEqualTo("/edge/rest/account/balance"))
-            .withHeader("Accept", equalTo("application/json"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBodyFile("matchbook/getAccountBalanceSuccessfulResponse.json")));
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/getAccountBalanceSuccessfulResponse.json")));
 
         final CountDownLatch loginCountDownLatch = new CountDownLatch(1);
-        LoginRequest loginRequest = new LoginRequest.Builder("username".toCharArray(), "password".toCharArray())
-            .build();
-        userRestClient.login(loginRequest, buildStreamObserverWithCountdownLatch(loginCountDownLatch));
+        userRestClient.login(buildStreamObserverWithCountdownLatch(loginCountDownLatch));
 
         boolean await = loginCountDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         final CountDownLatch logoutCountDownLatch = new CountDownLatch(1);
-        userRestClient.logout(new LogoutRequest.Builder().build(),
-            buildStreamObserverWithCountdownLatch(logoutCountDownLatch));
+        userRestClient.logout(buildStreamObserverWithCountdownLatch(logoutCountDownLatch));
 
         await = logoutCountDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         final CountDownLatch balanceCountDownLatch = new CountDownLatch(1);
-        BalanceRequest balanceRequest = new BalanceRequest.Builder().build();
-        userRestClient.getBalance(balanceRequest, buildStreamObserverWithCountdownLatch(balanceCountDownLatch));
+        userRestClient.getBalance(buildStreamObserverWithCountdownLatch(balanceCountDownLatch));
 
         await = balanceCountDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         verify(getRequestedFor(urlEqualTo("/edge/rest/account/balance"))
-            .withoutHeader("set-cookie"));
+                .withoutHeader("set-cookie"));
     }
 
     private <T> StreamObserver<T> buildStreamObserverWithCountdownLatch(CountDownLatch countDownLatch) {
