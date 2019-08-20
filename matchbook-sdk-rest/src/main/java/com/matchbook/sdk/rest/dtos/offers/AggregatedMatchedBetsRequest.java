@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.matchbook.sdk.rest.dtos.PageableRequest;
-import com.matchbook.sdk.rest.dtos.PageableRequestBuilder;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
 public class AggregatedMatchedBetsRequest extends PageableRequest {
@@ -19,14 +18,14 @@ public class AggregatedMatchedBetsRequest extends PageableRequest {
     private final Side side;
     private final AggregationType aggregationType;
 
-    private AggregatedMatchedBetsRequest(AggregatedMatchedBetsRequest.Builder builder) {
-        super(builder);
+    public AggregatedMatchedBetsRequest(Init<?> init) {
+        super(init);
 
-        this.eventIds = builder.eventIds;
-        this.marketIds = builder.marketIds;
-        this.runnersIds = builder.runnersIds;
-        this.side = builder.side;
-        this.aggregationType = builder.aggregationType;
+        this.eventIds = init.eventIds;
+        this.marketIds = init.marketIds;
+        this.runnersIds = init.runnersIds;
+        this.side = init.side;
+        this.aggregationType = init.aggregationType;
     }
 
     public Set<Long> getEventIds() {
@@ -98,7 +97,8 @@ public class AggregatedMatchedBetsRequest extends PageableRequest {
                 "}";
     }
 
-    public static class Builder extends PageableRequestBuilder {
+
+    private static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
 
         private Set<Long> eventIds;
         private Set<Long> marketIds;
@@ -106,29 +106,29 @@ public class AggregatedMatchedBetsRequest extends PageableRequest {
         private Side side;
         private AggregationType aggregationType;
 
-        public Builder eventIds(Set<Long> eventIds) {
+        public T eventIds(Set<Long> eventIds) {
             this.eventIds = eventIds;
-            return this;
+            return self();
         }
 
-        public Builder marketIds(Set<Long> marketIds) {
+        public T marketIds(Set<Long> marketIds) {
             this.marketIds = marketIds;
-            return this;
+            return self();
         }
 
-        public Builder runnersIds(Set<Long> runnersIds) {
+        public T runnersIds(Set<Long> runnersIds) {
             this.runnersIds = runnersIds;
-            return this;
+            return self();
         }
 
-        public Builder side(Side side) {
+        public T side(Side side) {
             this.side = side;
-            return this;
+            return self();
         }
 
-        public Builder aggregationType(AggregationType aggregationType) {
+        public T aggregationType(AggregationType aggregationType) {
             this.aggregationType = aggregationType;
-            return this;
+            return self();
         }
 
         public AggregatedMatchedBetsRequest build() {
@@ -136,4 +136,12 @@ public class AggregatedMatchedBetsRequest extends PageableRequest {
         }
     }
 
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
+    
 }

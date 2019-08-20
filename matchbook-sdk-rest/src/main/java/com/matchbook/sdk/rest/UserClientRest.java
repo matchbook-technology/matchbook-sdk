@@ -17,25 +17,28 @@ public class UserClientRest extends AbstractRestClient implements UserClient {
     }
 
     @Override
-    public void login(LoginRequest loginRequest, StreamObserver<Login> loginObserver) {
+    public void login(StreamObserver<Login> loginObserver) {
         String url = buildLoginUrl();
-        postRequest(url, loginRequest, loginObserver, Login.class);
+        postRequest(url, new LoginRequest.Builder(connectionManager.getClientConfig().getUsername(),
+                connectionManager.getClientConfig().getPassword()).build(), loginObserver, Login.class);
     }
 
     @Override
-    public void logout(LogoutRequest logoutRequest, StreamObserver<Logout> response) {
+    public void logout(StreamObserver<Logout> response) {
         String url = buildLoginUrl();
-        deleteRequest(url, logoutRequest, response, Logout.class);
+        deleteRequest(url, new LogoutRequest.Builder().build(), response, Logout.class);
     }
 
     @Override
-    public void getAccount(AccountRequest accountRequest, StreamObserver<Account> response) {
+    public void getAccount(StreamObserver<Account> response) {
+        AccountRequest accountRequest = new AccountRequest.Builder().build();
         String url = buildSportsUrl(accountRequest.resourcePath());
         getRequest(url, accountRequest, response, Account.class);
     }
 
     @Override
-    public void getBalance(BalanceRequest balanceRequest, StreamObserver<Balance> response) {
+    public void getBalance(StreamObserver<Balance> response) {
+        BalanceRequest balanceRequest = new BalanceRequest.Builder().build();
         String url = buildSportsUrl(balanceRequest.resourcePath());
         getRequest(url, balanceRequest, response, Balance.class);
     }

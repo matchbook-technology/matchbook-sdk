@@ -3,11 +3,11 @@ package com.matchbook.sdk.rest.dtos.offers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.matchbook.sdk.rest.dtos.PageableRequest;
-import com.matchbook.sdk.rest.dtos.PageableRequestBuilder;
 
 public class PositionsRequest extends PageableRequest {
 
@@ -15,12 +15,12 @@ public class PositionsRequest extends PageableRequest {
     private final Set<Long> marketIds;
     private final Set<Long> runnersIds;
 
-    private PositionsRequest(PositionsRequest.Builder builder) {
-        super(builder);
+    protected PositionsRequest(Init<?> init) {
+        super(init);
 
-        this.eventIds = builder.eventIds;
-        this.marketIds = builder.marketIds;
-        this.runnersIds = builder.runnersIds;
+        this.eventIds = init.eventIds;
+        this.marketIds = init.marketIds;
+        this.runnersIds = init.runnersIds;
     }
 
     public Set<Long> getEventIds() {
@@ -43,19 +43,19 @@ public class PositionsRequest extends PageableRequest {
     @Override
     public Map<String, String> parameters() {
         Map<String, String> parameters = new HashMap<>();
-        if (!eventIds.isEmpty()) {
+        if (Objects.nonNull(eventIds) && !eventIds.isEmpty()) {
             List<String> ids = eventIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
             parameters.put("event-ids", String.join(",", ids));
         }
-        if (!marketIds.isEmpty()) {
+        if (Objects.nonNull(marketIds) && !marketIds.isEmpty()) {
             List<String> ids = marketIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
             parameters.put("market-ids", String.join(",", ids));
         }
-        if (!runnersIds.isEmpty()) {
+        if (Objects.nonNull(runnersIds) && !runnersIds.isEmpty()) {
             List<String> ids = runnersIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
@@ -76,25 +76,25 @@ public class PositionsRequest extends PageableRequest {
                 "}";
     }
 
-    public static class Builder extends PageableRequestBuilder {
+    private static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
 
         private Set<Long> eventIds;
         private Set<Long> marketIds;
         private Set<Long> runnersIds;
 
-        public Builder eventIds(Set<Long> eventIds) {
+        public T eventIds(Set<Long> eventIds) {
             this.eventIds = eventIds;
-            return this;
+            return self();
         }
 
-        public Builder marketIds(Set<Long> marketIds) {
+        public T marketIds(Set<Long> marketIds) {
             this.marketIds = marketIds;
-            return this;
+            return self();
         }
 
-        public Builder runnersIds(Set<Long> runnersIds) {
+        public T runnersIds(Set<Long> runnersIds) {
             this.runnersIds = runnersIds;
-            return this;
+            return self();
         }
 
         public PositionsRequest build() {
@@ -102,4 +102,11 @@ public class PositionsRequest extends PageableRequest {
         }
     }
 
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
 }

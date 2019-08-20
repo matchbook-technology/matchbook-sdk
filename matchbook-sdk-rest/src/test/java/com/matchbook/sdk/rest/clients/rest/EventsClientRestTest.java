@@ -195,6 +195,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
                         .withBodyFile("matchbook/getMarketsSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(9);
+
         MarketsRequest marketsRequest = new MarketsRequest.Builder(395729780570010L).build();
 
         eventsRestClient.getMarkets(marketsRequest, new StreamObserver<Market>() {
@@ -273,6 +274,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
                         .withBodyFile("matchbook/getRunnersSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(4);
+
         RunnersRequest runnersRequest = new RunnersRequest
                 .Builder(395729780570010L, 395729860260010L)
                 .build();

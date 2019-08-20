@@ -1,14 +1,13 @@
 package com.matchbook.sdk.rest.dtos.events;
 
-import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequest;
-import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequestBuilder;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequest;
 
 public class MarketsRequest extends PageablePricesRequest {
 
@@ -17,13 +16,13 @@ public class MarketsRequest extends PageablePricesRequest {
     private final Set<MarketStatus> statuses;
     private final boolean includePrices;
 
-    private MarketsRequest(MarketsRequest.Builder builder) {
-        super(builder);
+    private MarketsRequest(Init<?> init) {
+        super(init);
 
-        this.eventId = builder.eventId;
-        this.types = builder.types;
-        this.statuses = builder.statuses;
-        this.includePrices = builder.includePrices;
+        this.eventId = init.eventId;
+        this.types = init.types;
+        this.statuses = init.statuses;
+        this.includePrices = init.includePrices;
     }
 
     public Long getEventId() {
@@ -77,45 +76,46 @@ public class MarketsRequest extends PageablePricesRequest {
                 ", statuses=" + statuses +
                 ", includePrices=" + includePrices +
                 (includePrices ? (
-                    ", oddsType=" + oddsType +
-                    ", exchangeType=" + exchangeType +
-                    ", side=" + side +
-                    ", currency=" + currency +
-                    ", minimumLiquidity=" + minimumLiquidity +
-                    ", priceMode=" + priceMode
+                        ", oddsType=" + oddsType +
+                                ", exchangeType=" + exchangeType +
+                                ", side=" + side +
+                                ", currency=" + currency +
+                                ", minimumLiquidity=" + minimumLiquidity +
+                                ", priceMode=" + priceMode
                 ) : "") +
                 ", offset=" + offset +
                 ", perPage=" + perPage +
                 "}";
     }
 
-    public static class Builder extends PageablePricesRequestBuilder {
+    private static abstract class Init<T extends Init<T>> extends PageablePricesRequest.Init<T> {
 
-        private final Long eventId;
+        private Long eventId;
         private Set<MarketType> types;
         private Set<MarketStatus> statuses;
         private boolean includePrices;
 
-        public Builder(Long eventId) {
+        public Init(Long eventId) {
             this.eventId = eventId;
+
             types = new HashSet<>();
             statuses = new HashSet<>();
             includePrices = false;
         }
 
-        public Builder types(Set<MarketType> types) {
+        public T types(Set<MarketType> types) {
             this.types = types;
-            return this;
+            return self();
         }
 
-        public Builder statuses(Set<MarketStatus> statuses) {
+        public T statuses(Set<MarketStatus> statuses) {
             this.statuses = statuses;
-            return this;
+            return self();
         }
 
-        public Builder includePrices(boolean includePrices) {
+        public T includePrices(boolean includePrices) {
             this.includePrices = includePrices;
-            return this;
+            return self();
         }
 
         public MarketsRequest build() {
@@ -123,4 +123,16 @@ public class MarketsRequest extends PageablePricesRequest {
         }
     }
 
+
+    public static class Builder extends Init<Builder> {
+
+        public Builder(Long eventId) {
+            super(eventId);
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
 }
