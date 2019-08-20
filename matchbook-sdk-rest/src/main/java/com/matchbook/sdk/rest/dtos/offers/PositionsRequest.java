@@ -3,6 +3,7 @@ package com.matchbook.sdk.rest.dtos.offers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,19 +43,19 @@ public class PositionsRequest extends PageableRequest {
     @Override
     public Map<String, String> parameters() {
         Map<String, String> parameters = new HashMap<>();
-        if (!eventIds.isEmpty()) {
+        if (Objects.nonNull(eventIds) && !eventIds.isEmpty()) {
             List<String> ids = eventIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
             parameters.put("event-ids", String.join(",", ids));
         }
-        if (!marketIds.isEmpty()) {
+        if (Objects.nonNull(marketIds) && !marketIds.isEmpty()) {
             List<String> ids = marketIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
             parameters.put("market-ids", String.join(",", ids));
         }
-        if (!runnersIds.isEmpty()) {
+        if (Objects.nonNull(runnersIds) && !runnersIds.isEmpty()) {
             List<String> ids = runnersIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());

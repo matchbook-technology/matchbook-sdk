@@ -9,14 +9,13 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.rest.ConnectionManager;
 import com.matchbook.sdk.rest.UserClient;
 import com.matchbook.sdk.rest.UserClientRest;
-import com.matchbook.sdk.rest.dtos.user.LoginRequest;
-import com.matchbook.sdk.rest.ConnectionManager;
 import com.matchbook.sdk.stream.disruptor.UserDisruptorPipeliner;
 import com.matchbook.sdk.stream.disruptor.messages.UserMessage;
 import com.matchbook.sdk.stream.disruptor.publisher.UserPublisher;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.stream.model.dataobjects.user.Balance;
 import com.matchbook.sdk.stream.schedulers.AuthenticationScheduler;
 import com.matchbook.sdk.stream.schedulers.BalanceScheduler;
@@ -50,11 +49,8 @@ public class PullerWorkerRest implements PullerWorker {
 
     private void keepAliveSession() {
         UserClient userRestClient = new UserClientRest(connectionManager);
-        LoginRequest loginRequest =
-                new LoginRequest.Builder(connectionManager.getClientConfig().getUsername(),
-                        connectionManager.getClientConfig().getPassword()).build();
 
-        authScheduler.scheduleAtFixedRate(new AuthenticationScheduler(userRestClient, loginRequest),
+        authScheduler.scheduleAtFixedRate(new AuthenticationScheduler(userRestClient),
                 0, 4, TimeUnit.HOURS);
     }
 
