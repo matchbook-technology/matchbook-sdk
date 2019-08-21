@@ -7,13 +7,11 @@ import java.util.stream.Collectors;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
 import com.matchbook.sdk.rest.configs.HttpCallback;
-import com.matchbook.sdk.rest.configs.HttpCallback2;
 import com.matchbook.sdk.rest.configs.Parser;
 import com.matchbook.sdk.rest.configs.Serializer;
 import com.matchbook.sdk.rest.dtos.Reader;
 import com.matchbook.sdk.rest.dtos.RestRequest;
 import com.matchbook.sdk.rest.dtos.RestResponse;
-import com.sun.org.apache.regexp.internal.RE;
 
 abstract class AbstractRestClient {
 
@@ -29,7 +27,7 @@ abstract class AbstractRestClient {
             Reader<T, RESP> reader) {
         String requestUrl = buildUrl(url, request);
         Serializer serializer = connectionManager.getSerializer();
-        connectionManager.getHttpClient().get(requestUrl, new RestCallback2<>(observer, serializer), reader);
+        connectionManager.getHttpClient().get(requestUrl, new RestCallback2<>(observer, serializer, reader));
     }
 
     @Deprecated
@@ -49,7 +47,7 @@ abstract class AbstractRestClient {
         try {
             Serializer serializer = connectionManager.getSerializer();
             String requestBody = serializer.writeObjectAsString(request);
-            connectionManager.getHttpClient().post(url, requestBody, new RestCallback2<>(observer, serializer), reader);
+            connectionManager.getHttpClient().post(url, requestBody, new RestCallback2<>(observer, serializer, reader));
         } catch (IOException e) {
             observer.onError(new MatchbookSDKHttpException(e.getMessage(), e));
         }
@@ -76,7 +74,7 @@ abstract class AbstractRestClient {
         try {
             Serializer serializer = connectionManager.getSerializer();
             String requestBody = serializer.writeObjectAsString(request);
-            connectionManager.getHttpClient().put(url, requestBody, new RestCallback2<>(observer, serializer), reader);
+            connectionManager.getHttpClient().put(url, requestBody, new RestCallback2<>(observer, serializer, reader));
         } catch (IOException e) {
             observer.onError(new MatchbookSDKHttpException(e.getMessage(), e));
         }
@@ -102,7 +100,7 @@ abstract class AbstractRestClient {
             Reader<T, RESP> reader) {
         String requestUrl = buildUrl(url, request);
         Serializer serializer = connectionManager.getSerializer();
-        connectionManager.getHttpClient().delete(requestUrl, new RestCallback2<>(observer, serializer), reader);
+        connectionManager.getHttpClient().delete(requestUrl, new RestCallback2<>(observer, serializer, reader));
     }
 
     @Deprecated
@@ -129,18 +127,20 @@ abstract class AbstractRestClient {
                 .collect(Collectors.joining("&"));
     }
 
-    private static class RestCallback2<T, RESP extends RestResponse<T>> implements HttpCallback2<T, RESP> {
+    private static class RestCallback2<T, RESP extends RestResponse<T>> implements HttpCallback {
 
         private final StreamObserver<T> observer;
         private final Serializer serializer;
+        private final Reader<T, RESP> reader;
 
-        private RestCallback2(StreamObserver<T> observer, Serializer serializer) {
+        private RestCallback2(StreamObserver<T> observer, Serializer serializer, Reader<T, RESP> reader) {
             this.observer = observer;
             this.serializer = serializer;
+            this.reader = reader;
         }
 
         @Override
-        public void onResponse(InputStream inputStream, Reader<T, RESP> reader) {
+        public void onResponse(InputStream inputStream) {
             try {
                 Parser parser = serializer.newParser(inputStream);
                 reader.startReading(parser);
@@ -152,11 +152,6 @@ abstract class AbstractRestClient {
                 MatchbookSDKHttpException exception = new MatchbookSDKHttpException(e.getMessage(), e);
                 observer.onError(exception);
             }
-        }
-
-        @Override
-        public void onResponse(InputStream inputStream) {
-            throw new UnsupportedOperationException();
         }
 
         @Override
