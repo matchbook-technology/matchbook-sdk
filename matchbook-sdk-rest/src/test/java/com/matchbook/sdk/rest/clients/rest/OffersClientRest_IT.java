@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.MatchbookSDKClientRestTest;
+import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.OffersClientRest;
 import com.matchbook.sdk.rest.dtos.offers.Offer;
 import com.matchbook.sdk.rest.dtos.offers.OfferEdit;
@@ -22,7 +22,7 @@ import com.matchbook.sdk.rest.dtos.offers.OffersGetRequest;
 import org.junit.Before;
 import org.junit.Test;
 
-public class OffersClientRestTest extends MatchbookSDKClientRestTest {
+public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
     private OffersClientRest offersClientRest;
 

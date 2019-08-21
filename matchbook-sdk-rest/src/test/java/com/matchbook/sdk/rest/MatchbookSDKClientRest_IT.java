@@ -6,7 +6,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-public abstract class MatchbookSDKClientRestTest {
+public abstract class MatchbookSDKClientRest_IT {
 
     protected static WireMockServer wireMockServer;
 

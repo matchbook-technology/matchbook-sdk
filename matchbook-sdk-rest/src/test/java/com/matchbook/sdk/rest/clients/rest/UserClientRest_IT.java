@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.MatchbookSDKClientRestTest;
+import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.UserClientRest;
 import com.matchbook.sdk.rest.dtos.user.Account;
 import com.matchbook.sdk.rest.dtos.user.Balance;
@@ -26,7 +26,7 @@ import com.matchbook.sdk.rest.dtos.user.Logout;
 import org.junit.Before;
 import org.junit.Test;
 
-public class UserClientRestTest extends MatchbookSDKClientRestTest {
+public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
     private UserClientRest userClientRest;
 

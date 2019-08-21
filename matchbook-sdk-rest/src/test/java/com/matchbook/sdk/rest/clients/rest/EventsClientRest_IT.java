@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.rest.EventsClientRest;
-import com.matchbook.sdk.rest.MatchbookSDKClientRestTest;
+import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.dtos.events.Event;
 import com.matchbook.sdk.rest.dtos.events.EventRequest;
 import com.matchbook.sdk.rest.dtos.events.EventsRequest;
@@ -28,7 +28,7 @@ import com.matchbook.sdk.rest.dtos.events.SportsRequest;
 import org.junit.Before;
 import org.junit.Test;
 
-public class EventsClientRestTest extends MatchbookSDKClientRestTest {
+public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
     private EventsClientRest eventsClientRest;
 

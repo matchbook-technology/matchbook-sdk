@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.rest.HeartbeatClientRest;
-import com.matchbook.sdk.rest.MatchbookSDKClientRestTest;
+import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.dtos.heartbeat.ActionPerformed;
 import com.matchbook.sdk.rest.dtos.heartbeat.Heartbeat;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatGetRequest;
@@ -28,7 +28,7 @@ import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
 import org.junit.Before;
 import org.junit.Test;
 
-public class HeartbeatClientRestTest extends MatchbookSDKClientRestTest {
+public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
 
     private SimpleDateFormat dateFormat;
     private HeartbeatClientRest heartbeatClientRest;
