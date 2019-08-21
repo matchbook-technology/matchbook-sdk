@@ -1,12 +1,13 @@
 package com.matchbook.sdk.rest.dtos.events;
 
+import com.matchbook.sdk.rest.dtos.RestResponse;
+
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import com.matchbook.sdk.rest.dtos.RestResponse;
 
 public class Event implements RestResponse<Event> {
 
@@ -15,9 +16,10 @@ public class Event implements RestResponse<Event> {
     private Long[] categoryIds;
     private String name;
     private EventStatus status;
-    private Instant startTime;
+    private Instant start;
     private boolean inRunning;
     private boolean allowLiveBetting;
+    private Double volume;
     private List<Market> markets;
     private List<EventParticipant> eventParticipants;
 
@@ -66,12 +68,12 @@ public class Event implements RestResponse<Event> {
         this.status = status;
     }
 
-    public Instant getStartTime() {
-        return startTime;
+    public Instant getStart() {
+        return start;
     }
 
-    public void setStartTime(Instant startTime) {
-        this.startTime = startTime;
+    public void setStart(Instant start) {
+        this.start = start;
     }
 
     public boolean isInRunning() {
@@ -88,6 +90,14 @@ public class Event implements RestResponse<Event> {
 
     public void setAllowLiveBetting(boolean allowLiveBetting) {
         this.allowLiveBetting = allowLiveBetting;
+    }
+
+    public Double getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Double volume) {
+        this.volume = volume;
     }
 
     public List<Market> getMarkets() {
@@ -116,12 +126,13 @@ public class Event implements RestResponse<Event> {
         return Event.class.getSimpleName() + " {" +
                 "id=" + id +
                 ", sportId=" + sportId +
-                ", categoryIds=" + categoryIds +
+                ", categoryIds=" + Arrays.toString(categoryIds) +
                 ", name=" + name +
                 ", status=" + status +
-                ", startTime=" + startTime +
+                ", start=" + start +
                 ", inRunning=" + inRunning +
                 ", allowLiveBetting=" + allowLiveBetting +
+                ", volume=" + volume +
                 ", markets=" + markets +
                 ", eventParticipants=" + eventParticipants +
                 "}";

@@ -1,15 +1,24 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
+import com.matchbook.sdk.rest.configs.HttpConfig;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.HttpClient;
+
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -26,19 +35,61 @@ public class HttpClientWrapper implements HttpClient {
     private final OkHttpClient httpClient;
     private final MediaType jsonMediaType;
 
-    public HttpClientWrapper() {
-        httpClient = initHttpClient();
+    public HttpClientWrapper(HttpConfig httpConfig) {
+        httpClient = initHttpClient(httpConfig);
 
         this.jsonMediaType = MediaType.parse(MEDIA_TYPE_JSON);
     }
 
-    private OkHttpClient initHttpClient() {
+    private OkHttpClient initHttpClient(HttpConfig httpConfig) {
+        CookieJar cookieJar = createCookieJar();
         return new OkHttpClient.Builder()
-            .connectTimeout(2, TimeUnit.SECONDS)
-            .writeTimeout(5, TimeUnit.SECONDS)
-            .readTimeout(2, TimeUnit.SECONDS)
-            .followRedirects(false)
-            .build();
+                .connectTimeout(httpConfig.getConnectionTimeout(), TimeUnit.MILLISECONDS)
+                .writeTimeout(httpConfig.getWriteTimeout(), TimeUnit.MILLISECONDS)
+                .readTimeout(httpConfig.getReadTimeout(), TimeUnit.MILLISECONDS)
+                .followRedirects(false)
+                .cookieJar(cookieJar)
+                .build();
+    }
+
+    /**
+     * Create a {@link CookieJar} to hold in memory the cookies. These are stored based on the host of the request.
+     *
+     * @return a {@link CookieJar} instance
+     */
+    private CookieJar createCookieJar() {
+        return new CookieJar() {
+            private final ConcurrentHashMap<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
+
+            @Override
+            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                if (cookies != null) {
+                    cookieStore.put(url.host(), cookies);
+                }
+            }
+
+            @Override
+            public List<Cookie> loadForRequest(HttpUrl url) {
+                List<Cookie> cookies = cookieStore.get(url.host());
+
+                if (cookies == null) {
+                    return new ArrayList<>();
+                }
+
+                final long now = System.currentTimeMillis();
+
+                // filter out expired cookies
+                List<Cookie> unexpiredCookies = cookies.stream()
+                    .filter(cookie -> cookie.expiresAt() > now)
+                    .collect(Collectors.toList());
+
+                if (cookies.size() > unexpiredCookies.size()){
+                    cookieStore.put(url.host(), unexpiredCookies);
+                }
+
+                return unexpiredCookies;
+            }
+        };
     }
 
     @Override
@@ -68,8 +119,8 @@ public class HttpClientWrapper implements HttpClient {
     @Override
     public void delete(String url, HttpCallback httpCallback) throws MatchbookSDKHttpException {
         Request request = buildRequest(url)
-            .delete()
-            .build();
+                .delete()
+                .build();
         sendHttpRequest(request, httpCallback);
     }
 

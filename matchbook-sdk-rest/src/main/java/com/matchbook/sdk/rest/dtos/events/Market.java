@@ -16,7 +16,9 @@ public class Market implements RestResponse<Market> {
     private MarketType marketType;
     private boolean inRunning;
     private boolean allowLiveBetting;
-    private Double value;
+    private Double volume;
+    private Double backOverround;
+    private Double layOverround;
     private Integer winners;
     private List<Runner> runners;
 
@@ -80,12 +82,28 @@ public class Market implements RestResponse<Market> {
         this.allowLiveBetting = allowLiveBetting;
     }
 
-    public Double getValue() {
-        return value;
+    public Double getVolume() {
+        return volume;
     }
 
-    public void setValue(Double value) {
-        this.value = value;
+    public void setVolume(Double volume) {
+        this.volume = volume;
+    }
+
+    public Double getBackOverround() {
+        return backOverround;
+    }
+
+    public void setBackOverround(Double backOverround) {
+        this.backOverround = backOverround;
+    }
+
+    public Double getLayOverround() {
+        return layOverround;
+    }
+
+    public void setLayOverround(Double layOverround) {
+        this.layOverround = layOverround;
     }
 
     public Integer getWinners() {
@@ -119,7 +137,9 @@ public class Market implements RestResponse<Market> {
                 ", marketType=" + marketType +
                 ", inRunning=" + inRunning +
                 ", allowLiveBetting=" + allowLiveBetting +
-                ", value=" + value +
+                ", volume=" + volume +
+                ", backOverround=" + backOverround +
+                ", layOverround=" + layOverround +
                 ", winners=" + winners +
                 ", runners=" + runners +
                 "}";

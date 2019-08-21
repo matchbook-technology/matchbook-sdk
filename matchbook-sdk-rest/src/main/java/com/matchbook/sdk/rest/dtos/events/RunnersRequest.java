@@ -1,14 +1,14 @@
 package com.matchbook.sdk.rest.dtos.events;
 
-import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequest;
-import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequestBuilder;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequest;
 
 public class RunnersRequest extends PageablePricesRequest {
 
@@ -18,14 +18,14 @@ public class RunnersRequest extends PageablePricesRequest {
     private final boolean includeWithdrawn;
     private final boolean includePrices;
 
-    private RunnersRequest(RunnersRequest.Builder builder) {
-        super(builder);
+    private RunnersRequest(Init<?> init) {
+        super(init);
 
-        this.eventId = builder.eventId;
-        this.marketId = builder.marketId;
-        this.statuses = builder.statuses;
-        this.includeWithdrawn = builder.includeWithdrawn;
-        this.includePrices = builder.includePrices;
+        this.eventId = init.eventId;
+        this.marketId = init.marketId;
+        this.statuses = init.statuses;
+        this.includeWithdrawn = init.includeWithdrawn;
+        this.includePrices = init.includePrices;
     }
 
     public Long getEventId() {
@@ -57,9 +57,9 @@ public class RunnersRequest extends PageablePricesRequest {
     @Override
     public Map<String, String> parameters() {
         Map<String, String> parameters = new HashMap<>();
-        if (!statuses.isEmpty()) {
+        if (Objects.nonNull(statuses) && !statuses.isEmpty()) {
             List<String> states = statuses.stream()
-                    .map(Enum::name)
+                    .map(RunnerStatus::name)
                     .collect(Collectors.toList());
             parameters.put("states", String.join(",", states));
         }
@@ -80,51 +80,63 @@ public class RunnersRequest extends PageablePricesRequest {
                 ", includeWithdrawn=" + includeWithdrawn +
                 ", includePrices=" + includePrices +
                 (includePrices ? (
-                    ", oddsType=" + oddsType +
-                    ", exchangeType=" + exchangeType +
-                    ", side=" + side +
-                    ", currency=" + currency +
-                    ", minimumLiquidity=" + minimumLiquidity +
-                    ", priceMode=" + priceMode
+                        ", oddsType=" + oddsType +
+                        ", exchangeType=" + exchangeType +
+                        ", side=" + side +
+                        ", currency=" + currency +
+                        ", minimumLiquidity=" + minimumLiquidity +
+                        ", priceMode=" + priceMode
                 ) : "") +
                 ", offset=" + offset +
                 ", perPage=" + perPage +
                 "}";
     }
 
-    public static class Builder extends PageablePricesRequestBuilder {
+    private static abstract class Init<T extends Init<T>> extends PageablePricesRequest.Init<T> {
 
-        private final Long eventId;
-        private final Long marketId;
+        private Long eventId;
+        private Long marketId;
         private Set<RunnerStatus> statuses;
         private boolean includeWithdrawn;
         private boolean includePrices;
 
-        public Builder(Long eventId, Long marketId) {
+        private Init(Long eventId, Long marketId) {
             this.eventId = eventId;
             this.marketId = marketId;
-            statuses = new HashSet<>();
+
             includeWithdrawn = true;
             includePrices = false;
         }
 
-        public Builder statuses(Set<RunnerStatus> statuses) {
+        public T statuses(Set<RunnerStatus> statuses) {
             this.statuses = statuses;
-            return this;
+            return self();
         }
 
-        public Builder includeWithdrawn(boolean includeWithdrawn) {
+        public T includeWithdrawn(boolean includeWithdrawn) {
             this.includeWithdrawn = includeWithdrawn;
-            return this;
+            return self();
         }
 
-        public Builder includePrices(boolean includePrices) {
+        public T includePrices(boolean includePrices) {
             this.includePrices = includePrices;
-            return this;
+            return self();
         }
 
         public RunnersRequest build() {
             return new RunnersRequest(this);
+        }
+    }
+
+    public static class Builder extends Init<Builder> {
+
+        public Builder(Long eventId, Long marketId) {
+            super(eventId, marketId);
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
         }
     }
 

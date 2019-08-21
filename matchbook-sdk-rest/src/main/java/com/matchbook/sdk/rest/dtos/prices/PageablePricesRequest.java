@@ -1,11 +1,11 @@
 package com.matchbook.sdk.rest.dtos.prices;
 
-import com.matchbook.sdk.rest.dtos.PageableRequest;
-
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import com.matchbook.sdk.rest.dtos.PageableRequest;
 
 public abstract class PageablePricesRequest extends PageableRequest {
 
@@ -16,15 +16,15 @@ public abstract class PageablePricesRequest extends PageableRequest {
     protected final BigDecimal minimumLiquidity;
     protected final PriceMode priceMode;
 
-    protected <B extends PageablePricesRequestBuilder> PageablePricesRequest(B builder) {
-        super(builder);
+    protected PageablePricesRequest(Init<?> init) {
+        super(init);
 
-        this.oddsType = builder.oddsType;
-        this.exchangeType = builder.exchangeType;
-        this.side = builder.side;
-        this.currency = builder.currency;
-        this.minimumLiquidity = builder.minimumLiquidity;
-        this.priceMode = builder.priceMode;
+        this.oddsType = init.oddsType;
+        this.exchangeType = init.exchangeType;
+        this.side = init.side;
+        this.currency = init.currency;
+        this.minimumLiquidity = init.minimumLiquidity;
+        this.priceMode = init.priceMode;
     }
 
     public OddsType getOddsType() {
@@ -53,6 +53,7 @@ public abstract class PageablePricesRequest extends PageableRequest {
 
     protected Map<String, String> pricesParameters() {
         Map<String, String> parameters = new HashMap<>();
+
         if (Objects.nonNull(currency)) {
             parameters.put("currency", currency.name());
         }
@@ -73,6 +74,53 @@ public abstract class PageablePricesRequest extends PageableRequest {
         }
         parameters.putAll(pageParameters());
         return parameters;
+    }
+
+    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+
+        protected OddsType oddsType;
+        protected ExchangeType exchangeType;
+        protected Side side;
+        protected Currency currency;
+        protected BigDecimal minimumLiquidity;
+        protected PriceMode priceMode;
+
+        public T oddsType(OddsType oddsType) {
+            this.oddsType = oddsType;
+            return self();
+        }
+
+        public T exchangeType(ExchangeType exchangeType) {
+            this.exchangeType = exchangeType;
+            return self();
+        }
+
+        public T side(Side side) {
+            this.side = side;
+            return self();
+        }
+
+        public T currency(Currency currency) {
+            this.currency = currency;
+            return self();
+        }
+
+        public T minimumLiquidity(BigDecimal minimumLiquidity) {
+            this.minimumLiquidity = minimumLiquidity;
+            return self();
+        }
+
+        public T priceMode(PriceMode priceMode) {
+            this.priceMode = priceMode;
+            return self();
+        }
+    }
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
     }
 
 }

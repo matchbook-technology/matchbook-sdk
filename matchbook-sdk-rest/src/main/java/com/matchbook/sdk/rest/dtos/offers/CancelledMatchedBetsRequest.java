@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.matchbook.sdk.rest.dtos.PageableRequest;
-import com.matchbook.sdk.rest.dtos.PageableRequestBuilder;
 
 public class CancelledMatchedBetsRequest extends PageableRequest {
 
@@ -12,7 +11,7 @@ public class CancelledMatchedBetsRequest extends PageableRequest {
 
     private final MatchedBetStatus status;
 
-    private CancelledMatchedBetsRequest(CancelledMatchedBetsRequest.Builder builder) {
+    private CancelledMatchedBetsRequest(Init<?> builder) {
         super(builder);
 
         this.status = DEFAULT_STATUS;
@@ -41,10 +40,17 @@ public class CancelledMatchedBetsRequest extends PageableRequest {
                 "}";
     }
 
-    public static class Builder extends PageableRequestBuilder {
+    private static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
 
         public CancelledMatchedBetsRequest build() {
             return new CancelledMatchedBetsRequest(this);
+        }
+    }
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
         }
     }
 

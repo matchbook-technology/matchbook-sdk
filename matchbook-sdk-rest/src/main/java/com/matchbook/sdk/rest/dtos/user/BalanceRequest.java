@@ -31,4 +31,5 @@ public class BalanceRequest implements RestRequest {
             return new BalanceRequest();
         }
     }
+
 }

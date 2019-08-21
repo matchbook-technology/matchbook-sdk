@@ -7,7 +7,7 @@ public class Price {
     private Side side;
     private OddsType oddsType;
     private Currency currency;
-    private BigDecimal amount;
+    private BigDecimal availableAmount;
     private BigDecimal odds;
 
     public Side getSide() {
@@ -34,12 +34,12 @@ public class Price {
         this.currency = currency;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
+    public BigDecimal getAvailableAmount() {
+        return availableAmount;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void setAvailableAmount(BigDecimal availableAmount) {
+        this.availableAmount = availableAmount;
     }
 
     public BigDecimal getOdds() {
@@ -56,7 +56,7 @@ public class Price {
                 "side=" + side +
                 ", oddsType=" + oddsType +
                 ", currency=" + currency +
-                ", amount=" + amount +
+                ", availableAmount=" + availableAmount +
                 ", odds=" + odds +
                 "}";
     }

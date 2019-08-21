@@ -3,16 +3,15 @@ package com.matchbook.sdk.rest.dtos.offers;
 import java.util.Map;
 
 import com.matchbook.sdk.rest.dtos.PageableRequest;
-import com.matchbook.sdk.rest.dtos.PageableRequestBuilder;
 
 public class OfferEditsGetRequest extends PageableRequest {
 
     private final Long offerId;
 
-    private OfferEditsGetRequest(OfferEditsGetRequest.Builder builder) {
-        super(builder);
+    private OfferEditsGetRequest(Init<?> init) {
+        super(init);
 
-        this.offerId = builder.offerId;
+        this.offerId = init.offerId;
     }
 
     public Long getOfferId() {
@@ -38,16 +37,24 @@ public class OfferEditsGetRequest extends PageableRequest {
                 "}";
     }
 
-    public static class Builder extends PageableRequestBuilder {
+    private static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
 
-        private final Long offerId;
+        private Long offerId;
 
-        public Builder(Long offerId) {
+        public T offerID(Long offerId) {
             this.offerId = offerId;
+            return self();
         }
 
         public OfferEditsGetRequest build() {
             return new OfferEditsGetRequest(this);
+        }
+    }
+
+    public static class Builder extends Init<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
         }
     }
 

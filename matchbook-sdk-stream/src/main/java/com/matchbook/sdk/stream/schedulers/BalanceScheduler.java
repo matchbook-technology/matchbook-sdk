@@ -1,12 +1,11 @@
 package com.matchbook.sdk.stream.schedulers;
 
 import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.rest.UserClient;
 import com.matchbook.sdk.rest.dtos.user.Balance;
-import com.matchbook.sdk.rest.dtos.user.BalanceRequest;
 import com.matchbook.sdk.stream.disruptor.messages.UserMessage;
 import com.matchbook.sdk.stream.disruptor.publisher.UserPublisher;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 
 public class BalanceScheduler implements Runnable {
 
@@ -22,7 +21,7 @@ public class BalanceScheduler implements Runnable {
     @Override
     public void run() {
 
-        userRestClient.getBalance(new BalanceRequest.Builder().build(), new StreamObserver<Balance>() {
+        userRestClient.getBalance(new StreamObserver<Balance>() {
             @Override
             public void onNext(Balance balance) {
                 UserMessage userMessage = new UserMessage();
