@@ -17,7 +17,7 @@ jobs:
       - run:
           name: Build Matchbook SDK on Java 8
           command: |
-            mvn clean install
+            mvn clean verify
             mvn surefire-report:report-only
 
       - run:
@@ -42,7 +42,7 @@ jobs:
       - run:
           name: Build Matchbook SDK on Java 11
           command: |
-            mvn clean package -Dmaven.compiler.source=11 -Dmaven.compiler.target=11
+            mvn clean verify -Dmaven.compiler.source=11 -Dmaven.compiler.target=11
 
 workflows:
   version: 2
@@ -50,7 +50,5 @@ workflows:
     jobs:
       - build-java11
       - build-java8:
-          requires:
-            - build-java11
 
 
