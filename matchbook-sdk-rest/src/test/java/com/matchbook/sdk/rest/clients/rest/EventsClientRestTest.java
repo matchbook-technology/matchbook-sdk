@@ -1,10 +1,19 @@
 package com.matchbook.sdk.rest.clients.rest;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.EventsClient;
 import com.matchbook.sdk.rest.EventsClientRest;
-import com.matchbook.sdk.rest.MatchbookSDKClientTest;
+import com.matchbook.sdk.rest.MatchbookSDKClientRestTest;
 import com.matchbook.sdk.rest.dtos.events.Event;
 import com.matchbook.sdk.rest.dtos.events.EventRequest;
 import com.matchbook.sdk.rest.dtos.events.EventsRequest;
@@ -16,30 +25,24 @@ import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
+import org.junit.Before;
 import org.junit.Test;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+public class EventsClientRestTest extends MatchbookSDKClientRestTest {
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
+    private EventsClientRest unit;
 
-public class EventsClientRestTest extends MatchbookSDKClientTest {
+    @Override
+    @Before
+    public void setUp() {
+        super.setUp();
 
-    private final EventsClient eventsRestClient;
-
-    public EventsClientRestTest() {
-        this.eventsRestClient = new EventsClientRest(connectionManager);
+        this.unit = new EventsClientRest(connectionManager);
     }
 
     @Test
     public void successfulGetSportsTest() throws InterruptedException {
-        stubFor(get(urlPathEqualTo("/edge/rest/lookups/sports"))
+        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/lookups/sports"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -50,7 +53,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
 
         SportsRequest sportsRequest = new SportsRequest.Builder().build();
 
-        eventsRestClient.getSports(sportsRequest, new StreamObserver<Sport>() {
+        unit.getSports(sportsRequest, new StreamObserver<Sport>() {
 
             @Override
             public void onNext(Sport sport) {
@@ -76,7 +79,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
 
     @Test
     public void successfulGetEventTest() throws InterruptedException {
-        stubFor(get(urlPathEqualTo("/edge/rest/events/395729780570010"))
+        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/events/395729780570010"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -86,7 +89,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         EventRequest eventRequest = new EventRequest.Builder(395729780570010L).build();
 
-        eventsRestClient.getEvent(eventRequest, new StreamObserver<Event>() {
+        unit.getEvent(eventRequest, new StreamObserver<Event>() {
 
             @Override
             public void onNext(Event event) {
@@ -111,7 +114,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
 
     @Test
     public void successfulGetEventsTest() throws InterruptedException {
-        stubFor(get(urlPathEqualTo("/edge/rest/events"))
+        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/events"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -121,7 +124,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         EventsRequest eventsRequest = new EventsRequest.Builder().build();
 
-        eventsRestClient.getEvents(eventsRequest, new StreamObserver<Event>() {
+        unit.getEvents(eventsRequest, new StreamObserver<Event>() {
 
             @Override
             public void onNext(Event event) {
@@ -147,7 +150,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
     @Test
     public void successfulGetMarketTest() throws InterruptedException {
         String testUrl = "/edge/rest/events/395729780570010/markets/395729860260010";
-        stubFor(get(urlPathEqualTo(testUrl))
+        wireMockServer.stubFor(get(urlPathEqualTo(testUrl))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -160,7 +163,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
                 .Builder(395729860260010L, 395729780570010L)
                 .build();
 
-        eventsRestClient.getMarket(marketRequest, new StreamObserver<Market>() {
+        unit.getMarket(marketRequest, new StreamObserver<Market>() {
 
             @Override
             public void onNext(Market market) {
@@ -187,7 +190,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
     @Test
     public void successfulGetMarketsTest() throws InterruptedException {
         String testUrl = "/edge/rest/events/395729780570010/markets";
-        stubFor(get(urlPathEqualTo(testUrl))
+        wireMockServer.stubFor(get(urlPathEqualTo(testUrl))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -198,7 +201,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
 
         MarketsRequest marketsRequest = new MarketsRequest.Builder(395729780570010L).build();
 
-        eventsRestClient.getMarkets(marketsRequest, new StreamObserver<Market>() {
+        unit.getMarkets(marketsRequest, new StreamObserver<Market>() {
 
             @Override
             public void onNext(Market market) {
@@ -224,7 +227,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
     @Test
     public void successfulGetRunnerTest() throws InterruptedException {
         String testUrl = "/edge/rest/events/395729780570010/markets/395729860260010/runners/395729860800010";
-        stubFor(get(urlPathEqualTo(testUrl))
+        wireMockServer.stubFor(get(urlPathEqualTo(testUrl))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -238,7 +241,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
                 .Builder(395729780570010L, 395729860260010L, 395729860800010L)
                 .build();
 
-        eventsRestClient.getRunner(runnerRequest, new StreamObserver<Runner>() {
+        unit.getRunner(runnerRequest, new StreamObserver<Runner>() {
 
             @Override
             public void onNext(Runner runner) {
@@ -266,7 +269,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
     @Test
     public void successfulGetRunnersTest() throws InterruptedException {
         String testUrl = "/edge/rest/events/395729780570010/markets/395729860260010/runners";
-        stubFor(get(urlPathEqualTo(testUrl))
+        wireMockServer.stubFor(get(urlPathEqualTo(testUrl))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -279,7 +282,7 @@ public class EventsClientRestTest extends MatchbookSDKClientTest {
                 .Builder(395729780570010L, 395729860260010L)
                 .build();
 
-        eventsRestClient.getRunners(runnersRequest, new StreamObserver<Runner>() {
+        unit.getRunners(runnersRequest, new StreamObserver<Runner>() {
 
             @Override
             public void onNext(Runner runner) {

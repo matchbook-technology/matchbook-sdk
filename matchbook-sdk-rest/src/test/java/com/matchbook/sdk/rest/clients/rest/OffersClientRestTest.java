@@ -1,39 +1,42 @@
 package com.matchbook.sdk.rest.clients.rest;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.MatchbookSDKClientTest;
-import com.matchbook.sdk.rest.OffersClient;
+import com.matchbook.sdk.rest.MatchbookSDKClientRestTest;
 import com.matchbook.sdk.rest.OffersClientRest;
 import com.matchbook.sdk.rest.dtos.offers.Offer;
 import com.matchbook.sdk.rest.dtos.offers.OfferEdit;
 import com.matchbook.sdk.rest.dtos.offers.OfferEditGetRequest;
 import com.matchbook.sdk.rest.dtos.offers.OfferGetRequest;
 import com.matchbook.sdk.rest.dtos.offers.OffersGetRequest;
+import org.junit.Before;
 import org.junit.Test;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+public class OffersClientRestTest extends MatchbookSDKClientRestTest {
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
+    private OffersClientRest unit;
 
-public class OffersClientRestTest extends MatchbookSDKClientTest {
+    @Override
+    @Before
+    public void setUp() {
+        super.setUp();
 
-    private final OffersClient offersRestClient;
-
-    public OffersClientRestTest() {
-        this.offersRestClient = new OffersClientRest(connectionManager);
+        this.unit = new OffersClientRest(connectionManager);
     }
 
     @Test
     public void successfulGetOfferTest() throws InterruptedException {
-        stubFor(get(urlPathEqualTo("/edge/rest/v2/offers/382937981320019"))
+        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/v2/offers/382937981320019"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -44,7 +47,7 @@ public class OffersClientRestTest extends MatchbookSDKClientTest {
 
         OfferGetRequest offerGetRequest = new OfferGetRequest.Builder(382937981320019L).build();
 
-        offersRestClient.getOffer(offerGetRequest, new StreamObserver<Offer>() {
+        unit.getOffer(offerGetRequest, new StreamObserver<Offer>() {
             @Override
             public void onNext(Offer offer) {
                 assertThat(offer.getId()).isNotNull();
@@ -70,7 +73,7 @@ public class OffersClientRestTest extends MatchbookSDKClientTest {
 
     @Test
     public void successfulGetOffersTest() throws InterruptedException {
-        stubFor(get(urlPathEqualTo("/edge/rest/v2/offers"))
+        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/v2/offers"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -81,7 +84,7 @@ public class OffersClientRestTest extends MatchbookSDKClientTest {
 
         OffersGetRequest offersGetRequest = new OffersGetRequest.Builder().build();
 
-        offersRestClient.getOffers(offersGetRequest, new StreamObserver<Offer>() {
+        unit.getOffers(offersGetRequest, new StreamObserver<Offer>() {
             @Override
             public void onNext(Offer offer) {
                 assertThat(offer.getId()).isNotNull();
@@ -107,7 +110,7 @@ public class OffersClientRestTest extends MatchbookSDKClientTest {
 
     @Test
     public void successfulGetOfferEditTest() throws InterruptedException {
-        stubFor(get(urlPathEqualTo("/edge/rest/v2/offers/925183846730025/offer-edits/925184068850125"))
+        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/v2/offers/925183846730025/offer-edits/925184068850125"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -118,7 +121,7 @@ public class OffersClientRestTest extends MatchbookSDKClientTest {
 
         OfferEditGetRequest offerEditGetRequest = new OfferEditGetRequest.Builder(925184068850125L, 925183846730025L).build();
 
-        offersRestClient.getOfferEdit(offerEditGetRequest, new StreamObserver<OfferEdit>() {
+        unit.getOfferEdit(offerEditGetRequest, new StreamObserver<OfferEdit>() {
             @Override
             public void onNext(OfferEdit offerEdit) {
                 assertThat(offerEdit.getId()).isNotNull();
