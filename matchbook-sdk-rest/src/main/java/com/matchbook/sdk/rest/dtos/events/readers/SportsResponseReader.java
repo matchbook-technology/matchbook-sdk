@@ -5,7 +5,7 @@ import com.matchbook.sdk.rest.dtos.AbstractReader;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsResponse;
 
-public class SportsResponseReader extends AbstractReader<SportsResponse, Sport> {
+public class SportsResponseReader extends AbstractReader<Sport, SportsResponse> {
 
     public SportsResponseReader() {
         super();

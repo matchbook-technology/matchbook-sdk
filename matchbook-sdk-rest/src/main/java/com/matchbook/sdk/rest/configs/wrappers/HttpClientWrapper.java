@@ -1,6 +1,5 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -8,13 +7,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
 import com.matchbook.sdk.rest.HttpConfig;
 import com.matchbook.sdk.rest.configs.HttpCallback;
+import com.matchbook.sdk.rest.configs.HttpCallback2;
 import com.matchbook.sdk.rest.configs.HttpClient;
-
-import okhttp3.Call;
+import com.matchbook.sdk.rest.dtos.Reader;
+import com.matchbook.sdk.rest.dtos.RestResponse;
 import okhttp3.Callback;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
@@ -23,8 +22,6 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class HttpClientWrapper implements HttpClient {
 
@@ -63,15 +60,15 @@ public class HttpClientWrapper implements HttpClient {
             private final ConcurrentHashMap<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
 
             @Override
-            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+            public void saveFromResponse(HttpUrl httpUrl, List<Cookie> cookies) {
                 if (Objects.nonNull(cookies)) {
-                    cookieStore.put(url.host(), cookies);
+                    cookieStore.put(httpUrl.host(), cookies);
                 }
             }
 
             @Override
-            public List<Cookie> loadForRequest(HttpUrl url) {
-                List<Cookie> cookies = cookieStore.get(url.host());
+            public List<Cookie> loadForRequest(HttpUrl httpUrl) {
+                List<Cookie> cookies = cookieStore.get(httpUrl.host());
                 if (Objects.isNull(cookies)) {
                     return new ArrayList<>(0);
                 }
@@ -83,7 +80,7 @@ public class HttpClientWrapper implements HttpClient {
                     .collect(Collectors.toList());
 
                 if (cookies.size() > unexpiredCookies.size()) {
-                    cookieStore.put(url.host(), unexpiredCookies);
+                    cookieStore.put(httpUrl.host(), unexpiredCookies);
                 }
                 return unexpiredCookies;
             }
@@ -91,35 +88,89 @@ public class HttpClientWrapper implements HttpClient {
     }
 
     @Override
-    public void get(String url, HttpCallback httpCallback) throws MatchbookSDKHttpException {
-        Request request = buildRequest(url)
-                .get()
-                .build();
-        sendHttpRequest(request, httpCallback);
+    public <T, R extends RestResponse<T>> void get(String url,
+            HttpCallback2<T, R> httpCallback,
+            Reader<T, R> reader) throws MatchbookSDKHttpException {
+        Request request = buildGetRequest(url);
+        sendHttpRequest(request, new RequestCallback2<>(httpCallback, reader));
     }
 
+    @Deprecated
+    @Override
+    public void get(String url, HttpCallback httpCallback) throws MatchbookSDKHttpException {
+        Request request = buildGetRequest(url);
+        sendHttpRequest(request, new RequestCallback(httpCallback));
+    }
+
+    @Override
+    public <T, R extends RestResponse<T>> void post(String url,
+            String body,
+            HttpCallback2<T, R> httpCallback,
+            Reader<T, R> reader) throws MatchbookSDKHttpException {
+        Request request = buildPostRequest(url, body);
+        sendHttpRequest(request, new RequestCallback2<>(httpCallback, reader));
+    }
+
+    @Deprecated
     @Override
     public void post(String url, String body, HttpCallback httpCallback) throws MatchbookSDKHttpException {
-        Request request = buildRequest(url)
-                .post(RequestBody.create(body, jsonMediaType))
-                .build();
-        sendHttpRequest(request, httpCallback);
+        Request request = buildPostRequest(url, body);
+        sendHttpRequest(request, new RequestCallback(httpCallback));
     }
 
+    @Override
+    public <T, R extends RestResponse<T>> void put(String url,
+            String body,
+            HttpCallback2<T, R> httpCallback,
+            Reader<T, R> reader) throws MatchbookSDKHttpException {
+        Request request = buildPutRequest(url, body);
+        sendHttpRequest(request, new RequestCallback2<>(httpCallback, reader));
+    }
+
+    @Deprecated
     @Override
     public void put(String url, String body, HttpCallback httpCallback) throws MatchbookSDKHttpException {
-        Request request = buildRequest(url)
-                .put(RequestBody.create(body, jsonMediaType))
-                .build();
-        sendHttpRequest(request, httpCallback);
+        Request request = buildPutRequest(url, body);
+        sendHttpRequest(request, new RequestCallback(httpCallback));
     }
 
     @Override
+    public <T, R extends RestResponse<T>> void delete(String url,
+            HttpCallback2<T, R> httpCallback,
+            Reader<T, R> reader) throws MatchbookSDKHttpException {
+        Request request = buildDeleteRequest(url);
+        sendHttpRequest(request, new RequestCallback2<>(httpCallback, reader));
+    }
+
+    @Deprecated
+    @Override
     public void delete(String url, HttpCallback httpCallback) throws MatchbookSDKHttpException {
-        Request request = buildRequest(url)
+        Request request = buildDeleteRequest(url);
+        sendHttpRequest(request, new RequestCallback(httpCallback));
+    }
+
+    private Request buildGetRequest(String url) {
+        return buildRequest(url)
+                .get()
+                .build();
+    }
+
+    private Request buildPostRequest(String url, String body) {
+        return buildRequest(url)
+                .post(RequestBody.create(body, jsonMediaType))
+                .build();
+    }
+
+    private Request buildPutRequest(String url, String body) {
+        return buildRequest(url)
+                .put(RequestBody.create(body, jsonMediaType))
+                .build();
+    }
+
+    private Request buildDeleteRequest(String url) {
+        return buildRequest(url)
                 .delete()
                 .build();
-        sendHttpRequest(request, httpCallback);
     }
 
     private Request.Builder buildRequest(String url) {
@@ -129,61 +180,8 @@ public class HttpClientWrapper implements HttpClient {
                 .url(url);
     }
 
-    private void sendHttpRequest(Request request, HttpCallback httpCallback) {
-        httpClient.newCall(request).enqueue(new RequestCallback(httpCallback));
-    }
-
-    private static class RequestCallback implements Callback {
-
-        private final HttpCallback httpCallback;
-
-        private RequestCallback(HttpCallback httpCallback) {
-            this.httpCallback = httpCallback;
-        }
-
-        @Override
-        public void onResponse(Call call, Response response) {
-            try (ResponseBody responseBody = response.body()) {
-                if (response.isSuccessful() && Objects.nonNull(responseBody)) {
-                    httpCallback.onResponse(responseBody.byteStream());
-                } else {
-                    MatchbookSDKHttpException matchbookException = getExceptionForResponse(response);
-                    httpCallback.onFailure(matchbookException);
-                }
-            }
-        }
-
-        @Override
-        public void onFailure(Call call, IOException exception) {
-            MatchbookSDKHttpException matchbookException = new MatchbookSDKHttpException(exception.getMessage(), exception);
-            httpCallback.onFailure(matchbookException);
-        }
-
-        private MatchbookSDKHttpException getExceptionForResponse(Response response) {
-            ResponseBody responseBody = response.body();
-            if (Objects.nonNull(responseBody)) {
-                try {
-                    if (isAuthenticationErrorPresent(responseBody)) {
-                        return newUnauthenticatedException();
-                    }
-                } catch (IOException e) {
-                    return newHTTPException(response.code());
-                }
-            }
-            return newHTTPException(response.code());
-        }
-
-        private boolean isAuthenticationErrorPresent(ResponseBody body) throws IOException {
-            return new String(body.bytes()).toLowerCase().contains("cannot login");
-        }
-
-        private MatchbookSDKHttpException newHTTPException(int responseCode) {
-            return new MatchbookSDKHttpException("Unexpected HTTP code " + responseCode, ErrorType.HTTP);
-        }
-
-        private MatchbookSDKHttpException newUnauthenticatedException() {
-            return new MatchbookSDKHttpException("Incorrect username or password", ErrorType.UNAUTHENTICATED);
-        }
+    private void sendHttpRequest(Request request, Callback callback) {
+        httpClient.newCall(request).enqueue(callback);
     }
 
 }

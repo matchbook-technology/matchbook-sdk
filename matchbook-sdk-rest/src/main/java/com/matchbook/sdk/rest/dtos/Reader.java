@@ -3,7 +3,7 @@ package com.matchbook.sdk.rest.dtos;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.configs.Parser;
 
-public interface Reader<R extends RestResponse<T>, T> {
+public interface Reader<T, R extends RestResponse<T>> {
 
     void startReading(Parser parser) throws MatchbookSDKParsingException;
 
