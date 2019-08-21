@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,15 +50,15 @@ public class MarketsRequest extends PageablePricesRequest {
     @Override
     public Map<String, String> parameters() {
         Map<String, String> parameters = new HashMap<>();
-        if (!types.isEmpty()) {
+        if (Objects.nonNull(types) && !types.isEmpty()) {
             List<String> marketTypes = types.stream()
-                    .map(Enum::name)
+                    .map(MarketType::name)
                     .collect(Collectors.toList());
             parameters.put("types", String.join(",", marketTypes));
         }
-        if (!statuses.isEmpty()) {
+        if (Objects.nonNull(statuses) && !statuses.isEmpty()) {
             List<String> states = statuses.stream()
-                    .map(Enum::name)
+                    .map(MarketStatus::name)
                     .collect(Collectors.toList());
             parameters.put("states", String.join(",", states));
         }
@@ -77,11 +78,11 @@ public class MarketsRequest extends PageablePricesRequest {
                 ", includePrices=" + includePrices +
                 (includePrices ? (
                         ", oddsType=" + oddsType +
-                                ", exchangeType=" + exchangeType +
-                                ", side=" + side +
-                                ", currency=" + currency +
-                                ", minimumLiquidity=" + minimumLiquidity +
-                                ", priceMode=" + priceMode
+                        ", exchangeType=" + exchangeType +
+                        ", side=" + side +
+                        ", currency=" + currency +
+                        ", minimumLiquidity=" + minimumLiquidity +
+                        ", priceMode=" + priceMode
                 ) : "") +
                 ", offset=" + offset +
                 ", perPage=" + perPage +
@@ -95,11 +96,9 @@ public class MarketsRequest extends PageablePricesRequest {
         private Set<MarketStatus> statuses;
         private boolean includePrices;
 
-        public Init(Long eventId) {
+        private Init(Long eventId) {
             this.eventId = eventId;
 
-            types = new HashSet<>();
-            statuses = new HashSet<>();
             includePrices = false;
         }
 
@@ -123,7 +122,6 @@ public class MarketsRequest extends PageablePricesRequest {
         }
     }
 
-
     public static class Builder extends Init<Builder> {
 
         public Builder(Long eventId) {
@@ -135,4 +133,5 @@ public class MarketsRequest extends PageablePricesRequest {
             return this;
         }
     }
+
 }

@@ -56,19 +56,19 @@ public class AggregatedMatchedBetsRequest extends PageableRequest {
     @Override
     public Map<String, String> parameters() {
         Map<String, String> parameters = new HashMap<>();
-        if (!eventIds.isEmpty()) {
+        if (Objects.nonNull(eventIds) && !eventIds.isEmpty()) {
             List<String> ids = eventIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
             parameters.put("event-ids", String.join(",", ids));
         }
-        if (!marketIds.isEmpty()) {
+        if (Objects.nonNull(marketIds) && !marketIds.isEmpty()) {
             List<String> ids = marketIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
             parameters.put("market-ids", String.join(",", ids));
         }
-        if (!runnersIds.isEmpty()) {
+        if (Objects.nonNull(runnersIds) && !runnersIds.isEmpty()) {
             List<String> ids = runnersIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
@@ -96,7 +96,6 @@ public class AggregatedMatchedBetsRequest extends PageableRequest {
                 ", perPage=" + perPage +
                 "}";
     }
-
 
     private static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
 
@@ -136,12 +135,11 @@ public class AggregatedMatchedBetsRequest extends PageableRequest {
         }
     }
 
-
     public static class Builder extends Init<Builder> {
         @Override
         protected Builder self() {
             return this;
         }
     }
-    
+
 }

@@ -52,11 +52,11 @@ public class SerializerWrapper implements Serializer {
         return mapper;
     }
 
-    @SuppressWarnings("unchecked")
     private Module caseInsensitiveEnumModule() {
         SimpleModule module = new SimpleModule();
         module.setDeserializerModifier(new BeanDeserializerModifier() {
 
+            @SuppressWarnings("unchecked")
             @Override
             public JsonDeserializer<Enum> modifyEnumDeserializer(DeserializationConfig config, JavaType type,
                     BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
@@ -66,7 +66,7 @@ public class SerializerWrapper implements Serializer {
                     public Enum<?> deserialize(JsonParser jsonParser,
                             DeserializationContext context) throws IOException {
                         Class<? extends Enum> rawClass = (Class<Enum<?>>) type.getRawClass();
-                        String enumValue = jsonParser.getValueAsString().replaceAll("\\-", "_").toUpperCase();
+                        String enumValue = jsonParser.getValueAsString().replaceAll("-", "_").toUpperCase();
                         return Enum.valueOf(rawClass, enumValue);
                     }
                 };

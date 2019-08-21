@@ -37,7 +37,7 @@ public class OfferEditsGetRequest extends PageableRequest {
                 "}";
     }
 
-    protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+    private static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
 
         private Long offerId;
 
@@ -50,7 +50,6 @@ public class OfferEditsGetRequest extends PageableRequest {
             return new OfferEditsGetRequest(this);
         }
     }
-
 
     public static class Builder extends Init<Builder> {
         @Override

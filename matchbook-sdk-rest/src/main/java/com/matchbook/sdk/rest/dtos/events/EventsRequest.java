@@ -82,25 +82,25 @@ public class EventsRequest extends PageablePricesRequest {
         if (Objects.nonNull(before)) {
             parameters.put("before", before.toString());
         }
-        if (!eventIds.isEmpty()) {
+        if (Objects.nonNull(eventIds) && !eventIds.isEmpty()) {
             List<String> ids = eventIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
             parameters.put("ids", String.join(",", ids));
         }
-        if (!categoryIds.isEmpty()) {
+        if (Objects.nonNull(categoryIds) && !categoryIds.isEmpty()) {
             List<String> ids = categoryIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
             parameters.put("category-ids", String.join(",", ids));
         }
-        if (!sportIds.isEmpty()) {
+        if (Objects.nonNull(sportIds) && !sportIds.isEmpty()) {
             List<String> ids = sportIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
             parameters.put("sport-ids", String.join(",", ids));
         }
-        if (!statuses.isEmpty()) {
+        if (Objects.nonNull(statuses) && !statuses.isEmpty()) {
             List<String> states = statuses.stream()
                     .map(EventStatus::name)
                     .collect(Collectors.toList());
@@ -128,11 +128,11 @@ public class EventsRequest extends PageablePricesRequest {
                 ", includePrices=" + includePrices +
                 (includePrices ? (
                         ", oddsType=" + oddsType +
-                                ", exchangeType=" + exchangeType +
-                                ", side=" + side +
-                                ", currency=" + currency +
-                                ", minimumLiquidity=" + minimumLiquidity +
-                                ", priceMode=" + priceMode
+                        ", exchangeType=" + exchangeType +
+                        ", side=" + side +
+                        ", currency=" + currency +
+                        ", minimumLiquidity=" + minimumLiquidity +
+                        ", priceMode=" + priceMode
                 ) : "") +
                 ", offset=" + offset +
                 ", perPage=" + perPage +
@@ -149,13 +149,9 @@ public class EventsRequest extends PageablePricesRequest {
         private boolean includeEventParticipants;
         private boolean includePrices;
 
-        public Init() {
+        private Init() {
             includeEventParticipants = false;
             includePrices = false;
-            sportIds = new HashSet<>();
-            categoryIds = new HashSet<>();
-            eventIds = new HashSet<>();
-            statuses = new HashSet<>();
         }
 
         public T after(Instant after) {
@@ -203,11 +199,11 @@ public class EventsRequest extends PageablePricesRequest {
         }
     }
 
-
     public static class Builder extends Init<Builder> {
         @Override
         protected Builder self() {
             return this;
         }
     }
+
 }

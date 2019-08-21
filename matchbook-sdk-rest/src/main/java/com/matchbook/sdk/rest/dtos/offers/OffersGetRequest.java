@@ -1,7 +1,6 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
 import com.matchbook.sdk.rest.dtos.PageableRequest;
-import com.matchbook.sdk.rest.dtos.PageableRequestBuilder;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
 import java.util.HashMap;
@@ -11,9 +10,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.matchbook.sdk.rest.dtos.PageableRequest;
-import com.matchbook.sdk.rest.dtos.prices.Side;
 
 public class OffersGetRequest extends PageableRequest {
 
@@ -79,31 +75,31 @@ public class OffersGetRequest extends PageableRequest {
     @Override
     public Map<String, String> parameters() {
         Map<String, String> parameters = new HashMap<>();
-        if (!sportIds.isEmpty()) {
+        if (Objects.nonNull(sportIds) && !sportIds.isEmpty()) {
             List<String> ids = sportIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
             parameters.put("sport-ids", String.join(",", ids));
         }
-        if (!eventIds.isEmpty()) {
+        if (Objects.nonNull(eventIds) && !eventIds.isEmpty()) {
             List<String> ids = eventIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
             parameters.put("event-ids", String.join(",", ids));
         }
-        if (!marketIds.isEmpty()) {
+        if (Objects.nonNull(marketIds) && !marketIds.isEmpty()) {
             List<String> ids = marketIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
             parameters.put("market-ids", String.join(",", ids));
         }
-        if (!runnersIds.isEmpty()) {
+        if (Objects.nonNull(runnersIds) && !runnersIds.isEmpty()) {
             List<String> ids = runnersIds.stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
             parameters.put("runner-ids", String.join(",", ids));
         }
-        if (!statuses.isEmpty()) {
+        if (Objects.nonNull(statuses) && !statuses.isEmpty()) {
             List<String> states = statuses.stream()
                     .map(OfferStatus::name)
                     .collect(Collectors.toList());
@@ -147,13 +143,8 @@ public class OffersGetRequest extends PageableRequest {
         private Integer interval;
         private boolean includeEdits;
 
-        public Init() {
+        private Init() {
             includeEdits = false;
-            sportIds = new HashSet<>();
-            eventIds = new HashSet<>();
-            marketIds = new HashSet<>();
-            runnersIds = new HashSet<>();
-            statuses = new HashSet<>();
         }
 
         public T sportIds(Set<Long> sportIds) {
@@ -207,4 +198,5 @@ public class OffersGetRequest extends PageableRequest {
             return this;
         }
     }
+
 }

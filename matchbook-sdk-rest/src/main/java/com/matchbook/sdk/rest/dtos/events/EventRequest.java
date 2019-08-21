@@ -67,7 +67,7 @@ public class EventRequest extends AbstractPricesRequest {
         private boolean includeEventParticipants;
         private boolean includePrices;
 
-        public Init(Long eventId) {
+        private Init(Long eventId) {
             this.eventId = eventId;
             includeEventParticipants = false;
             includePrices = false;
@@ -83,12 +83,11 @@ public class EventRequest extends AbstractPricesRequest {
             return self();
         }
 
-
         public EventRequest build() {
             return new EventRequest(this);
         }
-    }
 
+    }
 
     public static class Builder extends Init<Builder> {
 

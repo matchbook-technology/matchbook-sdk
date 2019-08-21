@@ -47,11 +47,11 @@ public class CancelledMatchedBetsRequest extends PageableRequest {
         }
     }
 
-
     public static class Builder extends Init<Builder> {
         @Override
         protected Builder self() {
             return this;
         }
     }
+
 }
