@@ -15,7 +15,6 @@ import org.junit.Test;
 
 public class UserModelMapperTest {
 
-
     private static final String SESSION_TOKEN = "736dhhfdy";
     private static final Long USER_ID = 12345L;
     private static final Long ACCOUNT_ID = 6372L;
@@ -26,7 +25,7 @@ public class UserModelMapperTest {
     private static final BigDecimal ACCOUNT_FREE_FUNDS = new BigDecimal("1400");
     private static final BigDecimal ACCOUNT_COMMISSION_RESERVE = new BigDecimal("0");
 
-    private UserModelMapper unit = new UserModelMapper();
+    private UserModelMapper unit;
 
     @Before
     public void setUp() {
@@ -34,7 +33,7 @@ public class UserModelMapperTest {
     }
 
     @Test
-    public void mapToModel() {
+    public void mapLoginTest() {
         Login login = mock(Login.class);
         when(login.getSessionToken()).thenReturn(SESSION_TOKEN);
         when(login.getUserId()).thenReturn(USER_ID);
@@ -68,7 +67,7 @@ public class UserModelMapperTest {
     }
 
     @Test
-    public void mapToModel_NullValues() {
+    public void mapLoginTest_NullValues() {
         Login login = mock(Login.class);
         when(login.getUserId()).thenReturn(null);
 

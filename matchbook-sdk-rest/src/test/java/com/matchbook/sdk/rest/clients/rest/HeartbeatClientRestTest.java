@@ -31,20 +31,20 @@ import org.junit.Test;
 public class HeartbeatClientRestTest extends MatchbookSDKClientRestTest {
 
     private SimpleDateFormat dateFormat;
-    private HeartbeatClientRest unit;
+    private HeartbeatClientRest heartbeatClientRest;
 
     @Override
     @Before
     public void setUp() {
         super.setUp();
 
-        this.unit = new HeartbeatClientRest(connectionManager);
+        this.heartbeatClientRest = new HeartbeatClientRest(connectionManager);
         this.dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
         this.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     @Test
-    public void successfulGetHeartbeat() throws InterruptedException, ParseException {
+    public void getHeartbeatTest() throws InterruptedException, ParseException {
         wireMockServer.stubFor(get(urlEqualTo("/edge/rest/v1/heartbeat"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
@@ -55,7 +55,7 @@ public class HeartbeatClientRestTest extends MatchbookSDKClientRestTest {
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatGetRequest heartbeatGetRequest = new HeartbeatGetRequest.Builder().build();
-        unit.getHeartbeat(heartbeatGetRequest, new StreamObserver<Heartbeat>() {
+        heartbeatClientRest.getHeartbeat(heartbeatGetRequest, new StreamObserver<Heartbeat>() {
             @Override
             public void onNext(Heartbeat heartbeatResponse) {
                 assertThat(heartbeatResponse.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_ACTIVATED);
@@ -80,7 +80,7 @@ public class HeartbeatClientRestTest extends MatchbookSDKClientRestTest {
     }
 
     @Test
-    public void successfulSendHeartbeat() throws InterruptedException, ParseException {
+    public void sendHeartbeatTest() throws InterruptedException, ParseException {
         wireMockServer.stubFor(post(urlEqualTo("/edge/rest/v1/heartbeat"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
@@ -91,7 +91,7 @@ public class HeartbeatClientRestTest extends MatchbookSDKClientRestTest {
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatSendRequest heartbeatSendRequest = new HeartbeatSendRequest.Builder(20).build();
-        unit.sendHeartbeat(heartbeatSendRequest, new StreamObserver<Heartbeat>() {
+        heartbeatClientRest.sendHeartbeat(heartbeatSendRequest, new StreamObserver<Heartbeat>() {
             @Override
             public void onNext(Heartbeat heartbeatResponse) {
                 assertThat(heartbeatResponse.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_ACTIVATED);
@@ -116,7 +116,7 @@ public class HeartbeatClientRestTest extends MatchbookSDKClientRestTest {
     }
 
     @Test
-    public void successfulUnsubscribeHeartbeat() throws InterruptedException {
+    public void unsubscribeHeartbeatTest() throws InterruptedException {
         wireMockServer.stubFor(delete(urlEqualTo("/edge/rest/v1/heartbeat"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
@@ -126,7 +126,7 @@ public class HeartbeatClientRestTest extends MatchbookSDKClientRestTest {
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatUnsubscribeRequest heartbeatUnsubscribeRequest = new HeartbeatUnsubscribeRequest.Builder().build();
-        unit.unsubscribeHeartbeat(heartbeatUnsubscribeRequest, new StreamObserver<Heartbeat>() {
+        heartbeatClientRest.unsubscribeHeartbeat(heartbeatUnsubscribeRequest, new StreamObserver<Heartbeat>() {
             @Override
             public void onNext(Heartbeat heartbeatResponse) {
                 assertThat(heartbeatResponse.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_TERMINATED);
