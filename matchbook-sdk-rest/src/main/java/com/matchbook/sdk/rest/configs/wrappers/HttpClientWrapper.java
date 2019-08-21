@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
-import com.matchbook.sdk.rest.configs.HttpConfig;
+import com.matchbook.sdk.rest.HttpConfig;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.HttpClient;
 
@@ -59,11 +59,12 @@ public class HttpClientWrapper implements HttpClient {
      */
     private CookieJar createCookieJar() {
         return new CookieJar() {
+
             private final ConcurrentHashMap<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
 
             @Override
             public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-                if (cookies != null) {
+                if (Objects.nonNull(cookies)) {
                     cookieStore.put(url.host(), cookies);
                 }
             }
@@ -71,22 +72,19 @@ public class HttpClientWrapper implements HttpClient {
             @Override
             public List<Cookie> loadForRequest(HttpUrl url) {
                 List<Cookie> cookies = cookieStore.get(url.host());
-
-                if (cookies == null) {
-                    return new ArrayList<>();
+                if (Objects.isNull(cookies)) {
+                    return new ArrayList<>(0);
                 }
 
-                final long now = System.currentTimeMillis();
-
                 // filter out expired cookies
+                final long now = System.currentTimeMillis();
                 List<Cookie> unexpiredCookies = cookies.stream()
                     .filter(cookie -> cookie.expiresAt() > now)
                     .collect(Collectors.toList());
 
-                if (cookies.size() > unexpiredCookies.size()){
+                if (cookies.size() > unexpiredCookies.size()) {
                     cookieStore.put(url.host(), unexpiredCookies);
                 }
-
                 return unexpiredCookies;
             }
         };
