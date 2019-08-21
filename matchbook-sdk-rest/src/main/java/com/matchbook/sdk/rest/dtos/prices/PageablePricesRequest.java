@@ -116,11 +116,11 @@ public abstract class PageablePricesRequest extends PageableRequest {
         }
     }
 
-
     public static class Builder extends Init<Builder> {
         @Override
         protected Builder self() {
             return this;
         }
     }
+
 }

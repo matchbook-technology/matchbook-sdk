@@ -20,6 +20,9 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.matchbook.sdk.rest.configs.Serializer;
 
 public class SerializerWrapper implements Serializer {
@@ -39,17 +42,21 @@ public class SerializerWrapper implements Serializer {
         final ObjectMapper mapper = new ObjectMapper();
         final Module module = caseInsensitiveEnumModule();
         mapper.registerModule(module);
+        mapper.registerModule(new ParameterNamesModule());
+        mapper.registerModule(new Jdk8Module());
+        mapper.registerModule(new JavaTimeModule());
+
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         return mapper;
     }
 
-    @SuppressWarnings("unchecked")
     private Module caseInsensitiveEnumModule() {
         SimpleModule module = new SimpleModule();
         module.setDeserializerModifier(new BeanDeserializerModifier() {
 
+            @SuppressWarnings("unchecked")
             @Override
             public JsonDeserializer<Enum> modifyEnumDeserializer(DeserializationConfig config, JavaType type,
                     BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
@@ -59,7 +66,8 @@ public class SerializerWrapper implements Serializer {
                     public Enum<?> deserialize(JsonParser jsonParser,
                             DeserializationContext context) throws IOException {
                         Class<? extends Enum> rawClass = (Class<Enum<?>>) type.getRawClass();
-                        return Enum.valueOf(rawClass, jsonParser.getValueAsString().toUpperCase());
+                        String enumValue = jsonParser.getValueAsString().replaceAll("-", "_").toUpperCase();
+                        return Enum.valueOf(rawClass, enumValue);
                     }
                 };
             }

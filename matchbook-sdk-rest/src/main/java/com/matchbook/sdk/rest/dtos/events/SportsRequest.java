@@ -34,11 +34,11 @@ public class SportsRequest extends PageableRequest {
         }
     }
 
-
     public static class Builder extends Init<Builder> {
         @Override
         protected Builder self() {
             return this;
         }
     }
+
 }

@@ -55,11 +55,11 @@ public class MarketRequest extends AbstractPricesRequest {
                 ", includePrices=" + includePrices +
                 (includePrices ? (
                         ", oddsType=" + oddsType +
-                                ", exchangeType=" + exchangeType +
-                                ", side=" + side +
-                                ", currency=" + currency +
-                                ", minimumLiquidity=" + minimumLiquidity +
-                                ", priceMode=" + priceMode
+                        ", exchangeType=" + exchangeType +
+                        ", side=" + side +
+                        ", currency=" + currency +
+                        ", minimumLiquidity=" + minimumLiquidity +
+                        ", priceMode=" + priceMode
                 ) : "") +
                 "}";
     }
@@ -70,7 +70,7 @@ public class MarketRequest extends AbstractPricesRequest {
         private final Long eventId;
         private boolean includePrices;
 
-        public Init(Long marketId, Long eventId) {
+        private Init(Long marketId, Long eventId) {
             this.eventId = eventId;
             this.marketId = marketId;
             includePrices = false;
@@ -81,12 +81,11 @@ public class MarketRequest extends AbstractPricesRequest {
             return self();
         }
 
-
         public MarketRequest build() {
             return new MarketRequest(this);
         }
-    }
 
+    }
 
     public static class Builder extends Init<Builder> {
 
@@ -99,4 +98,5 @@ public class MarketRequest extends AbstractPricesRequest {
             return this;
         }
     }
+
 }

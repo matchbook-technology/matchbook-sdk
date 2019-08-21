@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,9 +57,9 @@ public class RunnersRequest extends PageablePricesRequest {
     @Override
     public Map<String, String> parameters() {
         Map<String, String> parameters = new HashMap<>();
-        if (!statuses.isEmpty()) {
+        if (Objects.nonNull(statuses) && !statuses.isEmpty()) {
             List<String> states = statuses.stream()
-                    .map(Enum::name)
+                    .map(RunnerStatus::name)
                     .collect(Collectors.toList());
             parameters.put("states", String.join(",", states));
         }
@@ -80,11 +81,11 @@ public class RunnersRequest extends PageablePricesRequest {
                 ", includePrices=" + includePrices +
                 (includePrices ? (
                         ", oddsType=" + oddsType +
-                                ", exchangeType=" + exchangeType +
-                                ", side=" + side +
-                                ", currency=" + currency +
-                                ", minimumLiquidity=" + minimumLiquidity +
-                                ", priceMode=" + priceMode
+                        ", exchangeType=" + exchangeType +
+                        ", side=" + side +
+                        ", currency=" + currency +
+                        ", minimumLiquidity=" + minimumLiquidity +
+                        ", priceMode=" + priceMode
                 ) : "") +
                 ", offset=" + offset +
                 ", perPage=" + perPage +
@@ -99,15 +100,13 @@ public class RunnersRequest extends PageablePricesRequest {
         private boolean includeWithdrawn;
         private boolean includePrices;
 
-        public Init(Long eventId, Long marketId) {
+        private Init(Long eventId, Long marketId) {
             this.eventId = eventId;
             this.marketId = marketId;
 
-            statuses = new HashSet<>();
             includeWithdrawn = true;
             includePrices = false;
         }
-
 
         public T statuses(Set<RunnerStatus> statuses) {
             this.statuses = statuses;
@@ -129,7 +128,6 @@ public class RunnersRequest extends PageablePricesRequest {
         }
     }
 
-
     public static class Builder extends Init<Builder> {
 
         public Builder(Long eventId, Long marketId) {
@@ -141,4 +139,5 @@ public class RunnersRequest extends PageablePricesRequest {
             return this;
         }
     }
+
 }

@@ -81,7 +81,7 @@ public class PricesRequest extends AbstractPricesRequest {
         private final Long marketId;
         private final Long runnerId;
 
-        public Init(Long eventId, Long marketId, Long runnerId) {
+        private Init(Long eventId, Long marketId, Long runnerId) {
             this.eventId = eventId;
             this.marketId = marketId;
             this.runnerId = runnerId;
@@ -91,7 +91,6 @@ public class PricesRequest extends AbstractPricesRequest {
             return new PricesRequest(this);
         }
     }
-
 
     public static class Builder extends Init<Builder> {
 
@@ -104,4 +103,5 @@ public class PricesRequest extends AbstractPricesRequest {
             return this;
         }
     }
+
 }

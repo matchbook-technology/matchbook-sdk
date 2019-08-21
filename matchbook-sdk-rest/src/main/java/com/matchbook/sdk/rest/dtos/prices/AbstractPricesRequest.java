@@ -115,7 +115,6 @@ public abstract class AbstractPricesRequest implements RestRequest {
 
     }
 
-
     public static class Builder extends Init<Builder> {
         @Override
         protected Builder self() {
