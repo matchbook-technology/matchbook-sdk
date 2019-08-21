@@ -49,6 +49,6 @@ workflows:
   build_and_test:
     jobs:
       - build-java11
-      - build-java8:
+      - build-java8
 
 
