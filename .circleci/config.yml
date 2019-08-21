@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build-java8:
     docker:
-      - image: circleci/openjdk:8-jdk-browsers
+      - image: circleci/openjdk:8-jdk
     working_directory: ~/matchbook-sdk
     steps:
       - checkout
