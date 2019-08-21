@@ -38,6 +38,7 @@ public class ParserWrapper implements Parser {
 
     @Override
     public void startObject() throws MatchbookSDKParsingException {
+        moveToNext();
         if (jsonParser.isExpectedStartObjectToken()) {
             terminationTokens.add(JsonToken.END_OBJECT);
         } else {
@@ -48,6 +49,7 @@ public class ParserWrapper implements Parser {
 
     @Override
     public void startArray() throws MatchbookSDKParsingException {
+        moveToNext();
         if (jsonParser.isExpectedStartArrayToken()) {
             terminationTokens.add(JsonToken.END_ARRAY);
         } else {

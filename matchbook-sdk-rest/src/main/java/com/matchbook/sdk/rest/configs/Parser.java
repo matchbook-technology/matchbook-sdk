@@ -1,5 +1,6 @@
 package com.matchbook.sdk.rest.configs;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Instant;
 
@@ -30,5 +31,8 @@ public interface Parser extends AutoCloseable {
     Instant getInstant() throws MatchbookSDKParsingException;
 
     <T extends Enum<T>> Enum<T> getEnum(Class<T> enumClass) throws MatchbookSDKParsingException;
+
+    @Override
+    void close() throws IOException;
 
 }

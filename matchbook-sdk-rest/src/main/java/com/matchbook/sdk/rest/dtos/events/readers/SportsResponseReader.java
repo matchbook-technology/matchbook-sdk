@@ -27,6 +27,7 @@ public class SportsResponseReader extends AbstractReader<Sport, SportsResponse> 
             } else if ("name".equals(fieldName)) {
                 sport.setName(parser.getString());
             }
+            parser.moveToNext();
         }
         return sport;
     }

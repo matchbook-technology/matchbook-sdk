@@ -12,10 +12,11 @@ import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
+import com.matchbook.sdk.rest.dtos.events.readers.SportsResponseReader;
 
 public interface EventsClient extends Client {
 
-    void getSports(SportsRequest sportsRequest, StreamObserver<Sport> sportsObserver);
+    void getSports(SportsRequest sportsRequest, SportsResponseReader sportsReader, StreamObserver<Sport> sportsObserver);
 
     void getEvent(EventRequest eventRequest, StreamObserver<Event> eventObserver);
 

@@ -141,11 +141,11 @@ abstract class AbstractRestClient {
 
         @Override
         public void onResponse(InputStream inputStream) {
-            try {
-                Parser parser = serializer.newParser(inputStream);
+            try (Parser parser = serializer.newParser(inputStream)) {
                 reader.startReading(parser);
                 while (reader.hasMoreItems()) {
-                    observer.onNext(reader.readNextItem());
+                    T item = reader.readNextItem();
+                    observer.onNext(item);
                 }
                 observer.onCompleted();
             } catch (IOException e) {

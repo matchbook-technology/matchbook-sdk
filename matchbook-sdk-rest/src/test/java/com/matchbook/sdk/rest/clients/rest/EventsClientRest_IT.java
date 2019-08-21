@@ -25,6 +25,7 @@ import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
+import com.matchbook.sdk.rest.dtos.events.readers.SportsResponseReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,8 +53,9 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(6);
 
         SportsRequest sportsRequest = new SportsRequest.Builder().build();
+        SportsResponseReader sportsResponseReader = new SportsResponseReader();
 
-        eventsClientRest.getSports(sportsRequest, new StreamObserver<Sport>() {
+        eventsClientRest.getSports(sportsRequest, sportsResponseReader, new StreamObserver<Sport>() {
 
             @Override
             public void onNext(Sport sport) {

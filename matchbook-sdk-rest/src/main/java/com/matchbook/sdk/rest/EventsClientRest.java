@@ -15,7 +15,7 @@ import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersResponse;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
-import com.matchbook.sdk.rest.dtos.events.SportsResponse;
+import com.matchbook.sdk.rest.dtos.events.readers.SportsResponseReader;
 
 public class EventsClientRest extends AbstractRestClient implements EventsClient {
 
@@ -24,9 +24,9 @@ public class EventsClientRest extends AbstractRestClient implements EventsClient
     }
 
     @Override
-    public void getSports(SportsRequest sportsRequest, StreamObserver<Sport> sportsObserver) {
+    public void getSports(SportsRequest sportsRequest, SportsResponseReader sportsReader, StreamObserver<Sport> sportsObserver) {
         String url = buildSportsUrl(sportsRequest.resourcePath());
-        getRequest(url, sportsRequest, sportsObserver, SportsResponse.class);
+        getRequest(url, sportsRequest, sportsObserver, sportsReader);
     }
 
     @Override
