@@ -18,16 +18,16 @@ public class SportsResponseReader extends AbstractReader<Sport, SportsResponse> 
 
     @Override
     protected Sport readItem() throws MatchbookSDKParsingException {
-        parser.startObject();
         final Sport sport = new Sport();
-        while (parser.hasNext()) {
+        while (!parser.isEndOfObject()) {
+            parser.moveToNextValue();
             String fieldName = parser.getFieldName();
             if ("id".equals(fieldName)) {
                 sport.setId(parser.getLong());
             } else if ("name".equals(fieldName)) {
                 sport.setName(parser.getString());
             }
-            parser.moveToNext();
+            parser.moveToNextToken();
         }
         return sport;
     }

@@ -8,13 +8,21 @@ import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 
 public interface Parser extends AutoCloseable {
 
-    boolean hasNext();
+    boolean isStartOfObject();
 
-    void startObject() throws MatchbookSDKParsingException;
+    boolean isStartOfArray();
 
-    void startArray() throws MatchbookSDKParsingException;
+    boolean isStartOfBlock();
 
-    void moveToNext() throws MatchbookSDKParsingException;
+    boolean isEndOfObject();
+
+    boolean isEndOfArray();
+
+    boolean isEndOfBlock();
+
+    void moveToNextToken() throws MatchbookSDKParsingException;
+
+    void moveToNextValue() throws MatchbookSDKParsingException;
 
     String getFieldName() throws MatchbookSDKParsingException;
 

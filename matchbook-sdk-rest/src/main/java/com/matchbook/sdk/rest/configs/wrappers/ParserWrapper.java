@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -16,7 +14,6 @@ import com.matchbook.sdk.rest.configs.Parser;
 public class ParserWrapper implements Parser {
 
     private final JsonParser jsonParser;
-    private final Queue<JsonToken> terminationTokens;
 
     public ParserWrapper(JsonFactory jsonFactory, InputStream inputStream) throws MatchbookSDKParsingException {
         try {
@@ -24,44 +21,51 @@ public class ParserWrapper implements Parser {
         } catch (IOException e) {
             throw new MatchbookSDKParsingException("Unable to create parser.", e);
         }
-        terminationTokens = new LinkedList<>();
     }
 
     @Override
-    public boolean hasNext() {
-        if (terminationTokens.isEmpty() || jsonParser.hasToken(terminationTokens.peek())) {
-            terminationTokens.remove();
-            return false;
-        }
-        return true;
+    public boolean isStartOfObject() {
+        return jsonParser.hasToken(JsonToken.START_OBJECT);
     }
 
     @Override
-    public void startObject() throws MatchbookSDKParsingException {
-        moveToNext();
-        if (jsonParser.isExpectedStartObjectToken()) {
-            terminationTokens.add(JsonToken.END_OBJECT);
-        } else {
-            throw new MatchbookSDKParsingException(String.format("Unexpected token encountered! Start of object expected ('%s'), but found '%s'.",
-                    JsonToken.START_OBJECT.asString(), jsonParser.getCurrentToken().asString()));
-        }
+    public boolean isStartOfArray() {
+        return jsonParser.hasToken(JsonToken.START_ARRAY);
     }
 
     @Override
-    public void startArray() throws MatchbookSDKParsingException {
-        moveToNext();
-        if (jsonParser.isExpectedStartArrayToken()) {
-            terminationTokens.add(JsonToken.END_ARRAY);
-        } else {
-            throw new MatchbookSDKParsingException(String.format("Unexpected token encountered! Start of array expected ('%s'), but found '%s'.",
-                    JsonToken.START_ARRAY.asString(), jsonParser.getCurrentToken().asString()));
-        }
+    public boolean isStartOfBlock() {
+        return isStartOfObject() || isStartOfArray();
     }
 
     @Override
-    public void moveToNext() throws MatchbookSDKParsingException {
+    public boolean isEndOfObject() {
+        return jsonParser.hasToken(JsonToken.END_OBJECT);
+    }
+
+    @Override
+    public boolean isEndOfArray() {
+        return jsonParser.hasToken(JsonToken.END_ARRAY);
+    }
+
+    @Override
+    public boolean isEndOfBlock() {
+        return isEndOfObject() || isEndOfArray();
+    }
+
+    @Override
+    public void moveToNextToken() throws MatchbookSDKParsingException {
         try {
             jsonParser.nextToken();
+        } catch (IOException e) {
+            throw new MatchbookSDKParsingException(e);
+        }
+    }
+
+    @Override
+    public void moveToNextValue() throws MatchbookSDKParsingException {
+        try {
+            jsonParser.nextValue();
         } catch (IOException e) {
             throw new MatchbookSDKParsingException(e);
         }

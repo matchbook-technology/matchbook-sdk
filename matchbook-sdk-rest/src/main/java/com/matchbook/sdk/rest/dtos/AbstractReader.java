@@ -20,38 +20,32 @@ public abstract class AbstractReader<T, R extends RestResponse<T>> implements Re
     @Override
     public void startReading(Parser parser) throws MatchbookSDKParsingException {
         this.parser = parser;
-        parser.startObject();
-    }
-
-    @Override
-    public boolean hasMoreItems() throws MatchbookSDKParsingException {
-        if (readingItemStatus == ReadingItemStatus.NOT_READ) {
-            return true;
-        } else if (readingItemStatus == ReadingItemStatus.READ) {
-            return false;
-        } else {
-            boolean hasMoreItems = parser.hasNext();
-            if (!hasMoreItems) {
-                readingItemStatus = ReadingItemStatus.READ;
-            }
-            return hasMoreItems;
-        }
+        parser.moveToNextToken();
     }
 
     @Override
     public T readNextItem() throws MatchbookSDKParsingException {
-        if (readingItemStatus == ReadingItemStatus.NOT_READ) {
+        if (readingItemStatus == ReadingItemStatus.READ) {
+            return null;
+        } else if (readingItemStatus == ReadingItemStatus.NOT_READ) {
             skipToItems();
+            readingItemStatus = ReadingItemStatus.READING;
         }
-        return readItem();
+
+        parser.moveToNextToken();
+        T item = readItem();
+        parser.moveToNextToken();
+
+        if (parser.isEndOfArray()) {
+            readingItemStatus = ReadingItemStatus.READ;
+        }
+        return item;
     }
 
     private void skipToItems() throws MatchbookSDKParsingException {
-        while (parser.hasNext() && !getItemsFieldName().equals(parser.getFieldName())) {
-            parser.moveToNext();
+        while (!parser.isEndOfBlock() && !getItemsFieldName().equals(parser.getFieldName())) {
+            parser.moveToNextValue();
         }
-        readingItemStatus = ReadingItemStatus.READING;
-        parser.startArray();
     }
 
     private enum ReadingItemStatus {

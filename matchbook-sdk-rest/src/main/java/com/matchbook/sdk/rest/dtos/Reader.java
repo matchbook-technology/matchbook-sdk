@@ -7,8 +7,6 @@ public interface Reader<T, R extends RestResponse<T>> {
 
     void startReading(Parser parser) throws MatchbookSDKParsingException;
 
-    boolean hasMoreItems() throws MatchbookSDKParsingException;
-
     T readNextItem() throws MatchbookSDKParsingException;
 
     R readFull() throws MatchbookSDKParsingException;
