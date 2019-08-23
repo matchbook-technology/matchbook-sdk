@@ -1,11 +1,11 @@
 package com.matchbook.sdk.rest.dtos.events.readers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.dtos.AbstractReader;
+import com.matchbook.sdk.rest.dtos.PageableResponseReader;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsResponse;
 
-public class SportsResponseReader extends AbstractReader<Sport, SportsResponse> {
+public class SportsResponseReader extends PageableResponseReader<Sport, SportsResponse> {
 
     public SportsResponseReader() {
         super();

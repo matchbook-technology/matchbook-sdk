@@ -72,6 +72,15 @@ public class ParserWrapper implements Parser {
     }
 
     @Override
+    public void skipChildren() throws MatchbookSDKParsingException {
+        try {
+            jsonParser.skipChildren();
+        } catch (IOException e) {
+            throw new MatchbookSDKParsingException(e);
+        }
+    }
+
+    @Override
     public String getFieldName() throws MatchbookSDKParsingException {
         try {
             return jsonParser.getCurrentName();
@@ -153,7 +162,7 @@ public class ParserWrapper implements Parser {
     }
 
     @Override
-    public <T extends Enum<T>> Enum<T> getEnum(Class<T> enumClass) throws MatchbookSDKParsingException {
+    public <T extends Enum<T>> T getEnum(Class<T> enumClass) throws MatchbookSDKParsingException {
         if (isNotNullValue()) {
             try {
                 String value = jsonParser.getValueAsString().toUpperCase().replace('-', '_');

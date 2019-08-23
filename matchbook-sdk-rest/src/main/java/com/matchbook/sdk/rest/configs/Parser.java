@@ -24,6 +24,8 @@ public interface Parser extends AutoCloseable {
 
     void moveToNextValue() throws MatchbookSDKParsingException;
 
+    void skipChildren() throws MatchbookSDKParsingException;
+
     String getFieldName() throws MatchbookSDKParsingException;
 
     Boolean getBoolean() throws MatchbookSDKParsingException;
@@ -38,7 +40,7 @@ public interface Parser extends AutoCloseable {
 
     Instant getInstant() throws MatchbookSDKParsingException;
 
-    <T extends Enum<T>> Enum<T> getEnum(Class<T> enumClass) throws MatchbookSDKParsingException;
+    <T extends Enum<T>> T getEnum(Class<T> enumClass) throws MatchbookSDKParsingException;
 
     @Override
     void close() throws IOException;

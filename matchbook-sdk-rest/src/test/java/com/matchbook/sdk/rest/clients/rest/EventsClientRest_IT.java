@@ -23,8 +23,10 @@ import com.matchbook.sdk.rest.dtos.events.MarketsRequest;
 import com.matchbook.sdk.rest.dtos.events.Runner;
 import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
+import com.matchbook.sdk.rest.dtos.events.RunnersResponse;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
+import com.matchbook.sdk.rest.dtos.events.readers.RunnersResponseReader;
 import com.matchbook.sdk.rest.dtos.events.readers.SportsResponseReader;
 import org.junit.Before;
 import org.junit.Test;
@@ -283,8 +285,9 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
         RunnersRequest runnersRequest = new RunnersRequest
                 .Builder(395729780570010L, 395729860260010L)
                 .build();
+        RunnersResponseReader runnersResponseReader = new RunnersResponseReader();
 
-        eventsClientRest.getRunners(runnersRequest, new StreamObserver<Runner>() {
+        eventsClientRest.getRunners(runnersRequest, runnersResponseReader, new StreamObserver<Runner>() {
 
             @Override
             public void onNext(Runner runner) {

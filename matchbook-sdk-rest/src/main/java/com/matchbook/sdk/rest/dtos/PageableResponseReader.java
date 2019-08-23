@@ -3,7 +3,7 @@ package com.matchbook.sdk.rest.dtos;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.configs.Parser;
 
-public abstract class AbstractReader<T, R extends RestResponse<T>> implements Reader<T, R> {
+public abstract class PageableResponseReader<T, R extends PageableResponse<T>> implements Reader<T, R> {
 
     protected Parser parser;
     private ReadingItemStatus readingItemStatus;
@@ -12,7 +12,7 @@ public abstract class AbstractReader<T, R extends RestResponse<T>> implements Re
 
     abstract protected T readItem() throws MatchbookSDKParsingException;
 
-    protected AbstractReader() {
+    protected PageableResponseReader() {
         parser = null;
         readingItemStatus = ReadingItemStatus.NOT_READ;
     }
