@@ -81,13 +81,15 @@
                             <goal>test</goal>
                         </goals>
                         <configuration>
-                            <useSystemClassLoader>false</useSystemClassLoader>
                             <includes>
                                 <include>**/*_IT</include>
                             </includes>
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -106,7 +108,7 @@
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>test</phase>
+                        <phase>integration-test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
