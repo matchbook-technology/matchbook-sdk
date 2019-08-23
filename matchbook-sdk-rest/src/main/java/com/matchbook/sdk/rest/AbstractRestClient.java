@@ -143,8 +143,8 @@ abstract class AbstractRestClient {
         public void onResponse(InputStream inputStream) {
             try (Parser parser = serializer.newParser(inputStream)) {
                 reader.startReading(parser);
-                T item;
-                while ((item = reader.readNextItem()) != null) {
+                while (reader.hasMoreItem()) {
+                    T item = reader.readNextItem();
                     observer.onNext(item);
                 }
                 observer.onCompleted();

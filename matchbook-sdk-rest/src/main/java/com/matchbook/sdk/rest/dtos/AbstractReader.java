@@ -24,6 +24,11 @@ public abstract class AbstractReader<T, R extends RestResponse<T>> implements Re
     }
 
     @Override
+    public boolean hasMoreItem() {
+        return readingItemStatus != ReadingItemStatus.READ;
+    }
+
+    @Override
     public T readNextItem() throws MatchbookSDKParsingException {
         if (readingItemStatus == ReadingItemStatus.READ) {
             return null;

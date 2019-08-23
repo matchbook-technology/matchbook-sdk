@@ -32,9 +32,4 @@ public class SportsResponseReader extends AbstractReader<Sport, SportsResponse> 
         return sport;
     }
 
-    @Override
-    public SportsResponse readFull() throws MatchbookSDKParsingException {
-        throw new UnsupportedOperationException("Not yet implemented.");
-    }
-
 }
