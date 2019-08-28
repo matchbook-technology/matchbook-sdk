@@ -94,6 +94,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
             @Override
             public void onNext(Event event) {
                 assertThat(event.getId()).isNotNull();
+                assertThat(event.getMetaTags()).isNotNull();
                 countDownLatch.countDown();
             }
 
