@@ -29,7 +29,7 @@ public abstract class MatchbookSDKClientRest_IT {
                 .sportsUrl("http://localhost:8089/edge/rest")
                 .loginUrl("http://localhost:8089/bpapi/rest/security/session")
                 .build();
-        connectionManager = new ConnectionManager(clientConfig);
+        connectionManager = new ConnectionManager.Builder(clientConfig).sessionAutoManage(false).build();
     }
 
 }
