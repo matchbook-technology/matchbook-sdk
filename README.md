@@ -1,5 +1,8 @@
 # Matchbook SDK
 
+> This library is under development and no stable version has been released yet.
+> The API can change at any moment.
+
 [![CircleCI](https://circleci.com/gh/matchbook-technology/matchbook-sdk.svg?style=svg)](https://circleci.com/gh/matchbook-technology/matchbook-sdk)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f91f929fa3184482abb2704f98615f46)](https://www.codacy.com/app/volkodav_s/matchbook-sdk?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=volkodavs/matchbook-sdk&amp;utm_campaign=Badge_Grade)
 
