@@ -73,8 +73,8 @@ public class SessionManager {
 
     private static class SessionManagerThreadFactory implements ThreadFactory {
         @Override
-        public Thread newThread(Runnable r) {
-            Thread t = new Thread(r);
+        public Thread newThread(Runnable runnable) {
+            Thread t = new Thread(runnable);
             t.setDaemon(true);
             t.setName("session-manager");
             return t;
