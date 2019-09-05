@@ -20,4 +20,7 @@ public class MatchbookSDKHttpException extends MatchbookSDKException {
         super(message, errorType);
     }
 
+    public MatchbookSDKHttpException(Throwable cause, ErrorType errorType) {
+        super(cause, errorType);
+    }
 }

@@ -3,6 +3,7 @@ package com.matchbook.sdk.rest.configs.wrappers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -13,7 +14,6 @@ import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
 import com.matchbook.sdk.rest.HttpConfig;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.HttpClient;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Cookie;
@@ -59,7 +59,8 @@ public class HttpClientWrapper implements HttpClient {
      */
     private CookieJar createCookieJar() {
         return new CookieJar() {
-            private final ConcurrentHashMap<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
+
+            private final Map<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
 
             @Override
             public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
@@ -80,10 +81,10 @@ public class HttpClientWrapper implements HttpClient {
 
                 // filter out expired cookies
                 List<Cookie> unexpiredCookies = cookies.stream()
-                    .filter(cookie -> cookie.expiresAt() > now)
-                    .collect(Collectors.toList());
+                        .filter(cookie -> cookie.expiresAt() > now)
+                        .collect(Collectors.toList());
 
-                if (cookies.size() > unexpiredCookies.size()){
+                if (cookies.size() > unexpiredCookies.size()) {
                     cookieStore.put(url.host(), unexpiredCookies);
                 }
 
