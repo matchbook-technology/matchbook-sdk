@@ -64,6 +64,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Sport sport) {
+                assertNotNull(sport);
                 assertThat(sport.getId()).isNotNull();
                 assertThat(sport.getName()).isNotEmpty();
                 countDownLatch.countDown();
@@ -100,6 +101,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Event event) {
+                assertNotNull(event);
                 assertThat(event.getId()).isNotNull();
                 assertThat(event.getMetaTags()).isNotNull();
                 countDownLatch.countDown();
@@ -136,6 +138,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Event event) {
+                assertNotNull(event);
                 assertThat(event.getId()).isNotNull();
                 countDownLatch.countDown();
             }
@@ -175,6 +178,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Market market) {
+                assertNotNull(market);
                 assertThat(market.getId()).isNotNull();
                 assertThat(market.getEventId()).isNotNull();
                 countDownLatch.countDown();
@@ -213,7 +217,9 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Market market) {
+                assertNotNull(market);
                 assertThat(market.getId()).isNotNull();
+                assertThat(market.getEventId()).isNotNull();
                 countDownLatch.countDown();
             }
 
@@ -253,9 +259,18 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Runner runner) {
+                assertNotNull(runner);
                 assertThat(runner.getId()).isNotNull();
                 assertThat(runner.getEventId()).isNotNull();
                 assertThat(runner.getMarketId()).isNotNull();
+                assertThat(runner.getStatus()).isNotNull();
+                if (Objects.nonNull(runner.getPrices()) && !runner.getPrices().isEmpty()) {
+                    for (Price price : runner.getPrices()) {
+                        assertNotNull(price);
+                        assertThat(price.getOddsType()).isNotNull();
+                        assertThat(price.getOdds()).isNotNull();
+                    }
+                }
                 countDownLatch.countDown();
             }
 
