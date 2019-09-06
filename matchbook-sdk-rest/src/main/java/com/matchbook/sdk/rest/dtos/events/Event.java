@@ -1,13 +1,13 @@
 package com.matchbook.sdk.rest.dtos.events;
 
-import com.matchbook.sdk.rest.dtos.RestResponse;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+import com.matchbook.sdk.rest.dtos.RestResponse;
 
 public class Event implements RestResponse<Event> {
 
@@ -22,10 +22,12 @@ public class Event implements RestResponse<Event> {
     private Double volume;
     private List<Market> markets;
     private List<EventParticipant> eventParticipants;
+    private List<MetaTag> metaTags;
 
     public Event() {
         markets = new ArrayList<>();
         eventParticipants = new ArrayList<>();
+        metaTags = new ArrayList<>();
     }
 
     public Long getId() {
@@ -116,6 +118,14 @@ public class Event implements RestResponse<Event> {
         this.eventParticipants = eventParticipants;
     }
 
+    public List<MetaTag> getMetaTags() {
+        return metaTags;
+    }
+
+    public void setMetaTags(List<MetaTag> metaTags) {
+        this.metaTags = metaTags;
+    }
+
     @Override
     public Set<Event> getContent() {
         return Collections.singleton(this);
@@ -135,6 +145,7 @@ public class Event implements RestResponse<Event> {
                 ", volume=" + volume +
                 ", markets=" + markets +
                 ", eventParticipants=" + eventParticipants +
+                ", metaTags=" + metaTags +
                 "}";
     }
 

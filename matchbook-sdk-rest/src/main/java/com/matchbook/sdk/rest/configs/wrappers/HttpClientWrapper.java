@@ -3,6 +3,7 @@ package com.matchbook.sdk.rest.configs.wrappers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -59,7 +60,7 @@ public class HttpClientWrapper implements HttpClient {
     private CookieJar createCookieJar() {
         return new CookieJar() {
 
-            private final ConcurrentHashMap<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
+            private final Map<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
 
             @Override
             public void saveFromResponse(HttpUrl httpUrl, List<Cookie> cookies) {
@@ -78,8 +79,8 @@ public class HttpClientWrapper implements HttpClient {
                 // filter out expired cookies
                 final long now = System.currentTimeMillis();
                 List<Cookie> unexpiredCookies = cookies.stream()
-                    .filter(cookie -> cookie.expiresAt() > now)
-                    .collect(Collectors.toList());
+                        .filter(cookie -> cookie.expiresAt() > now)
+                        .collect(Collectors.toList());
 
                 if (cookies.size() > unexpiredCookies.size()) {
                     cookieStore.put(httpUrl.host(), unexpiredCookies);

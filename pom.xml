@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <version>0.1.0-SNAPSHOT</version>
     <description>Matchbook SDK</description>
-    <url>https://github.com/volkodavs/matchbook-sdk</url>
+    <url>https://github.com/matchbook-technology/matchbook-sdk</url>
 
     <modules>
         <module>matchbook-sdk-core</module>
@@ -18,7 +18,7 @@
     </modules>
 
     <issueManagement>
-        <url>https://github.com/volkodavs/matchbook-sdk/issues</url>
+        <url>https://github.com/matchbook-technology/matchbook-sdk/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
@@ -29,6 +29,39 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <name>Sergii Volkodav</name>
+            <email>svolkodav@xanadu.ie</email>
+            <organization>Xanadu Consultancy</organization>
+            <organizationUrl>https://www.xanaduconsultancy.com/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Alessandro Dal Bello</name>
+            <email>adbello@xanadu.ie</email>
+            <organization>Xanadu Consultancy</organization>
+            <organizationUrl>https://www.xanaduconsultancy.com/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Claudio Madotto</name>
+            <email>cmadotto@xanadu.ie</email>
+            <organization>Xanadu Consultancy</organization>
+            <organizationUrl>https://www.xanaduconsultancy.com/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Matteo Dri</name>
+            <email>mdri@xanadu.ie</email>
+            <organization>Xanadu Consultancy</organization>
+            <organizationUrl>https://www.xanaduconsultancy.com/</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/matchbook-technology/matchbook-sdk</url>
+        <connection>scm:git:git@github.com:matchbook-technology/matchbook-sdk.git</connection>
+        <developerConnection>scm:git:git@github.com:matchbook-technology/matchbook-sdk.git</developerConnection>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

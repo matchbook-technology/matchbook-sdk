@@ -26,7 +26,7 @@ public class StreamClientRest implements StreamClient {
     public StreamClientRest(ClientConfig clientConfig) {
         this.isShutdown = new AtomicBoolean();
 
-        ConnectionManager connectionManager = new ConnectionManager(clientConfig);
+        ConnectionManager connectionManager = new ConnectionManager.Builder(clientConfig).build();
         LOG.info("Matchbook client starting...");
         pullerWorker = new PullerWorkerRest(connectionManager);
         LOG.info("Matchbook client start completed.");
