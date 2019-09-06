@@ -5,8 +5,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +30,7 @@ import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
 import com.matchbook.sdk.rest.dtos.events.readers.RunnersResponseReader;
 import com.matchbook.sdk.rest.dtos.events.readers.SportsResponseReader;
+import com.matchbook.sdk.rest.dtos.prices.Price;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -292,7 +295,18 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Runner runner) {
+                assertNotNull(runner);
                 assertThat(runner.getId()).isNotNull();
+                assertThat(runner.getEventId()).isNotNull();
+                assertThat(runner.getMarketId()).isNotNull();
+                assertThat(runner.getStatus()).isNotNull();
+                if (Objects.nonNull(runner.getPrices()) && !runner.getPrices().isEmpty()) {
+                    for (Price price : runner.getPrices()) {
+                        assertNotNull(price);
+                        assertThat(price.getOddsType()).isNotNull();
+                        assertThat(price.getOdds()).isNotNull();
+                    }
+                }
                 countDownLatch.countDown();
             }
 

@@ -1,8 +1,12 @@
 package com.matchbook.sdk.rest.dtos.prices;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Set;
 
-public class Price {
+import com.matchbook.sdk.rest.dtos.RestResponse;
+
+public class Price implements RestResponse<Price> {
 
     private ExchangeType exchangeType;
     private Side side;
@@ -57,6 +61,11 @@ public class Price {
 
     public void setOdds(BigDecimal odds) {
         this.odds = odds;
+    }
+
+    @Override
+    public Set<Price> getContent() {
+        return Collections.singleton(this);
     }
 
     @Override

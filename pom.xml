@@ -99,7 +99,9 @@
                     <target>${maven.compiler.target}</target>
                     <compilerArgs>
                         <arg>-Xlint</arg>
+                        <!--
                         <arg>-Werror</arg>
+                        -->
                     </compilerArgs>
                 </configuration>
             </plugin>

@@ -6,7 +6,7 @@ import com.matchbook.sdk.rest.configs.Parser;
 public abstract class PageableResponseReader<T, R extends PageableResponse<T>> implements Reader<T, R> {
 
     protected Parser parser;
-    private ReadingItemStatus readingItemStatus;
+    private ReadingItemsStatus readingItemsStatus;
 
     abstract protected String getItemsFieldName();
 
@@ -14,27 +14,27 @@ public abstract class PageableResponseReader<T, R extends PageableResponse<T>> i
 
     protected PageableResponseReader() {
         parser = null;
-        readingItemStatus = ReadingItemStatus.NOT_READ;
     }
 
     @Override
     public void startReading(Parser parser) throws MatchbookSDKParsingException {
         this.parser = parser;
+        readingItemsStatus = ReadingItemsStatus.NOT_READ;
         parser.moveToNextToken();
     }
 
     @Override
-    public boolean hasMoreItem() {
-        return readingItemStatus != ReadingItemStatus.READ;
+    public boolean hasMoreItems() {
+        return readingItemsStatus != ReadingItemsStatus.READ;
     }
 
     @Override
     public T readNextItem() throws MatchbookSDKParsingException {
-        if (readingItemStatus == ReadingItemStatus.READ) {
+        if (readingItemsStatus == ReadingItemsStatus.READ) {
             return null;
-        } else if (readingItemStatus == ReadingItemStatus.NOT_READ) {
+        } else if (readingItemsStatus == ReadingItemsStatus.NOT_READ) {
             skipToItems();
-            readingItemStatus = ReadingItemStatus.READING;
+            readingItemsStatus = ReadingItemsStatus.READING;
         }
 
         parser.moveToNextToken();
@@ -42,7 +42,7 @@ public abstract class PageableResponseReader<T, R extends PageableResponse<T>> i
         parser.moveToNextToken();
 
         if (parser.isEndOfArray()) {
-            readingItemStatus = ReadingItemStatus.READ;
+            readingItemsStatus = ReadingItemsStatus.READ;
         }
         return item;
     }
@@ -53,7 +53,7 @@ public abstract class PageableResponseReader<T, R extends PageableResponse<T>> i
         }
     }
 
-    private enum ReadingItemStatus {
+    private enum ReadingItemsStatus {
         NOT_READ, READING, READ;
     }
 

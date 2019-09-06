@@ -1,15 +1,24 @@
 package com.matchbook.sdk.rest.dtos.events.readers;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.dtos.PageableResponseReader;
 import com.matchbook.sdk.rest.dtos.events.Runner;
 import com.matchbook.sdk.rest.dtos.events.RunnerStatus;
 import com.matchbook.sdk.rest.dtos.events.RunnersResponse;
+import com.matchbook.sdk.rest.dtos.prices.Price;
+import com.matchbook.sdk.rest.dtos.prices.readers.PriceResponseReader;
 
 public class RunnersResponseReader extends PageableResponseReader<Runner, RunnersResponse> {
 
+    private final PriceResponseReader priceReader;
+
     public RunnersResponseReader() {
         super();
+        priceReader = new PriceResponseReader();
     }
 
     @Override
@@ -40,12 +49,26 @@ public class RunnersResponseReader extends PageableResponseReader<Runner, Runner
             } else if ("volume".equals(fieldName)) {
                 runner.setVolume(parser.getDecimal());
             } else if ("prices".equals(fieldName)) {
-                // FIXME
-                parser.skipChildren();
+                List<Price> prices = readPrices();
+                runner.setPrices(prices);
             }
             parser.moveToNextToken();
         }
         return runner;
+    }
+
+    private List<Price> readPrices() {
+        List<Price> prices = new ArrayList<>();
+        parser.moveToNextToken();
+        while (!parser.isEndOfArray()) {
+            priceReader.startReading(parser);
+            Price price = priceReader.readFull();
+            if (Objects.nonNull(price)) {
+                prices.add(price);
+            }
+            parser.moveToNextToken();
+        }
+        return prices;
     }
 
 }
