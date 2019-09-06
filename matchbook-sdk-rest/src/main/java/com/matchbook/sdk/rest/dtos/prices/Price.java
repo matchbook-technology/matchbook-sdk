@@ -4,11 +4,20 @@ import java.math.BigDecimal;
 
 public class Price {
 
+    private ExchangeType exchangeType;
     private Side side;
     private OddsType oddsType;
     private Currency currency;
     private BigDecimal availableAmount;
     private BigDecimal odds;
+
+    public ExchangeType getExchangeType() {
+        return exchangeType;
+    }
+
+    public void setExchangeType(ExchangeType exchangeType) {
+        this.exchangeType = exchangeType;
+    }
 
     public Side getSide() {
         return side;
@@ -53,7 +62,8 @@ public class Price {
     @Override
     public String toString() {
         return Price.class.getSimpleName() + " {" +
-                "side=" + side +
+                "exchangeType=" + exchangeType +
+                ", side=" + side +
                 ", oddsType=" + oddsType +
                 ", currency=" + currency +
                 ", availableAmount=" + availableAmount +

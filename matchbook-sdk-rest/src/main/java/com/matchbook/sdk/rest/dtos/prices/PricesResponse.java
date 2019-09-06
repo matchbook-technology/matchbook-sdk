@@ -2,11 +2,19 @@ package com.matchbook.sdk.rest.dtos.prices;
 
 import java.util.List;
 
-import com.matchbook.sdk.rest.dtos.RestResponse;
+import com.matchbook.sdk.rest.dtos.PageableResponse;
 
-public class PricesResponse implements RestResponse<Price> {
+public class PricesResponse extends PageableResponse<Price> {
 
     private List<Price> prices;
+
+    public List<Price> getPrices() {
+        return prices;
+    }
+
+    public void setPrices(List<Price> prices) {
+        this.prices = prices;
+    }
 
     @Override
     public List<Price> getContent() {
