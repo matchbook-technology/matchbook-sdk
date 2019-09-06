@@ -10,12 +10,24 @@ public abstract class PageableResponse<T> implements RestResponse<T> {
         return total;
     }
 
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
     public int getOffset() {
         return offset;
     }
 
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
     public int getPerPage() {
         return perPage;
+    }
+
+    public void setPerPage(int perPage) {
+        this.perPage = perPage;
     }
 
 }

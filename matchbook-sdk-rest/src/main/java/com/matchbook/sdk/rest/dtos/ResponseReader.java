@@ -1,48 +1,24 @@
 package com.matchbook.sdk.rest.dtos;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.configs.Parser;
 
-public abstract class ResponseReader<T extends RestResponse<T>> implements Reader<T, T> {
-
-    protected Parser parser;
-    private ReadingItemStatus readingItemStatus;
+public abstract class ResponseReader<T extends RestResponse<T>> extends AbstractReader<T, T> {
 
     abstract protected T readItem() throws MatchbookSDKParsingException;
 
-    protected ResponseReader() {
-        parser = null;
-    }
-
-    @Override
-    public void startReading(Parser parser) throws MatchbookSDKParsingException {
-        this.parser = parser;
-        readingItemStatus = ReadingItemStatus.NOT_READ;
-    }
-
-    @Override
-    public boolean hasMoreItems() {
-        return readingItemStatus != ReadingItemStatus.READ;
-    }
-
     @Override
     public T readNextItem() throws MatchbookSDKParsingException {
-        if (readingItemStatus == ReadingItemStatus.READ) {
-            return null;
+        if (readingItemStatus == ReadingItemsStatus.NOT_READ) {
+            T item = readItem();
+            readingItemStatus = ReadingItemsStatus.READ;
+            return item;
         }
-
-        T item = readItem();
-        readingItemStatus = ReadingItemStatus.READ;
-        return item;
+        return null;
     }
 
     @Override
-    public T readFull() throws MatchbookSDKParsingException {
+    public T readFullResponse() throws MatchbookSDKParsingException {
         return readNextItem();
-    }
-
-    private enum ReadingItemStatus {
-        NOT_READ, READ;
     }
 
 }

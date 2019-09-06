@@ -12,7 +12,7 @@ public interface Reader<T, R extends RestResponse<T>> {
 
     boolean hasMoreItems();
 
-    default R readFull() throws MatchbookSDKParsingException {
+    default R readFullResponse() throws MatchbookSDKParsingException {
         throw new UnsupportedOperationException("This reader does not support parsing the full message.");
     }
 

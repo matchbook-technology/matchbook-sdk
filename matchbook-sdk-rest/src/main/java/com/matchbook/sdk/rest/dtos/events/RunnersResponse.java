@@ -1,9 +1,10 @@
 package com.matchbook.sdk.rest.dtos.events;
 
-import com.matchbook.sdk.rest.dtos.PageableResponse;
-
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import com.matchbook.sdk.rest.dtos.PageableResponse;
 
 public class RunnersResponse extends PageableResponse<Runner> {
 
@@ -20,6 +21,11 @@ public class RunnersResponse extends PageableResponse<Runner> {
     @Override
     public Collection<Runner> getContent() {
         return runners;
+    }
+
+    @Override
+    public void setContent(Collection<Runner> runners) {
+        this.runners = new ArrayList<>(runners);
     }
 
     @Override

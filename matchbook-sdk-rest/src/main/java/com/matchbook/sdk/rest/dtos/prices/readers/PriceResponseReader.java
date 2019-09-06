@@ -1,13 +1,11 @@
 package com.matchbook.sdk.rest.dtos.prices.readers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.dtos.PageableResponseReader;
 import com.matchbook.sdk.rest.dtos.ResponseReader;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.rest.dtos.prices.Price;
-import com.matchbook.sdk.rest.dtos.prices.PricesResponse;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
 public class PriceResponseReader extends ResponseReader<Price> {
