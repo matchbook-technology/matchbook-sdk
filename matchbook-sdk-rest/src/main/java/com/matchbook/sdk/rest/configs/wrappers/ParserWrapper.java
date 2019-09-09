@@ -138,6 +138,18 @@ public class ParserWrapper implements Parser {
     }
 
     @Override
+    public Double getDouble() throws MatchbookSDKParsingException {
+        if (isNotNullValue()) {
+            try {
+                return jsonParser.getDoubleValue();
+            } catch (IOException e) {
+                throw new MatchbookSDKParsingException(e);
+            }
+        }
+        return null;
+    }
+
+    @Override
     public BigDecimal getDecimal() throws MatchbookSDKParsingException {
         if (isNotNullValue()) {
             try {

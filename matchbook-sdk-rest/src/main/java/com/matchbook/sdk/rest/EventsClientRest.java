@@ -8,12 +8,14 @@ import com.matchbook.sdk.rest.dtos.events.EventsResponse;
 import com.matchbook.sdk.rest.dtos.events.Market;
 import com.matchbook.sdk.rest.dtos.events.MarketRequest;
 import com.matchbook.sdk.rest.dtos.events.MarketsRequest;
-import com.matchbook.sdk.rest.dtos.events.MarketsResponse;
 import com.matchbook.sdk.rest.dtos.events.Runner;
 import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
+import com.matchbook.sdk.rest.dtos.events.readers.MarketResponseReader;
+import com.matchbook.sdk.rest.dtos.events.readers.MarketsResponseReader;
+import com.matchbook.sdk.rest.dtos.events.readers.RunnerResponseReader;
 import com.matchbook.sdk.rest.dtos.events.readers.RunnersResponseReader;
 import com.matchbook.sdk.rest.dtos.events.readers.SportsResponseReader;
 
@@ -24,10 +26,9 @@ public class EventsClientRest extends AbstractRestClient implements EventsClient
     }
 
     @Override
-    public void getSports(SportsRequest sportsRequest,
-            SportsResponseReader sportsReader, StreamObserver<Sport> sportsObserver) {
+    public void getSports(SportsRequest sportsRequest, StreamObserver<Sport> sportsObserver) {
         String url = buildSportsUrl(sportsRequest.resourcePath());
-        getRequest(url, sportsRequest, sportsObserver, sportsReader);
+        getRequest(url, sportsRequest, sportsObserver, new SportsResponseReader());
     }
 
     @Override
@@ -45,26 +46,25 @@ public class EventsClientRest extends AbstractRestClient implements EventsClient
     @Override
     public void getMarket(MarketRequest marketRequest, StreamObserver<Market> marketObserver) {
         String url = buildSportsUrl(marketRequest.resourcePath());
-        getRequest(url, marketRequest, marketObserver, Market.class);
+        getRequest(url, marketRequest, marketObserver, new MarketResponseReader());
     }
 
     @Override
     public void getMarkets(MarketsRequest marketsRequest, StreamObserver<Market> marketsObserver) {
         String url = buildSportsUrl(marketsRequest.resourcePath());
-        getRequest(url, marketsRequest, marketsObserver, MarketsResponse.class);
+        getRequest(url, marketsRequest, marketsObserver, new MarketsResponseReader());
     }
 
     @Override
     public void getRunner(RunnerRequest runnerRequest, StreamObserver<Runner> runnerObserver) {
         String url = buildSportsUrl(runnerRequest.resourcePath());
-        getRequest(url, runnerRequest, runnerObserver, Runner.class);
+        getRequest(url, runnerRequest, runnerObserver, new RunnerResponseReader());
     }
 
     @Override
-    public void getRunners(RunnersRequest runnersRequest,
-            RunnersResponseReader runnersResponseReader, StreamObserver<Runner> runnersObserver) {
+    public void getRunners(RunnersRequest runnersRequest, StreamObserver<Runner> runnersObserver) {
         String url = buildSportsUrl(runnersRequest.resourcePath());
-        getRequest(url, runnersRequest, runnersObserver, runnersResponseReader);
+        getRequest(url, runnersRequest, runnersObserver, new RunnersResponseReader());
     }
 
 }

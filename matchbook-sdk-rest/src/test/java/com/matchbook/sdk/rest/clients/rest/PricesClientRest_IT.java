@@ -17,7 +17,6 @@ import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.PricesClientRest;
 import com.matchbook.sdk.rest.dtos.prices.Price;
 import com.matchbook.sdk.rest.dtos.prices.PricesRequest;
-import com.matchbook.sdk.rest.dtos.prices.readers.PricesResponseReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,9 +47,8 @@ public class PricesClientRest_IT extends MatchbookSDKClientRest_IT {
         PricesRequest pricesRequest = new PricesRequest
                 .Builder(395729780570010L, 395729860260010L, 395729860800010L)
                 .build();
-        PricesResponseReader pricesResponseReader = new PricesResponseReader();
 
-        pricesClientRest.getPrices(pricesRequest, pricesResponseReader, new StreamObserver<Price>() {
+        pricesClientRest.getPrices(pricesRequest, new StreamObserver<Price>() {
 
             @Override
             public void onNext(Price price) {

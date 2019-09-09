@@ -36,6 +36,8 @@ public interface Parser extends AutoCloseable {
 
     Long getLong() throws MatchbookSDKParsingException;
 
+    Double getDouble() throws MatchbookSDKParsingException;
+
     BigDecimal getDecimal() throws MatchbookSDKParsingException;
 
     Instant getInstant() throws MatchbookSDKParsingException;

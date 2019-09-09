@@ -12,10 +12,9 @@ public class PricesClientRest extends AbstractRestClient implements PricesClient
     }
 
     @Override
-    public void getPrices(PricesRequest pricesRequest,
-            PricesResponseReader pricesReader, StreamObserver<Price> pricesObserver) {
+    public void getPrices(PricesRequest pricesRequest, StreamObserver<Price> pricesObserver) {
         String url = buildSportsUrl(pricesRequest.resourcePath());
-        getRequest(url, pricesRequest, pricesObserver, pricesReader);
+        getRequest(url, pricesRequest, pricesObserver, new PricesResponseReader());
     }
 
 }

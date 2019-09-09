@@ -58,9 +58,8 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(6);
 
         SportsRequest sportsRequest = new SportsRequest.Builder().build();
-        SportsResponseReader sportsResponseReader = new SportsResponseReader();
 
-        eventsClientRest.getSports(sportsRequest, sportsResponseReader, new StreamObserver<Sport>() {
+        eventsClientRest.getSports(sportsRequest, new StreamObserver<Sport>() {
 
             @Override
             public void onNext(Sport sport) {
@@ -181,6 +180,14 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
                 assertNotNull(market);
                 assertThat(market.getId()).isNotNull();
                 assertThat(market.getEventId()).isNotNull();
+                assertThat(market.getStatus()).isNotNull();
+                assertThat(market.getMarketType()).isNotNull();
+                if (Objects.nonNull(market.getRunners()) && !market.getRunners().isEmpty()) {
+                    for (Runner runner : market.getRunners()) {
+                        assertNotNull(runner);
+                        assertThat(runner.getId()).isNotNull();
+                    }
+                }
                 countDownLatch.countDown();
             }
 
@@ -220,6 +227,14 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
                 assertNotNull(market);
                 assertThat(market.getId()).isNotNull();
                 assertThat(market.getEventId()).isNotNull();
+                assertThat(market.getStatus()).isNotNull();
+                assertThat(market.getMarketType()).isNotNull();
+                if (Objects.nonNull(market.getRunners()) && !market.getRunners().isEmpty()) {
+                    for (Runner runner : market.getRunners()) {
+                        assertNotNull(runner);
+                        assertThat(runner.getId()).isNotNull();
+                    }
+                }
                 countDownLatch.countDown();
             }
 
@@ -304,9 +319,8 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
         RunnersRequest runnersRequest = new RunnersRequest
                 .Builder(395729780570010L, 395729860260010L)
                 .build();
-        RunnersResponseReader runnersResponseReader = new RunnersResponseReader();
 
-        eventsClientRest.getRunners(runnersRequest, runnersResponseReader, new StreamObserver<Runner>() {
+        eventsClientRest.getRunners(runnersRequest, new StreamObserver<Runner>() {
 
             @Override
             public void onNext(Runner runner) {

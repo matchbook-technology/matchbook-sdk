@@ -16,6 +16,7 @@ public class Market implements RestResponse<Market> {
     private MarketType marketType;
     private boolean inRunning;
     private boolean allowLiveBetting;
+    private Double handicap;
     private Double volume;
     private Double backOverround;
     private Double layOverround;
@@ -82,6 +83,14 @@ public class Market implements RestResponse<Market> {
         this.allowLiveBetting = allowLiveBetting;
     }
 
+    public Double getHandicap() {
+        return handicap;
+    }
+
+    public void setHandicap(Double handicap) {
+        this.handicap = handicap;
+    }
+
     public Double getVolume() {
         return volume;
     }
@@ -137,6 +146,7 @@ public class Market implements RestResponse<Market> {
                 ", marketType=" + marketType +
                 ", inRunning=" + inRunning +
                 ", allowLiveBetting=" + allowLiveBetting +
+                ", handicap=" + handicap +
                 ", volume=" + volume +
                 ", backOverround=" + backOverround +
                 ", layOverround=" + layOverround +
