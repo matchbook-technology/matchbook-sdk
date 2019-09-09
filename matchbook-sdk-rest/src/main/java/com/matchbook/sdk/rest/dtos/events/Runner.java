@@ -18,6 +18,7 @@ public class Runner implements RestResponse<Runner> {
     private String name;
     private RunnerStatus status;
     private boolean withdrawn;
+    private Double handicap;
     private BigDecimal volume;
     private List<Price> prices;
 
@@ -81,6 +82,14 @@ public class Runner implements RestResponse<Runner> {
         this.withdrawn = withdrawn;
     }
 
+    public Double getHandicap() {
+        return handicap;
+    }
+
+    public void setHandicap(Double handicap) {
+        this.handicap = handicap;
+    }
+
     public BigDecimal getVolume() {
         return volume;
     }
@@ -112,6 +121,7 @@ public class Runner implements RestResponse<Runner> {
                 ", name=" + name +
                 ", status=" + status +
                 ", withdrawn=" + withdrawn +
+                ", handicap=" + handicap +
                 ", volume=" + volume +
                 ", prices=" + prices +
                 "}";

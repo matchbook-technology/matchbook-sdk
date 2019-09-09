@@ -40,6 +40,8 @@ public class RunnerResponseReader extends ResponseReader<Runner> {
                 runner.setStatus(parser.getEnum(RunnerStatus.class));
             } else if ("withdrawn".equals(fieldName)) {
                 runner.setWithdrawn(parser.getBoolean());
+            } else if ("handicap".equals(fieldName)) {
+                runner.setHandicap(parser.getDouble());
             } else if ("volume".equals(fieldName)) {
                 runner.setVolume(parser.getDecimal());
             } else if ("prices".equals(fieldName)) {

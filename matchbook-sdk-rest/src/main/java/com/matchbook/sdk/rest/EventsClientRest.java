@@ -4,7 +4,6 @@ import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.rest.dtos.events.Event;
 import com.matchbook.sdk.rest.dtos.events.EventRequest;
 import com.matchbook.sdk.rest.dtos.events.EventsRequest;
-import com.matchbook.sdk.rest.dtos.events.EventsResponse;
 import com.matchbook.sdk.rest.dtos.events.Market;
 import com.matchbook.sdk.rest.dtos.events.MarketRequest;
 import com.matchbook.sdk.rest.dtos.events.MarketsRequest;
@@ -13,6 +12,8 @@ import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
+import com.matchbook.sdk.rest.dtos.events.readers.EventResponseReader;
+import com.matchbook.sdk.rest.dtos.events.readers.EventsResponseReader;
 import com.matchbook.sdk.rest.dtos.events.readers.MarketResponseReader;
 import com.matchbook.sdk.rest.dtos.events.readers.MarketsResponseReader;
 import com.matchbook.sdk.rest.dtos.events.readers.RunnerResponseReader;
@@ -34,13 +35,13 @@ public class EventsClientRest extends AbstractRestClient implements EventsClient
     @Override
     public void getEvent(EventRequest eventRequest, StreamObserver<Event> eventObserver) {
         String url = buildSportsUrl(eventRequest.resourcePath());
-        getRequest(url, eventRequest, eventObserver, Event.class);
+        getRequest(url, eventRequest, eventObserver, new EventResponseReader());
     }
 
     @Override
     public void getEvents(EventsRequest eventsRequest, StreamObserver<Event> eventsObserver) {
         String url = buildSportsUrl(eventsRequest.resourcePath());
-        getRequest(url, eventsRequest, eventsObserver, EventsResponse.class);
+        getRequest(url, eventsRequest, eventsObserver, new EventsResponseReader());
     }
 
     @Override

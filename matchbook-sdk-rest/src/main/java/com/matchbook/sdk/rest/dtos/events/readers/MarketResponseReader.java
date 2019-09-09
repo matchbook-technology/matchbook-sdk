@@ -46,6 +46,10 @@ public class MarketResponseReader extends ResponseReader<Market> {
                 market.setVolume(parser.getDouble());
             } else if ("winners".equals(fieldName)) {
                 market.setWinners(parser.getInteger());
+            } else if ("back-overround".equals(fieldName)) {
+                market.setBackOverround(parser.getDecimal());
+            } else if ("lay-overround".equals(fieldName)) {
+                market.setLayOverround(parser.getDecimal());
             } else if ("runners".equals(fieldName)) {
                 List<Runner> runners = readRunners();
                 market.setRunners(runners);

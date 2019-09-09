@@ -1,5 +1,6 @@
 package com.matchbook.sdk.rest.dtos.events;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,8 +19,8 @@ public class Market implements RestResponse<Market> {
     private boolean allowLiveBetting;
     private Double handicap;
     private Double volume;
-    private Double backOverround;
-    private Double layOverround;
+    private BigDecimal backOverround;
+    private BigDecimal layOverround;
     private Integer winners;
     private List<Runner> runners;
 
@@ -99,19 +100,19 @@ public class Market implements RestResponse<Market> {
         this.volume = volume;
     }
 
-    public Double getBackOverround() {
+    public BigDecimal getBackOverround() {
         return backOverround;
     }
 
-    public void setBackOverround(Double backOverround) {
+    public void setBackOverround(BigDecimal backOverround) {
         this.backOverround = backOverround;
     }
 
-    public Double getLayOverround() {
+    public BigDecimal getLayOverround() {
         return layOverround;
     }
 
-    public void setLayOverround(Double layOverround) {
+    public void setLayOverround(BigDecimal layOverround) {
         this.layOverround = layOverround;
     }
 
