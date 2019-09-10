@@ -69,7 +69,7 @@ public class PricesClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
     }
 

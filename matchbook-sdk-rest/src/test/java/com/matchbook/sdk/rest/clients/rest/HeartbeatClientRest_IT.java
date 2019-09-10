@@ -79,7 +79,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(2, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
     }
 
@@ -116,7 +116,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(2, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
     }
 
@@ -152,7 +152,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(2, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
     }
 }

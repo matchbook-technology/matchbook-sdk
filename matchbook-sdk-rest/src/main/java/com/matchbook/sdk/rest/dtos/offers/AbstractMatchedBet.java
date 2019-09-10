@@ -11,6 +11,7 @@ public abstract class AbstractMatchedBet {
     protected OddsType oddsType;
     protected Currency currency;
     protected BigDecimal odds;
+    protected BigDecimal decimalOdds;
     protected BigDecimal stake;
     protected BigDecimal potentialProfit;
     protected BigDecimal potentialLiability;
@@ -45,6 +46,14 @@ public abstract class AbstractMatchedBet {
 
     public void setOdds(BigDecimal odds) {
         this.odds = odds;
+    }
+
+    public BigDecimal getDecimalOdds() {
+        return decimalOdds;
+    }
+
+    public void setDecimalOdds(BigDecimal decimalOdds) {
+        this.decimalOdds = decimalOdds;
     }
 
     public BigDecimal getStake() {

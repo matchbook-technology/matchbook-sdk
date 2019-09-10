@@ -39,7 +39,7 @@ public abstract class PageableResponseReader<T extends RestResponse<T>, R extend
         return pageableResponse;
     }
 
-    private List<T> readItems() {
+    protected List<T> readItems() {
         List<T> items = new ArrayList<>();
         parser.moveToNextToken();
         while (!parser.isEndOfArray()) {
@@ -62,7 +62,6 @@ public abstract class PageableResponseReader<T extends RestResponse<T>, R extend
             readingItemStatus = ReadingItemsStatus.READING;
         }
 
-//        parser.moveToNextToken();
         itemsReader.startReading(parser);
         T item = itemsReader.readFullResponse();
         parser.moveToNextToken();

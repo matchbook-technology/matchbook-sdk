@@ -60,6 +60,7 @@ public class MatchedBet extends AbstractMatchedBet implements RestResponse<Match
                 ", oddsType=" + oddsType +
                 ", currency=" + currency +
                 ", odds=" + odds +
+                ", decimalOdds=" + decimalOdds +
                 ", stake=" + stake +
                 ", potentialProfit=" + potentialProfit +
                 ", potentialLiability=" + potentialLiability +
