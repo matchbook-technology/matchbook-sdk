@@ -50,7 +50,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getSportsSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getSportsSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(6);
 
@@ -88,7 +88,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getEventSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getEventSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         EventRequest eventRequest = new EventRequest.Builder(395729780570010L).build();
@@ -123,7 +123,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getEventsSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getEventsSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         EventsRequest eventsRequest = new EventsRequest.Builder().build();
@@ -188,7 +188,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getMarketSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getMarketSuccessfulResponse.json")));
 
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
@@ -227,7 +227,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getMarketsSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getMarketsSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(9);
 
@@ -278,7 +278,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getRunnerSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getRunnerSuccessfulResponse.json")));
 
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
@@ -318,7 +318,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getRunnersSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getRunnersSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(4);
 

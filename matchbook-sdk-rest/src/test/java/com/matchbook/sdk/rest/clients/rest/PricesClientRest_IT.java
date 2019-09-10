@@ -40,7 +40,7 @@ public class PricesClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getPricesSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/prices/getPricesSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 

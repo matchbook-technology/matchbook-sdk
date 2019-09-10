@@ -47,7 +47,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/loginSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/user/loginSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
@@ -81,7 +81,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(401)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/loginFailedResponse.json")));
+                        .withBodyFile("matchbook/user/loginFailedResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         userClientRest.login(new StreamObserver<Login>() {
@@ -146,7 +146,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/logoutSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/user/logoutSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         userClientRest.logout(new StreamObserver<Logout>() {
@@ -180,7 +180,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getAccountSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/user/getAccountSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -213,7 +213,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getAccountBalanceSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/user/getAccountBalanceSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -253,14 +253,14 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withHeader("Set-Cookie", "session-token=2574_d4dcd1c54caacb4755a")
-                        .withBodyFile("matchbook/loginSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/user/loginSuccessfulResponse.json")));
 
         wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/account/balance"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getAccountBalanceSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/user/getAccountBalanceSuccessfulResponse.json")));
 
         final CountDownLatch loginCountDownLatch = new CountDownLatch(1);
         userClientRest.login(buildStreamObserverWithCountdownLatch(loginCountDownLatch));
@@ -290,7 +290,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withHeader("Set-Cookie", "session-token=2574_d4dcd1c54caacb4755a")
-                        .withBodyFile("matchbook/loginSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/user/loginSuccessfulResponse.json")));
 
         wireMockServer.stubFor(delete(urlEqualTo("/bpapi/rest/security/session"))
                 .withHeader("Accept", equalTo("application/json"))
@@ -298,14 +298,14 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withHeader("Set-Cookie", "session-token=2574_d4dcd1c54caacb4755a; Max-Age=0")
-                        .withBodyFile("matchbook/logoutSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/user/logoutSuccessfulResponse.json")));
 
         wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/account/balance"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getAccountBalanceSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/user/getAccountBalanceSuccessfulResponse.json")));
 
         final CountDownLatch loginCountDownLatch = new CountDownLatch(1);
         userClientRest.login(buildStreamObserverWithCountdownLatch(loginCountDownLatch));

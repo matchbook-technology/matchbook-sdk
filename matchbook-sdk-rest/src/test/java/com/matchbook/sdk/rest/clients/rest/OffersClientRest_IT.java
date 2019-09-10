@@ -1,14 +1,19 @@
 package com.matchbook.sdk.rest.clients.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -23,12 +28,22 @@ import com.matchbook.sdk.rest.dtos.offers.CancelledMatchedBetsRequest;
 import com.matchbook.sdk.rest.dtos.offers.MatchedBet;
 import com.matchbook.sdk.rest.dtos.offers.MatchedBetStatus;
 import com.matchbook.sdk.rest.dtos.offers.Offer;
+import com.matchbook.sdk.rest.dtos.offers.OfferDeleteRequest;
 import com.matchbook.sdk.rest.dtos.offers.OfferEdit;
 import com.matchbook.sdk.rest.dtos.offers.OfferEditGetRequest;
+import com.matchbook.sdk.rest.dtos.offers.OfferEditsGetRequest;
 import com.matchbook.sdk.rest.dtos.offers.OfferGetRequest;
+import com.matchbook.sdk.rest.dtos.offers.OfferPostRequest;
+import com.matchbook.sdk.rest.dtos.offers.OfferPutRequest;
+import com.matchbook.sdk.rest.dtos.offers.OffersDeleteRequest;
 import com.matchbook.sdk.rest.dtos.offers.OffersGetRequest;
+import com.matchbook.sdk.rest.dtos.offers.OffersPostRequest;
+import com.matchbook.sdk.rest.dtos.offers.OffersPutRequest;
 import com.matchbook.sdk.rest.dtos.offers.Position;
 import com.matchbook.sdk.rest.dtos.offers.PositionsRequest;
+import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
+import com.matchbook.sdk.rest.dtos.prices.OddsType;
+import com.matchbook.sdk.rest.dtos.prices.Side;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,7 +66,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getOfferSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/offers/getOfferSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
@@ -88,13 +103,212 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getOffersSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/offers/getOffersSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
         OffersGetRequest offersGetRequest = new OffersGetRequest.Builder().build();
 
         offersClientRest.getOffers(offersGetRequest, new StreamObserver<Offer>() {
+
+            @Override
+            public void onNext(Offer offer) {
+                verifyOffer(offer);
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail(e.getMessage());
+            }
+
+        });
+
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void submitOfferTest() throws InterruptedException {
+        wireMockServer.stubFor(post(urlPathEqualTo("/edge/rest/v2/offers"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/offers/postOffersSuccessfulResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+
+        OfferPostRequest offerRequest = new OfferPostRequest
+                .Builder(401525949430009L, Side.BACK, new BigDecimal("2.4"), new BigDecimal("5"))
+                .build();
+        OffersPostRequest offersPostRequest = new OffersPostRequest
+                .Builder(OddsType.DECIMAL, ExchangeType.BACK_LAY, Collections.singletonList(offerRequest))
+                .build();
+
+        offersClientRest.submitOffers(offersPostRequest, new StreamObserver<Offer>() {
+
+            @Override
+            public void onNext(Offer offer) {
+                verifyOffer(offer);
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail(e.getMessage());
+            }
+
+        });
+
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void editOfferTest() throws InterruptedException {
+        wireMockServer.stubFor(put(urlPathEqualTo("/edge/rest/v2/offers/925183846730025"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/offers/putOfferSuccessfulResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+
+        OfferPutRequest offerPutRequest = new OfferPutRequest
+                .Builder(925183846730025L, new BigDecimal("3"), new BigDecimal("100"))
+                .build();
+
+        offersClientRest.editOffer(offerPutRequest, new StreamObserver<Offer>() {
+
+            @Override
+            public void onNext(Offer offer) {
+                verifyOffer(offer);
+                verifyOfferEdit(offer.getOfferEdit());
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail(e.getMessage());
+            }
+
+        });
+
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void editOffersTest() throws InterruptedException {
+        wireMockServer.stubFor(put(urlPathEqualTo("/edge/rest/v2/offers"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/offers/putOffersSuccessfulResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+
+        OfferPutRequest offerPutRequest = new OfferPutRequest
+                .Builder(925183846730025L, new BigDecimal("3"), new BigDecimal("100"))
+                .build();
+        OffersPutRequest offersPutRequest = new OffersPutRequest
+                .Builder(Collections.singletonList(offerPutRequest))
+                .build();
+
+        offersClientRest.editOffers(offersPutRequest, new StreamObserver<Offer>() {
+
+            @Override
+            public void onNext(Offer offer) {
+                verifyOffer(offer);
+                verifyOfferEdit(offer.getOfferEdit());
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail(e.getMessage());
+            }
+
+        });
+
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void deleteOfferTest() throws InterruptedException {
+        wireMockServer.stubFor(delete(urlPathEqualTo("/edge/rest/v2/offers/413775799780013"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/offers/deleteOfferSuccessfulResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+
+        OfferDeleteRequest offerDeleteRequest = new OfferDeleteRequest.Builder(413775799780013L).build();
+
+        offersClientRest.cancelOffer(offerDeleteRequest, new StreamObserver<Offer>() {
+
+            @Override
+            public void onNext(Offer offer) {
+                verifyOffer(offer);
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail(e.getMessage());
+            }
+
+        });
+
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void deleteOffersTest() throws InterruptedException {
+        wireMockServer.stubFor(delete(urlPathEqualTo("/edge/rest/v2/offers"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/offers/deleteOffersSuccessfulResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+
+        OffersDeleteRequest offersDeleteRequest = new OffersDeleteRequest.Builder().build();
+
+        offersClientRest.cancelOffers(offersDeleteRequest, new StreamObserver<Offer>() {
 
             @Override
             public void onNext(Offer offer) {
@@ -138,7 +352,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getOfferEditSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/offers/getOfferEditSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
@@ -163,6 +377,44 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
             }
 
         });
+
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void getOfferEditsTest() throws InterruptedException {
+        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/v2/offers/925183846730025/offer-edits"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/offers/getOfferEditsSuccessfulResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(3);
+
+        OfferEditsGetRequest offerEditsGetRequest = new OfferEditsGetRequest.Builder(925183846730025L).build();
+
+        offersClientRest.getOfferEdits(offerEditsGetRequest, new StreamObserver<OfferEdit>() {
+
+            @Override
+            public void onNext(OfferEdit offerEdit) {
+                verifyOfferEdit(offerEdit);
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail(e.getMessage());
+            }
+
+        });
+
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
     }
@@ -171,7 +423,6 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
         assertNotNull(offerEdit);
         assertNotNull(offerEdit.getId());
         assertNotNull(offerEdit.getOfferId());
-        assertNotNull(offerEdit.getRunnerId());
         assertNotNull(offerEdit.getStatus());
         assertNotNull(offerEdit.getOddsType());
         assertNotNull(offerEdit.getOddsBefore());
@@ -187,7 +438,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getAggregatedMatchedBetsResponse.json")));
+                        .withBodyFile("matchbook/offers/getAggregatedMatchedBetsResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(3);
 
@@ -232,7 +483,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getCancelledMatchedBetsResponse.json")));
+                        .withBodyFile("matchbook/offers/getCancelledMatchedBetsResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
@@ -276,7 +527,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getPositionsResponse.json")));
+                        .withBodyFile("matchbook/offers/getPositionsResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(4);
 

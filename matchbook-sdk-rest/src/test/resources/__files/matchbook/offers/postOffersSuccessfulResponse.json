@@ -1,0 +1,35 @@
+{
+  "language": "en",
+  "currency": "EUR",
+  "exchange-type": "back-lay",
+  "odds-type": "DECIMAL",
+  "offers": [
+    {
+      "id": 413177013410013,
+      "event-id": 410343160570009,
+      "event-name": "Man Utd vs St Etienne",
+      "market-id": 410343161840009,
+      "market-name": "Match Odds",
+      "market-type": "one_x_two",
+      "runner-id": 401525949430009,
+      "runner-name": "Man Utd",
+      "exchange-type": "back-lay",
+      "side": "back",
+      "odds": 2.4,
+      "odds-type": "DECIMAL",
+      "decimal-odds": 2.4,
+      "stake": 5,
+      "remaining": 5,
+      "potential-profit": 7,
+      "remaining-potential-profit": 7,
+      "commission-type": "VOLUME",
+      "originator-commission-rate": 0,
+      "acceptor-commission-rate": 0,
+      "commission-reserve": 0,
+      "currency": "EUR",
+      "created-at": "2017-02-16T19:49:32.771Z",
+      "status": "open",
+      "in-play": false
+    }
+  ]
+}

@@ -85,7 +85,7 @@ public class OffersClientRest extends AbstractRestClient implements OffersClient
     @Override
     public void editOffer(OfferPutRequest offerPutRequest, StreamObserver<Offer> offerObserver) {
         String url = buildSportsUrl(offerPutRequest.resourcePath());
-        putRequest(url, offerPutRequest, offerObserver, new OffersResponseReader());
+        putRequest(url, offerPutRequest, offerObserver, new OfferResponseReader());
     }
 
     @Override

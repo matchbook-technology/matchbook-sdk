@@ -53,7 +53,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getHeartbeatSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/heartbeat/getHeartbeatSuccessfulResponse.json")));
         Instant expectedHBTimeout = dateFormat.parse("12 Jul 2019 10:01:00").toInstant();
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
@@ -90,7 +90,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/sendHeartbeatSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/heartbeat/postHeartbeatSuccessfulResponse.json")));
         Instant expectedHBTimeout = dateFormat.parse("12 Jul 2019 10:01:00").toInstant();
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
@@ -127,7 +127,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/unsubscribeHeartbeatSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/heartbeat/deleteHeartbeatSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatUnsubscribeRequest heartbeatUnsubscribeRequest = new HeartbeatUnsubscribeRequest.Builder().build();
