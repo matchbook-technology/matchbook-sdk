@@ -53,8 +53,8 @@ public class PricesClientRest_IT extends MatchbookSDKClientRest_IT {
             @Override
             public void onNext(Price price) {
                 assertNotNull(price);
-                assertThat(price.getOddsType()).isNotNull();
-                assertThat(price.getOdds()).isNotNull();
+                assertNotNull(price.getOddsType());
+                assertNotNull(price.getOdds());
                 countDownLatch.countDown();
             }
 

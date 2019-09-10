@@ -9,6 +9,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.CountDownLatch;
@@ -52,8 +54,8 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         userClientRest.login(new StreamObserver<Login>() {
             @Override
             public void onNext(Login login) {
+                assertNotNull(login.getUserId());
                 assertThat(login.getSessionToken()).isNotEmpty();
-                assertThat(login.getUserId()).isNotZero();
                 countDownLatch.countDown();
             }
 
@@ -89,8 +91,8 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
             }
 
             @Override
-            public void onError(MatchbookSDKException e) {
-                assertThat(e.getErrorType()).isEqualTo(ErrorType.UNAUTHENTICATED);
+            public void onError(MatchbookSDKException exception) {
+                assertEquals(ErrorType.UNAUTHENTICATED, exception.getErrorType());
                 countDownLatch.countDown();
             }
 
@@ -122,8 +124,8 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
             }
 
             @Override
-            public void onError(MatchbookSDKException e) {
-                assertThat(e.getErrorType()).isEqualTo(ErrorType.HTTP);
+            public void onError(MatchbookSDKException exception) {
+                assertEquals(ErrorType.HTTP, exception.getErrorType());
                 countDownLatch.countDown();
             }
 
@@ -150,8 +152,8 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         userClientRest.logout(new StreamObserver<Logout>() {
             @Override
             public void onNext(Logout logout) {
+                assertNotNull(logout.getUserId());
                 assertThat(logout.getSessionToken()).isNotEmpty();
-                assertThat(logout.getUserId()).isNotZero();
                 assertThat(logout.getUsername()).isNotEmpty();
                 countDownLatch.countDown();
             }
@@ -185,8 +187,8 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         userClientRest.getAccount(new StreamObserver<Account>() {
             @Override
             public void onNext(Account account) {
+                assertNotNull(account.getId());
                 assertThat(account.getUsername()).isNotEmpty();
-                assertThat(account.getId()).isNotZero();
                 assertThat(account.getBalance()).isPositive();
             }
 
@@ -218,7 +220,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         userClientRest.getBalance(new StreamObserver<Balance>() {
             @Override
             public void onNext(Balance balance) {
-                assertThat(balance.getId()).isNotNull();
+                assertNotNull(balance.getId());
                 assertThat(balance.getBalance()).isPositive();
                 assertThat(balance.getCommissionReserve()).isPositive();
                 assertThat(balance.getExposure()).isPositive();

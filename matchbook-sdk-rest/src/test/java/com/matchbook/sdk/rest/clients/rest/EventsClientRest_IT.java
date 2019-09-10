@@ -17,21 +17,16 @@ import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.rest.EventsClientRest;
 import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.dtos.events.Event;
-import com.matchbook.sdk.rest.dtos.events.EventParticipant;
 import com.matchbook.sdk.rest.dtos.events.EventRequest;
 import com.matchbook.sdk.rest.dtos.events.EventsRequest;
 import com.matchbook.sdk.rest.dtos.events.Market;
 import com.matchbook.sdk.rest.dtos.events.MarketRequest;
 import com.matchbook.sdk.rest.dtos.events.MarketsRequest;
-import com.matchbook.sdk.rest.dtos.events.MetaTag;
 import com.matchbook.sdk.rest.dtos.events.Runner;
 import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
-import com.matchbook.sdk.rest.dtos.events.RunnersResponse;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
-import com.matchbook.sdk.rest.dtos.events.readers.RunnersResponseReader;
-import com.matchbook.sdk.rest.dtos.events.readers.SportsResponseReader;
 import com.matchbook.sdk.rest.dtos.prices.Price;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,7 +61,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
             @Override
             public void onNext(Sport sport) {
                 assertNotNull(sport);
-                assertThat(sport.getId()).isNotNull();
+                assertNotNull(sport.getId());
                 assertThat(sport.getName()).isNotEmpty();
                 countDownLatch.countDown();
             }
@@ -102,30 +97,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Event event) {
-                assertNotNull(event);
-                assertNotNull(event.getId());
-                assertThat(event.getSportId()).isNotNull();
-                assertThat(event.getCategoryIds()).isNotEmpty();
-                assertThat(event.getName()).isNotNull();
-                assertThat(event.getStatus()).isNotNull();
-                if (Objects.nonNull(event.getMarkets()) && !event.getMarkets().isEmpty()) {
-                    for (Market market : event.getMarkets()) {
-                        assertNotNull(market);
-                        assertThat(market.getId()).isNotNull();
-                    }
-                }
-                if (Objects.nonNull(event.getEventParticipants()) && !event.getEventParticipants().isEmpty()) {
-                    for (EventParticipant eventParticipant : event.getEventParticipants()) {
-                        assertNotNull(eventParticipant);
-                        assertThat(eventParticipant.getId()).isNotNull();
-                    }
-                }
-                if (Objects.nonNull(event.getMetaTags()) && !event.getMetaTags().isEmpty()) {
-                    for (MetaTag metaTag : event.getMetaTags()) {
-                        assertNotNull(metaTag);
-                        assertThat(metaTag.getId()).isNotNull();
-                    }
-                }
+                verifyEvent(event);
                 countDownLatch.countDown();
             }
 
@@ -160,30 +132,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Event event) {
-                assertNotNull(event);
-                assertThat(event.getId()).isNotNull();
-                assertThat(event.getSportId()).isNotNull();
-                assertThat(event.getCategoryIds()).isNotEmpty();
-                assertThat(event.getName()).isNotNull();
-                assertThat(event.getStatus()).isNotNull();
-                if (Objects.nonNull(event.getMarkets()) && !event.getMarkets().isEmpty()) {
-                    for (Market market : event.getMarkets()) {
-                        assertNotNull(market);
-                        assertThat(market.getId()).isNotNull();
-                    }
-                }
-                if (Objects.nonNull(event.getEventParticipants()) && !event.getEventParticipants().isEmpty()) {
-                    for (EventParticipant eventParticipant : event.getEventParticipants()) {
-                        assertNotNull(eventParticipant);
-                        assertThat(eventParticipant.getId()).isNotNull();
-                    }
-                }
-                if (Objects.nonNull(event.getMetaTags()) && !event.getMetaTags().isEmpty()) {
-                    for (MetaTag metaTag : event.getMetaTags()) {
-                        assertNotNull(metaTag);
-                        assertThat(metaTag.getId()).isNotNull();
-                    }
-                }
+                verifyEvent(event);
                 countDownLatch.countDown();
             }
 
@@ -200,6 +149,35 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+    }
+
+    private void verifyEvent(Event event) {
+        assertNotNull(event);
+        assertNotNull(event.getId());
+        assertNotNull(event.getSportId());
+        assertThat(event.getCategoryIds()).isNotEmpty();
+        assertThat(event.getName()).isNotEmpty();
+        assertNotNull(event.getStatus());
+        if (Objects.nonNull(event.getMarkets())) {
+            event.getMarkets().forEach(market -> {
+                assertNotNull(market);
+                assertNotNull(market.getId());
+            });
+        }
+        if (Objects.nonNull(event.getEventParticipants())) {
+            event.getEventParticipants().forEach(eventParticipant -> {
+                assertNotNull(eventParticipant);
+                assertNotNull(eventParticipant.getId());
+            });
+        }
+        if (Objects.nonNull(event.getMetaTags())) {
+            event.getMetaTags().forEach(metaTag -> {
+                assertNotNull(metaTag);
+                assertNotNull(metaTag.getId());
+                assertThat(metaTag.getName()).isNotEmpty();
+                assertNotNull(metaTag.getType());
+            });
+        }
     }
 
     @Test
@@ -222,17 +200,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Market market) {
-                assertNotNull(market);
-                assertThat(market.getId()).isNotNull();
-                assertThat(market.getEventId()).isNotNull();
-                assertThat(market.getStatus()).isNotNull();
-                assertThat(market.getMarketType()).isNotNull();
-                if (Objects.nonNull(market.getRunners()) && !market.getRunners().isEmpty()) {
-                    for (Runner runner : market.getRunners()) {
-                        assertNotNull(runner);
-                        assertThat(runner.getId()).isNotNull();
-                    }
-                }
+                verifyMarket(market);
                 countDownLatch.countDown();
             }
 
@@ -269,17 +237,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Market market) {
-                assertNotNull(market);
-                assertThat(market.getId()).isNotNull();
-                assertThat(market.getEventId()).isNotNull();
-                assertThat(market.getStatus()).isNotNull();
-                assertThat(market.getMarketType()).isNotNull();
-                if (Objects.nonNull(market.getRunners()) && !market.getRunners().isEmpty()) {
-                    for (Runner runner : market.getRunners()) {
-                        assertNotNull(runner);
-                        assertThat(runner.getId()).isNotNull();
-                    }
-                }
+                verifyMarket(market);
                 countDownLatch.countDown();
             }
 
@@ -296,6 +254,20 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+    }
+
+    private void verifyMarket(Market market) {
+        assertNotNull(market);
+        assertNotNull(market.getId());
+        assertNotNull(market.getEventId());
+        assertNotNull(market.getStatus());
+        assertNotNull(market.getMarketType());
+        if (Objects.nonNull(market.getRunners())) {
+            market.getRunners().forEach(runner -> {
+                assertNotNull(runner);
+                assertNotNull(runner.getId());
+            });
+        }
     }
 
     @Test
@@ -319,18 +291,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Runner runner) {
-                assertNotNull(runner);
-                assertThat(runner.getId()).isNotNull();
-                assertThat(runner.getEventId()).isNotNull();
-                assertThat(runner.getMarketId()).isNotNull();
-                assertThat(runner.getStatus()).isNotNull();
-                if (Objects.nonNull(runner.getPrices()) && !runner.getPrices().isEmpty()) {
-                    for (Price price : runner.getPrices()) {
-                        assertNotNull(price);
-                        assertThat(price.getOddsType()).isNotNull();
-                        assertThat(price.getOdds()).isNotNull();
-                    }
-                }
+                verifyRunner(runner);
                 countDownLatch.countDown();
             }
 
@@ -369,18 +330,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Runner runner) {
-                assertNotNull(runner);
-                assertThat(runner.getId()).isNotNull();
-                assertThat(runner.getEventId()).isNotNull();
-                assertThat(runner.getMarketId()).isNotNull();
-                assertThat(runner.getStatus()).isNotNull();
-                if (Objects.nonNull(runner.getPrices()) && !runner.getPrices().isEmpty()) {
-                    for (Price price : runner.getPrices()) {
-                        assertNotNull(price);
-                        assertThat(price.getOddsType()).isNotNull();
-                        assertThat(price.getOdds()).isNotNull();
-                    }
-                }
+                verifyRunner(runner);
                 countDownLatch.countDown();
             }
 
@@ -397,6 +347,21 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+    }
+
+    private void verifyRunner(Runner runner) {
+        assertNotNull(runner);
+        assertNotNull(runner.getId());
+        assertNotNull(runner.getEventId());
+        assertNotNull(runner.getMarketId());
+        assertNotNull(runner.getStatus());
+        if (Objects.nonNull(runner.getPrices())) {
+            runner.getPrices().forEach(price -> {
+                assertNotNull(price);
+                assertNotNull(price.getOddsType());
+                assertNotNull(price.getOdds());
+            });
+        }
     }
 
 }

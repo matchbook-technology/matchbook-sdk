@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.CountDownLatch;
@@ -50,8 +51,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
         offersClientRest.getOffer(offerGetRequest, new StreamObserver<Offer>() {
             @Override
             public void onNext(Offer offer) {
-                assertThat(offer.getId()).isNotNull();
-                assertThat(offer.getEventId()).isNotNull();
+                verifyOffer(offer);
                 countDownLatch.countDown();
             }
 
@@ -87,8 +87,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
         offersClientRest.getOffers(offersGetRequest, new StreamObserver<Offer>() {
             @Override
             public void onNext(Offer offer) {
-                assertThat(offer.getId()).isNotNull();
-                assertThat(offer.getEventId()).isNotNull();
+                verifyOffer(offer);
                 countDownLatch.countDown();
             }
 
@@ -108,6 +107,19 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
         assertThat(await).isTrue();
     }
 
+    private void verifyOffer(Offer offer) {
+        assertNotNull(offer);
+        assertNotNull(offer.getId());
+        assertNotNull(offer.getEventId());
+        assertNotNull(offer.getMarketId());
+        assertNotNull(offer.getRunnerId());
+        assertNotNull(offer.getStatus());
+        assertNotNull(offer.getSide());
+        assertNotNull(offer.getOddsType());
+        assertNotNull(offer.getOdds());
+        assertNotNull(offer.getStake());
+    }
+
     @Test
     public void getOfferEditTest() throws InterruptedException {
         wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/v2/offers/925183846730025/offer-edits/925184068850125"))
@@ -124,8 +136,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
         offersClientRest.getOfferEdit(offerEditGetRequest, new StreamObserver<OfferEdit>() {
             @Override
             public void onNext(OfferEdit offerEdit) {
-                assertThat(offerEdit.getId()).isNotNull();
-                assertThat(offerEdit.getOfferId()).isNotNull();
+                verifyOfferEdit(offerEdit);
                 countDownLatch.countDown();
             }
 
@@ -142,6 +153,19 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
         });
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+    }
+
+    private void verifyOfferEdit(OfferEdit offerEdit) {
+        assertNotNull(offerEdit);
+        assertNotNull(offerEdit.getId());
+        assertNotNull(offerEdit.getOfferId());
+        assertNotNull(offerEdit.getRunnerId());
+        assertNotNull(offerEdit.getStatus());
+        assertNotNull(offerEdit.getOddsType());
+        assertNotNull(offerEdit.getOddsBefore());
+        assertNotNull(offerEdit.getOddsAfter());
+        assertNotNull(offerEdit.getStakeBefore());
+        assertNotNull(offerEdit.getStakeAfter());
     }
 
 }
