@@ -5,18 +5,23 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.OffersClientRest;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBet;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBetsRequest;
+import com.matchbook.sdk.rest.dtos.offers.CancelledMatchedBetsRequest;
+import com.matchbook.sdk.rest.dtos.offers.MatchedBet;
+import com.matchbook.sdk.rest.dtos.offers.MatchedBetStatus;
 import com.matchbook.sdk.rest.dtos.offers.Offer;
 import com.matchbook.sdk.rest.dtos.offers.OfferEdit;
 import com.matchbook.sdk.rest.dtos.offers.OfferEditGetRequest;
@@ -198,6 +203,51 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
                 assertNotNull(aggregatedMatchedBet.getOddsType());
                 assertNotNull(aggregatedMatchedBet.getOdds());
                 assertNotNull(aggregatedMatchedBet.getStake());
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail(e.getMessage());
+            }
+
+        });
+
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void getCancelledMatchedBetsTest() throws InterruptedException {
+        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/bets"))
+                .withQueryParam("status", new EqualToPattern("CANCELLED"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/getCancelledMatchedBetsResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+
+        CancelledMatchedBetsRequest cancelledMatchedBetsRequest = new CancelledMatchedBetsRequest.Builder().build();
+
+        offersClientRest.getCancelledMatchedBets(cancelledMatchedBetsRequest, new StreamObserver<MatchedBet>() {
+
+            @Override
+            public void onNext(MatchedBet matchedBet) {
+                assertNotNull(matchedBet);
+                assertNotNull(matchedBet.getOfferId());
+                assertNotNull(matchedBet.getCurrency());
+                assertNotNull(matchedBet.getOddsType());
+                assertNotNull(matchedBet.getOdds());
+                assertNotNull(matchedBet.getStake());
+                assertNotNull(matchedBet.getCommission());
+                assertEquals(MatchedBetStatus.CANCELLED, matchedBet.getStatus());
                 countDownLatch.countDown();
             }
 

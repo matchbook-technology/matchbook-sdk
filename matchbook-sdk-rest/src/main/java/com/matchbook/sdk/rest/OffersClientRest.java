@@ -23,6 +23,8 @@ import com.matchbook.sdk.rest.dtos.offers.OffersResponse;
 import com.matchbook.sdk.rest.dtos.offers.Position;
 import com.matchbook.sdk.rest.dtos.offers.PositionsRequest;
 import com.matchbook.sdk.rest.dtos.offers.PositionsResponse;
+import com.matchbook.sdk.rest.dtos.offers.readers.AggregatedMatchedBetsResponseReader;
+import com.matchbook.sdk.rest.dtos.offers.readers.CancelledMatchedBetsResponseReader;
 
 public class OffersClientRest extends AbstractRestClient implements OffersClient {
 
@@ -64,14 +66,14 @@ public class OffersClientRest extends AbstractRestClient implements OffersClient
     public void getAggregatedMatchedBets(AggregatedMatchedBetsRequest aggregatedMatchedBetsRequest,
             StreamObserver<AggregatedMatchedBet> aggregatedMatchedBetsObserver) {
         String url = buildSportsUrl(aggregatedMatchedBetsRequest.resourcePath());
-        getRequest(url, aggregatedMatchedBetsRequest, aggregatedMatchedBetsObserver, AggregatedMatchedBetsResponse.class);
+        getRequest(url, aggregatedMatchedBetsRequest, aggregatedMatchedBetsObserver, new AggregatedMatchedBetsResponseReader());
     }
 
     @Override
     public void getCancelledMatchedBets(CancelledMatchedBetsRequest cancelledMatchedBetsRequest,
             StreamObserver<MatchedBet> cancelledMatchedBetsObserver) {
         String url = buildSportsUrl(cancelledMatchedBetsRequest.resourcePath());
-        getRequest(url, cancelledMatchedBetsRequest, cancelledMatchedBetsObserver, CancelledMatchedBetsResponse.class);
+        getRequest(url, cancelledMatchedBetsRequest, cancelledMatchedBetsObserver, new CancelledMatchedBetsResponseReader());
     }
 
     @Override
