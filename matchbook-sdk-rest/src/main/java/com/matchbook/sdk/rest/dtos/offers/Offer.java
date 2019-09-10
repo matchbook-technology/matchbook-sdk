@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.matchbook.sdk.rest.dtos.RestResponse;
+import com.matchbook.sdk.rest.dtos.events.MarketType;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
@@ -19,12 +20,17 @@ public class Offer implements RestResponse<Offer> {
     private Long eventId;
     private Long marketId;
     private Long runnerId;
+    private String eventName;
+    private String marketName;
+    private MarketType marketType;
+    private String runnerName;
     private OfferStatus status;
     private ExchangeType exchangeType;
     private Side side;
     private OddsType oddsType;
     private Currency currency;
     private BigDecimal odds;
+    private BigDecimal decimalOdds;
     private BigDecimal stake;
     private BigDecimal remaining;
     private BigDecimal potentialLiability;
@@ -75,6 +81,38 @@ public class Offer implements RestResponse<Offer> {
         this.runnerId = runnerId;
     }
 
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public String getMarketName() {
+        return marketName;
+    }
+
+    public void setMarketName(String marketName) {
+        this.marketName = marketName;
+    }
+
+    public String getRunnerName() {
+        return runnerName;
+    }
+
+    public void setRunnerName(String runnerName) {
+        this.runnerName = runnerName;
+    }
+
+    public MarketType getMarketType() {
+        return marketType;
+    }
+
+    public void setMarketType(MarketType marketType) {
+        this.marketType = marketType;
+    }
+
     public OfferStatus getStatus() {
         return status;
     }
@@ -121,6 +159,14 @@ public class Offer implements RestResponse<Offer> {
 
     public void setOdds(BigDecimal odds) {
         this.odds = odds;
+    }
+
+    public BigDecimal getDecimalOdds() {
+        return decimalOdds;
+    }
+
+    public void setDecimalOdds(BigDecimal decimalOdds) {
+        this.decimalOdds = decimalOdds;
     }
 
     public BigDecimal getStake() {
@@ -239,12 +285,17 @@ public class Offer implements RestResponse<Offer> {
                 ", eventId=" + eventId +
                 ", marketId=" + marketId +
                 ", runnerId=" + runnerId +
+                ", eventName=" + eventName +
+                ", marketName=" + marketName +
+                ", marketType=" + marketType +
+                ", runnerName=" + runnerName +
                 ", status=" + status +
                 ", exchangeType=" + exchangeType +
                 ", side=" + side +
                 ", oddsType=" + oddsType +
                 ", currency=" + currency +
                 ", odds=" + odds +
+                ", decimalOdds=" + decimalOdds +
                 ", stake=" + stake +
                 ", remaining=" + remaining +
                 ", potentialLiability=" + potentialLiability +
