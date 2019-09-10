@@ -103,7 +103,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
             @Override
             public void onNext(Event event) {
                 assertNotNull(event);
-                assertThat(event.getId()).isNotNull();
+                assertNotNull(event.getId());
                 assertThat(event.getSportId()).isNotNull();
                 assertThat(event.getCategoryIds()).isNotEmpty();
                 assertThat(event.getName()).isNotNull();

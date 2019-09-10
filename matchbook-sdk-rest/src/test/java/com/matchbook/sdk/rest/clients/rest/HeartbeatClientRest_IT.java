@@ -7,6 +7,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.text.ParseException;
@@ -57,10 +60,11 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
         HeartbeatGetRequest heartbeatGetRequest = new HeartbeatGetRequest.Builder().build();
         heartbeatClientRest.getHeartbeat(heartbeatGetRequest, new StreamObserver<Heartbeat>() {
             @Override
-            public void onNext(Heartbeat heartbeatResponse) {
-                assertThat(heartbeatResponse.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_ACTIVATED);
-                assertThat(heartbeatResponse.getActualTimeout()).isNull();
-                assertThat(heartbeatResponse.getTimeoutTime()).isEqualTo(expectedHBTimeout);
+            public void onNext(Heartbeat heartbeat) {
+                assertNotNull(heartbeat);
+                assertEquals(ActionPerformed.HEARTBEAT_ACTIVATED, heartbeat.getActionPerformed());
+                assertEquals(expectedHBTimeout, heartbeat.getTimeoutTime());
+                assertThat(heartbeat.getActualTimeout()).isNull();
                 countDownLatch.countDown();
             }
 
@@ -93,10 +97,11 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
         HeartbeatSendRequest heartbeatSendRequest = new HeartbeatSendRequest.Builder(20).build();
         heartbeatClientRest.sendHeartbeat(heartbeatSendRequest, new StreamObserver<Heartbeat>() {
             @Override
-            public void onNext(Heartbeat heartbeatResponse) {
-                assertThat(heartbeatResponse.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_ACTIVATED);
-                assertThat(heartbeatResponse.getActualTimeout()).isEqualTo(20);
-                assertThat(heartbeatResponse.getTimeoutTime()).isEqualTo(expectedHBTimeout);
+            public void onNext(Heartbeat heartbeat) {
+                assertNotNull(heartbeat);
+                assertEquals(ActionPerformed.HEARTBEAT_ACTIVATED, heartbeat.getActionPerformed());
+                assertEquals(20, heartbeat.getActualTimeout().intValue());
+                assertEquals(expectedHBTimeout, heartbeat.getTimeoutTime());
                 countDownLatch.countDown();
             }
 
@@ -128,10 +133,11 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
         HeartbeatUnsubscribeRequest heartbeatUnsubscribeRequest = new HeartbeatUnsubscribeRequest.Builder().build();
         heartbeatClientRest.unsubscribeHeartbeat(heartbeatUnsubscribeRequest, new StreamObserver<Heartbeat>() {
             @Override
-            public void onNext(Heartbeat heartbeatResponse) {
-                assertThat(heartbeatResponse.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_TERMINATED);
-                assertThat(heartbeatResponse.getActualTimeout()).isNull();
-                assertThat(heartbeatResponse.getTimeoutTime()).isNull();
+            public void onNext(Heartbeat heartbeat) {
+                assertNotNull(heartbeat);
+                assertEquals(ActionPerformed.HEARTBEAT_TERMINATED, heartbeat.getActionPerformed());
+                assertNull(heartbeat.getActualTimeout());
+                assertNull(heartbeat.getTimeoutTime());
                 countDownLatch.countDown();
             }
 
