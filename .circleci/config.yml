@@ -17,7 +17,7 @@ jobs:
       - run:
           name: Build Matchbook SDK on Java 8
           command: |
-            mvn clean verify
+            mvn -s settings.xml clean deploy
             mvn surefire-report:report-only
 
       - run:
