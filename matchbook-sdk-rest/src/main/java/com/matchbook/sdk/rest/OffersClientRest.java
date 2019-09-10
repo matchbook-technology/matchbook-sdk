@@ -25,6 +25,7 @@ import com.matchbook.sdk.rest.dtos.offers.PositionsRequest;
 import com.matchbook.sdk.rest.dtos.offers.PositionsResponse;
 import com.matchbook.sdk.rest.dtos.offers.readers.AggregatedMatchedBetsResponseReader;
 import com.matchbook.sdk.rest.dtos.offers.readers.CancelledMatchedBetsResponseReader;
+import com.matchbook.sdk.rest.dtos.offers.readers.PositionsResponseReader;
 
 public class OffersClientRest extends AbstractRestClient implements OffersClient {
 
@@ -59,7 +60,7 @@ public class OffersClientRest extends AbstractRestClient implements OffersClient
     @Override
     public void getPositions(PositionsRequest positionsRequest, StreamObserver<Position> positionsRequestObserver) {
         String url = buildSportsUrl(positionsRequest.resourcePath());
-        getRequest(url, positionsRequest, positionsRequestObserver, PositionsResponse.class);
+        getRequest(url, positionsRequest, positionsRequestObserver, new PositionsResponseReader());
     }
 
     @Override

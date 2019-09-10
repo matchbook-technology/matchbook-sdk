@@ -27,6 +27,8 @@ import com.matchbook.sdk.rest.dtos.offers.OfferEdit;
 import com.matchbook.sdk.rest.dtos.offers.OfferEditGetRequest;
 import com.matchbook.sdk.rest.dtos.offers.OfferGetRequest;
 import com.matchbook.sdk.rest.dtos.offers.OffersGetRequest;
+import com.matchbook.sdk.rest.dtos.offers.Position;
+import com.matchbook.sdk.rest.dtos.offers.PositionsRequest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -248,6 +250,46 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
                 assertNotNull(matchedBet.getStake());
                 assertNotNull(matchedBet.getCommission());
                 assertEquals(MatchedBetStatus.CANCELLED, matchedBet.getStatus());
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail(e.getMessage());
+            }
+
+        });
+
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+    }
+
+    @Test
+    public void getPositionsTest() throws InterruptedException {
+        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/account/positions"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/getPositionsResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(4);
+
+        PositionsRequest positionsRequest = new PositionsRequest.Builder().build();
+
+        offersClientRest.getPositions(positionsRequest, new StreamObserver<Position>() {
+
+            @Override
+            public void onNext(Position position) {
+                assertNotNull(position);
+                assertNotNull(position.getEventId());
+                assertNotNull(position.getMarketId());
+                assertNotNull(position.getRunnerId());
                 countDownLatch.countDown();
             }
 
