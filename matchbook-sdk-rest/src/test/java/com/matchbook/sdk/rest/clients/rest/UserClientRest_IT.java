@@ -52,6 +52,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
         userClientRest.login(new StreamObserver<Login>() {
+
             @Override
             public void onNext(Login login) {
                 assertNotNull(login);
@@ -87,6 +88,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         userClientRest.login(new StreamObserver<Login>() {
+
             @Override
             public void onNext(Login login) {
                 fail();
@@ -120,6 +122,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
         userClientRest.login(new StreamObserver<Login>() {
+
             @Override
             public void onNext(Login login) {
                 fail();
@@ -152,6 +155,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         userClientRest.logout(new StreamObserver<Logout>() {
+
             @Override
             public void onNext(Logout logout) {
                 assertNotNull(logout);
@@ -188,6 +192,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
         userClientRest.getAccount(new StreamObserver<Account>() {
+
             @Override
             public void onNext(Account account) {
                 verifyAccount(account);
@@ -229,6 +234,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
         userClientRest.getBalance(new StreamObserver<Balance>() {
+
             @Override
             public void onNext(Balance balance) {
                 assertNotNull(balance);

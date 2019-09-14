@@ -1,19 +1,15 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
 import com.matchbook.sdk.rest.HttpConfig;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.HttpClient;
+import com.matchbook.sdk.rest.configs.Parser;
+import com.matchbook.sdk.rest.configs.Serializer;
+import com.matchbook.sdk.rest.dtos.errors.Error;
+import com.matchbook.sdk.rest.dtos.errors.Errors;
+import com.matchbook.sdk.rest.dtos.errors.readers.ErrorsReader;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Cookie;
@@ -25,6 +21,16 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class HttpClientWrapper implements HttpClient {
 
@@ -136,9 +142,11 @@ public class HttpClientWrapper implements HttpClient {
     private static class RequestCallback implements Callback {
 
         private final HttpCallback httpCallback;
+        private final ErrorsReader errorsReader;
 
         RequestCallback(HttpCallback httpCallback) {
             this.httpCallback = httpCallback;
+            errorsReader = new ErrorsReader();
         }
 
         @Override
@@ -160,29 +168,59 @@ public class HttpClientWrapper implements HttpClient {
         }
 
         private MatchbookSDKHttpException getExceptionForResponse(Response response) {
-            ResponseBody responseBody = response.body();
-            if (Objects.nonNull(responseBody)) {
-                try {
-                    if (isAuthenticationErrorPresent(responseBody)) {
-                        return newUnauthenticatedException();
+            try {
+                ResponseBody responseBody = response.body();
+                byte[] responseBytes = Objects.nonNull(responseBody) ? responseBody.bytes() : null;
+                if (Objects.nonNull(responseBytes) && responseBytes.length > 0) {
+                    if (isAuthenticationErrorPresent(responseBytes)) {
+                        return unauthenticatedException();
+                    } else {
+                        return httpException(response.code(), responseBytes);
+                    }
+                }
+            } catch (IOException e) {
+                // do nothing
+            }
+            return httpException(response.code());
+        }
+
+        private boolean isAuthenticationErrorPresent(byte[] responseBytes) {
+            return new String(responseBytes).toLowerCase().contains("cannot login");
+        }
+
+        private MatchbookSDKHttpException unauthenticatedException() {
+            return new MatchbookSDKHttpException("Unable to authenticate user: invalid credentials", ErrorType.UNAUTHENTICATED);
+        }
+
+        private MatchbookSDKHttpException httpException(int responseCode) {
+            return httpException(responseCode, null);
+        }
+
+        private MatchbookSDKHttpException httpException(int responseCode, byte[] responseBytes) {
+            String responseCodeMessage = "Unexpected HTTP code " + responseCode;
+            Error error = readFirstError(responseBytes);
+            if (Objects.nonNull(error)) {
+                String errorMessage = error.getMessages().get(0);
+                return new MatchbookSDKHttpException(responseCodeMessage, new MatchbookSDKHttpException(errorMessage));
+            } else {
+                return new MatchbookSDKHttpException(responseCodeMessage);
+            }
+        }
+
+        private Error readFirstError(byte[] responseBytes) {
+            if (Objects.nonNull(responseBytes) && responseBytes.length > 0) {
+                Serializer serializer = httpCallback.getSerializer();
+                try (Parser parser = serializer.newParser(new ByteArrayInputStream(responseBytes))) {
+                    errorsReader.startReading(parser);
+                    Errors errors = errorsReader.readFullResponse();
+                    if (!errors.getErrors().isEmpty()) {
+                        return errors.getErrors().get(0);
                     }
                 } catch (IOException e) {
-                    return newHTTPException(response.code());
+                    // do nothing
                 }
             }
-            return newHTTPException(response.code());
-        }
-
-        private boolean isAuthenticationErrorPresent(ResponseBody body) throws IOException {
-            return new String(body.bytes()).toLowerCase().contains("cannot login");
-        }
-
-        private MatchbookSDKHttpException newHTTPException(int responseCode) {
-            return new MatchbookSDKHttpException("Unexpected HTTP code " + responseCode, ErrorType.HTTP);
-        }
-
-        private MatchbookSDKHttpException newUnauthenticatedException() {
-            return new MatchbookSDKHttpException("Incorrect username or password", ErrorType.UNAUTHENTICATED);
+            return null;
         }
 
     }
