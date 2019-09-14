@@ -21,7 +21,8 @@ abstract class AbstractRestClient {
         this.connectionManager = connectionManager;
     }
 
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void getRequest(String url,
+    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void getRequest(
+            String url,
             REQ request,
             StreamObserver<T> observer,
             Reader<T, RESP> reader) {
@@ -31,7 +32,8 @@ abstract class AbstractRestClient {
     }
 
     @Deprecated
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void getRequest(String url,
+    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void getRequest(
+            String url,
             REQ request,
             StreamObserver<T> observer,
             Class<RESP> responseClass) {
@@ -40,7 +42,8 @@ abstract class AbstractRestClient {
         connectionManager.getHttpClient().get(requestUrl, new RestCallback<>(observer, responseClass, serializer));
     }
 
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void postRequest(String url,
+    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void postRequest(
+            String url,
             REQ request,
             StreamObserver<T> observer,
             Reader<T, RESP> reader) {
@@ -54,7 +57,8 @@ abstract class AbstractRestClient {
     }
 
     @Deprecated
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void postRequest(String url,
+    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void postRequest(
+            String url,
             REQ request,
             StreamObserver<T> observer,
             Class<RESP> responseClass) {
@@ -67,7 +71,8 @@ abstract class AbstractRestClient {
         }
     }
 
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void putRequest(String url,
+    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void putRequest(
+            String url,
             REQ request,
             StreamObserver<T> observer,
             Reader<T, RESP> reader) {
@@ -81,7 +86,8 @@ abstract class AbstractRestClient {
     }
 
     @Deprecated
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void putRequest(String url,
+    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void putRequest(
+            String url,
             REQ request,
             StreamObserver<T> observer,
             Class<RESP> responseClass) {
@@ -94,7 +100,8 @@ abstract class AbstractRestClient {
         }
     }
 
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void deleteRequest(String url,
+    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void deleteRequest(
+            String url,
             REQ request,
             StreamObserver<T> observer,
             Reader<T, RESP> reader) {
@@ -104,7 +111,8 @@ abstract class AbstractRestClient {
     }
 
     @Deprecated
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void deleteRequest(String url,
+    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void deleteRequest(
+            String url,
             REQ request,
             StreamObserver<T> observer,
             Class<RESP> responseClass) {

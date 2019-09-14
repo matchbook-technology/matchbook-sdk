@@ -9,6 +9,7 @@ import com.matchbook.sdk.rest.dtos.user.Login;
 import com.matchbook.sdk.rest.dtos.user.LoginRequest;
 import com.matchbook.sdk.rest.dtos.user.Logout;
 import com.matchbook.sdk.rest.dtos.user.LogoutRequest;
+import com.matchbook.sdk.rest.dtos.user.readers.AccountReader;
 
 public class UserClientRest extends AbstractRestClient implements UserClient {
 
@@ -18,28 +19,33 @@ public class UserClientRest extends AbstractRestClient implements UserClient {
 
     @Override
     public void login(StreamObserver<Login> loginObserver) {
+        LoginRequest loginRequest = new LoginRequest.Builder(
+                    connectionManager.getClientConfig().getUsername(),
+                    connectionManager.getClientConfig().getPassword())
+                .build();
         String url = buildLoginUrl();
-        postRequest(url, new LoginRequest.Builder(connectionManager.getClientConfig().getUsername(),
-                connectionManager.getClientConfig().getPassword()).build(), loginObserver, Login.class);
+        postRequest(url, loginRequest, loginObserver, Login.class);
     }
 
     @Override
-    public void logout(StreamObserver<Logout> response) {
+    public void logout(StreamObserver<Logout> logoutObserver) {
+        LogoutRequest logoutRequest = new LogoutRequest.Builder().build();
         String url = buildLoginUrl();
-        deleteRequest(url, new LogoutRequest.Builder().build(), response, Logout.class);
+        deleteRequest(url, logoutRequest, logoutObserver, Logout.class);
     }
 
     @Override
-    public void getAccount(StreamObserver<Account> response) {
+    public void getAccount(StreamObserver<Account> accountObserver) {
         AccountRequest accountRequest = new AccountRequest.Builder().build();
         String url = buildSportsUrl(accountRequest.resourcePath());
-        getRequest(url, accountRequest, response, Account.class);
+        getRequest(url, accountRequest, accountObserver, new AccountReader());
     }
 
     @Override
-    public void getBalance(StreamObserver<Balance> response) {
+    public void getBalance(StreamObserver<Balance> balanceObserver) {
         BalanceRequest balanceRequest = new BalanceRequest.Builder().build();
         String url = buildSportsUrl(balanceRequest.resourcePath());
-        getRequest(url, balanceRequest, response, Balance.class);
+        getRequest(url, balanceRequest, balanceObserver, Balance.class);
     }
+
 }

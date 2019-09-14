@@ -54,8 +54,10 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         userClientRest.login(new StreamObserver<Login>() {
             @Override
             public void onNext(Login login) {
+                assertNotNull(login);
                 assertNotNull(login.getUserId());
                 assertThat(login.getSessionToken()).isNotEmpty();
+                verifyAccount(login.getAccount());
                 countDownLatch.countDown();
             }
 
@@ -152,6 +154,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         userClientRest.logout(new StreamObserver<Logout>() {
             @Override
             public void onNext(Logout logout) {
+                assertNotNull(logout);
                 assertNotNull(logout.getUserId());
                 assertThat(logout.getSessionToken()).isNotEmpty();
                 assertThat(logout.getUsername()).isNotEmpty();
@@ -187,9 +190,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         userClientRest.getAccount(new StreamObserver<Account>() {
             @Override
             public void onNext(Account account) {
-                assertNotNull(account.getId());
-                assertThat(account.getUsername()).isNotEmpty();
-                assertThat(account.getBalance()).isPositive();
+                verifyAccount(account);
             }
 
             @Override
@@ -206,6 +207,16 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         assertThat(await).isTrue();
     }
 
+    private void verifyAccount(Account account) {
+        assertNotNull(account);
+        assertNotNull(account.getId());
+        assertThat(account.getUsername()).isNotEmpty();
+        assertNotNull(account.getCurrency());
+        assertNotNull(account.getOddsType());
+        assertNotNull(account.getBalance());
+        assertThat(account.getBalance()).isNotNegative();
+    }
+
     @Test
     public void getBalanceTest() throws InterruptedException {
         wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/account/balance"))
@@ -220,6 +231,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         userClientRest.getBalance(new StreamObserver<Balance>() {
             @Override
             public void onNext(Balance balance) {
+                assertNotNull(balance);
                 assertNotNull(balance.getId());
                 assertThat(balance.getBalance()).isPositive();
                 assertThat(balance.getCommissionReserve()).isPositive();
