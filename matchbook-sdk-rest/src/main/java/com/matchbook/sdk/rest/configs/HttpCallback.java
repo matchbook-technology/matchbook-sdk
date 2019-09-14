@@ -10,6 +10,4 @@ public interface HttpCallback {
 
     void onFailure(MatchbookSDKHttpException exception);
 
-    Serializer getSerializer();
-
 }

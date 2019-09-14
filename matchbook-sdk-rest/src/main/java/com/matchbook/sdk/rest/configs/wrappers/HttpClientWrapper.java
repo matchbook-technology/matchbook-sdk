@@ -5,11 +5,6 @@ import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
 import com.matchbook.sdk.rest.HttpConfig;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.HttpClient;
-import com.matchbook.sdk.rest.configs.Parser;
-import com.matchbook.sdk.rest.configs.Serializer;
-import com.matchbook.sdk.rest.dtos.errors.Error;
-import com.matchbook.sdk.rest.dtos.errors.Errors;
-import com.matchbook.sdk.rest.readers.errors.ErrorsReader;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Cookie;
@@ -22,7 +17,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -142,11 +136,9 @@ public class HttpClientWrapper implements HttpClient {
     private static class RequestCallback implements Callback {
 
         private final HttpCallback httpCallback;
-        private final ErrorsReader errorsReader;
 
         RequestCallback(HttpCallback httpCallback) {
             this.httpCallback = httpCallback;
-            errorsReader = new ErrorsReader();
         }
 
         @Override
@@ -171,12 +163,9 @@ public class HttpClientWrapper implements HttpClient {
             try {
                 ResponseBody responseBody = response.body();
                 byte[] responseBytes = Objects.nonNull(responseBody) ? responseBody.bytes() : null;
-                if (Objects.nonNull(responseBytes) && responseBytes.length > 0) {
-                    if (isAuthenticationErrorPresent(responseBytes)) {
-                        return unauthenticatedException();
-                    } else {
-                        return httpException(response.code(), responseBytes);
-                    }
+                if (Objects.nonNull(responseBytes) && responseBytes.length > 0
+                        && isAuthenticationErrorPresent(responseBytes)) {
+                    return unauthenticatedException();
                 }
             } catch (IOException e) {
                 // do nothing
@@ -193,34 +182,7 @@ public class HttpClientWrapper implements HttpClient {
         }
 
         private MatchbookSDKHttpException httpException(int responseCode) {
-            return httpException(responseCode, null);
-        }
-
-        private MatchbookSDKHttpException httpException(int responseCode, byte[] responseBytes) {
-            String responseCodeMessage = "Unexpected HTTP code " + responseCode;
-            Error error = readFirstError(responseBytes);
-            if (Objects.nonNull(error)) {
-                String errorMessage = error.getMessages().get(0);
-                return new MatchbookSDKHttpException(responseCodeMessage, new MatchbookSDKHttpException(errorMessage));
-            } else {
-                return new MatchbookSDKHttpException(responseCodeMessage);
-            }
-        }
-
-        private Error readFirstError(byte[] responseBytes) {
-            if (Objects.nonNull(responseBytes) && responseBytes.length > 0) {
-                Serializer serializer = httpCallback.getSerializer();
-                try (Parser parser = serializer.newParser(new ByteArrayInputStream(responseBytes))) {
-                    errorsReader.startReading(parser);
-                    Errors errors = errorsReader.readFullResponse();
-                    if (!errors.getErrors().isEmpty()) {
-                        return errors.getErrors().get(0);
-                    }
-                } catch (IOException e) {
-                    // do nothing
-                }
-            }
-            return null;
+            return new MatchbookSDKHttpException("Unexpected HTTP code " + responseCode, ErrorType.HTTP);
         }
 
     }

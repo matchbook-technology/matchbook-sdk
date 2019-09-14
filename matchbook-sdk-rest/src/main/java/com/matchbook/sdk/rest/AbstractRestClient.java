@@ -116,11 +116,6 @@ abstract class AbstractRestClient {
             observer.onError(exception);
         }
 
-        @Override
-        public Serializer getSerializer() {
-            return serializer;
-        }
-
     }
 
 }
