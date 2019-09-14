@@ -1,10 +1,12 @@
 package com.matchbook.sdk.rest;
 
+import java.util.concurrent.TimeUnit;
+
 public class HttpConfig {
 
-    private final int connectionTimeout;
-    private final int writeTimeout;
-    private final int readTimeout;
+    private final long connectionTimeout;
+    private final long writeTimeout;
+    private final long readTimeout;
 
     public HttpConfig(HttpConfig.Builder builder) {
         this.connectionTimeout = builder.connectionTimeout;
@@ -12,15 +14,15 @@ public class HttpConfig {
         this.writeTimeout = builder.writeTimeout;
     }
 
-    public int getConnectionTimeout() {
+    public long getConnectionTimeout() {
         return connectionTimeout;
     }
 
-    public int getWriteTimeout() {
+    public long getWriteTimeout() {
         return writeTimeout;
     }
 
-    public int getReadTimeout() {
+    public long getReadTimeout() {
         return readTimeout;
     }
 
@@ -35,21 +37,21 @@ public class HttpConfig {
 
     public static class Builder {
 
-        private int connectionTimeout = 15_000;
-        private int writeTimeout = 15_000;
-        private int readTimeout = 15_000;
+        private long connectionTimeout = TimeUnit.SECONDS.toMillis(5);
+        private long writeTimeout = TimeUnit.SECONDS.toMillis(15);
+        private long readTimeout = TimeUnit.SECONDS.toMillis(30);
 
-        public Builder connectionTimout(int connectionTimout) {
-            this.connectionTimeout = connectionTimout;
+        public Builder connectionTimeout(long connectionTimeout) {
+            this.connectionTimeout = connectionTimeout;
             return this;
         }
 
-        public Builder writeTimout(int writeTimout) {
-            this.writeTimeout = writeTimout;
+        public Builder writeTimeout(long writeTimeout) {
+            this.writeTimeout = writeTimeout;
             return this;
         }
 
-        public Builder readTimeout(int readTimeout) {
+        public Builder readTimeout(long readTimeout) {
             this.readTimeout = readTimeout;
             return this;
         }
@@ -58,4 +60,5 @@ public class HttpConfig {
             return new HttpConfig(this);
         }
     }
+
 }
