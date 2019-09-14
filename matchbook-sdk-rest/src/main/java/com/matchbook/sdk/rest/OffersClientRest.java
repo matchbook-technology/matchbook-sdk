@@ -18,13 +18,13 @@ import com.matchbook.sdk.rest.dtos.offers.OffersPostRequest;
 import com.matchbook.sdk.rest.dtos.offers.OffersPutRequest;
 import com.matchbook.sdk.rest.dtos.offers.Position;
 import com.matchbook.sdk.rest.dtos.offers.PositionsRequest;
-import com.matchbook.sdk.rest.dtos.offers.readers.AggregatedMatchedBetsReader;
-import com.matchbook.sdk.rest.dtos.offers.readers.CancelledMatchedBetsReader;
-import com.matchbook.sdk.rest.dtos.offers.readers.OfferEditReader;
-import com.matchbook.sdk.rest.dtos.offers.readers.OfferEditsReader;
-import com.matchbook.sdk.rest.dtos.offers.readers.OfferReader;
-import com.matchbook.sdk.rest.dtos.offers.readers.OffersReader;
-import com.matchbook.sdk.rest.dtos.offers.readers.PositionsReader;
+import com.matchbook.sdk.rest.readers.offers.AggregatedMatchedBetsReader;
+import com.matchbook.sdk.rest.readers.offers.CancelledMatchedBetsReader;
+import com.matchbook.sdk.rest.readers.offers.OfferEditReader;
+import com.matchbook.sdk.rest.readers.offers.OfferEditsReader;
+import com.matchbook.sdk.rest.readers.offers.OfferReader;
+import com.matchbook.sdk.rest.readers.offers.OffersReader;
+import com.matchbook.sdk.rest.readers.offers.PositionsReader;
 
 public class OffersClientRest extends AbstractRestClient implements OffersClient {
 

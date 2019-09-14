@@ -6,7 +6,7 @@ import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.Parser;
 import com.matchbook.sdk.rest.configs.Serializer;
-import com.matchbook.sdk.rest.dtos.Reader;
+import com.matchbook.sdk.rest.readers.Reader;
 import com.matchbook.sdk.rest.dtos.RestRequest;
 import com.matchbook.sdk.rest.dtos.RestResponse;
 

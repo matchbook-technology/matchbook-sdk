@@ -5,7 +5,7 @@ import com.matchbook.sdk.rest.dtos.heartbeat.Heartbeat;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatGetRequest;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatSendRequest;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
-import com.matchbook.sdk.rest.dtos.heartbeat.readers.HeartbeatReader;
+import com.matchbook.sdk.rest.readers.heartbeat.HeartbeatReader;
 
 public class HeartbeatClientRest extends AbstractRestClient implements HeartbeatClient {
 

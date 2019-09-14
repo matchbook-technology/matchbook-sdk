@@ -58,7 +58,9 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatGetRequest heartbeatGetRequest = new HeartbeatGetRequest.Builder().build();
+
         heartbeatClientRest.getHeartbeat(heartbeatGetRequest, new StreamObserver<Heartbeat>() {
+
             @Override
             public void onNext(Heartbeat heartbeat) {
                 assertNotNull(heartbeat);
@@ -95,9 +97,11 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatSendRequest heartbeatSendRequest = new HeartbeatSendRequest.Builder(20).build();
+
         heartbeatClientRest.sendHeartbeat(heartbeatSendRequest, new StreamObserver<Heartbeat>() {
             @Override
             public void onNext(Heartbeat heartbeat) {
+
                 assertNotNull(heartbeat);
                 assertEquals(ActionPerformed.HEARTBEAT_ACTIVATED, heartbeat.getActionPerformed());
                 assertEquals(20, heartbeat.getActualTimeout().intValue());
@@ -131,7 +135,9 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatUnsubscribeRequest heartbeatUnsubscribeRequest = new HeartbeatUnsubscribeRequest.Builder().build();
+
         heartbeatClientRest.unsubscribeHeartbeat(heartbeatUnsubscribeRequest, new StreamObserver<Heartbeat>() {
+
             @Override
             public void onNext(Heartbeat heartbeat) {
                 assertNotNull(heartbeat);
@@ -155,4 +161,5 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
     }
+
 }

@@ -12,13 +12,13 @@ import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
-import com.matchbook.sdk.rest.dtos.events.readers.EventReader;
-import com.matchbook.sdk.rest.dtos.events.readers.EventsReader;
-import com.matchbook.sdk.rest.dtos.events.readers.MarketReader;
-import com.matchbook.sdk.rest.dtos.events.readers.MarketsReader;
-import com.matchbook.sdk.rest.dtos.events.readers.RunnerReader;
-import com.matchbook.sdk.rest.dtos.events.readers.RunnersReader;
-import com.matchbook.sdk.rest.dtos.events.readers.SportsReader;
+import com.matchbook.sdk.rest.readers.events.EventReader;
+import com.matchbook.sdk.rest.readers.events.EventsReader;
+import com.matchbook.sdk.rest.readers.events.MarketReader;
+import com.matchbook.sdk.rest.readers.events.MarketsReader;
+import com.matchbook.sdk.rest.readers.events.RunnerReader;
+import com.matchbook.sdk.rest.readers.events.RunnersReader;
+import com.matchbook.sdk.rest.readers.events.SportsReader;
 
 public class EventsClientRest extends AbstractRestClient implements EventsClient {
 

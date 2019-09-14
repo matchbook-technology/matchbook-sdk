@@ -2,10 +2,10 @@ package com.matchbook.sdk.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.rest.dtos.user.*;
-import com.matchbook.sdk.rest.dtos.user.readers.AccountReader;
-import com.matchbook.sdk.rest.dtos.user.readers.BalanceReader;
-import com.matchbook.sdk.rest.dtos.user.readers.LoginReader;
-import com.matchbook.sdk.rest.dtos.user.readers.LogoutReader;
+import com.matchbook.sdk.rest.readers.user.AccountReader;
+import com.matchbook.sdk.rest.readers.user.BalanceReader;
+import com.matchbook.sdk.rest.readers.user.LoginReader;
+import com.matchbook.sdk.rest.readers.user.LogoutReader;
 
 public class UserClientRest extends AbstractRestClient implements UserClient {
 

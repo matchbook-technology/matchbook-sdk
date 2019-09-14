@@ -9,7 +9,7 @@ import com.matchbook.sdk.rest.configs.Parser;
 import com.matchbook.sdk.rest.configs.Serializer;
 import com.matchbook.sdk.rest.dtos.errors.Error;
 import com.matchbook.sdk.rest.dtos.errors.Errors;
-import com.matchbook.sdk.rest.dtos.errors.readers.ErrorsReader;
+import com.matchbook.sdk.rest.readers.errors.ErrorsReader;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Cookie;

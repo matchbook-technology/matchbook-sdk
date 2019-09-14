@@ -1,12 +1,12 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
+import com.matchbook.sdk.rest.dtos.RestResponse;
+import com.matchbook.sdk.rest.dtos.prices.OddsType;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Set;
-
-import com.matchbook.sdk.rest.dtos.RestResponse;
-import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
 public class OfferEdit implements RestResponse<OfferEdit> {
 

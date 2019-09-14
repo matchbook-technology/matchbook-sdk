@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.OffersClientRest;
