@@ -42,7 +42,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
         super.setUp();
 
         this.heartbeatClientRest = new HeartbeatClientRest(connectionManager);
-        this.dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         this.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
@@ -54,7 +54,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/heartbeat/getHeartbeatSuccessfulResponse.json")));
-        Instant expectedHBTimeout = dateFormat.parse("12 Jul 2019 10:01:00").toInstant();
+        Instant expectedHeartbeatTimeout = dateFormat.parse("2019-07-12T10:01:00").toInstant();
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatGetRequest heartbeatGetRequest = new HeartbeatGetRequest.Builder().build();
@@ -63,7 +63,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
             public void onNext(Heartbeat heartbeat) {
                 assertNotNull(heartbeat);
                 assertEquals(ActionPerformed.HEARTBEAT_ACTIVATED, heartbeat.getActionPerformed());
-                assertEquals(expectedHBTimeout, heartbeat.getTimeoutTime());
+                assertEquals(expectedHeartbeatTimeout, heartbeat.getTimeoutTime());
                 assertThat(heartbeat.getActualTimeout()).isNull();
                 countDownLatch.countDown();
             }
@@ -91,7 +91,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/heartbeat/postHeartbeatSuccessfulResponse.json")));
-        Instant expectedHBTimeout = dateFormat.parse("12 Jul 2019 10:01:00").toInstant();
+        Instant expectedHeartbeatTimeout = dateFormat.parse("2019-07-12T10:01:00").toInstant();
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatSendRequest heartbeatSendRequest = new HeartbeatSendRequest.Builder(20).build();
@@ -101,7 +101,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
                 assertNotNull(heartbeat);
                 assertEquals(ActionPerformed.HEARTBEAT_ACTIVATED, heartbeat.getActionPerformed());
                 assertEquals(20, heartbeat.getActualTimeout().intValue());
-                assertEquals(expectedHBTimeout, heartbeat.getTimeoutTime());
+                assertEquals(expectedHeartbeatTimeout, heartbeat.getTimeoutTime());
                 countDownLatch.countDown();
             }
 
