@@ -1,14 +1,12 @@
 package com.matchbook.sdk.rest.dtos.events;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
-public class Market implements RestResponse<Market> {
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Market implements RestResponse {
 
     private Long id;
     private Long eventId;
@@ -130,11 +128,6 @@ public class Market implements RestResponse<Market> {
 
     public void setRunners(List<Runner> runners) {
         this.runners = runners;
-    }
-
-    @Override
-    public Set<Market> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override

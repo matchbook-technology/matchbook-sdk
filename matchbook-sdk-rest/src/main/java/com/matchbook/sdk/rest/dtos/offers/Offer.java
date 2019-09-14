@@ -10,11 +10,9 @@ import com.matchbook.sdk.rest.dtos.prices.Side;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
-public class Offer implements RestResponse<Offer> {
+public class Offer implements RestResponse {
 
     private Long id;
     private Long eventId;
@@ -271,11 +269,6 @@ public class Offer implements RestResponse<Offer> {
 
     public void setOfferEdit(OfferEdit offerEdit) {
         this.offerEdit = offerEdit;
-    }
-
-    @Override
-    public Set<Offer> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override

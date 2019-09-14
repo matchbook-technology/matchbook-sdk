@@ -2,10 +2,7 @@ package com.matchbook.sdk.rest.dtos.user;
 
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
-import java.util.Collections;
-import java.util.Set;
-
-public class Login implements RestResponse<Login> {
+public class Login implements RestResponse {
 
     private String sessionToken;
     private Long userId;
@@ -33,11 +30,6 @@ public class Login implements RestResponse<Login> {
 
     public void setAccount(Account account) {
         this.account = account;
-    }
-
-    @Override
-    public Set<Login> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override

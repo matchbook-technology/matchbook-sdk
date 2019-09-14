@@ -7,10 +7,8 @@ import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Collections;
 
-public class Account implements RestResponse<Account> {
+public class Account implements RestResponse {
 
     private Long id;
     private String username;
@@ -101,11 +99,6 @@ public class Account implements RestResponse<Account> {
 
     public void setCommissionType(CommissionType commissionType) {
         this.commissionType = commissionType;
-    }
-
-    @Override
-    public Collection<Account> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override

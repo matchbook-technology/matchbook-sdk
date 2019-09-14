@@ -4,7 +4,7 @@ import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.configs.Parser;
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
-public abstract class AbstractReader<T, R extends RestResponse<T>> implements Reader<T, R> {
+public abstract class AbstractReader<T, R extends RestResponse> implements Reader<T, R> {
 
     protected Parser parser;
     protected ReadingItemsStatus readingItemStatus;

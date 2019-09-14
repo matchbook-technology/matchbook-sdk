@@ -3,9 +3,8 @@ package com.matchbook.sdk.rest.readers;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.configs.Parser;
 import com.matchbook.sdk.rest.dtos.RestResponse;
-import com.matchbook.sdk.rest.dtos.events.SportsResponse;
 
-public interface Reader<T, R extends RestResponse<T>> {
+public interface Reader<T, R extends RestResponse> {
 
     void startReading(Parser parser) throws MatchbookSDKParsingException;
 

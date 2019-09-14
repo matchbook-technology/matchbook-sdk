@@ -1,12 +1,9 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
-import java.util.Collections;
-import java.util.Set;
-
 import com.matchbook.sdk.rest.dtos.RestResponse;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
-public class AggregatedMatchedBet extends AbstractMatchedBet implements RestResponse<AggregatedMatchedBet> {
+public class AggregatedMatchedBet extends AbstractMatchedBet implements RestResponse {
 
     private Long eventId;
     private Long marketId;
@@ -70,11 +67,6 @@ public class AggregatedMatchedBet extends AbstractMatchedBet implements RestResp
 
     public void setRunnerName(String runnerName) {
         this.runnerName = runnerName;
-    }
-
-    @Override
-    public Set<AggregatedMatchedBet> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override

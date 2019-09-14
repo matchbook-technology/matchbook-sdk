@@ -5,10 +5,8 @@ import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.Set;
 
-public class OfferEdit implements RestResponse<OfferEdit> {
+public class OfferEdit implements RestResponse {
 
     private Long id;
     private Long offerId;
@@ -108,11 +106,6 @@ public class OfferEdit implements RestResponse<OfferEdit> {
 
     public void setEditTime(Instant editTime) {
         this.editTime = editTime;
-    }
-
-    @Override
-    public Set<OfferEdit> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override

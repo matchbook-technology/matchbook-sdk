@@ -6,9 +6,9 @@ import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.Parser;
 import com.matchbook.sdk.rest.configs.Serializer;
-import com.matchbook.sdk.rest.readers.Reader;
 import com.matchbook.sdk.rest.dtos.RestRequest;
 import com.matchbook.sdk.rest.dtos.RestResponse;
+import com.matchbook.sdk.rest.readers.Reader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +22,7 @@ abstract class AbstractRestClient {
         this.connectionManager = connectionManager;
     }
 
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void getRequest(
+    protected <REQ extends RestRequest, RESP extends RestResponse, T> void getRequest(
             String url,
             REQ request,
             StreamObserver<T> observer,
@@ -32,7 +32,7 @@ abstract class AbstractRestClient {
         connectionManager.getHttpClient().get(requestUrl, new RestCallback<>(observer, serializer, reader));
     }
 
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void postRequest(
+    protected <REQ extends RestRequest, RESP extends RestResponse, T> void postRequest(
             String url,
             REQ request,
             StreamObserver<T> observer,
@@ -46,7 +46,7 @@ abstract class AbstractRestClient {
         }
     }
 
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void putRequest(
+    protected <REQ extends RestRequest, RESP extends RestResponse, T> void putRequest(
             String url,
             REQ request,
             StreamObserver<T> observer,
@@ -60,7 +60,7 @@ abstract class AbstractRestClient {
         }
     }
 
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void deleteRequest(
+    protected <REQ extends RestRequest, RESP extends RestResponse, T> void deleteRequest(
             String url,
             REQ request,
             StreamObserver<T> observer,
@@ -84,7 +84,7 @@ abstract class AbstractRestClient {
                 .collect(Collectors.joining("&"));
     }
 
-    private static class RestCallback<T, RESP extends RestResponse<T>> implements HttpCallback {
+    private static class RestCallback<T, RESP extends RestResponse> implements HttpCallback {
 
         private final StreamObserver<T> observer;
         private final Serializer serializer;

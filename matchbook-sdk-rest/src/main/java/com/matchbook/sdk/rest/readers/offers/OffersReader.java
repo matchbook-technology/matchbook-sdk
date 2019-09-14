@@ -46,7 +46,7 @@ public class OffersReader extends PageableResponseReader<Offer, OffersResponse> 
                 pageableResponse.setOddsType(parser.getEnum(OddsType.class));
             } else if (itemsFieldName().equals(fieldName)) {
                 List<Offer> items = readItems();
-                pageableResponse.setContent(items);
+                pageableResponse.setItems(items);
             }
             parser.moveToNextToken();
         }

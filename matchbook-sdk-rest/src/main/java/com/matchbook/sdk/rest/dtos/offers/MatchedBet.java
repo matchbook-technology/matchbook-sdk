@@ -1,13 +1,11 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.Collections;
-import java.util.Set;
-
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
-public class MatchedBet extends AbstractMatchedBet implements RestResponse<MatchedBet> {
+import java.math.BigDecimal;
+import java.time.Instant;
+
+public class MatchedBet extends AbstractMatchedBet implements RestResponse {
 
     private Long id;
     private Long offerId;
@@ -44,11 +42,6 @@ public class MatchedBet extends AbstractMatchedBet implements RestResponse<Match
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
-    }
-
-    @Override
-    public Set<MatchedBet> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override

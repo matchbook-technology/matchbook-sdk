@@ -47,7 +47,7 @@ public class AggregatedMatchedBetsReader
                 pageableResponse.setOddsType(parser.getEnum(OddsType.class));
             } else if (itemsFieldName().equals(fieldName)) {
                 List<AggregatedMatchedBet> items = readItems();
-                pageableResponse.setContent(items);
+                pageableResponse.setItems(items);
             }
             parser.moveToNextToken();
         }

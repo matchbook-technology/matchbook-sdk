@@ -2,10 +2,7 @@ package com.matchbook.sdk.rest.dtos.user;
 
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
-import java.util.Collections;
-import java.util.Set;
-
-public class Logout implements RestResponse<Logout> {
+public class Logout implements RestResponse {
 
     private String sessionToken;
     private Long userId;
@@ -33,11 +30,6 @@ public class Logout implements RestResponse<Logout> {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    @Override
-    public Set<Logout> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override

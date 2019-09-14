@@ -3,11 +3,9 @@ package com.matchbook.sdk.rest.dtos.errors;
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
-public class Error implements RestResponse<Error> {
+public class Error implements RestResponse {
 
     private String field;
     private List<String> messages;
@@ -30,11 +28,6 @@ public class Error implements RestResponse<Error> {
 
     public void setMessages(List<String> messages) {
         this.messages = messages;
-    }
-
-    @Override
-    public Collection<Error> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override

@@ -1,12 +1,10 @@
 package com.matchbook.sdk.rest.dtos.heartbeat;
 
-import java.time.Instant;
-import java.util.Collections;
-import java.util.Set;
-
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
-public class Heartbeat implements RestResponse<Heartbeat> {
+import java.time.Instant;
+
+public class Heartbeat implements RestResponse {
 
     private ActionPerformed actionPerformed;
     private Integer actualTimeout;
@@ -34,11 +32,6 @@ public class Heartbeat implements RestResponse<Heartbeat> {
 
     public void setTimeoutTime(Instant timeoutTime) {
         this.timeoutTime = timeoutTime;
-    }
-
-    @Override
-    public Set<Heartbeat> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override
