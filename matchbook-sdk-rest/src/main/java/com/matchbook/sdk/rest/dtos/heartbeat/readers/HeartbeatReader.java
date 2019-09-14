@@ -5,9 +5,9 @@ import com.matchbook.sdk.rest.dtos.ResponseReader;
 import com.matchbook.sdk.rest.dtos.heartbeat.ActionPerformed;
 import com.matchbook.sdk.rest.dtos.heartbeat.Heartbeat;
 
-public class HeartbeatResponseReader extends ResponseReader<Heartbeat> {
+public class HeartbeatReader extends ResponseReader<Heartbeat> {
 
-    public HeartbeatResponseReader() {
+    public HeartbeatReader() {
         super();
     }
 

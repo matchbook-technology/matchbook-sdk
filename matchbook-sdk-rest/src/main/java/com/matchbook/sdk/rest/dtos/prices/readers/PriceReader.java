@@ -8,9 +8,9 @@ import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.rest.dtos.prices.Price;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
-public class PriceResponseReader extends ResponseReader<Price> {
+public class PriceReader extends ResponseReader<Price> {
 
-    public PriceResponseReader() {
+    public PriceReader() {
         super();
     }
 

@@ -4,9 +4,9 @@ import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.dtos.ResponseReader;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 
-public class SportResponseReader extends ResponseReader<Sport> {
+public class SportReader extends ResponseReader<Sport> {
 
-    public SportResponseReader() {
+    public SportReader() {
         super();
     }
 

@@ -6,9 +6,9 @@ import com.matchbook.sdk.rest.dtos.offers.OfferEdit;
 import com.matchbook.sdk.rest.dtos.offers.OfferEditStatus;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
-public class OfferEditResponseReader extends ResponseReader<OfferEdit> {
+public class OfferEditReader extends ResponseReader<OfferEdit> {
 
-    public OfferEditResponseReader() {
+    public OfferEditReader() {
         super();
     }
 

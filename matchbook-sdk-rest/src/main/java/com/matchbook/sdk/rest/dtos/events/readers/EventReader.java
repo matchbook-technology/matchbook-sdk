@@ -13,13 +13,13 @@ import com.matchbook.sdk.rest.dtos.events.Market;
 import com.matchbook.sdk.rest.dtos.events.MetaTag;
 import com.matchbook.sdk.rest.dtos.events.TagType;
 
-public class EventResponseReader extends ResponseReader<Event> {
+public class EventReader extends ResponseReader<Event> {
 
-    private final MarketResponseReader marketReader;
+    private final MarketReader marketReader;
 
-    public EventResponseReader() {
+    public EventReader() {
         super();
-        marketReader = new MarketResponseReader();
+        marketReader = new MarketReader();
     }
 
     @Override

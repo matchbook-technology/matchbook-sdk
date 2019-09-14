@@ -4,32 +4,31 @@ import java.util.List;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.dtos.PageableResponseReader;
-import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBet;
-import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBetsResponse;
+import com.matchbook.sdk.rest.dtos.offers.Offer;
+import com.matchbook.sdk.rest.dtos.offers.OffersResponse;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
-public class AggregatedMatchedBetsResponseReader
-        extends PageableResponseReader<AggregatedMatchedBet, AggregatedMatchedBetsResponse> {
+public class OffersReader extends PageableResponseReader<Offer, OffersResponse> {
 
-    public AggregatedMatchedBetsResponseReader() {
-        super(new AggregatedMatchedBetResponseReader());
+    public OffersReader() {
+        super(new OfferReader());
     }
 
     @Override
-    protected AggregatedMatchedBetsResponse newPageableResponse() {
-        return new AggregatedMatchedBetsResponse();
+    protected OffersResponse newPageableResponse() {
+        return new OffersResponse();
     }
 
     @Override
     protected String itemsFieldName() {
-        return "matched-bets";
+        return "offers";
     }
 
     @Override
-    public AggregatedMatchedBetsResponse readFullResponse() throws MatchbookSDKParsingException {
-        final AggregatedMatchedBetsResponse pageableResponse = newPageableResponse();
+    public OffersResponse readFullResponse() throws MatchbookSDKParsingException {
+        final OffersResponse pageableResponse = new OffersResponse();
         while (!parser.isEndOfObject()) {
             parser.moveToNextValue();
             String fieldName = parser.getFieldName();
@@ -46,7 +45,7 @@ public class AggregatedMatchedBetsResponseReader
             } else if ("odds-type".equals(fieldName)) {
                 pageableResponse.setOddsType(parser.getEnum(OddsType.class));
             } else if (itemsFieldName().equals(fieldName)) {
-                List<AggregatedMatchedBet> items = readItems();
+                List<Offer> items = readItems();
                 pageableResponse.setContent(items);
             }
             parser.moveToNextToken();

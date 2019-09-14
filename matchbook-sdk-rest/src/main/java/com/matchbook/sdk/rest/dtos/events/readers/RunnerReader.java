@@ -9,15 +9,15 @@ import com.matchbook.sdk.rest.dtos.ResponseReader;
 import com.matchbook.sdk.rest.dtos.events.Runner;
 import com.matchbook.sdk.rest.dtos.events.RunnerStatus;
 import com.matchbook.sdk.rest.dtos.prices.Price;
-import com.matchbook.sdk.rest.dtos.prices.readers.PriceResponseReader;
+import com.matchbook.sdk.rest.dtos.prices.readers.PriceReader;
 
-public class RunnerResponseReader extends ResponseReader<Runner> {
+public class RunnerReader extends ResponseReader<Runner> {
 
-    private final PriceResponseReader priceReader;
+    private final PriceReader priceReader;
 
-    public RunnerResponseReader() {
+    public RunnerReader() {
         super();
-        priceReader = new PriceResponseReader();
+        priceReader = new PriceReader();
     }
 
     @Override

@@ -4,10 +4,10 @@ import com.matchbook.sdk.rest.dtos.PageableResponseReader;
 import com.matchbook.sdk.rest.dtos.events.Runner;
 import com.matchbook.sdk.rest.dtos.events.RunnersResponse;
 
-public class RunnersResponseReader extends PageableResponseReader<Runner, RunnersResponse> {
+public class RunnersReader extends PageableResponseReader<Runner, RunnersResponse> {
 
-    public RunnersResponseReader() {
-        super(new RunnerResponseReader());
+    public RunnersReader() {
+        super(new RunnerReader());
     }
 
     @Override

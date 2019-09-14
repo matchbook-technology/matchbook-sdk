@@ -4,10 +4,10 @@ import com.matchbook.sdk.rest.dtos.PageableResponseReader;
 import com.matchbook.sdk.rest.dtos.offers.Position;
 import com.matchbook.sdk.rest.dtos.offers.PositionsResponse;
 
-public class PositionsResponseReader extends PageableResponseReader<Position, PositionsResponse> {
+public class PositionsReader extends PageableResponseReader<Position, PositionsResponse> {
 
-    public PositionsResponseReader() {
-        super(new PositionResponseReader());
+    public PositionsReader() {
+        super(new PositionReader());
     }
 
     @Override

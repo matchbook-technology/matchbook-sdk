@@ -17,15 +17,15 @@ import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
-public class OfferResponseReader extends ResponseReader<Offer> {
+public class OfferReader extends ResponseReader<Offer> {
 
-    private final MatchedBetResponseReader matchedBetReader;
-    private final OfferEditResponseReader offerEditReader;
+    private final MatchedBetReader matchedBetReader;
+    private final OfferEditReader offerEditReader;
 
-    public OfferResponseReader() {
+    public OfferReader() {
         super();
-        matchedBetReader = new MatchedBetResponseReader();
-        offerEditReader = new OfferEditResponseReader();
+        matchedBetReader = new MatchedBetReader();
+        offerEditReader = new OfferEditReader();
     }
 
     @Override

@@ -4,10 +4,10 @@ import com.matchbook.sdk.rest.dtos.PageableResponseReader;
 import com.matchbook.sdk.rest.dtos.offers.CancelledMatchedBetsResponse;
 import com.matchbook.sdk.rest.dtos.offers.MatchedBet;
 
-public class CancelledMatchedBetsResponseReader extends PageableResponseReader<MatchedBet, CancelledMatchedBetsResponse> {
+public class CancelledMatchedBetsReader extends PageableResponseReader<MatchedBet, CancelledMatchedBetsResponse> {
 
-    public CancelledMatchedBetsResponseReader() {
-        super(new MatchedBetResponseReader());
+    public CancelledMatchedBetsReader() {
+        super(new MatchedBetReader());
     }
 
     @Override

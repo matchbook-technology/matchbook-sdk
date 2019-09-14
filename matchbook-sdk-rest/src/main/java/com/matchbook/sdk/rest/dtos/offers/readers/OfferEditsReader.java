@@ -4,10 +4,10 @@ import com.matchbook.sdk.rest.dtos.PageableResponseReader;
 import com.matchbook.sdk.rest.dtos.offers.OfferEdit;
 import com.matchbook.sdk.rest.dtos.offers.OfferEditsResponse;
 
-public class OfferEditsResponseReader extends PageableResponseReader<OfferEdit, OfferEditsResponse> {
+public class OfferEditsReader extends PageableResponseReader<OfferEdit, OfferEditsResponse> {
 
-    public OfferEditsResponseReader() {
-        super(new OfferEditResponseReader());
+    public OfferEditsReader() {
+        super(new OfferEditReader());
     }
 
     @Override

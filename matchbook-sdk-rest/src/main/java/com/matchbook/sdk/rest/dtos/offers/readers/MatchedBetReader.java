@@ -7,9 +7,9 @@ import com.matchbook.sdk.rest.dtos.offers.MatchedBetStatus;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
-public class MatchedBetResponseReader extends ResponseReader<MatchedBet> {
+public class MatchedBetReader extends ResponseReader<MatchedBet> {
 
-    public MatchedBetResponseReader() {
+    public MatchedBetReader() {
         super();
     }
 

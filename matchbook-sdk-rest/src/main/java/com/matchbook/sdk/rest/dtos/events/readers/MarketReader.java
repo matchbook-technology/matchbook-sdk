@@ -11,13 +11,13 @@ import com.matchbook.sdk.rest.dtos.events.MarketStatus;
 import com.matchbook.sdk.rest.dtos.events.MarketType;
 import com.matchbook.sdk.rest.dtos.events.Runner;
 
-public class MarketResponseReader extends ResponseReader<Market> {
+public class MarketReader extends ResponseReader<Market> {
 
-    private final RunnerResponseReader runnerReader;
+    private final RunnerReader runnerReader;
 
-    public MarketResponseReader() {
+    public MarketReader() {
         super();
-        runnerReader = new RunnerResponseReader();
+        runnerReader = new RunnerReader();
     }
 
     @Override

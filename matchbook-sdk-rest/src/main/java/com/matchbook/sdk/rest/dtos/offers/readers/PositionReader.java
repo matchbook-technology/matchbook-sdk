@@ -4,9 +4,9 @@ import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.dtos.ResponseReader;
 import com.matchbook.sdk.rest.dtos.offers.Position;
 
-public class PositionResponseReader extends ResponseReader<Position> {
+public class PositionReader extends ResponseReader<Position> {
 
-    public PositionResponseReader() {
+    public PositionReader() {
         super();
     }
 

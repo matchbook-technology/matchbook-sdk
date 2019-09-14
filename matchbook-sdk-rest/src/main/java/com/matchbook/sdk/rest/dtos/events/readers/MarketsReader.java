@@ -4,10 +4,10 @@ import com.matchbook.sdk.rest.dtos.PageableResponseReader;
 import com.matchbook.sdk.rest.dtos.events.Market;
 import com.matchbook.sdk.rest.dtos.events.MarketsResponse;
 
-public class MarketsResponseReader extends PageableResponseReader<Market, MarketsResponse> {
+public class MarketsReader extends PageableResponseReader<Market, MarketsResponse> {
 
-    public MarketsResponseReader() {
-        super(new MarketResponseReader());
+    public MarketsReader() {
+        super(new MarketReader());
     }
 
     @Override

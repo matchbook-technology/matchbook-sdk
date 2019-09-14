@@ -6,9 +6,9 @@ import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBet;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
-public class AggregatedMatchedBetResponseReader extends ResponseReader<AggregatedMatchedBet> {
+public class AggregatedMatchedBetReader extends ResponseReader<AggregatedMatchedBet> {
 
-    public AggregatedMatchedBetResponseReader() {
+    public AggregatedMatchedBetReader() {
         super();
     }
 
