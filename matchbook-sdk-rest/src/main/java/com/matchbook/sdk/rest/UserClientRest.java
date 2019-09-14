@@ -1,15 +1,10 @@
 package com.matchbook.sdk.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.rest.dtos.user.Account;
-import com.matchbook.sdk.rest.dtos.user.AccountRequest;
-import com.matchbook.sdk.rest.dtos.user.Balance;
-import com.matchbook.sdk.rest.dtos.user.BalanceRequest;
-import com.matchbook.sdk.rest.dtos.user.Login;
-import com.matchbook.sdk.rest.dtos.user.LoginRequest;
-import com.matchbook.sdk.rest.dtos.user.Logout;
-import com.matchbook.sdk.rest.dtos.user.LogoutRequest;
+import com.matchbook.sdk.rest.dtos.user.*;
 import com.matchbook.sdk.rest.dtos.user.readers.AccountReader;
+import com.matchbook.sdk.rest.dtos.user.readers.LoginReader;
+import com.matchbook.sdk.rest.dtos.user.readers.LogoutReader;
 
 public class UserClientRest extends AbstractRestClient implements UserClient {
 
@@ -24,14 +19,14 @@ public class UserClientRest extends AbstractRestClient implements UserClient {
                     connectionManager.getClientConfig().getPassword())
                 .build();
         String url = buildLoginUrl();
-        postRequest(url, loginRequest, loginObserver, Login.class);
+        postRequest(url, loginRequest, loginObserver, new LoginReader());
     }
 
     @Override
     public void logout(StreamObserver<Logout> logoutObserver) {
         LogoutRequest logoutRequest = new LogoutRequest.Builder().build();
         String url = buildLoginUrl();
-        deleteRequest(url, logoutRequest, logoutObserver, Logout.class);
+        deleteRequest(url, logoutRequest, logoutObserver, new LogoutReader());
     }
 
     @Override

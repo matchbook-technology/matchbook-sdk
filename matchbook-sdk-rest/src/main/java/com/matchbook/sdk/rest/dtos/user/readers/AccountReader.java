@@ -40,6 +40,11 @@ public class AccountReader extends ResponseReader<Account> {
                 account.setCommissionReserve(parser.getDecimal());
             } else if ("commission-type".equals(fieldName)) {
                 account.setCommissionType(parser.getEnum(CommissionType.class));
+            } else if ("name".equals(fieldName) ||
+                    "address".equals(fieldName) ||
+                    "roles".equals(fieldName) ||
+                    "user-security-question".equals(fieldName)) {
+                parser.skipChildren();
             }
             parser.moveToNextToken();
         }
