@@ -9,7 +9,4 @@ public interface Serializer {
 
     Parser newParser(InputStream inputStream) throws IOException;
 
-    @Deprecated
-    <T> T readObject(InputStream inputStream, Class<T> type) throws IOException;
-
 }
