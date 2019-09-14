@@ -3,6 +3,7 @@ package com.matchbook.sdk.rest;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.rest.dtos.user.*;
 import com.matchbook.sdk.rest.dtos.user.readers.AccountReader;
+import com.matchbook.sdk.rest.dtos.user.readers.BalanceReader;
 import com.matchbook.sdk.rest.dtos.user.readers.LoginReader;
 import com.matchbook.sdk.rest.dtos.user.readers.LogoutReader;
 
@@ -40,7 +41,7 @@ public class UserClientRest extends AbstractRestClient implements UserClient {
     public void getBalance(StreamObserver<Balance> balanceObserver) {
         BalanceRequest balanceRequest = new BalanceRequest.Builder().build();
         String url = buildSportsUrl(balanceRequest.resourcePath());
-        getRequest(url, balanceRequest, balanceObserver, Balance.class);
+        getRequest(url, balanceRequest, balanceObserver, new BalanceReader());
     }
 
 }
