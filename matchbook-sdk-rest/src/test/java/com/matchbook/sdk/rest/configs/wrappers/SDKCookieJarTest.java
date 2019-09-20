@@ -12,7 +12,11 @@ import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 
-public class CookieJarImplTest {
+/**
+ * Test class for {@link SDKCookieJar}.
+ *
+ */
+public class SDKCookieJarTest {
 
     private CookieJar target = new SDKCookieJar();
 
