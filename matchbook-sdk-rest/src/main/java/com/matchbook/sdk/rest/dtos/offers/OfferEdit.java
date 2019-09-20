@@ -17,7 +17,7 @@ public class OfferEdit implements RestResponse {
     private BigDecimal oddsAfter;
     private BigDecimal stakeBefore;
     private BigDecimal stakeAfter;
-    private BigDecimal delay;
+    private Double delay;
     private Instant editTime;
 
     public Long getId() {
@@ -92,11 +92,11 @@ public class OfferEdit implements RestResponse {
         this.stakeAfter = stakeAfter;
     }
 
-    public BigDecimal getDelay() {
+    public Double getDelay() {
         return delay;
     }
 
-    public void setDelay(BigDecimal delay) {
+    public void setDelay(Double delay) {
         this.delay = delay;
     }
 

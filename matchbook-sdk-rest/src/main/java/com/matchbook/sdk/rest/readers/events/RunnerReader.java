@@ -43,7 +43,7 @@ public class RunnerReader extends ResponseReader<Runner> {
             } else if ("handicap".equals(fieldName)) {
                 runner.setHandicap(parser.getDouble());
             } else if ("volume".equals(fieldName)) {
-                runner.setVolume(parser.getDecimal());
+                runner.setVolume(parser.getDouble());
             } else if ("prices".equals(fieldName)) {
                 List<Price> prices = readPrices();
                 runner.setPrices(prices);

@@ -34,8 +34,8 @@ public class Offer implements RestResponse {
     private BigDecimal potentialLiability;
     private BigDecimal remainingPotentialLiability;
     private CommissionType commissionType;
-    private BigDecimal originatorCommissionRate;
-    private BigDecimal acceptorCommissionRate;
+    private Double originatorCommissionRate;
+    private Double acceptorCommissionRate;
     private BigDecimal commissionReserve;
     private boolean inPlay;
     private boolean keepInPlay;
@@ -207,19 +207,19 @@ public class Offer implements RestResponse {
         this.commissionType = commissionType;
     }
 
-    public BigDecimal getOriginatorCommissionRate() {
+    public Double getOriginatorCommissionRate() {
         return originatorCommissionRate;
     }
 
-    public void setOriginatorCommissionRate(BigDecimal originatorCommissionRate) {
+    public void setOriginatorCommissionRate(Double originatorCommissionRate) {
         this.originatorCommissionRate = originatorCommissionRate;
     }
 
-    public BigDecimal getAcceptorCommissionRate() {
+    public Double getAcceptorCommissionRate() {
         return acceptorCommissionRate;
     }
 
-    public void setAcceptorCommissionRate(BigDecimal acceptorCommissionRate) {
+    public void setAcceptorCommissionRate(Double acceptorCommissionRate) {
         this.acceptorCommissionRate = acceptorCommissionRate;
     }
 

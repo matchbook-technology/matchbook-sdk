@@ -73,9 +73,9 @@ public class OfferReader extends ResponseReader<Offer> {
             } else if ("commission-type".equals(fieldName)) {
                 offer.setCommissionType(parser.getEnum(CommissionType.class));
             } else if ("originator-commission-rate".equals(fieldName)) {
-                offer.setOriginatorCommissionRate(parser.getDecimal());
+                offer.setOriginatorCommissionRate(parser.getDouble());
             } else if ("acceptor-commission-rate".equals(fieldName)) {
-                offer.setAcceptorCommissionRate(parser.getDecimal());
+                offer.setAcceptorCommissionRate(parser.getDouble());
             } else if ("commission-reserve".equals(fieldName)) {
                 offer.setCommissionReserve(parser.getDecimal());
             } else if ("status".equals(fieldName)) {

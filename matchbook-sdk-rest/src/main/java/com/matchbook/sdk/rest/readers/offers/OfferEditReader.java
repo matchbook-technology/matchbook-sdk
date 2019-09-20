@@ -37,7 +37,7 @@ public class OfferEditReader extends ResponseReader<OfferEdit> {
             } else if ("status".equals(fieldName)) {
                 offerEdit.setStatus(parser.getEnum(OfferEditStatus.class));
             } else if ("delay".equals(fieldName)) {
-                offerEdit.setDelay(parser.getDecimal());
+                offerEdit.setDelay(parser.getDouble());
             } else if ("edit-time".equals(fieldName)) {
                 offerEdit.setEditTime(parser.getInstant());
             }

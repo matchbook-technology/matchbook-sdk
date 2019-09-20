@@ -1,11 +1,10 @@
 package com.matchbook.sdk.rest.dtos.events;
 
-import com.matchbook.sdk.rest.dtos.RestResponse;
-import com.matchbook.sdk.rest.dtos.prices.Price;
-
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.matchbook.sdk.rest.dtos.RestResponse;
+import com.matchbook.sdk.rest.dtos.prices.Price;
 
 public class Runner implements RestResponse {
 
@@ -17,7 +16,7 @@ public class Runner implements RestResponse {
     private RunnerStatus status;
     private boolean withdrawn;
     private Double handicap;
-    private BigDecimal volume;
+    private Double volume;
     private List<Price> prices;
 
     public Runner() {
@@ -88,11 +87,11 @@ public class Runner implements RestResponse {
         this.handicap = handicap;
     }
 
-    public BigDecimal getVolume() {
+    public Double getVolume() {
         return volume;
     }
 
-    public void setVolume(BigDecimal volume) {
+    public void setVolume(Double volume) {
         this.volume = volume;
     }
 
