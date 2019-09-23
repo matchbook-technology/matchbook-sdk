@@ -14,9 +14,6 @@ import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.rest.EventsClientRest;
@@ -32,6 +29,8 @@ import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
+import org.junit.Before;
+import org.junit.Test;
 
 public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
@@ -189,7 +188,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
-                .withBodyFile("matchbook/getEventSuccessfulResponse.json")));
+                .withBodyFile("matchbook/events/getEventSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         EventRequest eventRequest = new EventRequest.Builder(395729780570010L).build();
@@ -198,12 +197,13 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Event event) {
+                verifyEvent(event);
                 countDownLatch.countDown();
             }
 
             @Override
             public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
+                fail();
             }
 
             @Override
@@ -212,7 +212,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(getRequestedFor(anyUrl()).withCookie("mb-client-type", equalTo("mb-sdk")));
