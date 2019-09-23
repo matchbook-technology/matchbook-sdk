@@ -1,11 +1,13 @@
 package com.matchbook.sdk.rest.clients.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,6 +15,9 @@ import static org.junit.Assert.fail;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.ErrorType;
@@ -23,8 +28,6 @@ import com.matchbook.sdk.rest.dtos.user.Account;
 import com.matchbook.sdk.rest.dtos.user.Balance;
 import com.matchbook.sdk.rest.dtos.user.Login;
 import com.matchbook.sdk.rest.dtos.user.Logout;
-import org.junit.Before;
-import org.junit.Test;
 
 public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
@@ -135,6 +138,38 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(2, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+    }
+
+    @Test
+    public void loginIncludesMbClientCookieTest() throws InterruptedException {
+        wireMockServer.stubFor(post(urlEqualTo("/bpapi/rest/security/session"))
+            .withHeader("Accept", equalTo("application/json"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBodyFile("matchbook/loginSuccessfulResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+
+        userClientRest.login(new StreamObserver<Login>() {
+            @Override
+            public void onNext(Login login) {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+        });
+
+        boolean await = countDownLatch.await(2, TimeUnit.SECONDS);
+        wireMockServer.verify(postRequestedFor(anyUrl()).withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
