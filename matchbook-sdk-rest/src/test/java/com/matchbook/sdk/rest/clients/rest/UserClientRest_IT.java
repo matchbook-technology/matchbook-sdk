@@ -159,6 +159,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
         userClientRest.login(new StreamObserver<Login>() {
+
             @Override
             public void onNext(Login login) {
                 countDownLatch.countDown();

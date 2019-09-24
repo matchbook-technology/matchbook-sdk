@@ -11,7 +11,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.configs.Parser;
 
-public class ParserWrapper implements Parser {
+class ParserWrapper implements Parser {
 
     private final JsonParser jsonParser;
 
