@@ -1,10 +1,8 @@
 package com.matchbook.sdk.rest.clients.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -179,43 +177,6 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
                 assertNotNull(metaTag.getType());
             });
         }
-    }
-
-    @Test
-    public void getEventIncludesMbClientCookieTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/events/395729780570010"))
-            .withHeader("Accept", equalTo("application/json"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBodyFile("matchbook/events/getEventSuccessfulResponse.json")));
-
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-        EventRequest eventRequest = new EventRequest.Builder(395729780570010L).build();
-
-        eventsClientRest.getEvent(eventRequest, new StreamObserver<Event>() {
-
-            @Override
-            public void onNext(Event event) {
-                verifyEvent(event);
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-        });
-
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
-
-        wireMockServer.verify(getRequestedFor(anyUrl()).withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
