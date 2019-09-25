@@ -1,12 +1,7 @@
 package com.matchbook.sdk.rest;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.anyRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -35,12 +30,6 @@ public abstract class MatchbookSDKClientRest_IT {
                 .loginUrl("http://localhost:8089/bpapi/rest/security/session")
                 .build();
         connectionManager = new ConnectionManager.Builder(clientConfig).sessionAutoManage(false).build();
-    }
-
-    @After
-    public void tearDown() {
-        wireMockServer.verify(anyRequestedFor(anyUrl())
-                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
 }

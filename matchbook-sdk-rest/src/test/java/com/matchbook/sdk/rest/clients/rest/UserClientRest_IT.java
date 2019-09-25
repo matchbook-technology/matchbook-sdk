@@ -2,11 +2,13 @@ package com.matchbook.sdk.rest.clients.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -42,7 +44,8 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
     @Test
     public void loginTest() throws InterruptedException {
-        wireMockServer.stubFor(post(urlEqualTo("/bpapi/rest/security/session"))
+        String url = "/bpapi/rest/security/session";
+        wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -75,11 +78,15 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void loginUsingIncorrectPasswordTest() throws InterruptedException {
-        wireMockServer.stubFor(post(urlEqualTo("/bpapi/rest/security/session"))
+        String url = "/bpapi/rest/security/session";
+        wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(401)
@@ -108,11 +115,15 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void loginEmptyResponseBodyTest() throws InterruptedException {
-        wireMockServer.stubFor(post(urlEqualTo("/bpapi/rest/security/session"))
+        String url = "/bpapi/rest/security/session";
+        wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(400)
@@ -142,11 +153,15 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void logoutTest() throws InterruptedException {
-        wireMockServer.stubFor(delete(urlEqualTo("/bpapi/rest/security/session"))
+        String url = "/bpapi/rest/security/session";
+        wireMockServer.stubFor(delete(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -178,11 +193,15 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(deleteRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void getAccountTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/account"))
+        String url = "/edge/rest/account";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -208,8 +227,12 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                 fail();
             }
         });
+
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     private void verifyAccount(Account account) {
@@ -224,7 +247,8 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
     @Test
     public void getBalanceTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/account/balance"))
+        String url = "/edge/rest/account/balance";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -258,6 +282,9 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
@@ -265,7 +292,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         // Perform first a login request with response that sets the session-token cookie
         // We expect that the following GET balance includes the same cookie in the request
 
-        wireMockServer.stubFor(post(urlEqualTo("/bpapi/rest/security/session"))
+        wireMockServer.stubFor(post(urlPathEqualTo("/bpapi/rest/security/session"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -292,7 +319,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         await = balanceCountDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
-        wireMockServer.verify(getRequestedFor(urlEqualTo("/edge/rest/account/balance"))
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo("/edge/rest/account/balance"))
                 .withCookie("session-token", equalTo("2574_d4dcd1c54caacb4755a")));
     }
 
@@ -302,7 +329,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         // then a logout request that should expire the cookie.
         // We expect that the following GET balance doesn't include the session-token cookie
 
-        wireMockServer.stubFor(post(urlEqualTo("/bpapi/rest/security/session"))
+        wireMockServer.stubFor(post(urlPathEqualTo("/bpapi/rest/security/session"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -310,7 +337,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                         .withHeader("Set-Cookie", "session-token=2574_d4dcd1c54caacb4755a")
                         .withBodyFile("matchbook/user/loginSuccessfulResponse.json")));
 
-        wireMockServer.stubFor(delete(urlEqualTo("/bpapi/rest/security/session"))
+        wireMockServer.stubFor(delete(urlPathEqualTo("/bpapi/rest/security/session"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -343,7 +370,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
         await = balanceCountDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
-        wireMockServer.verify(getRequestedFor(urlEqualTo("/edge/rest/account/balance"))
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo("/edge/rest/account/balance"))
                 .withoutHeader("set-cookie"));
     }
 

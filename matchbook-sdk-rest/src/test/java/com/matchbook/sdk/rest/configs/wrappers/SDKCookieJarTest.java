@@ -6,19 +6,19 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Cookie;
+import okhttp3.HttpUrl;
+import org.junit.Before;
 import org.junit.Test;
 
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
-
-/**
- * Test class for {@link SDKCookieJar}.
- *
- */
 public class SDKCookieJarTest {
 
-    private CookieJar target = new SDKCookieJar();
+    private SDKCookieJar unit;
+
+    @Before
+    public void setUp() {
+        unit = new SDKCookieJar();
+    }
 
     @Test
     public void saveFromResponseAndLoadForRequestTest() {
@@ -29,15 +29,15 @@ public class SDKCookieJarTest {
         cookies.add(cookie1);
         cookies.add(cookie2);
 
-        target.saveFromResponse(httpUrl, cookies);
+        unit.saveFromResponse(httpUrl, cookies);
 
-        List<Cookie> requestCookies = target.loadForRequest(httpUrl);
+        List<Cookie> requestCookies = unit.loadForRequest(httpUrl);
         assertNotNull(requestCookies);
         assertEquals(3, requestCookies.size());
 
-        verifyCookieMatch("mb-client-type", "mb-sdk", requestCookies.get(0));
-        verifyCookieMatch(cookie1.name(), cookie1.value(), requestCookies.get(1));
-        verifyCookieMatch(cookie2.name(), cookie2.value(), requestCookies.get(2));
+        verifyCookie("mb-client-type", "mb-sdk", requestCookies.get(0));
+        verifyCookie(cookie1.name(), cookie1.value(), requestCookies.get(1));
+        verifyCookie(cookie2.name(), cookie2.value(), requestCookies.get(2));
     }
 
     private Cookie createCookie(String name, String value) {
@@ -49,7 +49,7 @@ public class SDKCookieJarTest {
             .build();
     }
 
-    private void verifyCookieMatch(String expectedName, String expectedValue, Cookie cookie) {
+    private void verifyCookie(String expectedName, String expectedValue, Cookie cookie) {
         assertEquals(expectedName, cookie.name());
         assertEquals(expectedValue, cookie.value());
     }
