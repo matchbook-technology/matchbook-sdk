@@ -14,4 +14,7 @@ public interface HttpClient extends Closeable {
 
     void delete(String url, HttpCallback httpCallback) throws MatchbookSDKHttpException;
 
+    @Override
+    void close();
+
 }

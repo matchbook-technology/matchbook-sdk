@@ -8,7 +8,7 @@ import com.matchbook.sdk.rest.configs.HttpClient;
 import com.matchbook.sdk.rest.configs.Serializer;
 import com.matchbook.sdk.rest.configs.wrappers.HttpClientWrapper;
 import com.matchbook.sdk.rest.configs.wrappers.SerializerWrapper;
-import com.matchbook.sdk.rest.workers.SessionManager;
+import com.matchbook.sdk.rest.workers.SessionManagerScheduler;
 
 public class ConnectionManager implements Closeable {
 
@@ -16,16 +16,16 @@ public class ConnectionManager implements Closeable {
     private final HttpClient httpClient;
     private final Serializer serializer;
 
-    private SessionManager sessionManager;
+    private SessionManagerScheduler sessionManagerScheduler;
 
-    public ConnectionManager(ConnectionManager.Builder builder) {
+    private ConnectionManager(ConnectionManager.Builder builder) {
         this.clientConfig = builder.clientConfig;
         this.httpClient = builder.httpClient;
         this.serializer = builder.serializer;
 
-        if (builder.sessionAutoManage) {
-            sessionManager = new SessionManager(this);
-            sessionManager.keepAlive();
+        if (builder.autoManageSession) {
+            sessionManagerScheduler = new SessionManagerScheduler(this);
+            sessionManagerScheduler.start();
         }
     }
 
@@ -42,10 +42,10 @@ public class ConnectionManager implements Closeable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         httpClient.close();
-        if (Objects.nonNull(sessionManager)) {
-            sessionManager.stop();
+        if (Objects.nonNull(sessionManagerScheduler)) {
+            sessionManagerScheduler.stop();
         }
     }
 
@@ -55,17 +55,17 @@ public class ConnectionManager implements Closeable {
         private final HttpClient httpClient;
         private final Serializer serializer;
 
-        private boolean sessionAutoManage;
+        private boolean autoManageSession;
 
         public Builder(ClientConfig clientConfig) {
             this.clientConfig = clientConfig;
             this.httpClient = new HttpClientWrapper(clientConfig.getHttpConfig());
             this.serializer = new SerializerWrapper();
-            sessionAutoManage = true;
+            autoManageSession = true;
         }
 
-        public Builder sessionAutoManage(boolean sessionAutoManage) {
-            this.sessionAutoManage = sessionAutoManage;
+        public Builder autoManageSession(boolean autoManageSession) {
+            this.autoManageSession = autoManageSession;
             return this;
         }
 

@@ -17,17 +17,17 @@ import com.matchbook.sdk.rest.dtos.user.Login;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SessionManager {
+public class SessionManagerScheduler {
 
     private static final long KEEP_ALIVE_PERIOD_HOURS = 4L;
 
-    private static Logger LOG = LoggerFactory.getLogger(SessionManager.class);
+    private static Logger LOG = LoggerFactory.getLogger(SessionManagerScheduler.class);
 
     private final long loginTimeout;
     private final ScheduledExecutorService sessionManagerExecutor;
     private final UserClient userClient;
 
-    public SessionManager(ConnectionManager connectionManager) {
+    public SessionManagerScheduler(ConnectionManager connectionManager) {
         loginTimeout = connectionManager.getClientConfig().getHttpConfig().getReadTimeout();
         this.userClient = new UserClientRest(connectionManager);
 
@@ -35,7 +35,7 @@ public class SessionManager {
         this.sessionManagerExecutor = Executors.newSingleThreadScheduledExecutor(threadFactory);
     }
 
-    public void keepAlive() {
+    public void start() {
         doLogin();
         startScheduler();
     }

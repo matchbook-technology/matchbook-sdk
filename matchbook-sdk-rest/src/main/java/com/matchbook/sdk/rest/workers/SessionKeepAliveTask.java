@@ -7,7 +7,7 @@ import com.matchbook.sdk.rest.dtos.user.Login;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SessionKeepAliveTask implements Runnable {
+class SessionKeepAliveTask implements Runnable {
 
     private static Logger LOG = LoggerFactory.getLogger(SessionKeepAliveTask.class);
 

@@ -35,7 +35,7 @@ public abstract class MatchbookSDKClientRest_IT {
                 .loginUrl("http://localhost:8089/bpapi/rest/security/session")
                 .build();
         connectionManager = new ConnectionManager.Builder(clientConfig)
-                .sessionAutoManage(false)
+                .autoManageSession(false)
                 .build();
     }
 
