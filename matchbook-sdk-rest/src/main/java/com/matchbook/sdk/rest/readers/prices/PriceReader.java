@@ -29,7 +29,7 @@ public class PriceReader extends ResponseReader<Price> {
             } else if ("currency".equals(fieldName)) {
                 price.setCurrency(parser.getEnum(Currency.class));
             } else if ("odds".equals(fieldName)) {
-                price.setOdds(parser.getDecimal());
+                price.setOdds(parser.getDouble());
             } else if ("available-amount".equals(fieldName)) {
                 price.setAvailableAmount(parser.getDecimal());
             }

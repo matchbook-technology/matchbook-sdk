@@ -28,9 +28,9 @@ public class MatchedBetReader extends ResponseReader<MatchedBet> {
             } else if ("odds-type".equals(fieldName)) {
                 matchedBet.setOddsType(parser.getEnum(OddsType.class));
             } else if ("odds".equals(fieldName)) {
-                matchedBet.setOdds(parser.getDecimal());
+                matchedBet.setOdds(parser.getDouble());
             } else if ("decimal-odds".equals(fieldName)) {
-                matchedBet.setDecimalOdds(parser.getDecimal());
+                matchedBet.setDecimalOdds(parser.getDouble());
             } else if ("currency".equals(fieldName)) {
                 matchedBet.setCurrency(parser.getEnum(Currency.class));
             } else if ("stake".equals(fieldName)) {

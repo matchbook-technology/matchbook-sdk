@@ -9,8 +9,8 @@ import com.matchbook.sdk.rest.dtos.RestRequest;
 public class OfferPutRequest implements RestRequest {
 
     private final Long id;
-    private final BigDecimal currentOdds;
-    private final BigDecimal newOdds;
+    private final Double currentOdds;
+    private final Double newOdds;
     private final BigDecimal currentStake;
     private final BigDecimal newStake;
 
@@ -26,11 +26,11 @@ public class OfferPutRequest implements RestRequest {
         return id;
     }
 
-    public BigDecimal getCurrentOdds() {
+    public Double getCurrentOdds() {
         return currentOdds;
     }
 
-    public BigDecimal getNewOdds() {
+    public Double getNewOdds() {
         return newOdds;
     }
 
@@ -66,19 +66,19 @@ public class OfferPutRequest implements RestRequest {
     public static class Builder {
 
         private final Long id;
-        private final BigDecimal newOdds;
+        private final Double newOdds;
         private final BigDecimal newStake;
 
-        private BigDecimal currentOdds;
+        private Double currentOdds;
         private BigDecimal currentStake;
 
-        public Builder(Long id, BigDecimal newOdds, BigDecimal newStake) {
+        public Builder(Long id, Double newOdds, BigDecimal newStake) {
             this.id = id;
             this.newOdds = newOdds;
             this.newStake = newStake;
         }
 
-        public Builder currentOdds(BigDecimal currentOdds) {
+        public Builder currentOdds(Double currentOdds) {
             this.currentOdds = currentOdds;
             return this;
         }

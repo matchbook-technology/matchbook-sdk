@@ -1,10 +1,10 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
-import com.matchbook.sdk.rest.dtos.RestResponse;
-import com.matchbook.sdk.rest.dtos.prices.OddsType;
-
 import java.math.BigDecimal;
 import java.time.Instant;
+
+import com.matchbook.sdk.rest.dtos.RestResponse;
+import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
 public class OfferEdit implements RestResponse {
 
@@ -13,8 +13,8 @@ public class OfferEdit implements RestResponse {
     private Long runnerId;
     private OfferEditStatus status;
     private OddsType oddsType;
-    private BigDecimal oddsBefore;
-    private BigDecimal oddsAfter;
+    private Double oddsBefore;
+    private Double oddsAfter;
     private BigDecimal stakeBefore;
     private BigDecimal stakeAfter;
     private Double delay;
@@ -60,19 +60,19 @@ public class OfferEdit implements RestResponse {
         this.oddsType = oddsType;
     }
 
-    public BigDecimal getOddsBefore() {
+    public Double getOddsBefore() {
         return oddsBefore;
     }
 
-    public void setOddsBefore(BigDecimal oddsBefore) {
+    public void setOddsBefore(Double oddsBefore) {
         this.oddsBefore = oddsBefore;
     }
 
-    public BigDecimal getOddsAfter() {
+    public Double getOddsAfter() {
         return oddsAfter;
     }
 
-    public void setOddsAfter(BigDecimal oddsAfter) {
+    public void setOddsAfter(Double oddsAfter) {
         this.oddsAfter = oddsAfter;
     }
 

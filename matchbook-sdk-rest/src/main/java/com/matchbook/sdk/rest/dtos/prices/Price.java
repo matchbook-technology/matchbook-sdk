@@ -10,8 +10,8 @@ public class Price implements RestResponse {
     private Side side;
     private OddsType oddsType;
     private Currency currency;
+    private Double odds;
     private BigDecimal availableAmount;
-    private BigDecimal odds;
 
     public ExchangeType getExchangeType() {
         return exchangeType;
@@ -45,20 +45,20 @@ public class Price implements RestResponse {
         this.currency = currency;
     }
 
+    public Double getOdds() {
+        return odds;
+    }
+
+    public void setOdds(Double odds) {
+        this.odds = odds;
+    }
+
     public BigDecimal getAvailableAmount() {
         return availableAmount;
     }
 
     public void setAvailableAmount(BigDecimal availableAmount) {
         this.availableAmount = availableAmount;
-    }
-
-    public BigDecimal getOdds() {
-        return odds;
-    }
-
-    public void setOdds(BigDecimal odds) {
-        this.odds = odds;
     }
 
     @Override
@@ -68,8 +68,8 @@ public class Price implements RestResponse {
                 ", side=" + side +
                 ", oddsType=" + oddsType +
                 ", currency=" + currency +
-                ", availableAmount=" + availableAmount +
                 ", odds=" + odds +
+                ", availableAmount=" + availableAmount +
                 "}";
     }
 

@@ -27,9 +27,9 @@ public class OfferEditReader extends ResponseReader<OfferEdit> {
             } else if ("odds-type".equals(fieldName)) {
                 offerEdit.setOddsType(parser.getEnum(OddsType.class));
             } else if ("odds-before".equals(fieldName)) {
-                offerEdit.setOddsBefore(parser.getDecimal());
+                offerEdit.setOddsBefore(parser.getDouble());
             } else if ("odds-after".equals(fieldName)) {
-                offerEdit.setOddsAfter(parser.getDecimal());
+                offerEdit.setOddsAfter(parser.getDouble());
             } else if ("stake-before".equals(fieldName)) {
                 offerEdit.setStakeBefore(parser.getDecimal());
             } else if ("stake-after".equals(fieldName)) {

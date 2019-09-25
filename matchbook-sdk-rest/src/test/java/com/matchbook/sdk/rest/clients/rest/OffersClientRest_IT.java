@@ -158,7 +158,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
         OfferPostRequest offerRequest = new OfferPostRequest
-                .Builder(401525949430009L, Side.BACK, new BigDecimal("2.4"), new BigDecimal("5"))
+                .Builder(401525949430009L, Side.BACK, 2.4, new BigDecimal("5"))
                 .build();
         OffersPostRequest offersPostRequest = new OffersPostRequest
                 .Builder(OddsType.DECIMAL, ExchangeType.BACK_LAY, Collections.singletonList(offerRequest))
@@ -204,7 +204,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
         OfferPutRequest offerPutRequest = new OfferPutRequest
-                .Builder(925183846730025L, new BigDecimal("3"), new BigDecimal("100"))
+                .Builder(925183846730025L, 3.0, new BigDecimal("100"))
                 .build();
 
         offersClientRest.editOffer(offerPutRequest, new StreamObserver<Offer>() {
@@ -248,7 +248,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
         OfferPutRequest offerPutRequest = new OfferPutRequest
-                .Builder(925183846730025L, new BigDecimal("3"), new BigDecimal("100"))
+                .Builder(925183846730025L, 3.0, new BigDecimal("100"))
                 .build();
         OffersPutRequest offersPutRequest = new OffersPutRequest
                 .Builder(Collections.singletonList(offerPutRequest))
