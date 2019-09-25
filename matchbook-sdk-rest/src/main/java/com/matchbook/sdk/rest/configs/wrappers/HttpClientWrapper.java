@@ -86,6 +86,12 @@ public class HttpClientWrapper implements HttpClient {
         httpClient.newCall(request).enqueue(callback);
     }
 
+    @Override
+    public void close() {
+        httpClient.dispatcher().executorService().shutdown();
+        httpClient.connectionPool().evictAll();
+    }
+
     private static class RequestCallback implements Callback {
 
         private final HttpCallback httpCallback;

@@ -1,8 +1,10 @@
 package com.matchbook.sdk.rest.configs;
 
+import java.io.Closeable;
+
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
 
-public interface HttpClient {
+public interface HttpClient extends Closeable {
 
     void get(String url, HttpCallback httpCallback) throws MatchbookSDKHttpException;
 

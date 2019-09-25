@@ -19,16 +19,20 @@ import org.slf4j.LoggerFactory;
 
 public class SessionManager {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SessionManager.class);
+    private static final long KEEP_ALIVE_PERIOD_HOURS = 4L;
 
-    private final ScheduledExecutorService loginSchedulerExecutor;
+    private static Logger LOG = LoggerFactory.getLogger(SessionManager.class);
+
+    private final long loginTimeout;
+    private final ScheduledExecutorService sessionManagerExecutor;
     private final UserClient userClient;
 
     public SessionManager(ConnectionManager connectionManager) {
+        loginTimeout = connectionManager.getClientConfig().getHttpConfig().getReadTimeout();
         this.userClient = new UserClientRest(connectionManager);
 
         ThreadFactory threadFactory = new SessionManagerThreadFactory();
-        this.loginSchedulerExecutor = Executors.newSingleThreadScheduledExecutor(threadFactory);
+        this.sessionManagerExecutor = Executors.newSingleThreadScheduledExecutor(threadFactory);
     }
 
     public void keepAlive() {
@@ -37,20 +41,25 @@ public class SessionManager {
     }
 
     private void startScheduler() {
-        SessionKeepAliveScheduler sessionKeepAliveScheduler = new SessionKeepAliveScheduler(userClient);
-        loginSchedulerExecutor.scheduleAtFixedRate(sessionKeepAliveScheduler,
-                4,
-                4,
+        SessionKeepAliveTask sessionKeepAliveTask = new SessionKeepAliveTask(userClient);
+        sessionManagerExecutor.scheduleAtFixedRate(sessionKeepAliveTask,
+                KEEP_ALIVE_PERIOD_HOURS,
+                KEEP_ALIVE_PERIOD_HOURS,
                 TimeUnit.HOURS);
+    }
+
+    public void stop() {
+        sessionManagerExecutor.shutdown();
     }
 
     private void doLogin() {
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
         userClient.login(new StreamObserver<Login>() {
+
             @Override
-            public void onNext(com.matchbook.sdk.rest.dtos.user.Login login) {
-                LOG.info("Successfully login to the user: {}", login.getAccount().getUsername());
+            public void onNext(Login login) {
+                LOG.info("User {} successfully logged in.", login.getAccount().getUsername());
             }
 
             @Override
@@ -65,19 +74,20 @@ public class SessionManager {
         });
 
         try {
-            countDownLatch.await(5, TimeUnit.SECONDS);
+            countDownLatch.await(loginTimeout, TimeUnit.MILLISECONDS);
         } catch (InterruptedException exception) {
             throw new MatchbookSDKHttpException(exception, ErrorType.UNAUTHENTICATED);
         }
     }
 
     private static class SessionManagerThreadFactory implements ThreadFactory {
+
         @Override
         public Thread newThread(Runnable runnable) {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            t.setName("session-manager");
-            return t;
+            Thread thread = new Thread(runnable);
+            thread.setDaemon(true);
+            thread.setName("mb-sdk-session-manager");
+            return thread;
         }
     }
 }

@@ -17,10 +17,9 @@ import org.slf4j.LoggerFactory;
 
 public class StreamClientRest implements StreamClient {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StreamClientRest.class);
+    private static Logger LOG = LoggerFactory.getLogger(StreamClientRest.class);
 
     private final PullerWorker pullerWorker;
-
     private final AtomicBoolean isShutdown;
 
     public StreamClientRest(ClientConfig clientConfig) {

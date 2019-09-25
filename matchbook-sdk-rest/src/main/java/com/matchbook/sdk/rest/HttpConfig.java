@@ -8,7 +8,7 @@ public class HttpConfig {
     private final long writeTimeout;
     private final long readTimeout;
 
-    public HttpConfig(HttpConfig.Builder builder) {
+    private HttpConfig(HttpConfig.Builder builder) {
         this.connectionTimeout = builder.connectionTimeout;
         this.readTimeout = builder.readTimeout;
         this.writeTimeout = builder.writeTimeout;
@@ -37,9 +37,9 @@ public class HttpConfig {
 
     public static class Builder {
 
-        private long connectionTimeout = TimeUnit.SECONDS.toMillis(5);
-        private long writeTimeout = TimeUnit.SECONDS.toMillis(15);
-        private long readTimeout = TimeUnit.SECONDS.toMillis(30);
+        private long connectionTimeout = TimeUnit.SECONDS.toMillis(2);
+        private long writeTimeout = TimeUnit.SECONDS.toMillis(10);
+        private long readTimeout = TimeUnit.SECONDS.toMillis(10);
 
         public Builder connectionTimeout(long connectionTimeout) {
             this.connectionTimeout = connectionTimeout;

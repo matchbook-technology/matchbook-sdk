@@ -46,7 +46,7 @@ public class ClientConfig {
                 ", password=" + Arrays.toString(password) +
                 ", sportsUrl=" + sportsUrl +
                 ", loginUrl=" + loginUrl +
-                ", httpClientConfig=" + httpConfig +
+                ", httpConfig=" + httpConfig +
                 "}";
     }
 
