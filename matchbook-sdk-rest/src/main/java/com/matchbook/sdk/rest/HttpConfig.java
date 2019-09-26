@@ -37,9 +37,16 @@ public class HttpConfig {
 
     public static class Builder {
 
-        private long connectionTimeout = TimeUnit.SECONDS.toMillis(2);
-        private long writeTimeout = TimeUnit.SECONDS.toMillis(10);
-        private long readTimeout = TimeUnit.SECONDS.toMillis(10);
+        private long connectionTimeout;
+        private long writeTimeout;
+        private long readTimeout;
+
+        public Builder() {
+            final long defaultTimeout = TimeUnit.SECONDS.toMillis(10);
+            connectionTimeout = defaultTimeout;
+            writeTimeout = defaultTimeout;
+            readTimeout = defaultTimeout;
+        }
 
         public Builder connectionTimeout(long connectionTimeout) {
             this.connectionTimeout = connectionTimeout;

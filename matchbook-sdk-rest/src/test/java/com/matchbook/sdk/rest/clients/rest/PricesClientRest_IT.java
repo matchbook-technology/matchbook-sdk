@@ -3,6 +3,7 @@ package com.matchbook.sdk.rest.clients.rest;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -33,9 +34,9 @@ public class PricesClientRest_IT extends MatchbookSDKClientRest_IT {
     }
 
     @Test
-    public void getSportsTest() throws InterruptedException {
-        String testUrl = "/edge/rest/events/395729780570010/markets/395729860260010/runners/395729860800010/prices";
-        wireMockServer.stubFor(get(urlPathEqualTo(testUrl))
+    public void getPricesTest() throws InterruptedException {
+        String url = "/edge/rest/events/395729780570010/markets/395729860260010/runners/395729860800010/prices";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -71,6 +72,9 @@ public class PricesClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
 }

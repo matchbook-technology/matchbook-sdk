@@ -27,8 +27,8 @@ public class Offer implements RestResponse {
     private Side side;
     private OddsType oddsType;
     private Currency currency;
-    private BigDecimal odds;
-    private BigDecimal decimalOdds;
+    private Double odds;
+    private Double decimalOdds;
     private BigDecimal stake;
     private BigDecimal remaining;
     private BigDecimal potentialLiability;
@@ -151,19 +151,19 @@ public class Offer implements RestResponse {
         this.currency = currency;
     }
 
-    public BigDecimal getOdds() {
+    public Double getOdds() {
         return odds;
     }
 
-    public void setOdds(BigDecimal odds) {
+    public void setOdds(Double odds) {
         this.odds = odds;
     }
 
-    public BigDecimal getDecimalOdds() {
+    public Double getDecimalOdds() {
         return decimalOdds;
     }
 
-    public void setDecimalOdds(BigDecimal decimalOdds) {
+    public void setDecimalOdds(Double decimalOdds) {
         this.decimalOdds = decimalOdds;
     }
 

@@ -35,9 +35,9 @@ public class AggregatedMatchedBetReader extends ResponseReader<AggregatedMatched
             } else if ("odds-type".equals(fieldName)) {
                 aggregatedMatchedBet.setOddsType(parser.getEnum(OddsType.class));
             } else if ("odds".equals(fieldName)) {
-                aggregatedMatchedBet.setOdds(parser.getDecimal());
+                aggregatedMatchedBet.setOdds(parser.getDouble());
             } else if ("decimal-odds".equals(fieldName)) {
-                aggregatedMatchedBet.setDecimalOdds(parser.getDecimal());
+                aggregatedMatchedBet.setDecimalOdds(parser.getDouble());
             } else if ("stake".equals(fieldName)) {
                 aggregatedMatchedBet.setStake(parser.getDecimal());
             } else if ("potential-profit".equals(fieldName)) {

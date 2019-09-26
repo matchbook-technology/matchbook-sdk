@@ -2,10 +2,14 @@ package com.matchbook.sdk.rest.clients.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
+import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -19,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.OffersClientRest;
@@ -62,7 +65,8 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
     @Test
     public void getOfferTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/v2/offers/382937981320019"))
+        String url = "/edge/rest/v2/offers/382937981320019";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -95,11 +99,15 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void getOffersTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/v2/offers"))
+        String url = "/edge/rest/v2/offers";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -132,11 +140,15 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void submitOfferTest() throws InterruptedException {
-        wireMockServer.stubFor(post(urlPathEqualTo("/edge/rest/v2/offers"))
+        String url = "/edge/rest/v2/offers";
+        wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -146,7 +158,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
         OfferPostRequest offerRequest = new OfferPostRequest
-                .Builder(401525949430009L, Side.BACK, new BigDecimal("2.4"), new BigDecimal("5"))
+                .Builder(401525949430009L, Side.BACK, 2.4, new BigDecimal("5"))
                 .build();
         OffersPostRequest offersPostRequest = new OffersPostRequest
                 .Builder(OddsType.DECIMAL, ExchangeType.BACK_LAY, Collections.singletonList(offerRequest))
@@ -174,11 +186,15 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void editOfferTest() throws InterruptedException {
-        wireMockServer.stubFor(put(urlPathEqualTo("/edge/rest/v2/offers/925183846730025"))
+        String url = "/edge/rest/v2/offers/925183846730025";
+        wireMockServer.stubFor(put(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -188,7 +204,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
         OfferPutRequest offerPutRequest = new OfferPutRequest
-                .Builder(925183846730025L, new BigDecimal("3"), new BigDecimal("100"))
+                .Builder(925183846730025L, 3.0, new BigDecimal("100"))
                 .build();
 
         offersClientRest.editOffer(offerPutRequest, new StreamObserver<Offer>() {
@@ -214,11 +230,15 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(putRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void editOffersTest() throws InterruptedException {
-        wireMockServer.stubFor(put(urlPathEqualTo("/edge/rest/v2/offers"))
+        String url = "/edge/rest/v2/offers";
+        wireMockServer.stubFor(put(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -228,7 +248,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
         OfferPutRequest offerPutRequest = new OfferPutRequest
-                .Builder(925183846730025L, new BigDecimal("3"), new BigDecimal("100"))
+                .Builder(925183846730025L, 3.0, new BigDecimal("100"))
                 .build();
         OffersPutRequest offersPutRequest = new OffersPutRequest
                 .Builder(Collections.singletonList(offerPutRequest))
@@ -257,11 +277,15 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(putRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void deleteOfferTest() throws InterruptedException {
-        wireMockServer.stubFor(delete(urlPathEqualTo("/edge/rest/v2/offers/413775799780013"))
+        String url = "/edge/rest/v2/offers/413775799780013";
+        wireMockServer.stubFor(delete(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -294,11 +318,15 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(deleteRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void deleteOffersTest() throws InterruptedException {
-        wireMockServer.stubFor(delete(urlPathEqualTo("/edge/rest/v2/offers"))
+        String url = "/edge/rest/v2/offers";
+        wireMockServer.stubFor(delete(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -331,6 +359,9 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(deleteRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     private void verifyOffer(Offer offer) {
@@ -348,7 +379,8 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
     @Test
     public void getOfferEditTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/v2/offers/925183846730025/offer-edits/925184068850125"))
+        String url = "/edge/rest/v2/offers/925183846730025/offer-edits/925184068850125";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -381,11 +413,15 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void getOfferEditsTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/v2/offers/925183846730025/offer-edits"))
+        String url = "/edge/rest/v2/offers/925183846730025/offer-edits";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -418,6 +454,9 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     private void verifyOfferEdit(OfferEdit offerEdit) {
@@ -434,7 +473,8 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
     @Test
     public void getAggregatedMatchedBetsTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/bets/matched/aggregated"))
+        String url = "/edge/rest/bets/matched/aggregated";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -474,11 +514,15 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void getCancelledMatchedBetsTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/bets"))
+        String url = "/edge/rest/bets";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withQueryParam("status", new EqualToPattern("CANCELLED"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
@@ -519,11 +563,15 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void getPositionsTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/account/positions"))
+        String url = "/edge/rest/account/positions";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -559,6 +607,9 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
 }

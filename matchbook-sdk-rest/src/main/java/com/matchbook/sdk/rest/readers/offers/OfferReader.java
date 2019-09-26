@@ -57,9 +57,9 @@ public class OfferReader extends ResponseReader<Offer> {
             } else if ("odds-type".equals(fieldName)) {
                 offer.setOddsType(parser.getEnum(OddsType.class));
             } else if ("odds".equals(fieldName)) {
-                offer.setOdds(parser.getDecimal());
+                offer.setOdds(parser.getDouble());
             } else if ("decimal-odds".equals(fieldName)) {
-                offer.setDecimalOdds(parser.getDecimal());
+                offer.setDecimalOdds(parser.getDouble());
             } else if ("currency".equals(fieldName)) {
                 offer.setCurrency(parser.getEnum(Currency.class));
             } else if ("stake".equals(fieldName)) {

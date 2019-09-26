@@ -2,10 +2,13 @@ package com.matchbook.sdk.rest.clients.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -48,7 +51,8 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
 
     @Test
     public void getHeartbeatTest() throws InterruptedException, ParseException {
-        wireMockServer.stubFor(get(urlEqualTo("/edge/rest/v1/heartbeat"))
+        String url = "/edge/rest/v1/heartbeat";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -83,11 +87,15 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void sendHeartbeatTest() throws InterruptedException, ParseException {
-        wireMockServer.stubFor(post(urlEqualTo("/edge/rest/v1/heartbeat"))
+        String url = "/edge/rest/v1/heartbeat";
+        wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -99,6 +107,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
         HeartbeatSendRequest heartbeatSendRequest = new HeartbeatSendRequest.Builder(20).build();
 
         heartbeatClientRest.sendHeartbeat(heartbeatSendRequest, new StreamObserver<Heartbeat>() {
+
             @Override
             public void onNext(Heartbeat heartbeat) {
 
@@ -122,11 +131,15 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void unsubscribeHeartbeatTest() throws InterruptedException {
-        wireMockServer.stubFor(delete(urlEqualTo("/edge/rest/v1/heartbeat"))
+        String url = "/edge/rest/v1/heartbeat";
+        wireMockServer.stubFor(delete(urlPathEqualTo("/edge/rest/v1/heartbeat"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -160,6 +173,9 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(deleteRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
 }
