@@ -92,7 +92,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
 
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
@@ -133,7 +133,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
 
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
@@ -179,7 +179,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
 
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
@@ -223,7 +223,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
 
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(putRequestedFor(urlPathEqualTo(url))
@@ -270,7 +270,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
 
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(putRequestedFor(urlPathEqualTo(url))
@@ -311,7 +311,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
 
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(deleteRequestedFor(urlPathEqualTo(url))
@@ -352,7 +352,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
 
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(deleteRequestedFor(urlPathEqualTo(url))
@@ -406,7 +406,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
 
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
@@ -447,7 +447,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
 
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
@@ -507,7 +507,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
 
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
@@ -556,7 +556,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
 
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
@@ -600,7 +600,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
 
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))

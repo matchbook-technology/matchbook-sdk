@@ -65,7 +65,7 @@ public class PricesClientRest_IT extends MatchbookSDKClientRest_IT<PricesClientR
             }
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
