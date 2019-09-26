@@ -1,8 +1,9 @@
 {
   "session-token": "000000_8beb227cee56ae515f7e312330456789",
-  "user-id": 4242424242,
+  "user-id": 1234,
   "role": "USER",
   "account": {
+    "id": 73737373,
     "email": "sergii@volkodav.ie",
     "username": "sergii",
     "balance": 0,

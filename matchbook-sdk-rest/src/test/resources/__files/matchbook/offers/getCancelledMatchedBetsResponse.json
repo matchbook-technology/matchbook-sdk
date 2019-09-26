@@ -1,0 +1,20 @@
+{
+  "offset": 0,
+  "total": 1,
+  "per-page": 20,
+  "matched-bets": [
+    {
+      "id": 425098661640113,
+      "offer-id": 425096769380013,
+      "odds": 400,
+      "odds-type": "US",
+      "decimal-odds": 5,
+      "stake": 5,
+      "potential-liability": 20,
+      "commission": 5,
+      "currency": "EUR",
+      "created-at": "2017-03-02T14:58:57.594Z",
+      "status": "cancelled"
+    }
+  ]
+}

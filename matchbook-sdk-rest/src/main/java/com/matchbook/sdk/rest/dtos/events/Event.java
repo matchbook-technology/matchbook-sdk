@@ -1,15 +1,13 @@
 package com.matchbook.sdk.rest.dtos.events;
 
+import com.matchbook.sdk.rest.dtos.RestResponse;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
-import com.matchbook.sdk.rest.dtos.RestResponse;
-
-public class Event implements RestResponse<Event> {
+public class Event implements RestResponse {
 
     private Long id;
     private Long sportId;
@@ -124,11 +122,6 @@ public class Event implements RestResponse<Event> {
 
     public void setMetaTags(List<MetaTag> metaTags) {
         this.metaTags = metaTags;
-    }
-
-    @Override
-    public Set<Event> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override

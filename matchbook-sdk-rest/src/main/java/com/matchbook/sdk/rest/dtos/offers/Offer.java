@@ -1,37 +1,41 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import com.matchbook.sdk.rest.dtos.RestResponse;
+import com.matchbook.sdk.rest.dtos.events.MarketType;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
-public class Offer implements RestResponse<Offer> {
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Offer implements RestResponse {
 
     private Long id;
     private Long eventId;
     private Long marketId;
     private Long runnerId;
+    private String eventName;
+    private String marketName;
+    private MarketType marketType;
+    private String runnerName;
     private OfferStatus status;
     private ExchangeType exchangeType;
     private Side side;
     private OddsType oddsType;
     private Currency currency;
-    private BigDecimal odds;
+    private Double odds;
+    private Double decimalOdds;
     private BigDecimal stake;
     private BigDecimal remaining;
     private BigDecimal potentialLiability;
     private BigDecimal remainingPotentialLiability;
     private CommissionType commissionType;
-    private BigDecimal originatorCommissionRate;
-    private BigDecimal acceptorCommissionRate;
+    private Double originatorCommissionRate;
+    private Double acceptorCommissionRate;
     private BigDecimal commissionReserve;
     private boolean inPlay;
     private boolean keepInPlay;
@@ -75,6 +79,38 @@ public class Offer implements RestResponse<Offer> {
         this.runnerId = runnerId;
     }
 
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public String getMarketName() {
+        return marketName;
+    }
+
+    public void setMarketName(String marketName) {
+        this.marketName = marketName;
+    }
+
+    public String getRunnerName() {
+        return runnerName;
+    }
+
+    public void setRunnerName(String runnerName) {
+        this.runnerName = runnerName;
+    }
+
+    public MarketType getMarketType() {
+        return marketType;
+    }
+
+    public void setMarketType(MarketType marketType) {
+        this.marketType = marketType;
+    }
+
     public OfferStatus getStatus() {
         return status;
     }
@@ -115,12 +151,20 @@ public class Offer implements RestResponse<Offer> {
         this.currency = currency;
     }
 
-    public BigDecimal getOdds() {
+    public Double getOdds() {
         return odds;
     }
 
-    public void setOdds(BigDecimal odds) {
+    public void setOdds(Double odds) {
         this.odds = odds;
+    }
+
+    public Double getDecimalOdds() {
+        return decimalOdds;
+    }
+
+    public void setDecimalOdds(Double decimalOdds) {
+        this.decimalOdds = decimalOdds;
     }
 
     public BigDecimal getStake() {
@@ -163,19 +207,19 @@ public class Offer implements RestResponse<Offer> {
         this.commissionType = commissionType;
     }
 
-    public BigDecimal getOriginatorCommissionRate() {
+    public Double getOriginatorCommissionRate() {
         return originatorCommissionRate;
     }
 
-    public void setOriginatorCommissionRate(BigDecimal originatorCommissionRate) {
+    public void setOriginatorCommissionRate(Double originatorCommissionRate) {
         this.originatorCommissionRate = originatorCommissionRate;
     }
 
-    public BigDecimal getAcceptorCommissionRate() {
+    public Double getAcceptorCommissionRate() {
         return acceptorCommissionRate;
     }
 
-    public void setAcceptorCommissionRate(BigDecimal acceptorCommissionRate) {
+    public void setAcceptorCommissionRate(Double acceptorCommissionRate) {
         this.acceptorCommissionRate = acceptorCommissionRate;
     }
 
@@ -228,23 +272,23 @@ public class Offer implements RestResponse<Offer> {
     }
 
     @Override
-    public Set<Offer> getContent() {
-        return Collections.singleton(this);
-    }
-
-    @Override
     public String toString() {
         return Offer.class.getSimpleName() + " {" +
                 "id=" + id +
                 ", eventId=" + eventId +
                 ", marketId=" + marketId +
                 ", runnerId=" + runnerId +
+                ", eventName=" + eventName +
+                ", marketName=" + marketName +
+                ", marketType=" + marketType +
+                ", runnerName=" + runnerName +
                 ", status=" + status +
                 ", exchangeType=" + exchangeType +
                 ", side=" + side +
                 ", oddsType=" + oddsType +
                 ", currency=" + currency +
                 ", odds=" + odds +
+                ", decimalOdds=" + decimalOdds +
                 ", stake=" + stake +
                 ", remaining=" + remaining +
                 ", potentialLiability=" + potentialLiability +

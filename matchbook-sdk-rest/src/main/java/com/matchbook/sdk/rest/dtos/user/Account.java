@@ -1,21 +1,25 @@
 package com.matchbook.sdk.rest.dtos.user;
 
-import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Collections;
-
 import com.matchbook.sdk.rest.dtos.RestResponse;
+import com.matchbook.sdk.rest.dtos.offers.CommissionType;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
+import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
+import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
-public class Account implements RestResponse<Account> {
+import java.math.BigDecimal;
+
+public class Account implements RestResponse {
 
     private Long id;
     private String username;
+    private ExchangeType exchangeType;
+    private OddsType oddsType;
+    private Currency currency;
     private BigDecimal balance;
     private BigDecimal exposure;
     private BigDecimal freeFunds;
     private BigDecimal commissionReserve;
-    private Currency currency;
+    private CommissionType commissionType;
 
     public Long getId() {
         return id;
@@ -31,6 +35,30 @@ public class Account implements RestResponse<Account> {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public ExchangeType getExchangeType() {
+        return exchangeType;
+    }
+
+    public void setExchangeType(ExchangeType exchangeType) {
+        this.exchangeType = exchangeType;
+    }
+
+    public OddsType getOddsType() {
+        return oddsType;
+    }
+
+    public void setOddsType(OddsType oddsType) {
+        this.oddsType = oddsType;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     public BigDecimal getBalance() {
@@ -65,18 +93,12 @@ public class Account implements RestResponse<Account> {
         this.commissionReserve = commissionReserve;
     }
 
-    public Currency getCurrency() {
-        return currency;
+    public CommissionType getCommissionType() {
+        return commissionType;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
-
-
-    @Override
-    public Collection<Account> getContent() {
-        return Collections.singleton(this);
+    public void setCommissionType(CommissionType commissionType) {
+        this.commissionType = commissionType;
     }
 
     @Override
@@ -84,11 +106,14 @@ public class Account implements RestResponse<Account> {
         return Account.class.getSimpleName() + " {" +
                 "id=" + id +
                 ", username=" + username +
+                ", exchangeType=" + exchangeType +
+                ", oddsType=" + oddsType +
+                ", currency=" + currency +
                 ", balance=" + balance +
                 ", exposure=" + exposure +
                 ", freeFunds=" + freeFunds +
                 ", commissionReserve=" + commissionReserve +
-                ", currency=" + currency +
+                ", commissionType=" + commissionType +
                 "}";
     }
 }

@@ -1,14 +1,12 @@
 package com.matchbook.sdk.rest.dtos.events;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import com.matchbook.sdk.rest.dtos.RestResponse;
 import com.matchbook.sdk.rest.dtos.prices.Price;
 
-public class Runner implements RestResponse<Runner> {
+public class Runner implements RestResponse {
 
     private Long id;
     private Long eventId;
@@ -17,6 +15,7 @@ public class Runner implements RestResponse<Runner> {
     private String name;
     private RunnerStatus status;
     private boolean withdrawn;
+    private Double handicap;
     private Double volume;
     private List<Price> prices;
 
@@ -80,6 +79,14 @@ public class Runner implements RestResponse<Runner> {
         this.withdrawn = withdrawn;
     }
 
+    public Double getHandicap() {
+        return handicap;
+    }
+
+    public void setHandicap(Double handicap) {
+        this.handicap = handicap;
+    }
+
     public Double getVolume() {
         return volume;
     }
@@ -97,11 +104,6 @@ public class Runner implements RestResponse<Runner> {
     }
 
     @Override
-    public Set<Runner> getContent() {
-        return Collections.singleton(this);
-    }
-
-    @Override
     public String toString() {
         return Runner.class.getSimpleName() + " {" +
                 "id=" + id +
@@ -111,6 +113,7 @@ public class Runner implements RestResponse<Runner> {
                 ", name=" + name +
                 ", status=" + status +
                 ", withdrawn=" + withdrawn +
+                ", handicap=" + handicap +
                 ", volume=" + volume +
                 ", prices=" + prices +
                 "}";

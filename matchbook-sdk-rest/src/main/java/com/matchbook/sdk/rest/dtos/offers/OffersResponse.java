@@ -1,25 +1,38 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
 import com.matchbook.sdk.rest.dtos.PageableResponse;
-
-import java.util.Collection;
-import java.util.List;
+import com.matchbook.sdk.rest.dtos.prices.Currency;
+import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
+import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
 public class OffersResponse extends PageableResponse<Offer> {
 
-    private List<Offer> offers;
+    private Currency currency;
+    private ExchangeType exchangeType;
+    private OddsType oddsType;
 
-    public List<Offer> getOffers() {
-        return offers;
+    public Currency getCurrency() {
+        return currency;
     }
 
-    public void setOffers(List<Offer> offers) {
-        this.offers = offers;
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
-    @Override
-    public Collection<Offer> getContent() {
-        return offers;
+    public ExchangeType getExchangeType() {
+        return exchangeType;
+    }
+
+    public void setExchangeType(ExchangeType exchangeType) {
+        this.exchangeType = exchangeType;
+    }
+
+    public OddsType getOddsType() {
+        return oddsType;
+    }
+
+    public void setOddsType(OddsType oddsType) {
+        this.oddsType = oddsType;
     }
 
     @Override
@@ -28,7 +41,10 @@ public class OffersResponse extends PageableResponse<Offer> {
                 "total=" + total +
                 ", offset=" + offset +
                 ", perPage=" + perPage +
-                ", offers=" + offers +
+                ", currency=" + currency +
+                ", exchangeType=" + exchangeType +
+                ", oddsType=" + oddsType +
+                ", offers=" + items +
                 "}";
     }
 

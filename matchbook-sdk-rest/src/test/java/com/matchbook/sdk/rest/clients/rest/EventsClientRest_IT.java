@@ -1,19 +1,17 @@
 package com.matchbook.sdk.rest.clients.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
-import org.junit.Before;
-import org.junit.Test;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
@@ -30,6 +28,8 @@ import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
+import org.junit.Before;
+import org.junit.Test;
 
 public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
@@ -45,12 +45,13 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
     @Test
     public void getSportsTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/lookups/sports"))
+        String url = "/edge/rest/lookups/sports";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getSportsSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getSportsSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(6);
 
@@ -60,7 +61,8 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Sport sport) {
-                assertThat(sport.getId()).isNotNull();
+                assertNotNull(sport);
+                assertNotNull(sport.getId());
                 assertThat(sport.getName()).isNotEmpty();
                 countDownLatch.countDown();
             }
@@ -76,18 +78,22 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void getEventTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/events/395729780570010"))
+        String url = "/edge/rest/events/395729780570010";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getEventSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getEventSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         EventRequest eventRequest = new EventRequest.Builder(395729780570010L).build();
@@ -96,8 +102,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Event event) {
-                assertThat(event.getId()).isNotNull();
-                assertThat(event.getMetaTags()).isNotNull();
+                verifyEvent(event);
                 countDownLatch.countDown();
             }
 
@@ -112,18 +117,22 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void getEventsTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/events"))
+        String url = "/edge/rest/events";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getEventsSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getEventsSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         EventsRequest eventsRequest = new EventsRequest.Builder().build();
@@ -132,7 +141,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Event event) {
-                assertThat(event.getId()).isNotNull();
+                verifyEvent(event);
                 countDownLatch.countDown();
             }
 
@@ -147,55 +156,51 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
-    @Test
-    public void getEventIncludesMbClientCookieTest() throws InterruptedException {
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/events/395729780570010"))
-            .withHeader("Accept", equalTo("application/json"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBodyFile("matchbook/getEventSuccessfulResponse.json")));
-
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-        EventRequest eventRequest = new EventRequest.Builder(395729780570010L).build();
-
-        eventsClientRest.getEvent(eventRequest, new StreamObserver<Event>() {
-
-            @Override
-            public void onNext(Event event) {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-        });
-
-        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
-
-        wireMockServer.verify(getRequestedFor(anyUrl()).withCookie("mb-client-type", equalTo("mb-sdk")));
+    private void verifyEvent(Event event) {
+        assertNotNull(event);
+        assertNotNull(event.getId());
+        assertNotNull(event.getSportId());
+        assertThat(event.getCategoryIds()).isNotEmpty();
+        assertThat(event.getName()).isNotEmpty();
+        assertNotNull(event.getStatus());
+        if (Objects.nonNull(event.getMarkets())) {
+            event.getMarkets().forEach(market -> {
+                assertNotNull(market);
+                assertNotNull(market.getId());
+            });
+        }
+        if (Objects.nonNull(event.getEventParticipants())) {
+            event.getEventParticipants().forEach(eventParticipant -> {
+                assertNotNull(eventParticipant);
+                assertNotNull(eventParticipant.getId());
+            });
+        }
+        if (Objects.nonNull(event.getMetaTags())) {
+            event.getMetaTags().forEach(metaTag -> {
+                assertNotNull(metaTag);
+                assertNotNull(metaTag.getId());
+                assertThat(metaTag.getName()).isNotEmpty();
+                assertNotNull(metaTag.getType());
+            });
+        }
     }
 
     @Test
     public void getMarketTest() throws InterruptedException {
-        String testUrl = "/edge/rest/events/395729780570010/markets/395729860260010";
-        wireMockServer.stubFor(get(urlPathEqualTo(testUrl))
+        String url = "/edge/rest/events/395729780570010/markets/395729860260010";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getMarketSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getMarketSuccessfulResponse.json")));
 
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
@@ -207,8 +212,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Market market) {
-                assertThat(market.getId()).isNotNull();
-                assertThat(market.getEventId()).isNotNull();
+                verifyMarket(market);
                 countDownLatch.countDown();
             }
 
@@ -223,19 +227,22 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void getMarketsTest() throws InterruptedException {
-        String testUrl = "/edge/rest/events/395729780570010/markets";
-        wireMockServer.stubFor(get(urlPathEqualTo(testUrl))
+        String url = "/edge/rest/events/395729780570010/markets";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getMarketsSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getMarketsSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(9);
 
@@ -245,7 +252,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Market market) {
-                assertThat(market.getId()).isNotNull();
+                verifyMarket(market);
                 countDownLatch.countDown();
             }
 
@@ -260,19 +267,36 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    private void verifyMarket(Market market) {
+        assertNotNull(market);
+        assertNotNull(market.getId());
+        assertNotNull(market.getEventId());
+        assertNotNull(market.getStatus());
+        assertNotNull(market.getMarketType());
+        if (Objects.nonNull(market.getRunners())) {
+            market.getRunners().forEach(runner -> {
+                assertNotNull(runner);
+                assertNotNull(runner.getId());
+            });
+        }
     }
 
     @Test
     public void getRunnerTest() throws InterruptedException {
-        String testUrl = "/edge/rest/events/395729780570010/markets/395729860260010/runners/395729860800010";
-        wireMockServer.stubFor(get(urlPathEqualTo(testUrl))
+        String url = "/edge/rest/events/395729780570010/markets/395729860260010/runners/395729860800010";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getRunnerSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getRunnerSuccessfulResponse.json")));
 
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
@@ -285,9 +309,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Runner runner) {
-                assertThat(runner.getId()).isNotNull();
-                assertThat(runner.getEventId()).isNotNull();
-                assertThat(runner.getMarketId()).isNotNull();
+                verifyRunner(runner);
                 countDownLatch.countDown();
             }
 
@@ -302,19 +324,22 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
     public void getRunnersTest() throws InterruptedException {
-        String testUrl = "/edge/rest/events/395729780570010/markets/395729860260010/runners";
-        wireMockServer.stubFor(get(urlPathEqualTo(testUrl))
+        String url = "/edge/rest/events/395729780570010/markets/395729860260010/runners";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/getRunnersSuccessfulResponse.json")));
+                        .withBodyFile("matchbook/events/getRunnersSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(4);
 
@@ -326,7 +351,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
             @Override
             public void onNext(Runner runner) {
-                assertThat(runner.getId()).isNotNull();
+                verifyRunner(runner);
                 countDownLatch.countDown();
             }
 
@@ -341,8 +366,26 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(5, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    private void verifyRunner(Runner runner) {
+        assertNotNull(runner);
+        assertNotNull(runner.getId());
+        assertNotNull(runner.getEventId());
+        assertNotNull(runner.getMarketId());
+        assertNotNull(runner.getStatus());
+        if (Objects.nonNull(runner.getPrices())) {
+            runner.getPrices().forEach(price -> {
+                assertNotNull(price);
+                assertNotNull(price.getOddsType());
+                assertNotNull(price.getOdds());
+            });
+        }
     }
 
 }
