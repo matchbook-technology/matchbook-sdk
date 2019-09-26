@@ -14,7 +14,7 @@ import com.matchbook.sdk.rest.readers.user.BalanceReader;
 import com.matchbook.sdk.rest.readers.user.LoginReader;
 import com.matchbook.sdk.rest.readers.user.LogoutReader;
 
-public class UserClientRest extends AbstractRestClient implements UserClient {
+public class UserClientRest extends AbstractClientRest implements UserClient {
 
     public UserClientRest(ConnectionManager connectionManager) {
         super(connectionManager);

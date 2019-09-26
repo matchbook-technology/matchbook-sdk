@@ -1,9 +1,5 @@
 package com.matchbook.sdk.rest;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.anyRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.After;
@@ -41,8 +37,7 @@ public abstract class MatchbookSDKClientRest_IT {
 
     @After
     public void tearDown() {
-        wireMockServer.verify(anyRequestedFor(anyUrl())
-                .withCookie("mb-client-type", equalTo("mb-sdk")));
+        connectionManager.close();
     }
 
 }

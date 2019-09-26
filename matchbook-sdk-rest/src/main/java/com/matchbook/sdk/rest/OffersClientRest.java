@@ -26,7 +26,7 @@ import com.matchbook.sdk.rest.readers.offers.OfferReader;
 import com.matchbook.sdk.rest.readers.offers.OffersReader;
 import com.matchbook.sdk.rest.readers.offers.PositionsReader;
 
-public class OffersClientRest extends AbstractRestClient implements OffersClient {
+public class OffersClientRest extends AbstractClientRest implements OffersClient {
 
     public OffersClientRest(ConnectionManager connectionManager) {
         super(connectionManager);

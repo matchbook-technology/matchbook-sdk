@@ -14,11 +14,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.stream.Collectors;
 
-abstract class AbstractRestClient {
+abstract class AbstractClientRest implements Client {
 
     protected final ConnectionManager connectionManager;
 
-    protected AbstractRestClient(ConnectionManager connectionManager) {
+    protected AbstractClientRest(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
 
