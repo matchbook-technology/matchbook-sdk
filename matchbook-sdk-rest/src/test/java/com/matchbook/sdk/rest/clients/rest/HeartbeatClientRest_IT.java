@@ -85,7 +85,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
@@ -129,7 +129,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
@@ -171,7 +171,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
             }
         });
 
-        boolean await = countDownLatch.await(1, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         wireMockServer.verify(deleteRequestedFor(urlPathEqualTo(url))
