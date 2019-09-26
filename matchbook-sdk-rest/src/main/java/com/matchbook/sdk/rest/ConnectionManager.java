@@ -1,14 +1,13 @@
 package com.matchbook.sdk.rest;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.Objects;
 
 import com.matchbook.sdk.rest.configs.HttpClient;
 import com.matchbook.sdk.rest.configs.Serializer;
 import com.matchbook.sdk.rest.configs.wrappers.HttpClientWrapper;
 import com.matchbook.sdk.rest.configs.wrappers.SerializerWrapper;
-import com.matchbook.sdk.rest.workers.SessionManagerScheduler;
+import com.matchbook.sdk.rest.workers.SessionKeepAliveScheduler;
 
 public class ConnectionManager implements Closeable {
 
@@ -16,7 +15,7 @@ public class ConnectionManager implements Closeable {
     private final HttpClient httpClient;
     private final Serializer serializer;
 
-    private SessionManagerScheduler sessionManagerScheduler;
+    private SessionKeepAliveScheduler sessionKeepAliveScheduler;
 
     private ConnectionManager(ConnectionManager.Builder builder) {
         this.clientConfig = builder.clientConfig;
@@ -24,8 +23,8 @@ public class ConnectionManager implements Closeable {
         this.serializer = builder.serializer;
 
         if (builder.autoManageSession) {
-            sessionManagerScheduler = new SessionManagerScheduler(this);
-            sessionManagerScheduler.start();
+            sessionKeepAliveScheduler = new SessionKeepAliveScheduler(this);
+            sessionKeepAliveScheduler.start();
         }
     }
 
@@ -44,8 +43,8 @@ public class ConnectionManager implements Closeable {
     @Override
     public void close() {
         httpClient.close();
-        if (Objects.nonNull(sessionManagerScheduler)) {
-            sessionManagerScheduler.stop();
+        if (Objects.nonNull(sessionKeepAliveScheduler)) {
+            sessionKeepAliveScheduler.stop();
         }
     }
 
