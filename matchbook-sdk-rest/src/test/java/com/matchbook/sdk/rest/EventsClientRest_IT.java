@@ -1,4 +1,4 @@
-package com.matchbook.sdk.rest.clients.rest;
+package com.matchbook.sdk.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.rest.ConnectionManager;
 import com.matchbook.sdk.rest.EventsClientRest;
 import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.dtos.events.Event;
@@ -28,19 +29,13 @@ import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
-import org.junit.Before;
 import org.junit.Test;
 
-public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
-
-    private EventsClientRest eventsClientRest;
+public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientRest> {
 
     @Override
-    @Before
-    public void setUp() {
-        super.setUp();
-
-        this.eventsClientRest = new EventsClientRest(connectionManager);
+    protected EventsClientRest newClientRest(ConnectionManager connectionManager) {
+        return new EventsClientRest(connectionManager);
     }
 
     @Test
@@ -57,7 +52,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
         SportsRequest sportsRequest = new SportsRequest.Builder().build();
 
-        eventsClientRest.getSports(sportsRequest, new StreamObserver<Sport>() {
+        clientRest.getSports(sportsRequest, new StreamObserver<Sport>() {
 
             @Override
             public void onNext(Sport sport) {
@@ -98,7 +93,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         EventRequest eventRequest = new EventRequest.Builder(395729780570010L).build();
 
-        eventsClientRest.getEvent(eventRequest, new StreamObserver<Event>() {
+        clientRest.getEvent(eventRequest, new StreamObserver<Event>() {
 
             @Override
             public void onNext(Event event) {
@@ -137,7 +132,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         EventsRequest eventsRequest = new EventsRequest.Builder().build();
 
-        eventsClientRest.getEvents(eventsRequest, new StreamObserver<Event>() {
+        clientRest.getEvents(eventsRequest, new StreamObserver<Event>() {
 
             @Override
             public void onNext(Event event) {
@@ -208,7 +203,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
                 .Builder(395729860260010L, 395729780570010L)
                 .build();
 
-        eventsClientRest.getMarket(marketRequest, new StreamObserver<Market>() {
+        clientRest.getMarket(marketRequest, new StreamObserver<Market>() {
 
             @Override
             public void onNext(Market market) {
@@ -248,7 +243,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
 
         MarketsRequest marketsRequest = new MarketsRequest.Builder(395729780570010L).build();
 
-        eventsClientRest.getMarkets(marketsRequest, new StreamObserver<Market>() {
+        clientRest.getMarkets(marketsRequest, new StreamObserver<Market>() {
 
             @Override
             public void onNext(Market market) {
@@ -305,7 +300,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
                 .Builder(395729780570010L, 395729860260010L, 395729860800010L)
                 .build();
 
-        eventsClientRest.getRunner(runnerRequest, new StreamObserver<Runner>() {
+        clientRest.getRunner(runnerRequest, new StreamObserver<Runner>() {
 
             @Override
             public void onNext(Runner runner) {
@@ -347,7 +342,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT {
                 .Builder(395729780570010L, 395729860260010L)
                 .build();
 
-        eventsClientRest.getRunners(runnersRequest, new StreamObserver<Runner>() {
+        clientRest.getRunners(runnersRequest, new StreamObserver<Runner>() {
 
             @Override
             public void onNext(Runner runner) {

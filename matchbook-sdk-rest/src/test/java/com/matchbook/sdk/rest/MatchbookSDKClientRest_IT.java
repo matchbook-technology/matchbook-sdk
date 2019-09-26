@@ -7,11 +7,15 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-public abstract class MatchbookSDKClientRest_IT {
+public abstract class MatchbookSDKClientRest_IT<T extends AbstractClientRest> {
 
     protected static WireMockServer wireMockServer;
 
-    protected ConnectionManager connectionManager;
+    protected T clientRest;
+
+    private ConnectionManager connectionManager;
+
+    protected abstract T newClientRest(ConnectionManager connectionManager);
 
     @BeforeClass
     public static void setUpBeforeClass() {
@@ -33,6 +37,7 @@ public abstract class MatchbookSDKClientRest_IT {
         connectionManager = new ConnectionManager.Builder(clientConfig)
                 .autoManageSession(false)
                 .build();
+        clientRest = newClientRest(connectionManager);
     }
 
     @After

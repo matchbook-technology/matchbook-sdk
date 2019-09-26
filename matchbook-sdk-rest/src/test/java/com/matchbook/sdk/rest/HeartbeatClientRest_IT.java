@@ -1,4 +1,4 @@
-package com.matchbook.sdk.rest.clients.rest;
+package com.matchbook.sdk.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.rest.ConnectionManager;
 import com.matchbook.sdk.rest.HeartbeatClientRest;
 import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.dtos.heartbeat.ActionPerformed;
@@ -34,17 +35,20 @@ import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
 import org.junit.Before;
 import org.junit.Test;
 
-public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
+public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatClientRest> {
 
     private SimpleDateFormat dateFormat;
-    private HeartbeatClientRest heartbeatClientRest;
+
+    @Override
+    protected HeartbeatClientRest newClientRest(ConnectionManager connectionManager) {
+        return new HeartbeatClientRest(connectionManager);
+    }
 
     @Override
     @Before
     public void setUp() {
         super.setUp();
 
-        this.heartbeatClientRest = new HeartbeatClientRest(connectionManager);
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         this.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
@@ -58,12 +62,12 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/heartbeat/getHeartbeatSuccessfulResponse.json")));
-        Instant expectedHeartbeatTimeout = dateFormat.parse("2019-07-12T10:01:00").toInstant();
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatGetRequest heartbeatGetRequest = new HeartbeatGetRequest.Builder().build();
 
-        heartbeatClientRest.getHeartbeat(heartbeatGetRequest, new StreamObserver<Heartbeat>() {
+        Instant expectedHeartbeatTimeout = dateFormat.parse("2019-07-12T10:01:00").toInstant();
+        clientRest.getHeartbeat(heartbeatGetRequest, new StreamObserver<Heartbeat>() {
 
             @Override
             public void onNext(Heartbeat heartbeat) {
@@ -101,12 +105,12 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/heartbeat/postHeartbeatSuccessfulResponse.json")));
-        Instant expectedHeartbeatTimeout = dateFormat.parse("2019-07-12T10:01:00").toInstant();
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatSendRequest heartbeatSendRequest = new HeartbeatSendRequest.Builder(20).build();
 
-        heartbeatClientRest.sendHeartbeat(heartbeatSendRequest, new StreamObserver<Heartbeat>() {
+        Instant expectedHeartbeatTimeout = dateFormat.parse("2019-07-12T10:01:00").toInstant();
+        clientRest.sendHeartbeat(heartbeatSendRequest, new StreamObserver<Heartbeat>() {
 
             @Override
             public void onNext(Heartbeat heartbeat) {
@@ -149,7 +153,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatUnsubscribeRequest heartbeatUnsubscribeRequest = new HeartbeatUnsubscribeRequest.Builder().build();
 
-        heartbeatClientRest.unsubscribeHeartbeat(heartbeatUnsubscribeRequest, new StreamObserver<Heartbeat>() {
+        clientRest.unsubscribeHeartbeat(heartbeatUnsubscribeRequest, new StreamObserver<Heartbeat>() {
 
             @Override
             public void onNext(Heartbeat heartbeat) {

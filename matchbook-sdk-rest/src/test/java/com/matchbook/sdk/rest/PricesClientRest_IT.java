@@ -1,4 +1,4 @@
-package com.matchbook.sdk.rest.clients.rest;
+package com.matchbook.sdk.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -14,23 +14,18 @@ import java.util.concurrent.TimeUnit;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.rest.ConnectionManager;
 import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.PricesClientRest;
 import com.matchbook.sdk.rest.dtos.prices.Price;
 import com.matchbook.sdk.rest.dtos.prices.PricesRequest;
-import org.junit.Before;
 import org.junit.Test;
 
-public class PricesClientRest_IT extends MatchbookSDKClientRest_IT {
-
-    private PricesClientRest pricesClientRest;
+public class PricesClientRest_IT extends MatchbookSDKClientRest_IT<PricesClientRest> {
 
     @Override
-    @Before
-    public void setUp() {
-        super.setUp();
-
-        this.pricesClientRest = new PricesClientRest(connectionManager);
+    protected PricesClientRest newClientRest(ConnectionManager connectionManager) {
+        return new PricesClientRest(connectionManager);
     }
 
     @Test
@@ -49,7 +44,7 @@ public class PricesClientRest_IT extends MatchbookSDKClientRest_IT {
                 .Builder(395729780570010L, 395729860260010L, 395729860800010L)
                 .build();
 
-        pricesClientRest.getPrices(pricesRequest, new StreamObserver<Price>() {
+        clientRest.getPrices(pricesRequest, new StreamObserver<Price>() {
 
             @Override
             public void onNext(Price price) {

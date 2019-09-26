@@ -1,4 +1,4 @@
-package com.matchbook.sdk.rest.clients.rest;
+package com.matchbook.sdk.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.rest.ConnectionManager;
 import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.OffersClientRest;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBet;
@@ -48,19 +49,13 @@ import com.matchbook.sdk.rest.dtos.offers.PositionsRequest;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.rest.dtos.prices.Side;
-import org.junit.Before;
 import org.junit.Test;
 
-public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
-
-    private OffersClientRest offersClientRest;
+public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientRest> {
 
     @Override
-    @Before
-    public void setUp() {
-        super.setUp();
-
-        this.offersClientRest = new OffersClientRest(connectionManager);
+    protected OffersClientRest newClientRest(ConnectionManager connectionManager) {
+        return new OffersClientRest(connectionManager);
     }
 
     @Test
@@ -77,7 +72,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         OfferGetRequest offerGetRequest = new OfferGetRequest.Builder(382937981320019L).build();
 
-        offersClientRest.getOffer(offerGetRequest, new StreamObserver<Offer>() {
+        clientRest.getOffer(offerGetRequest, new StreamObserver<Offer>() {
 
             @Override
             public void onNext(Offer offer) {
@@ -118,7 +113,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         OffersGetRequest offersGetRequest = new OffersGetRequest.Builder().build();
 
-        offersClientRest.getOffers(offersGetRequest, new StreamObserver<Offer>() {
+        clientRest.getOffers(offersGetRequest, new StreamObserver<Offer>() {
 
             @Override
             public void onNext(Offer offer) {
@@ -164,7 +159,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
                 .Builder(OddsType.DECIMAL, ExchangeType.BACK_LAY, Collections.singletonList(offerRequest))
                 .build();
 
-        offersClientRest.submitOffers(offersPostRequest, new StreamObserver<Offer>() {
+        clientRest.submitOffers(offersPostRequest, new StreamObserver<Offer>() {
 
             @Override
             public void onNext(Offer offer) {
@@ -207,7 +202,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
                 .Builder(925183846730025L, 3.0, new BigDecimal("100"))
                 .build();
 
-        offersClientRest.editOffer(offerPutRequest, new StreamObserver<Offer>() {
+        clientRest.editOffer(offerPutRequest, new StreamObserver<Offer>() {
 
             @Override
             public void onNext(Offer offer) {
@@ -254,7 +249,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
                 .Builder(Collections.singletonList(offerPutRequest))
                 .build();
 
-        offersClientRest.editOffers(offersPutRequest, new StreamObserver<Offer>() {
+        clientRest.editOffers(offersPutRequest, new StreamObserver<Offer>() {
 
             @Override
             public void onNext(Offer offer) {
@@ -296,7 +291,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         OfferDeleteRequest offerDeleteRequest = new OfferDeleteRequest.Builder(413775799780013L).build();
 
-        offersClientRest.cancelOffer(offerDeleteRequest, new StreamObserver<Offer>() {
+        clientRest.cancelOffer(offerDeleteRequest, new StreamObserver<Offer>() {
 
             @Override
             public void onNext(Offer offer) {
@@ -337,7 +332,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         OffersDeleteRequest offersDeleteRequest = new OffersDeleteRequest.Builder().build();
 
-        offersClientRest.cancelOffers(offersDeleteRequest, new StreamObserver<Offer>() {
+        clientRest.cancelOffers(offersDeleteRequest, new StreamObserver<Offer>() {
 
             @Override
             public void onNext(Offer offer) {
@@ -391,7 +386,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         OfferEditGetRequest offerEditGetRequest = new OfferEditGetRequest.Builder(925184068850125L, 925183846730025L).build();
 
-        offersClientRest.getOfferEdit(offerEditGetRequest, new StreamObserver<OfferEdit>() {
+        clientRest.getOfferEdit(offerEditGetRequest, new StreamObserver<OfferEdit>() {
 
             @Override
             public void onNext(OfferEdit offerEdit) {
@@ -432,7 +427,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         OfferEditsGetRequest offerEditsGetRequest = new OfferEditsGetRequest.Builder(925183846730025L).build();
 
-        offersClientRest.getOfferEdits(offerEditsGetRequest, new StreamObserver<OfferEdit>() {
+        clientRest.getOfferEdits(offerEditsGetRequest, new StreamObserver<OfferEdit>() {
 
             @Override
             public void onNext(OfferEdit offerEdit) {
@@ -485,7 +480,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         AggregatedMatchedBetsRequest aggregatedMatchedBetsRequest = new AggregatedMatchedBetsRequest.Builder().build();
 
-        offersClientRest.getAggregatedMatchedBets(aggregatedMatchedBetsRequest, new StreamObserver<AggregatedMatchedBet>() {
+        clientRest.getAggregatedMatchedBets(aggregatedMatchedBetsRequest, new StreamObserver<AggregatedMatchedBet>() {
 
             @Override
             public void onNext(AggregatedMatchedBet aggregatedMatchedBet) {
@@ -534,7 +529,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         CancelledMatchedBetsRequest cancelledMatchedBetsRequest = new CancelledMatchedBetsRequest.Builder().build();
 
-        offersClientRest.getCancelledMatchedBets(cancelledMatchedBetsRequest, new StreamObserver<MatchedBet>() {
+        clientRest.getCancelledMatchedBets(cancelledMatchedBetsRequest, new StreamObserver<MatchedBet>() {
 
             @Override
             public void onNext(MatchedBet matchedBet) {
@@ -582,7 +577,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT {
 
         PositionsRequest positionsRequest = new PositionsRequest.Builder().build();
 
-        offersClientRest.getPositions(positionsRequest, new StreamObserver<Position>() {
+        clientRest.getPositions(positionsRequest, new StreamObserver<Position>() {
 
             @Override
             public void onNext(Position position) {
