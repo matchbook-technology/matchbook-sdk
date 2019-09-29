@@ -1,8 +1,8 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
-import com.matchbook.sdk.rest.dtos.PageableResponse;
+import com.matchbook.sdk.rest.dtos.PartiallyFailableResponse;
 
-public class OfferEditsResponse extends PageableResponse<OfferEdit> {
+public class OfferEditsResponse extends PartiallyFailableResponse<OfferEdit> {
 
     @Override
     public String toString() {
