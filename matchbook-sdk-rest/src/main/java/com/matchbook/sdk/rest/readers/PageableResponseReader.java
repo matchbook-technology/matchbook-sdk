@@ -74,7 +74,7 @@ public abstract class PageableResponseReader<T extends RestResponse, R extends P
     }
 
     private void skipToItems() throws MatchbookSDKParsingException {
-        while (!parser.isEndOfBlock() && !itemsFieldName().equals(parser.getFieldName())) {
+        while (!parser.isEndOfObject() && !parser.isEndOfArray() && !itemsFieldName().equals(parser.getFieldName())) {
             parser.moveToNextValue();
         }
     }

@@ -27,8 +27,6 @@ public class ErrorsReader extends ResponseReader<Errors> {
             if ("errors".equals(fieldName)) {
                 List<Error> errorsList = readErrors();
                 errors.setErrors(errorsList);
-            } else {
-                parser.skipChildren();
             }
             parser.moveToNextToken();
         }

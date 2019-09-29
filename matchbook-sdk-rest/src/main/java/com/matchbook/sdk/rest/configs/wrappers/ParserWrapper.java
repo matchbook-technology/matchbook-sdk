@@ -1,5 +1,8 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
+import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+import com.matchbook.sdk.rest.configs.Parser;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -8,8 +11,6 @@ import java.time.Instant;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.configs.Parser;
 
 class ParserWrapper implements Parser {
 
@@ -24,6 +25,11 @@ class ParserWrapper implements Parser {
     }
 
     @Override
+    public boolean hasCurrentToken() {
+        return jsonParser.hasCurrentToken();
+    }
+
+    @Override
     public boolean isStartOfObject() {
         return jsonParser.hasToken(JsonToken.START_OBJECT);
     }
@@ -34,11 +40,6 @@ class ParserWrapper implements Parser {
     }
 
     @Override
-    public boolean isStartOfBlock() {
-        return isStartOfObject() || isStartOfArray();
-    }
-
-    @Override
     public boolean isEndOfObject() {
         return jsonParser.hasToken(JsonToken.END_OBJECT);
     }
@@ -46,11 +47,6 @@ class ParserWrapper implements Parser {
     @Override
     public boolean isEndOfArray() {
         return jsonParser.hasToken(JsonToken.END_ARRAY);
-    }
-
-    @Override
-    public boolean isEndOfBlock() {
-        return isEndOfObject() || isEndOfArray();
     }
 
     @Override
