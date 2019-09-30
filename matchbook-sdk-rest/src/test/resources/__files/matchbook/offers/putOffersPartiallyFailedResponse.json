@@ -1,0 +1,20 @@
+{
+  "currency": "EUR",
+  "exchange-type": "back-lay",
+  "odds-type": "DECIMAL",
+  "offers": [
+    {
+      "id": "1239207305820024",
+      "offer-edit": {
+        "errors": [
+          {
+            "field": "stake",
+            "messages": [
+              "Invalid new stake value of -2"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -14,9 +14,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +42,7 @@ import com.matchbook.sdk.rest.dtos.offers.OfferEditsGetRequest;
 import com.matchbook.sdk.rest.dtos.offers.OfferGetRequest;
 import com.matchbook.sdk.rest.dtos.offers.OfferPostRequest;
 import com.matchbook.sdk.rest.dtos.offers.OfferPutRequest;
+import com.matchbook.sdk.rest.dtos.offers.OfferStatus;
 import com.matchbook.sdk.rest.dtos.offers.OffersDeleteRequest;
 import com.matchbook.sdk.rest.dtos.offers.OffersGetRequest;
 import com.matchbook.sdk.rest.dtos.offers.OffersPostRequest;
@@ -141,7 +144,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void submitOfferTest() throws InterruptedException {
+    public void submitOffersTest() throws InterruptedException {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -164,6 +167,58 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
             @Override
             public void onNext(Offer offer) {
                 verifyOffer(offer);
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail(e.getMessage());
+            }
+
+        });
+
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    @Test
+    public void submitOffersPartiallyFailedTest() throws InterruptedException {
+        String url = "/edge/rest/v2/offers";
+        wireMockServer.stubFor(post(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/offers/postOffersPartiallyFailedResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(3);
+
+        OfferPostRequest offerRequest1 = new OfferPostRequest
+                .Builder(1227187302310017L, Side.BACK, 11d, new BigDecimal("-2"))
+                .build();
+        OfferPostRequest offerRequest2 = new OfferPostRequest
+                .Builder(1227187302350017L, Side.BACK, 1.2d, new BigDecimal("1"))
+                .build();
+        OffersPostRequest offersPostRequest = new OffersPostRequest
+                .Builder(OddsType.DECIMAL, ExchangeType.BACK_LAY, Arrays.asList(offerRequest1, offerRequest2))
+                .build();
+
+        clientRest.submitOffers(offersPostRequest, new StreamObserver<Offer>() {
+
+            @Override
+            public void onNext(Offer offer) {
+                verifyOffer(offer);
+                if (offer.getStatus() == OfferStatus.FAILED) {
+                    assertNotNull(offer.getErrors());
+                }
                 countDownLatch.countDown();
             }
 
@@ -278,6 +333,54 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    public void editOffersPartiallyFailedTest() throws InterruptedException {
+        String url = "/edge/rest/v2/offers";
+        wireMockServer.stubFor(put(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/offers/putOffersPartiallyFailedResponse.json")));
+
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+
+        OfferPutRequest offerPutRequest = new OfferPutRequest
+                .Builder(1239207305820024L, 1.238, new BigDecimal("-2"))
+                .build();
+        OffersPutRequest offersPutRequest = new OffersPutRequest
+                .Builder(Collections.singletonList(offerPutRequest))
+                .build();
+
+        clientRest.editOffers(offersPutRequest, new StreamObserver<Offer>() {
+
+            @Override
+            public void onNext(Offer offer) {
+                assertNotNull(offer);
+                assertNotNull(offer.getOfferEdit());
+                assertNotNull(offer.getOfferEdit().getErrors());
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onError(MatchbookSDKException e) {
+                fail(e.getMessage());
+            }
+
+        });
+
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
+        assertThat(await).isTrue();
+
+        wireMockServer.verify(putRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    @Test
     public void deleteOfferTest() throws InterruptedException {
         String url = "/edge/rest/v2/offers/413775799780013";
         wireMockServer.stubFor(delete(urlPathEqualTo(url))
@@ -361,7 +464,6 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
 
     private void verifyOffer(Offer offer) {
         assertNotNull(offer);
-        assertNotNull(offer.getId());
         assertNotNull(offer.getEventId());
         assertNotNull(offer.getMarketId());
         assertNotNull(offer.getRunnerId());
