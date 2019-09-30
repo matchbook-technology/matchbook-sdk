@@ -34,26 +34,16 @@ class PartiallyFailableResponseCallback<T extends FailableRestResponse, RESP ext
 
     private void onFailableResponse(InputStream responseInputStream, int responseCode) {
         try (ByteArrayOutputStream responseBytes = copyBytes(responseInputStream);
-                InputStream copiedResponseInputStream = copyStream(responseBytes)) {
-            try (Parser parser = serializer.newParser(copiedResponseInputStream)) {
-                boolean isPartiallyFailedResponse = false;
-                reader.init(parser);
-                while (reader.hasMoreItems()) {
-                    T item = reader.readNextItem();
-                    isPartiallyFailedResponse |= Objects.nonNull(item);
-                    observer.onNext(item);
-                }
+                InputStream copiedInputStream = copyInputStream(responseBytes)) {
+            try (Parser parser = serializer.newParser(copiedInputStream)) {
+                boolean isPartiallyFailedResponse = tryPartiallyFailedResponse(parser);
                 if (isPartiallyFailedResponse) {
                     observer.onCompleted();
                 } else {
-                    try (InputStream otherResponseInputStream = copyStream(responseBytes)) {
-                        super.onFailedResponse(otherResponseInputStream, responseCode);
-                    }
+                    secondParsing(responseBytes, responseCode);
                 }
             } catch (MatchbookSDKParsingException parsingException) {
-                try (InputStream otherResponseInputStream = copyStream(responseBytes)) {
-                    super.onFailedResponse(otherResponseInputStream, responseCode);
-                }
+                secondParsing(responseBytes, responseCode);
             }
         } catch (IOException ioException) {
             MatchbookSDKParsingException exception = parsingException(ioException);
@@ -65,15 +55,35 @@ class PartiallyFailableResponseCallback<T extends FailableRestResponse, RESP ext
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] bytesBuffer = new byte[1024];
         int length;
-        while ((length = responseInputStream.read(bytesBuffer)) > -1 ) {
+        while ((length = responseInputStream.read(bytesBuffer)) > -1) {
             outputStream.write(bytesBuffer, 0, length);
         }
         outputStream.flush();
         return  outputStream;
     }
 
-    private InputStream copyStream(ByteArrayOutputStream byteArrayOutputStream) {
+    private InputStream copyInputStream(ByteArrayOutputStream byteArrayOutputStream) {
         return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+    }
+
+    private boolean tryPartiallyFailedResponse(Parser parser) {
+        boolean isPartiallyFailedResponse = false;
+        reader.init(parser);
+        while (reader.hasMoreItems()) {
+            T item = reader.readNextItem();
+            isPartiallyFailedResponse |= Objects.nonNull(item);
+            observer.onNext(item);
+        }
+        return isPartiallyFailedResponse;
+    }
+
+    private void secondParsing(ByteArrayOutputStream responseBytes, int responseCode) {
+        try (InputStream otherResponseInputStream = copyInputStream(responseBytes)) {
+            super.onFailedResponse(otherResponseInputStream, responseCode);
+        } catch (IOException ioException) {
+            MatchbookSDKParsingException exception = parsingException(ioException);
+            observer.onError(exception);
+        }
     }
 
 }

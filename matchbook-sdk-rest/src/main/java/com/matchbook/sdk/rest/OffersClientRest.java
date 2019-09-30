@@ -79,7 +79,7 @@ public class OffersClientRest extends AbstractClientRest implements OffersClient
     @Override
     public void submitOffers(OffersPostRequest offersPostRequest, StreamObserver<Offer> offersObserver) {
         String url = buildSportsUrl(offersPostRequest.resourcePath());
-        postRequest(url, offersPostRequest, offersObserver, new OffersReader());
+        partiallyFailablePostRequest(url, offersPostRequest, offersObserver, new OffersReader());
     }
 
     @Override
@@ -91,7 +91,7 @@ public class OffersClientRest extends AbstractClientRest implements OffersClient
     @Override
     public void editOffers(OffersPutRequest offersPutRequest, StreamObserver<Offer> offersObserver) {
         String url = buildSportsUrl(offersPutRequest.resourcePath());
-        putRequest(url, offersPutRequest, offersObserver, new OffersReader());
+        partiallyFailablePutRequest(url, offersPutRequest, offersObserver, new OffersReader());
     }
 
     @Override
@@ -103,7 +103,7 @@ public class OffersClientRest extends AbstractClientRest implements OffersClient
     @Override
     public void cancelOffers(OffersDeleteRequest offersDeleteRequest, StreamObserver<Offer> offersObserver) {
         String url = buildSportsUrl(offersDeleteRequest.resourcePath());
-        deleteRequest(url, offersDeleteRequest, offersObserver, new OffersReader());
+        partiallyFailableDeleteRequest(url, offersDeleteRequest, offersObserver, new OffersReader());
     }
 
 }
