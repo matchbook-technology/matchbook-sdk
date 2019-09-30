@@ -16,14 +16,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-public class RestResponseCallback<T, RESP extends RestResponse> implements HttpCallback {
+class RestResponseCallback<T, RESP extends RestResponse> implements HttpCallback {
 
-    private final StreamObserver<T> observer;
-    private final Serializer serializer;
-    private final Reader<T, RESP> reader;
+    protected final StreamObserver<T> observer;
+    protected final Serializer serializer;
+    protected final Reader<T, RESP> reader;
+
     private final ErrorsReader errorsReader;
 
-    RestResponseCallback(StreamObserver<T> observer, Serializer serializer, Reader<T, RESP> reader) {
+    protected RestResponseCallback(StreamObserver<T> observer, Serializer serializer, Reader<T, RESP> reader) {
         this.observer = observer;
         this.serializer = serializer;
         this.reader = reader;
@@ -40,8 +41,10 @@ public class RestResponseCallback<T, RESP extends RestResponse> implements HttpC
                 observer.onNext(item);
             }
             observer.onCompleted();
-        } catch (IOException e) {
-            MatchbookSDKParsingException exception = new MatchbookSDKParsingException(e.getMessage(), e);
+        } catch (MatchbookSDKParsingException parsingException) {
+            observer.onError(parsingException);
+        } catch (IOException ioException) {
+            MatchbookSDKParsingException exception = parsingException(ioException);
             observer.onError(exception);
         }
     }
@@ -51,33 +54,44 @@ public class RestResponseCallback<T, RESP extends RestResponse> implements HttpC
         try (Parser parser = serializer.newParser(responseInputStream)) {
             errorsReader.init(parser);
             Errors errors = errorsReader.readFullResponse();
-            MatchbookSDKHttpException matchbookException = Objects.nonNull(errors) && isAuthenticationErrorPresent(errors) ?
+
+            MatchbookSDKHttpException matchbookException = Objects.nonNull(errors) && isAuthenticationError(errors) ?
                     unauthenticatedException() : httpException(responseCode);
             observer.onError(matchbookException);
-        } catch (IOException e) {
-            MatchbookSDKParsingException exception = new MatchbookSDKParsingException(e.getMessage(), e);
+        } catch (MatchbookSDKParsingException parsingException) {
+            observer.onError(parsingException);
+        } catch (IOException ioException) {
+            MatchbookSDKParsingException exception = parsingException(ioException);
             observer.onError(exception);
         }
     }
 
-    private boolean isAuthenticationErrorPresent(Errors errors) {
+    private boolean isAuthenticationError(Errors errors) {
         return errors.getErrors().stream()
                 .flatMap(error -> error.getMessages().stream())
                 .anyMatch(message -> message.toLowerCase().contains("cannot login"));
     }
 
+    @Override
+    public void onException(IOException ioException) {
+        MatchbookSDKHttpException matchbookException = httpException(ioException);
+        observer.onError(matchbookException);
+    }
+
+    protected MatchbookSDKParsingException parsingException(IOException ioException) {
+        return new MatchbookSDKParsingException(ioException.getMessage(), ioException);
+    }
+
     private MatchbookSDKHttpException unauthenticatedException() {
-        return new MatchbookSDKHttpException("Unable to authenticate user: invalid credentials", ErrorType.UNAUTHENTICATED);
+        return new MatchbookSDKHttpException("Unable to authenticate user. Invalid credentials.", ErrorType.UNAUTHENTICATED);
     }
 
     private MatchbookSDKHttpException httpException(int responseCode) {
-        return new MatchbookSDKHttpException("Unexpected HTTP code " + responseCode, ErrorType.HTTP);
+        return new MatchbookSDKHttpException(String.format("Unexpected HTTP response code: %d.", responseCode), ErrorType.HTTP);
     }
 
-    @Override
-    public void onException(IOException ioException) {
-        MatchbookSDKHttpException matchbookException = new MatchbookSDKHttpException(ioException.getMessage(), ioException);
-        observer.onError(matchbookException);
+    private MatchbookSDKHttpException httpException(IOException ioException) {
+        return new MatchbookSDKHttpException(ioException.getMessage(), ioException);
     }
 
 }
