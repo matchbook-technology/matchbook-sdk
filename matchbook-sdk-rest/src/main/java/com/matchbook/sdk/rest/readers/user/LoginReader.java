@@ -34,7 +34,7 @@ public class LoginReader extends ResponseReader<Login> {
     }
 
     private Account readAccount() {
-        accountReader.startReading(parser);
+        accountReader.init(parser);
         return accountReader.readFullResponse();
     }
 

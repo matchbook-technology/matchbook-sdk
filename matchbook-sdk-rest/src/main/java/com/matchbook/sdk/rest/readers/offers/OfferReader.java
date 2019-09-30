@@ -107,7 +107,7 @@ public class OfferReader extends ResponseReader<Offer> {
     }
 
     private OfferEdit readOfferEdit() {
-        offerEditReader.startReading(parser);
+        offerEditReader.init(parser);
         return offerEditReader.readFullResponse();
     }
 
@@ -115,7 +115,7 @@ public class OfferReader extends ResponseReader<Offer> {
         List<MatchedBet> matchedBets = new ArrayList<>();
         parser.moveToNextToken();
         while (!parser.isEndOfArray()) {
-            matchedBetReader.startReading(parser);
+            matchedBetReader.init(parser);
             MatchedBet market = matchedBetReader.readFullResponse();
             if (Objects.nonNull(market)) {
                 matchedBets.add(market);
@@ -139,7 +139,7 @@ public class OfferReader extends ResponseReader<Offer> {
         List<Error> errorsList = new ArrayList<>(1);
         parser.moveToNextToken();
         while (!parser.isEndOfArray()) {
-            errorReader.startReading(parser);
+            errorReader.init(parser);
             Error error = errorReader.readFullResponse();
             if (Objects.nonNull(error)) {
                 errorsList.add(error);

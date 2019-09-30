@@ -33,13 +33,8 @@ public class RestResponseCallback<T, RESP extends RestResponse> implements HttpC
 
     @Override
     public void onSuccessfulResponse(InputStream responseInputStream) {
-        if (Objects.isNull(responseInputStream)) {
-            observer.onCompleted();
-            return;
-        }
-
         try (Parser parser = serializer.newParser(responseInputStream)) {
-            reader.startReading(parser);
+            reader.init(parser);
             while (reader.hasMoreItems()) {
                 T item = reader.readNextItem();
                 observer.onNext(item);
@@ -53,14 +48,8 @@ public class RestResponseCallback<T, RESP extends RestResponse> implements HttpC
 
     @Override
     public void onFailedResponse(InputStream responseInputStream, int responseCode) {
-        if (Objects.isNull(responseInputStream)) {
-            MatchbookSDKHttpException matchbookException = httpException(responseCode);
-            observer.onError(matchbookException);
-            return;
-        }
-
         try (Parser parser = serializer.newParser(responseInputStream)) {
-            errorsReader.startReading(parser);
+            errorsReader.init(parser);
             Errors errors = errorsReader.readFullResponse();
             MatchbookSDKHttpException matchbookException = Objects.nonNull(errors) && isAuthenticationErrorPresent(errors) ?
                     unauthenticatedException() : httpException(responseCode);

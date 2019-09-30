@@ -14,21 +14,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.ConnectionManager;
-import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
-import com.matchbook.sdk.rest.UserClientRest;
 import com.matchbook.sdk.rest.dtos.user.Account;
 import com.matchbook.sdk.rest.dtos.user.Balance;
 import com.matchbook.sdk.rest.dtos.user.Login;
 import com.matchbook.sdk.rest.dtos.user.Logout;
 
-import org.junit.Ignore;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Test;
 
 public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest> {
@@ -120,7 +116,6 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
-    @Ignore
     @Test
     public void loginEmptyResponseBodyTest() throws InterruptedException {
         String url = "/bpapi/rest/security/session";

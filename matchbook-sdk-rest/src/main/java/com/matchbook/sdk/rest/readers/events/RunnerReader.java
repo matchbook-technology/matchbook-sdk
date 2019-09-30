@@ -57,7 +57,7 @@ public class RunnerReader extends ResponseReader<Runner> {
         List<Price> prices = new ArrayList<>();
         parser.moveToNextToken();
         while (!parser.isEndOfArray()) {
-            priceReader.startReading(parser);
+            priceReader.init(parser);
             Price price = priceReader.readFullResponse();
             if (Objects.nonNull(price)) {
                 prices.add(price);

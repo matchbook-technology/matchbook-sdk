@@ -30,16 +30,6 @@ class ParserWrapper implements Parser {
     }
 
     @Override
-    public boolean isStartOfObject() {
-        return jsonParser.hasToken(JsonToken.START_OBJECT);
-    }
-
-    @Override
-    public boolean isStartOfArray() {
-        return jsonParser.hasToken(JsonToken.START_ARRAY);
-    }
-
-    @Override
     public boolean isEndOfObject() {
         return jsonParser.hasToken(JsonToken.END_OBJECT);
     }

@@ -73,7 +73,7 @@ public class OfferEditReader extends ResponseReader<OfferEdit> {
         List<Error> errorsList = new ArrayList<>(1);
         parser.moveToNextToken();
         while (!parser.isEndOfArray()) {
-            errorReader.startReading(parser);
+            errorReader.init(parser);
             Error error = errorReader.readFullResponse();
             if (Objects.nonNull(error)) {
                 errorsList.add(error);

@@ -45,7 +45,7 @@ public abstract class PageableResponseReader<T extends RestResponse, R extends P
         List<T> items = new ArrayList<>();
         parser.moveToNextToken();
         while (!parser.isEndOfArray()) {
-            itemsReader.startReading(parser);
+            itemsReader.init(parser);
             T item = itemsReader.readFullResponse();
             if (Objects.nonNull(item)) {
                 items.add(item);
@@ -64,7 +64,7 @@ public abstract class PageableResponseReader<T extends RestResponse, R extends P
             readingItemStatus = ReadingItemsStatus.READING;
         }
 
-        itemsReader.startReading(parser);
+        itemsReader.init(parser);
         T item = itemsReader.readFullResponse();
         parser.moveToNextToken();
         if (parser.isEndOfArray()) {

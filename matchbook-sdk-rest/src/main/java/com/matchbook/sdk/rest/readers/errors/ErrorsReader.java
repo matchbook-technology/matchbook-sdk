@@ -37,7 +37,7 @@ public class ErrorsReader extends ResponseReader<Errors> {
         List<Error> errors = new ArrayList<>();
         parser.moveToNextToken();
         while (!parser.isEndOfArray()) {
-            errorReader.startReading(parser);
+            errorReader.init(parser);
             Error error = errorReader.readFullResponse();
             if (Objects.nonNull(error)) {
                 errors.add(error);

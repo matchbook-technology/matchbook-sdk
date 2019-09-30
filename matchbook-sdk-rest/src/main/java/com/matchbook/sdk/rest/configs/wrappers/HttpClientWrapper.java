@@ -104,7 +104,9 @@ public class HttpClientWrapper implements HttpClient {
         @Override
         public void onResponse(Call call, Response response) {
             ResponseBody responseBody = response.body();
-            InputStream responseInputStream = Objects.nonNull(responseBody) ? responseBody.byteStream() : null;
+            Objects.requireNonNull(responseBody, "The content of the HTTP response cannot be null.");
+
+            InputStream responseInputStream = responseBody.byteStream();
             if (response.isSuccessful()) {
                 httpCallback.onSuccessfulResponse(responseInputStream);
             } else {

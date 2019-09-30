@@ -10,10 +10,6 @@ public interface Parser extends AutoCloseable {
 
     boolean hasCurrentToken();
 
-    boolean isStartOfObject();
-
-    boolean isStartOfArray();
-
     boolean isEndOfObject();
 
     boolean isEndOfArray();

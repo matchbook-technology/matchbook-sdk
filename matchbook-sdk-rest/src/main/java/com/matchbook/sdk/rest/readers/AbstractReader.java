@@ -14,9 +14,11 @@ public abstract class AbstractReader<T, R extends RestResponse> implements Reade
     }
 
     @Override
-    public void startReading(Parser parser) throws MatchbookSDKParsingException {
+    public void init(Parser parser) throws MatchbookSDKParsingException {
         this.parser = parser;
-        readingItemStatus = ReadingItemsStatus.NOT_READ;
+
+        parser.moveToNextToken();
+        readingItemStatus = parser.hasCurrentToken() ? ReadingItemsStatus.NOT_READ : ReadingItemsStatus.READ;
     }
 
     @Override
