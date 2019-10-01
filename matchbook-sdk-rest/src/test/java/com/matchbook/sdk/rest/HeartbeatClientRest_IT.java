@@ -10,28 +10,18 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.TimeZone;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.ConnectionManager;
-import com.matchbook.sdk.rest.HeartbeatClientRest;
-import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.dtos.heartbeat.ActionPerformed;
 import com.matchbook.sdk.rest.dtos.heartbeat.Heartbeat;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatGetRequest;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatSendRequest;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.TimeZone;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,7 +44,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
     }
 
     @Test
-    public void getHeartbeatTest() throws InterruptedException, ParseException {
+    public void getHeartbeatTest() throws ParseException {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -63,41 +53,23 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/heartbeat/getHeartbeatSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatGetRequest heartbeatGetRequest = new HeartbeatGetRequest.Builder().build();
-
         Instant expectedHeartbeatTimeout = dateFormat.parse("2019-07-12T10:01:00").toInstant();
-        clientRest.getHeartbeat(heartbeatGetRequest, new StreamObserver<Heartbeat>() {
-
-            @Override
-            public void onNext(Heartbeat heartbeat) {
-                assertNotNull(heartbeat);
-                assertEquals(ActionPerformed.HEARTBEAT_ACTIVATED, heartbeat.getActionPerformed());
-                assertEquals(expectedHeartbeatTimeout, heartbeat.getTimeoutTime());
-                assertThat(heartbeat.getActualTimeout()).isNull();
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
+        ResponseStreamObserver<Heartbeat> streamObserver = new SuccessfulResponseStreamObserver<>(1, heartbeat -> {
+            assertThat(heartbeat).isNotNull();
+            assertThat(heartbeat.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_ACTIVATED);
+            assertThat(heartbeat.getTimeoutTime()).isEqualTo(expectedHeartbeatTimeout);
+            assertThat(heartbeat.getActualTimeout()).isNull();
         });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        clientRest.getHeartbeat(heartbeatGetRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
-    public void sendHeartbeatTest() throws InterruptedException, ParseException {
+    public void sendHeartbeatTest() throws ParseException {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -106,42 +78,23 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/heartbeat/postHeartbeatSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatSendRequest heartbeatSendRequest = new HeartbeatSendRequest.Builder(20).build();
-
         Instant expectedHeartbeatTimeout = dateFormat.parse("2019-07-12T10:01:00").toInstant();
-        clientRest.sendHeartbeat(heartbeatSendRequest, new StreamObserver<Heartbeat>() {
-
-            @Override
-            public void onNext(Heartbeat heartbeat) {
-
-                assertNotNull(heartbeat);
-                assertEquals(ActionPerformed.HEARTBEAT_ACTIVATED, heartbeat.getActionPerformed());
-                assertEquals(20, heartbeat.getActualTimeout().intValue());
-                assertEquals(expectedHeartbeatTimeout, heartbeat.getTimeoutTime());
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
+        ResponseStreamObserver<Heartbeat> streamObserver = new SuccessfulResponseStreamObserver<>(1, heartbeat -> {
+            assertThat(heartbeat).isNotNull();
+            assertThat(heartbeat.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_ACTIVATED);
+            assertThat(heartbeat.getTimeoutTime()).isEqualTo(expectedHeartbeatTimeout);
+            assertThat(heartbeat.getActualTimeout()).isEqualTo(20);
         });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        clientRest.sendHeartbeat(heartbeatSendRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
-    public void unsubscribeHeartbeatTest() throws InterruptedException {
+    public void unsubscribeHeartbeatTest() {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(delete(urlPathEqualTo("/edge/rest/v1/heartbeat"))
                 .withHeader("Accept", equalTo("application/json"))
@@ -150,33 +103,15 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/heartbeat/deleteHeartbeatSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
         HeartbeatUnsubscribeRequest heartbeatUnsubscribeRequest = new HeartbeatUnsubscribeRequest.Builder().build();
-
-        clientRest.unsubscribeHeartbeat(heartbeatUnsubscribeRequest, new StreamObserver<Heartbeat>() {
-
-            @Override
-            public void onNext(Heartbeat heartbeat) {
-                assertNotNull(heartbeat);
-                assertEquals(ActionPerformed.HEARTBEAT_TERMINATED, heartbeat.getActionPerformed());
-                assertNull(heartbeat.getActualTimeout());
-                assertNull(heartbeat.getTimeoutTime());
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
+        ResponseStreamObserver<Heartbeat> streamObserver = new SuccessfulResponseStreamObserver<>(1, heartbeat -> {
+            assertThat(heartbeat).isNotNull();
+            assertThat(heartbeat.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_TERMINATED);
+            assertThat(heartbeat.getTimeoutTime()).isNull();
+            assertThat(heartbeat.getActualTimeout()).isNull();
         });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        clientRest.unsubscribeHeartbeat(heartbeatUnsubscribeRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(deleteRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
