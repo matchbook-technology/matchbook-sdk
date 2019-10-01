@@ -9,15 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.ConnectionManager;
-import com.matchbook.sdk.rest.EventsClientRest;
-import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.dtos.events.Event;
 import com.matchbook.sdk.rest.dtos.events.EventRequest;
 import com.matchbook.sdk.rest.dtos.events.EventsRequest;
@@ -29,6 +22,11 @@ import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
+
+import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Test;
 
 public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientRest> {
@@ -39,7 +37,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getSportsTest() throws InterruptedException {
+    public void getSportsTest() {
         String url = "/edge/rest/lookups/sports";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -48,36 +46,19 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/events/getSportsSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(6);
-
         SportsRequest sportsRequest = new SportsRequest.Builder().build();
-
-        clientRest.getSports(sportsRequest, new StreamObserver<Sport>() {
-
-            @Override
-            public void onNext(Sport sport) {
-                assertNotNull(sport);
-                assertNotNull(sport.getId());
-                assertThat(sport.getName()).isNotEmpty();
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        ResponseStreamObserver<Sport> streamObserver = new SuccessfulResponseStreamObserver<>(5, this::verifySport);
+        clientRest.getSports(sportsRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    private void verifySport(Sport sport) {
+        assertThat(sport).isNotNull();
+        assertThat(sport.getId()).isNotNull();
+        assertThat(sport.getName()).isNotEmpty();
     }
 
     @Test
