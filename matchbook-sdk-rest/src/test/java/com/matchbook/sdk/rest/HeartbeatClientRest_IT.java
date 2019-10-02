@@ -10,6 +10,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
 import com.matchbook.sdk.rest.dtos.heartbeat.ActionPerformed;
 import com.matchbook.sdk.rest.dtos.heartbeat.Heartbeat;
@@ -17,9 +18,8 @@ import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatGetRequest;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatSendRequest;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.TimeZone;
 
 import org.junit.Before;
@@ -44,7 +44,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
     }
 
     @Test
-    public void getHeartbeatTest() throws ParseException {
+    public void getHeartbeatTest() {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -54,11 +54,10 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
                         .withBodyFile("matchbook/heartbeat/getHeartbeatSuccessfulResponse.json")));
 
         HeartbeatGetRequest heartbeatGetRequest = new HeartbeatGetRequest.Builder().build();
-        Instant expectedHeartbeatTimeout = dateFormat.parse("2019-07-12T10:01:00").toInstant();
         ResponseStreamObserver<Heartbeat> streamObserver = new SuccessfulResponseStreamObserver<>(1, heartbeat -> {
             assertThat(heartbeat).isNotNull();
             assertThat(heartbeat.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_ACTIVATED);
-            assertThat(heartbeat.getTimeoutTime()).isEqualTo(expectedHeartbeatTimeout);
+            assertThat(heartbeat.getTimeoutTime()).isCloseTo("2019-07-12T10:01:00Z", within(1, ChronoUnit.SECONDS));
             assertThat(heartbeat.getActualTimeout()).isNull();
         });
         clientRest.getHeartbeat(heartbeatGetRequest, streamObserver);
@@ -69,7 +68,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
     }
 
     @Test
-    public void sendHeartbeatTest() throws ParseException {
+    public void sendHeartbeatTest() {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -79,11 +78,10 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
                         .withBodyFile("matchbook/heartbeat/postHeartbeatSuccessfulResponse.json")));
 
         HeartbeatSendRequest heartbeatSendRequest = new HeartbeatSendRequest.Builder(20).build();
-        Instant expectedHeartbeatTimeout = dateFormat.parse("2019-07-12T10:01:00").toInstant();
         ResponseStreamObserver<Heartbeat> streamObserver = new SuccessfulResponseStreamObserver<>(1, heartbeat -> {
             assertThat(heartbeat).isNotNull();
             assertThat(heartbeat.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_ACTIVATED);
-            assertThat(heartbeat.getTimeoutTime()).isEqualTo(expectedHeartbeatTimeout);
+            assertThat(heartbeat.getTimeoutTime()).isCloseTo("2019-07-12T10:01:00Z", within(1, ChronoUnit.SECONDS));
             assertThat(heartbeat.getActualTimeout()).isEqualTo(20);
         });
         clientRest.sendHeartbeat(heartbeatSendRequest, streamObserver);
