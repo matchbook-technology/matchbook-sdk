@@ -9,16 +9,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.rest.dtos.prices.Price;
+import com.matchbook.sdk.rest.dtos.prices.PricesRequest;
+
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.ConnectionManager;
-import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
-import com.matchbook.sdk.rest.PricesClientRest;
-import com.matchbook.sdk.rest.dtos.prices.Price;
-import com.matchbook.sdk.rest.dtos.prices.PricesRequest;
 import org.junit.Test;
 
 public class PricesClientRest_IT extends MatchbookSDKClientRest_IT<PricesClientRest> {

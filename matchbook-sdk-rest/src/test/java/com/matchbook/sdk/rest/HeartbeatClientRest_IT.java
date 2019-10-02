@@ -15,6 +15,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.rest.dtos.heartbeat.ActionPerformed;
+import com.matchbook.sdk.rest.dtos.heartbeat.Heartbeat;
+import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatGetRequest;
+import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatSendRequest;
+import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -22,16 +30,6 @@ import java.util.TimeZone;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.ConnectionManager;
-import com.matchbook.sdk.rest.HeartbeatClientRest;
-import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
-import com.matchbook.sdk.rest.dtos.heartbeat.ActionPerformed;
-import com.matchbook.sdk.rest.dtos.heartbeat.Heartbeat;
-import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatGetRequest;
-import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatSendRequest;
-import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
 import org.junit.Before;
 import org.junit.Test;
 

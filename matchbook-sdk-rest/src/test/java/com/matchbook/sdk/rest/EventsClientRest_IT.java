@@ -9,15 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.ConnectionManager;
-import com.matchbook.sdk.rest.EventsClientRest;
-import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
 import com.matchbook.sdk.rest.dtos.events.Event;
 import com.matchbook.sdk.rest.dtos.events.EventRequest;
 import com.matchbook.sdk.rest.dtos.events.EventsRequest;
@@ -29,6 +22,11 @@ import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
 import com.matchbook.sdk.rest.dtos.events.RunnersRequest;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsRequest;
+
+import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Test;
 
 public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientRest> {

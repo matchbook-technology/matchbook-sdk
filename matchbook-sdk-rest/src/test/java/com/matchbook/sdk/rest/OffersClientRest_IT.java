@@ -16,17 +16,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.ConnectionManager;
-import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
-import com.matchbook.sdk.rest.OffersClientRest;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBet;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBetsRequest;
 import com.matchbook.sdk.rest.dtos.offers.CancelledMatchedBetsRequest;
@@ -49,6 +40,13 @@ import com.matchbook.sdk.rest.dtos.offers.PositionsRequest;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.rest.dtos.prices.Side;
+
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import org.junit.Test;
 
 public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientRest> {
