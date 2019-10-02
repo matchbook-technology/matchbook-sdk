@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-class PartiallyFailableResponseCallback<T extends FailableRestResponse, RESP extends PartiallyFailableResponse>
+class PartiallyFailableResponseCallback<T extends FailableRestResponse, RESP extends PartiallyFailableResponse<T>>
         extends RestResponseCallback<T, RESP> {
 
     private static final int FAILABLE_HTTP_CODE = 400;

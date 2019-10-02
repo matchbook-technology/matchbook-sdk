@@ -36,7 +36,7 @@ abstract class AbstractClientRest implements Client {
         connectionManager.getHttpClient().get(requestUrl, new RestResponseCallback<>(observer, serializer, reader));
     }
 
-    protected <REQ extends RestRequest, RESP extends PartiallyFailableResponse, T extends FailableRestResponse>
+    protected <REQ extends RestRequest, RESP extends PartiallyFailableResponse<T>, T extends FailableRestResponse>
             void partiallyFailablePostRequest(String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
         HttpCallback httpCallback = new PartiallyFailableResponseCallback<>(observer, connectionManager.getSerializer(), reader);
         postRequest(url, request, observer, httpCallback);
@@ -60,7 +60,7 @@ abstract class AbstractClientRest implements Client {
         }
     }
 
-    protected <REQ extends RestRequest, RESP extends PartiallyFailableResponse, T extends FailableRestResponse>
+    protected <REQ extends RestRequest, RESP extends PartiallyFailableResponse<T>, T extends FailableRestResponse>
             void partiallyFailablePutRequest(String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
         HttpCallback httpCallback = new PartiallyFailableResponseCallback<>(observer, connectionManager.getSerializer(), reader);
         putRequest(url, request, observer, httpCallback);
@@ -84,7 +84,7 @@ abstract class AbstractClientRest implements Client {
         }
     }
 
-    protected <REQ extends RestRequest, RESP extends PartiallyFailableResponse, T extends FailableRestResponse>
+    protected <REQ extends RestRequest, RESP extends PartiallyFailableResponse<T>, T extends FailableRestResponse>
             void partiallyFailableDeleteRequest(String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
         HttpCallback httpCallback = new PartiallyFailableResponseCallback<>(observer, connectionManager.getSerializer(), reader);
         deleteRequest(url, request, httpCallback);
