@@ -7,7 +7,7 @@ import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatSendRequest;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
 import com.matchbook.sdk.rest.readers.heartbeat.HeartbeatReader;
 
-public class HeartbeatClientRest extends AbstractRestClient implements HeartbeatClient {
+public class HeartbeatClientRest extends AbstractClientRest implements HeartbeatClient {
 
     public HeartbeatClientRest(ConnectionManager connectionManager) {
         super(connectionManager);

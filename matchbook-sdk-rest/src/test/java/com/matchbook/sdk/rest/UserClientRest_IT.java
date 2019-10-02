@@ -1,4 +1,4 @@
-package com.matchbook.sdk.rest.clients.rest;
+package com.matchbook.sdk.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
@@ -9,37 +9,29 @@ import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.MatchbookSDKClientRest_IT;
-import com.matchbook.sdk.rest.UserClientRest;
 import com.matchbook.sdk.rest.dtos.user.Account;
 import com.matchbook.sdk.rest.dtos.user.Balance;
 import com.matchbook.sdk.rest.dtos.user.Login;
 import com.matchbook.sdk.rest.dtos.user.Logout;
-import org.junit.Before;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Test;
 
-public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
-
-    private UserClientRest userClientRest;
+public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest> {
 
     @Override
-    @Before
-    public void setUp() {
-        super.setUp();
-
-        this.userClientRest = new UserClientRest(connectionManager);
+    protected UserClientRest newClientRest(ConnectionManager connectionManager) {
+        return new UserClientRest(connectionManager);
     }
 
     @Test
@@ -54,14 +46,11 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
-        userClientRest.login(new StreamObserver<Login>() {
+        clientRest.login(new StreamObserver<Login>() {
 
             @Override
             public void onNext(Login login) {
-                assertNotNull(login);
-                assertNotNull(login.getUserId());
-                assertThat(login.getSessionToken()).isNotEmpty();
-                verifyAccount(login.getAccount());
+                verifyLogin(login);
                 countDownLatch.countDown();
             }
 
@@ -83,6 +72,13 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
+    private void verifyLogin(Login login) {
+        assertNotNull(login);
+        assertNotNull(login.getUserId());
+        assertThat(login.getSessionToken()).isNotEmpty();
+        verifyAccount(login.getAccount());
+    }
+
     @Test
     public void loginUsingIncorrectPasswordTest() throws InterruptedException {
         String url = "/bpapi/rest/security/session";
@@ -94,7 +90,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                         .withBodyFile("matchbook/user/loginFailedResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
-        userClientRest.login(new StreamObserver<Login>() {
+        clientRest.login(new StreamObserver<Login>() {
 
             @Override
             public void onNext(Login login) {
@@ -132,7 +128,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-        userClientRest.login(new StreamObserver<Login>() {
+        clientRest.login(new StreamObserver<Login>() {
 
             @Override
             public void onNext(Login login) {
@@ -153,9 +149,6 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
         boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         assertThat(await).isTrue();
-
-        wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
-                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
@@ -169,7 +162,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                         .withBodyFile("matchbook/user/logoutSuccessfulResponse.json")));
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        userClientRest.logout(new StreamObserver<Logout>() {
+        clientRest.logout(new StreamObserver<Logout>() {
 
             @Override
             public void onNext(Logout logout) {
@@ -210,7 +203,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-        userClientRest.getAccount(new StreamObserver<Account>() {
+        clientRest.getAccount(new StreamObserver<Account>() {
 
             @Override
             public void onNext(Account account) {
@@ -257,7 +250,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-        userClientRest.getBalance(new StreamObserver<Balance>() {
+        clientRest.getBalance(new StreamObserver<Balance>() {
 
             @Override
             public void onNext(Balance balance) {
@@ -308,13 +301,13 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                         .withBodyFile("matchbook/user/getAccountBalanceSuccessfulResponse.json")));
 
         final CountDownLatch loginCountDownLatch = new CountDownLatch(1);
-        userClientRest.login(buildStreamObserverWithCountdownLatch(loginCountDownLatch));
+        clientRest.login(buildStreamObserverWithCountdownLatch(loginCountDownLatch));
 
         boolean await = loginCountDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         final CountDownLatch balanceCountDownLatch = new CountDownLatch(1);
-        userClientRest.getBalance(buildStreamObserverWithCountdownLatch(balanceCountDownLatch));
+        clientRest.getBalance(buildStreamObserverWithCountdownLatch(balanceCountDownLatch));
 
         await = balanceCountDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
@@ -353,19 +346,19 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT {
                         .withBodyFile("matchbook/user/getAccountBalanceSuccessfulResponse.json")));
 
         final CountDownLatch loginCountDownLatch = new CountDownLatch(1);
-        userClientRest.login(buildStreamObserverWithCountdownLatch(loginCountDownLatch));
+        clientRest.login(buildStreamObserverWithCountdownLatch(loginCountDownLatch));
 
         boolean await = loginCountDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         final CountDownLatch logoutCountDownLatch = new CountDownLatch(1);
-        userClientRest.logout(buildStreamObserverWithCountdownLatch(logoutCountDownLatch));
+        clientRest.logout(buildStreamObserverWithCountdownLatch(logoutCountDownLatch));
 
         await = logoutCountDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();
 
         final CountDownLatch balanceCountDownLatch = new CountDownLatch(1);
-        userClientRest.getBalance(buildStreamObserverWithCountdownLatch(balanceCountDownLatch));
+        clientRest.getBalance(buildStreamObserverWithCountdownLatch(balanceCountDownLatch));
 
         await = balanceCountDownLatch.await(1, TimeUnit.SECONDS);
         assertThat(await).isTrue();

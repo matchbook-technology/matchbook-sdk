@@ -4,68 +4,81 @@ import java.util.concurrent.TimeUnit;
 
 public class HttpConfig {
 
-    private final long connectionTimeout;
-    private final long writeTimeout;
-    private final long readTimeout;
+    private final long connectionTimeoutMillis;
+    private final long writeTimeoutMillis;
+    private final long readTimeoutMillis;
 
     private HttpConfig(HttpConfig.Builder builder) {
-        this.connectionTimeout = builder.connectionTimeout;
-        this.readTimeout = builder.readTimeout;
-        this.writeTimeout = builder.writeTimeout;
+        this.connectionTimeoutMillis = builder.connectionTimeoutMillis;
+        this.readTimeoutMillis = builder.readTimeoutMillis;
+        this.writeTimeoutMillis = builder.writeTimeoutMillis;
     }
 
-    public long getConnectionTimeout() {
-        return connectionTimeout;
+    public long getConnectionTimeoutInMillis() {
+        return connectionTimeoutMillis;
     }
 
-    public long getWriteTimeout() {
-        return writeTimeout;
+    public long getWriteTimeoutInMillis() {
+        return writeTimeoutMillis;
     }
 
-    public long getReadTimeout() {
-        return readTimeout;
+    public long getReadTimeoutInMillis() {
+        return readTimeoutMillis;
     }
 
     @Override
     public String toString() {
         return HttpConfig.class.getSimpleName() + " {" +
-                "connectionTimeout=" + connectionTimeout +
-                ", writeTimeout=" + writeTimeout +
-                ", readTimeout=" + readTimeout +
+                "connectionTimeoutMillis=" + connectionTimeoutMillis +
+                ", writeTimeoutMillis=" + writeTimeoutMillis +
+                ", readTimeoutMillis=" + readTimeoutMillis +
                 "}";
     }
 
     public static class Builder {
 
-        private long connectionTimeout;
-        private long writeTimeout;
-        private long readTimeout;
+        private long connectionTimeoutMillis;
+        private long writeTimeoutMillis;
+        private long readTimeoutMillis;
 
         public Builder() {
             final long defaultTimeout = TimeUnit.SECONDS.toMillis(10);
-            connectionTimeout = defaultTimeout;
-            writeTimeout = defaultTimeout;
-            readTimeout = defaultTimeout;
+            connectionTimeoutMillis = defaultTimeout;
+            writeTimeoutMillis = defaultTimeout;
+            readTimeoutMillis = defaultTimeout;
         }
 
-        public Builder connectionTimeout(long connectionTimeout) {
-            this.connectionTimeout = connectionTimeout;
+        public Builder connectionTimeoutInMillis(long connectionTimeout) {
+            return connectionTimeout(connectionTimeout, TimeUnit.MILLISECONDS);
+        }
+
+        public Builder connectionTimeout(long connectionTimeout, TimeUnit timeUnit) {
+            this.connectionTimeoutMillis = timeUnit.toMillis(connectionTimeout);
             return this;
         }
 
-        public Builder writeTimeout(long writeTimeout) {
-            this.writeTimeout = writeTimeout;
+        public Builder writeTimeoutInMillis(long writeTimeout) {
+            return writeTimeout(writeTimeout, TimeUnit.MILLISECONDS);
+        }
+
+        public Builder writeTimeout(long writeTimeout, TimeUnit timeUnit) {
+            this.writeTimeoutMillis = timeUnit.toMillis(writeTimeout);
             return this;
         }
 
-        public Builder readTimeout(long readTimeout) {
-            this.readTimeout = readTimeout;
+        public Builder readTimeoutInMillis(long readTimeout) {
+            return readTimeout(readTimeout, TimeUnit.MILLISECONDS);
+        }
+
+        public Builder readTimeout(long readTimeout, TimeUnit timeUnit) {
+            this.readTimeoutMillis = timeUnit.toMillis(readTimeout);
             return this;
         }
 
         public HttpConfig build() {
             return new HttpConfig(this);
         }
+
     }
 
 }
