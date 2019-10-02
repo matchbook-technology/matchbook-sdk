@@ -85,9 +85,6 @@ workflows:
           requires:
             - build-java8
             - build-java11
-#          filters:
-#            branches:
-#              only: master
 
 
 

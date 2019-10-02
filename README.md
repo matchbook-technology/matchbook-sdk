@@ -13,14 +13,22 @@
 
 ## Features
 
+* **High-Performance** TODO
+* **Session Management** A user session is automatically managed
+* **Configurable** Provides a number of configuration options to control its behaviour at runtime
+* **Multi-platform** The library works on Java 8 or higher
 
 ## Getting Started
+
+TODO add GIF how events processed 
 
 ### Import the Maven dependency 
 
 ### Examples
 
 #### GET Events 
+
+
 
 #### SUBMIT an Offer
 
