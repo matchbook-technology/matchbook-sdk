@@ -83,9 +83,9 @@ workflows:
       - maven-deploy:
           requires:
             - build-java8
-          filters:
-            branches:
-              only: master
+#          filters:
+#            branches:
+#              only: master
 
 
 
