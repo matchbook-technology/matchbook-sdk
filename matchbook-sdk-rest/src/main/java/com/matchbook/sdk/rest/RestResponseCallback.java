@@ -69,7 +69,8 @@ class RestResponseCallback<T, RESP extends RestResponse> implements HttpCallback
     private boolean isAuthenticationError(Errors errors) {
         return errors.getErrors().stream()
                 .flatMap(error -> error.getMessages().stream())
-                .anyMatch(message -> message.toLowerCase().contains("cannot login"));
+                .map(String::toLowerCase)
+                .anyMatch(message -> message.contains("cannot login") || message.contains("authentication required"));
     }
 
     @Override
