@@ -7,6 +7,6 @@ public interface Serializer {
 
     <T> String writeObjectAsString(T object) throws IOException;
 
-    <T> T readObject(InputStream inputStream, Class<T> type) throws IOException;
+    Parser newParser(InputStream inputStream) throws IOException;
 
 }

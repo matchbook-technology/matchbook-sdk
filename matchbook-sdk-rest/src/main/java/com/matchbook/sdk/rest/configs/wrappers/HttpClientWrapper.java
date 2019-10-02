@@ -1,13 +1,8 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
@@ -16,9 +11,6 @@ import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -42,55 +34,13 @@ public class HttpClientWrapper implements HttpClient {
     }
 
     private OkHttpClient initHttpClient(HttpConfig httpConfig) {
-        CookieJar cookieJar = createCookieJar();
         return new OkHttpClient.Builder()
-                .connectTimeout(httpConfig.getConnectionTimeout(), TimeUnit.MILLISECONDS)
-                .writeTimeout(httpConfig.getWriteTimeout(), TimeUnit.MILLISECONDS)
-                .readTimeout(httpConfig.getReadTimeout(), TimeUnit.MILLISECONDS)
+                .connectTimeout(httpConfig.getConnectionTimeoutInMillis(), TimeUnit.MILLISECONDS)
+                .writeTimeout(httpConfig.getWriteTimeoutInMillis(), TimeUnit.MILLISECONDS)
+                .readTimeout(httpConfig.getReadTimeoutInMillis(), TimeUnit.MILLISECONDS)
                 .followRedirects(false)
-                .cookieJar(cookieJar)
+                .cookieJar(new SDKCookieJar())
                 .build();
-    }
-
-    /**
-     * Create a {@link CookieJar} to hold in memory the cookies. These are stored based on the host of the request.
-     *
-     * @return a {@link CookieJar} instance
-     */
-    private CookieJar createCookieJar() {
-        return new CookieJar() {
-
-            private final Map<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
-
-            @Override
-            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-                if (cookies != null) {
-                    cookieStore.put(url.host(), cookies);
-                }
-            }
-
-            @Override
-            public List<Cookie> loadForRequest(HttpUrl url) {
-                List<Cookie> cookies = cookieStore.get(url.host());
-
-                if (cookies == null) {
-                    return new ArrayList<>();
-                }
-
-                final long now = System.currentTimeMillis();
-
-                // filter out expired cookies
-                List<Cookie> unexpiredCookies = cookies.stream()
-                        .filter(cookie -> cookie.expiresAt() > now)
-                        .collect(Collectors.toList());
-
-                if (cookies.size() > unexpiredCookies.size()) {
-                    cookieStore.put(url.host(), unexpiredCookies);
-                }
-
-                return unexpiredCookies;
-            }
-        };
     }
 
     @Override
@@ -98,7 +48,7 @@ public class HttpClientWrapper implements HttpClient {
         Request request = buildRequest(url)
                 .get()
                 .build();
-        sendHttpRequest(request, httpCallback);
+        sendHttpRequest(request, new RequestCallback(httpCallback));
     }
 
     @Override
@@ -106,7 +56,7 @@ public class HttpClientWrapper implements HttpClient {
         Request request = buildRequest(url)
                 .post(RequestBody.create(body, jsonMediaType))
                 .build();
-        sendHttpRequest(request, httpCallback);
+        sendHttpRequest(request, new RequestCallback(httpCallback));
     }
 
     @Override
@@ -114,7 +64,7 @@ public class HttpClientWrapper implements HttpClient {
         Request request = buildRequest(url)
                 .put(RequestBody.create(body, jsonMediaType))
                 .build();
-        sendHttpRequest(request, httpCallback);
+        sendHttpRequest(request, new RequestCallback(httpCallback));
     }
 
     @Override
@@ -122,7 +72,7 @@ public class HttpClientWrapper implements HttpClient {
         Request request = buildRequest(url)
                 .delete()
                 .build();
-        sendHttpRequest(request, httpCallback);
+        sendHttpRequest(request, new RequestCallback(httpCallback));
     }
 
     private Request.Builder buildRequest(String url) {
@@ -132,22 +82,28 @@ public class HttpClientWrapper implements HttpClient {
                 .url(url);
     }
 
-    private void sendHttpRequest(Request request, HttpCallback httpCallback) {
-        httpClient.newCall(request).enqueue(new RequestCallback(httpCallback));
+    private void sendHttpRequest(Request request, Callback callback) {
+        httpClient.newCall(request).enqueue(callback);
     }
 
-    private class RequestCallback implements Callback {
+    @Override
+    public void close() {
+        httpClient.dispatcher().executorService().shutdown();
+        httpClient.connectionPool().evictAll();
+    }
+
+    private static class RequestCallback implements Callback {
 
         private final HttpCallback httpCallback;
 
-        private RequestCallback(HttpCallback httpCallback) {
+        RequestCallback(HttpCallback httpCallback) {
             this.httpCallback = httpCallback;
         }
 
         @Override
-        public void onResponse(Call call, Response response) throws IOException {
+        public void onResponse(Call call, Response response) {
             try (ResponseBody responseBody = response.body()) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && Objects.nonNull(responseBody)) {
                     httpCallback.onResponse(responseBody.byteStream());
                 } else {
                     MatchbookSDKHttpException matchbookException = getExceptionForResponse(response);
@@ -163,29 +119,31 @@ public class HttpClientWrapper implements HttpClient {
         }
 
         private MatchbookSDKHttpException getExceptionForResponse(Response response) {
-            if (Objects.nonNull(response.body())) {
-                try {
-                    if (isAuthenticationErrorPresent(response.body())) {
-                        return newUnauthenticatedException();
-                    }
-                } catch (IOException e) {
-                    return newHTTPException(response);
+            try {
+                ResponseBody responseBody = response.body();
+                byte[] responseBytes = Objects.nonNull(responseBody) ? responseBody.bytes() : null;
+                if (Objects.nonNull(responseBytes) && responseBytes.length > 0
+                        && isAuthenticationErrorPresent(responseBytes)) {
+                    return unauthenticatedException();
                 }
+            } catch (IOException e) {
+                // do nothing
             }
-            return newHTTPException(response);
+            return httpException(response.code());
         }
 
-        private boolean isAuthenticationErrorPresent(ResponseBody body) throws IOException {
-            return new String(body.bytes()).toLowerCase().contains("cannot login");
+        private boolean isAuthenticationErrorPresent(byte[] responseBytes) {
+            return new String(responseBytes).toLowerCase().contains("cannot login");
         }
 
-        private MatchbookSDKHttpException newHTTPException(Response response) {
-            return new MatchbookSDKHttpException("Unexpected HTTP code " + response.code(), ErrorType.HTTP);
+        private MatchbookSDKHttpException unauthenticatedException() {
+            return new MatchbookSDKHttpException("Unable to authenticate user: invalid credentials", ErrorType.UNAUTHENTICATED);
         }
 
-        private MatchbookSDKHttpException newUnauthenticatedException() {
-            return new MatchbookSDKHttpException("Incorrect username or password", ErrorType.UNAUTHENTICATED);
+        private MatchbookSDKHttpException httpException(int responseCode) {
+            return new MatchbookSDKHttpException("Unexpected HTTP code " + responseCode, ErrorType.HTTP);
         }
+
     }
 
 }

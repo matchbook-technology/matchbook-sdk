@@ -11,6 +11,15 @@
           "decimal-odds": 3,
           "side": "lay",
           "exchange-type": "back-lay"
+        },
+        {
+          "available-amount": 340.75,
+          "currency": "EUR",
+          "odds-type": "DECIMAL",
+          "odds": 3.2,
+          "decimal-odds": 3.2,
+          "side": "lay",
+          "exchange-type": "back-lay"
         }
       ],
       "event-id": 395729780570010,

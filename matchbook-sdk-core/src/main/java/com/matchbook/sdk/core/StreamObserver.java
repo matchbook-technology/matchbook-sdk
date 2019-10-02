@@ -1,6 +1,5 @@
 package com.matchbook.sdk.core;
 
-
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 
 public interface StreamObserver<V> {

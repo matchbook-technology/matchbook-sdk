@@ -1,13 +1,11 @@
 package com.matchbook.sdk.rest.dtos.events;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
-public class Market implements RestResponse<Market> {
+public class Market implements RestResponse {
 
     private Long id;
     private Long eventId;
@@ -16,6 +14,7 @@ public class Market implements RestResponse<Market> {
     private MarketType marketType;
     private boolean inRunning;
     private boolean allowLiveBetting;
+    private Double handicap;
     private Double volume;
     private Double backOverround;
     private Double layOverround;
@@ -82,6 +81,14 @@ public class Market implements RestResponse<Market> {
         this.allowLiveBetting = allowLiveBetting;
     }
 
+    public Double getHandicap() {
+        return handicap;
+    }
+
+    public void setHandicap(Double handicap) {
+        this.handicap = handicap;
+    }
+
     public Double getVolume() {
         return volume;
     }
@@ -123,11 +130,6 @@ public class Market implements RestResponse<Market> {
     }
 
     @Override
-    public Set<Market> getContent() {
-        return Collections.singleton(this);
-    }
-
-    @Override
     public String toString() {
         return Market.class.getSimpleName() + " {" +
                 "id=" + id +
@@ -137,6 +139,7 @@ public class Market implements RestResponse<Market> {
                 ", marketType=" + marketType +
                 ", inRunning=" + inRunning +
                 ", allowLiveBetting=" + allowLiveBetting +
+                ", handicap=" + handicap +
                 ", volume=" + volume +
                 ", backOverround=" + backOverround +
                 ", layOverround=" + layOverround +

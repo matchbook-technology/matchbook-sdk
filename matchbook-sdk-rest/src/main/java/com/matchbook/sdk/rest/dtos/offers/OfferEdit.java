@@ -2,24 +2,22 @@ package com.matchbook.sdk.rest.dtos.offers;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.Set;
 
 import com.matchbook.sdk.rest.dtos.RestResponse;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
-public class OfferEdit implements RestResponse<OfferEdit> {
+public class OfferEdit implements RestResponse {
 
     private Long id;
     private Long offerId;
     private Long runnerId;
     private OfferEditStatus status;
     private OddsType oddsType;
-    private BigDecimal oddsBefore;
-    private BigDecimal oddsAfter;
+    private Double oddsBefore;
+    private Double oddsAfter;
     private BigDecimal stakeBefore;
     private BigDecimal stakeAfter;
-    private BigDecimal delay;
+    private Double delay;
     private Instant editTime;
 
     public Long getId() {
@@ -62,19 +60,19 @@ public class OfferEdit implements RestResponse<OfferEdit> {
         this.oddsType = oddsType;
     }
 
-    public BigDecimal getOddsBefore() {
+    public Double getOddsBefore() {
         return oddsBefore;
     }
 
-    public void setOddsBefore(BigDecimal oddsBefore) {
+    public void setOddsBefore(Double oddsBefore) {
         this.oddsBefore = oddsBefore;
     }
 
-    public BigDecimal getOddsAfter() {
+    public Double getOddsAfter() {
         return oddsAfter;
     }
 
-    public void setOddsAfter(BigDecimal oddsAfter) {
+    public void setOddsAfter(Double oddsAfter) {
         this.oddsAfter = oddsAfter;
     }
 
@@ -94,11 +92,11 @@ public class OfferEdit implements RestResponse<OfferEdit> {
         this.stakeAfter = stakeAfter;
     }
 
-    public BigDecimal getDelay() {
+    public Double getDelay() {
         return delay;
     }
 
-    public void setDelay(BigDecimal delay) {
+    public void setDelay(Double delay) {
         this.delay = delay;
     }
 
@@ -108,11 +106,6 @@ public class OfferEdit implements RestResponse<OfferEdit> {
 
     public void setEditTime(Instant editTime) {
         this.editTime = editTime;
-    }
-
-    @Override
-    public Set<OfferEdit> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override

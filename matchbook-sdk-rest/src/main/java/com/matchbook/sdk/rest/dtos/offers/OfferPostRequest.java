@@ -11,7 +11,7 @@ public class OfferPostRequest implements RestRequest {
 
     private final Long runnerId;
     private final Side side;
-    private final BigDecimal odds;
+    private final Double odds;
     private final BigDecimal stake;
     private final boolean keepInPlay;
 
@@ -31,7 +31,7 @@ public class OfferPostRequest implements RestRequest {
         return side;
     }
 
-    public BigDecimal getOdds() {
+    public Double getOdds() {
         return odds;
     }
 
@@ -68,12 +68,12 @@ public class OfferPostRequest implements RestRequest {
 
         private final Long runnerId;
         private final Side side;
-        private final BigDecimal odds;
+        private final Double odds;
         private final BigDecimal stake;
 
         private boolean keepInPlay;
 
-        public Builder(Long runnerId, Side side, BigDecimal odds, BigDecimal stake) {
+        public Builder(Long runnerId, Side side, Double odds, BigDecimal stake) {
             this.runnerId = runnerId;
             this.side = side;
             this.odds = odds;

@@ -1,66 +1,73 @@
 package com.matchbook.sdk.rest;
 
+import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+import com.matchbook.sdk.rest.configs.HttpCallback;
+import com.matchbook.sdk.rest.configs.Parser;
+import com.matchbook.sdk.rest.configs.Serializer;
+import com.matchbook.sdk.rest.dtos.RestRequest;
+import com.matchbook.sdk.rest.dtos.RestResponse;
+import com.matchbook.sdk.rest.readers.Reader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.stream.Collectors;
 
-import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
-import com.matchbook.sdk.rest.configs.HttpCallback;
-import com.matchbook.sdk.rest.configs.Serializer;
-import com.matchbook.sdk.rest.dtos.RestRequest;
-import com.matchbook.sdk.rest.dtos.RestResponse;
-
-abstract class AbstractRestClient {
+abstract class AbstractClientRest implements Client {
 
     protected final ConnectionManager connectionManager;
 
-    protected AbstractRestClient(ConnectionManager connectionManager) {
+    protected AbstractClientRest(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
 
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void getRequest(String url,
+    protected <REQ extends RestRequest, RESP extends RestResponse, T> void getRequest(
+            String url,
             REQ request,
             StreamObserver<T> observer,
-            Class<RESP> responseClass) {
+            Reader<T, RESP> reader) {
         String requestUrl = buildUrl(url, request);
         Serializer serializer = connectionManager.getSerializer();
-        connectionManager.getHttpClient().get(requestUrl, new RestCallback<>(observer, responseClass, serializer));
+        connectionManager.getHttpClient().get(requestUrl, new RestCallback<>(observer, serializer, reader));
     }
 
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void postRequest(String url,
+    protected <REQ extends RestRequest, RESP extends RestResponse, T> void postRequest(
+            String url,
             REQ request,
             StreamObserver<T> observer,
-            Class<RESP> responseClass) {
+            Reader<T, RESP> reader) {
         try {
             Serializer serializer = connectionManager.getSerializer();
             String requestBody = serializer.writeObjectAsString(request);
-            connectionManager.getHttpClient().post(url, requestBody, new RestCallback<>(observer, responseClass, serializer));
+            connectionManager.getHttpClient().post(url, requestBody, new RestCallback<>(observer, serializer, reader));
         } catch (IOException e) {
             observer.onError(new MatchbookSDKHttpException(e.getMessage(), e));
         }
     }
 
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void putRequest(String url,
+    protected <REQ extends RestRequest, RESP extends RestResponse, T> void putRequest(
+            String url,
             REQ request,
             StreamObserver<T> observer,
-            Class<RESP> responseClass) {
+            Reader<T, RESP> reader) {
         try {
             Serializer serializer = connectionManager.getSerializer();
             String requestBody = serializer.writeObjectAsString(request);
-            connectionManager.getHttpClient().put(url, requestBody, new RestCallback<>(observer, responseClass, serializer));
+            connectionManager.getHttpClient().put(url, requestBody, new RestCallback<>(observer, serializer, reader));
         } catch (IOException e) {
             observer.onError(new MatchbookSDKHttpException(e.getMessage(), e));
         }
     }
 
-    protected <REQ extends RestRequest, RESP extends RestResponse<T>, T> void deleteRequest(String url,
+    protected <REQ extends RestRequest, RESP extends RestResponse, T> void deleteRequest(
+            String url,
             REQ request,
             StreamObserver<T> observer,
-            Class<RESP> responseClass) {
+            Reader<T, RESP> reader) {
         String requestUrl = buildUrl(url, request);
         Serializer serializer = connectionManager.getSerializer();
-        connectionManager.getHttpClient().delete(requestUrl, new RestCallback<>(observer, responseClass, serializer));
+        connectionManager.getHttpClient().delete(requestUrl, new RestCallback<>(observer, serializer, reader));
     }
 
     protected String buildSportsUrl(String path) {
@@ -77,26 +84,29 @@ abstract class AbstractRestClient {
                 .collect(Collectors.joining("&"));
     }
 
-    private class RestCallback<T, RESP extends RestResponse<T>> implements HttpCallback {
+    private static class RestCallback<T, RESP extends RestResponse> implements HttpCallback {
 
         private final StreamObserver<T> observer;
-        private final Class<RESP> responseClass;
         private final Serializer serializer;
+        private final Reader<T, RESP> reader;
 
-        private RestCallback(StreamObserver<T> observer, Class<RESP> responseClass, Serializer serializer) {
+        private RestCallback(StreamObserver<T> observer, Serializer serializer, Reader<T, RESP> reader) {
             this.observer = observer;
-            this.responseClass = responseClass;
             this.serializer = serializer;
+            this.reader = reader;
         }
 
         @Override
         public void onResponse(InputStream inputStream) {
-            try {
-                RestResponse<T> restResponse = serializer.readObject(inputStream, responseClass);
-                restResponse.getContent().forEach(observer::onNext);
+            try (Parser parser = serializer.newParser(inputStream)) {
+                reader.startReading(parser);
+                while (reader.hasMoreItems()) {
+                    T item = reader.readNextItem();
+                    observer.onNext(item);
+                }
                 observer.onCompleted();
             } catch (IOException e) {
-                MatchbookSDKHttpException exception = new MatchbookSDKHttpException(e.getMessage(), e);
+                MatchbookSDKParsingException exception = new MatchbookSDKParsingException(e.getMessage(), e);
                 observer.onError(exception);
             }
         }

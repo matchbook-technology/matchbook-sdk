@@ -1,0 +1,36 @@
+{
+  "currency": "EUR",
+  "exchange-type": "back-lay",
+  "odds-type": "US",
+  "total": 2,
+  "matched-bets": [
+    {
+      "odds": -196,
+      "odds-type": "US",
+      "decimal-odds": 1.51,
+      "stake": 2,
+      "potential-liability": 1.02,
+      "event-id": 370600115730031,
+      "event-name": "Champion Chase (Ante Post)",
+      "market-id": 370602322080031,
+      "market-name": "WIN",
+      "runner-id": 370602323320027,
+      "runner-name": "Douvan",
+      "side": "lay"
+    },
+    {
+      "odds": -720,
+      "odds-type": "US",
+      "decimal-odds": 1.139,
+      "stake": 2,
+      "potential-profit": 0.278,
+      "event-id": 412797111720009,
+      "event-name": "S Zhang vs K Pliskova",
+      "market-id": 412797111920010,
+      "market-name": "Moneyline",
+      "runner-id": 412797111990010,
+      "runner-name": "K Pliskova",
+      "side": "back"
+    }
+  ]
+}

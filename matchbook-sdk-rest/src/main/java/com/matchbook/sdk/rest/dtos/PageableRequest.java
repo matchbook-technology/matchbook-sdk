@@ -50,11 +50,11 @@ public abstract class PageableRequest implements RestRequest {
         }
     }
 
-
     public static class Builder extends Init<Builder> {
         @Override
         protected Builder self() {
             return this;
         }
     }
+
 }

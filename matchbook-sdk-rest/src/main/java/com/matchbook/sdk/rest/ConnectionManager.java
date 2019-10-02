@@ -1,25 +1,30 @@
 package com.matchbook.sdk.rest;
 
+import java.io.Closeable;
+import java.util.Objects;
+
 import com.matchbook.sdk.rest.configs.HttpClient;
 import com.matchbook.sdk.rest.configs.Serializer;
 import com.matchbook.sdk.rest.configs.wrappers.HttpClientWrapper;
 import com.matchbook.sdk.rest.configs.wrappers.SerializerWrapper;
-import com.matchbook.sdk.rest.workers.SessionManager;
+import com.matchbook.sdk.rest.workers.SessionKeepAliveScheduler;
 
-public class ConnectionManager {
+public class ConnectionManager implements Closeable {
 
-    private ClientConfig clientConfig;
-    private HttpClient httpClient;
-    private Serializer serializer;
+    private final ClientConfig clientConfig;
+    private final HttpClient httpClient;
+    private final Serializer serializer;
 
-    public ConnectionManager(ConnectionManager.Builder builder) {
+    private SessionKeepAliveScheduler sessionKeepAliveScheduler;
+
+    private ConnectionManager(ConnectionManager.Builder builder) {
         this.clientConfig = builder.clientConfig;
         this.httpClient = builder.httpClient;
         this.serializer = builder.serializer;
 
-        if (builder.sessionAutoManage) {
-            SessionManager sessionManager = new SessionManager(this);
-            sessionManager.keepAlive();
+        if (builder.autoManageSession) {
+            sessionKeepAliveScheduler = new SessionKeepAliveScheduler(this);
+            sessionKeepAliveScheduler.start();
         }
     }
 
@@ -35,24 +40,32 @@ public class ConnectionManager {
         return serializer;
     }
 
+    @Override
+    public void close() {
+        httpClient.close();
+        if (Objects.nonNull(sessionKeepAliveScheduler)) {
+            sessionKeepAliveScheduler.stop();
+        }
+    }
+
     public static class Builder {
 
         private final ClientConfig clientConfig;
         private final HttpClient httpClient;
         private final Serializer serializer;
 
-        private boolean sessionAutoManage = true;
-
-        public Builder sessionAutoManage(boolean sessionAutoManage) {
-            this.sessionAutoManage = sessionAutoManage;
-            return this;
-        }
+        private boolean autoManageSession;
 
         public Builder(ClientConfig clientConfig) {
             this.clientConfig = clientConfig;
-
             this.httpClient = new HttpClientWrapper(clientConfig.getHttpConfig());
             this.serializer = new SerializerWrapper();
+            autoManageSession = true;
+        }
+
+        public Builder autoManageSession(boolean autoManageSession) {
+            this.autoManageSession = autoManageSession;
+            return this;
         }
 
         public ConnectionManager build() {

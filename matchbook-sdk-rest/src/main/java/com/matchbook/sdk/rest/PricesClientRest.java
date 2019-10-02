@@ -3,9 +3,9 @@ package com.matchbook.sdk.rest;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.rest.dtos.prices.Price;
 import com.matchbook.sdk.rest.dtos.prices.PricesRequest;
-import com.matchbook.sdk.rest.dtos.prices.PricesResponse;
+import com.matchbook.sdk.rest.readers.prices.PricesReader;
 
-public class PricesClientRest extends AbstractRestClient implements PricesClient {
+public class PricesClientRest extends AbstractClientRest implements PricesClient {
 
     public PricesClientRest(ConnectionManager connectionManager) {
         super(connectionManager);
@@ -14,7 +14,7 @@ public class PricesClientRest extends AbstractRestClient implements PricesClient
     @Override
     public void getPrices(PricesRequest pricesRequest, StreamObserver<Price> pricesObserver) {
         String url = buildSportsUrl(pricesRequest.resourcePath());
-        getRequest(url, pricesRequest, pricesObserver, PricesResponse.class);
+        getRequest(url, pricesRequest, pricesObserver, new PricesReader());
     }
 
 }
