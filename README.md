@@ -1,3 +1,4 @@
+![MBSDK_onlight](https://user-images.githubusercontent.com/4140597/66038798-0868d600-e50b-11e9-9055-b51e5f9f5779.png)
 # Matchbook SDK
 
 > This library is under development and no stable version has been released yet.
