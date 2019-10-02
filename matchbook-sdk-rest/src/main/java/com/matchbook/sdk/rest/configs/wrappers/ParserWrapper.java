@@ -164,7 +164,15 @@ class ParserWrapper implements Parser {
         if (isNotNullValue()) {
             try {
                 String value = jsonParser.getValueAsString().toUpperCase().replace('-', '_');
-                return Enum.valueOf(enumClass, value);
+                try {
+                    return Enum.valueOf(enumClass, value);
+                } catch (IllegalArgumentException iae) {
+                    try {
+                        return Enum.valueOf(enumClass, "UNKNOWN");
+                    } catch (IllegalArgumentException e) {
+                        return null;
+                    }
+                }
             } catch (IOException e) {
                 throw new MatchbookSDKParsingException(e);
             }
