@@ -167,11 +167,7 @@ class ParserWrapper implements Parser {
                 try {
                     return Enum.valueOf(enumClass, value);
                 } catch (IllegalArgumentException iae) {
-                    try {
-                        return Enum.valueOf(enumClass, "UNKNOWN");
-                    } catch (IllegalArgumentException e) {
-                        return null;
-                    }
+                    return Enum.valueOf(enumClass, "UNKNOWN");
                 }
             } catch (IOException e) {
                 throw new MatchbookSDKParsingException(e);
