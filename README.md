@@ -21,7 +21,7 @@
 
 ## Getting Started
 
-TODO add GIF how events processed 
+![event-animation](https://user-images.githubusercontent.com/4140597/66122695-4849bf00-e5d8-11e9-8138-0ae565471328.gif)
 
 ### Import the Maven dependency 
 
