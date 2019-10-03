@@ -1,9 +1,10 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.Cookie;
@@ -12,6 +13,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SDKCookieJarTest {
+
+    private static final String COOKIE_NAME = "mb-client-type";
+    private static final String COOKIE_VALUE = "mb-sdk";
 
     private SDKCookieJar unit;
 
@@ -22,35 +26,61 @@ public class SDKCookieJarTest {
 
     @Test
     public void saveFromResponseAndLoadForRequestTest() {
-        HttpUrl httpUrl = HttpUrl.get("http://mydomain.com");
-        List<Cookie> cookies = new ArrayList<>();
-        Cookie cookie1 = createCookie("cookie1", "value1");
-        Cookie cookie2 = createCookie("cookie2", "value2");
-        cookies.add(cookie1);
-        cookies.add(cookie2);
-
+        HttpUrl httpUrl = newHttpUrl();
+        Cookie cookie1 = buildCookie("cookie1", "value1").build();
+        Cookie cookie2 = buildCookie("cookie2", "value2").build();
+        List<Cookie> cookies = Arrays.asList(cookie1, cookie2);
         unit.saveFromResponse(httpUrl, cookies);
 
         List<Cookie> requestCookies = unit.loadForRequest(httpUrl);
-        assertNotNull(requestCookies);
-        assertEquals(3, requestCookies.size());
-
-        verifyCookie("mb-client-type", "mb-sdk", requestCookies.get(0));
-        verifyCookie(cookie1.name(), cookie1.value(), requestCookies.get(1));
-        verifyCookie(cookie2.name(), cookie2.value(), requestCookies.get(2));
+        assertThat(requestCookies).isNotNull();
+        assertThat(requestCookies).hasSize(3);
+        assertThat(requestCookies).extracting("name", "value")
+                .containsExactlyInAnyOrder(
+                        tuple(COOKIE_NAME, COOKIE_VALUE),
+                        tuple(cookie1.name(), cookie1.value()),
+                        tuple(cookie2.name(), cookie2.value())
+                );
     }
 
-    private Cookie createCookie(String name, String value) {
+    @Test
+    public void saveFromResponseAndLoadForRequestNoCookiesTest() {
+        HttpUrl httpUrl = newHttpUrl();
+        unit.saveFromResponse(httpUrl, null);
+
+        List<Cookie> requestCookies = unit.loadForRequest(httpUrl);
+        assertThat(requestCookies).isNotNull();
+        assertThat(requestCookies).hasSize(1);
+        assertThat(requestCookies).extracting("name", "value")
+                .containsExactly(tuple(COOKIE_NAME, COOKIE_VALUE));
+    }
+
+    @Test
+    public void saveFromResponseAndLoadForRequestExpiredCookieTest() {
+        HttpUrl httpUrl = newHttpUrl();
+        Cookie expiredCookie = buildCookie("cookie", "value")
+                .expiresAt(System.currentTimeMillis() - 100L)
+                .build();
+        List<Cookie> cookies = Collections.singletonList(expiredCookie);
+        unit.saveFromResponse(httpUrl, cookies);
+
+        List<Cookie> requestCookies = unit.loadForRequest(httpUrl);
+        assertThat(requestCookies).isNotNull();
+        assertThat(requestCookies).hasSize(1);
+        assertThat(requestCookies).extracting("name", "value")
+                .containsExactly(tuple(COOKIE_NAME, COOKIE_VALUE));
+    }
+
+    private HttpUrl newHttpUrl() {
+        return HttpUrl.get("http://mydomain.com");
+    }
+
+    private Cookie.Builder buildCookie(String name, String value) {
         return new Cookie.Builder()
             .path("/")
             .domain("*")
             .name(name)
-            .value(value)
-            .build();
+            .value(value);
     }
 
-    private void verifyCookie(String expectedName, String expectedValue, Cookie cookie) {
-        assertEquals(expectedName, cookie.name());
-        assertEquals(expectedValue, cookie.value());
-    }
 }

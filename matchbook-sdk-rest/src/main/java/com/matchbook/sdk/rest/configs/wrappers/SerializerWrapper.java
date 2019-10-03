@@ -43,14 +43,14 @@ public class SerializerWrapper implements Serializer {
     }
 
     @Override
-    public <T> String writeObjectAsString(T object) throws IOException {
-        ObjectWriter objectWriter = objectWriters.computeIfAbsent(object.getClass(), objectMapper::writerFor);
-        return objectWriter.writeValueAsString(object);
+    public Parser newParser(InputStream inputStream) {
+        return new ParserWrapper(jsonFactory, inputStream);
     }
 
     @Override
-    public Parser newParser(InputStream inputStream) {
-        return new ParserWrapper(jsonFactory, inputStream);
+    public <T> String writeObjectAsString(T object) throws IOException {
+        ObjectWriter objectWriter = objectWriters.computeIfAbsent(object.getClass(), objectMapper::writerFor);
+        return objectWriter.writeValueAsString(object);
     }
 
 }
