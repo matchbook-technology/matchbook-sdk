@@ -99,6 +99,22 @@ TODO add GIF how events processed
           });
 ```
 
+## Built With
+
+* Maven - Dependency Management
+* 
+
+## Contributing
+
+Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Code Style
+
+
+## Pull requests welcome!
+Spotted an error? Something doesn't make sense? Send a [pull request](https://github.com/matchbook-technology/matchbook-sdk/pulls)! Please avoid making stylistic changes though 
+-- they are unlikely to be accepted. Thanks!
+
 ## License
 -------
     MIT License
