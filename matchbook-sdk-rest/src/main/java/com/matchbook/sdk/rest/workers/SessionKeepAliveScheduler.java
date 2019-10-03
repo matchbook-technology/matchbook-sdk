@@ -27,7 +27,7 @@ public class SessionKeepAliveScheduler {
     private final UserClient userClient;
 
     public SessionKeepAliveScheduler(ConnectionManager connectionManager) {
-        loginTimeout = connectionManager.getClientConfig().getHttpConfig().getReadTimeout();
+        loginTimeout = connectionManager.getClientConfig().getHttpConfig().getWriteTimeoutInMillis();
         this.userClient = new UserClientRest(connectionManager);
 
         this.sessionKeepAliveExecutor = Executors.newSingleThreadScheduledExecutor(runnable -> {
