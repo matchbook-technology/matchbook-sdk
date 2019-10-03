@@ -26,12 +26,35 @@ TODO add GIF how events processed
 
 ### Examples
 
+#### Configure Connection Manager
+
+```java 
+  ClientConfig clientConfig = new ClientConfig.Builder(${USERNAME},
+          ${PASSWORD}).build();
+  ConnectionManager connectionManager = new ConnectionManager.Builder(clientConfig).build();
+```
+
 #### GET Events 
 
+```java
+  new EventsClientRest(connectionManager).getEvents(new EventsRequest.Builder().build(),
+           new StreamObserver<Event>() {
+               public void onNext(Event event) {
+                   // add our business logic
+               }
+               public void onCompleted() {
+               }
+               public <E extends MatchbookSDKException> void onError(E e) {
+                   // handle error 
+               }
+    });
+```
 
+#### SUBMIT Offer
 
-#### SUBMIT an Offer
+```java
 
+```
 
 ## License
 -------
