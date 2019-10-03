@@ -13,7 +13,8 @@
 
 ## Features
 
-* **High-Performance** TODO
+* **High Performance** TODO
+* **Full Support REST API** TODO
 * **Session Management** A user session is automatically managed
 * **Configurable** Provides a number of configuration options to control its behaviour at runtime
 * **Multi-platform** The library works on Java 8 or higher
@@ -29,31 +30,73 @@ TODO add GIF how events processed
 #### Configure Connection Manager
 
 ```java 
-  ClientConfig clientConfig = new ClientConfig.Builder(${USERNAME},
-          ${PASSWORD}).build();
-  ConnectionManager connectionManager = new ConnectionManager.Builder(clientConfig).build();
+     ClientConfig clientConfig = new ClientConfig.Builder("my-username".toCharArray(),
+             "my-password".toCharArray()).build();
+     ConnectionManager connectionManager = new ConnectionManager.Builder(clientConfig).build();
 ```
 
 #### GET Events 
 
 ```java
-  new EventsClientRest(connectionManager).getEvents(new EventsRequest.Builder().build(),
-           new StreamObserver<Event>() {
-               public void onNext(Event event) {
-                   // add our business logic
-               }
-               public void onCompleted() {
-               }
-               public <E extends MatchbookSDKException> void onError(E e) {
-                   // handle error 
-               }
-    });
+    new EventsClientRest(connectionManager).getEvents(new EventsRequest.Builder().build(),
+             new StreamObserver<Event>() {
+                 public void onNext(Event event) {
+                     // add your business logic
+                 }
+                 public void onCompleted() {
+                      // all messages successfully processed 
+                 }
+                 public <E extends MatchbookSDKException> void onError(E e) {
+                     // handle error 
+                 }
+      });
 ```
 
 #### SUBMIT Offer
 
 ```java
+    List<OfferPostRequest> offerPostRequests = new ArrayList<>();
+    OfferPostRequest offerPostRequest = new OfferPostRequest.Builder(2020L,
+                Side.BACK,
+                new BigDecimal("2.5"),
+                new BigDecimal("100")
+                ).build();
+        offerPostRequests.add(offerPostRequest);
+        OffersPostRequest offerSubmitRequest = new OffersPostRequest.Builder(OddsType.DECIMAL,
+                ExchangeType.BACK_LAY,
+                offerPostRequests)
+                .build();
+    
+        new OffersClientRest(connectionManager).submitOffers(offerSubmitRequest,
+                new StreamObserver<Offer>() {
+                    public void onNext(Offer offer) {
+                      // add your business logic
+                    }
+                    public void onCompleted() {
+                       // all messages successfully processed 
+                    }
+                    public <E extends MatchbookSDKException> void onError(E e) {
+                        // handle error 
+                    }
+                });
+````
 
+#### CANCEL Offer
+
+```java
+    new OffersClientRest(connectionManager).cancelOffer(new OfferDeleteRequest.Builder(1000L).build(),
+          new StreamObserver<Offer>() {
+              @Override
+              public void onNext(Offer offer) {
+                  
+              }
+              @Override
+              public void onCompleted() {
+              }
+              @Override
+              public <E extends MatchbookSDKException> void onError(E e) {
+              }
+          });
 ```
 
 ## License
