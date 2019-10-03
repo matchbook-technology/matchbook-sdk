@@ -41,7 +41,7 @@
   new EventsClientRest(connectionManager).getEvents(new EventsRequest.Builder().build(),
              new StreamObserver<Event>() {
                  public void onNext(Event event) {
-                     // add your business logic
+                     // add your business logic here 
                  }
                  public void onCompleted() {
                       // all messages successfully processed 
@@ -52,7 +52,7 @@
       });
 ```
 
-#### SUBMIT Offer
+Submit multiple offers 
 
 ```java
   List<OfferPostRequest> offerPostRequests = new ArrayList<>();
@@ -70,7 +70,7 @@
           new OffersClientRest(connectionManager).submitOffers(offerSubmitRequest,
                   new StreamObserver<Offer>() {
                       public void onNext(Offer offer) {
-                        // add your business logic
+                        // add your business logic here
                       }
                       public void onCompleted() {
                          // all messages successfully processed 
@@ -81,34 +81,41 @@
                   });
 ````
 
-#### CANCEL Offers
+Cancel offer 
 
 ```java
     new OffersClientRest(connectionManager).cancelOffer(new OfferDeleteRequest.Builder(1000L).build(),
           new StreamObserver<Offer>() {
               @Override
               public void onNext(Offer offer) {
-                  
+                  // add your business logic here 
               }
               @Override
               public void onCompleted() {
+                // all messages successfully processed 
               }
               @Override
               public <E extends MatchbookSDKException> void onError(E e) {
+                // handle error 
               }
           });
 ```
 
+## Core modules
+
+* **matchbook-sdk-core**
+* **matchbook-sdk-rest**
+
 ## Built With
 
-* maven - Dependency Management
-* jackson
-* slf4j
-* okhttp
+* [okhttp](https://square.github.io/okhttp/) - Is an efficient HTTP client 
+* [jackson](https://github.com/FasterXML/jackson) - Json marshaling 
+* [slf4j](https://www.slf4j.org/) - Logging Facade for Java
+* [maven](https://maven.apache.org/) - Dependency Management
 
 ## Contributing
 
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Code Style
 
