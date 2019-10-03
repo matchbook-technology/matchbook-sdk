@@ -23,22 +23,22 @@
 
 ![event-animation](https://user-images.githubusercontent.com/4140597/66122695-4849bf00-e5d8-11e9-8138-0ae565471328.gif)
 
-### Import the Maven dependency 
+### Maven dependency 
 
 ### Examples
 
 #### Configure Connection Manager
 
 ```java 
-     ClientConfig clientConfig = new ClientConfig.Builder("my-username".toCharArray(),
-             "my-password".toCharArray()).build();
-     ConnectionManager connectionManager = new ConnectionManager.Builder(clientConfig).build();
+   ClientConfig clientConfig = new ClientConfig.Builder("my-username".toCharArray(),
+           "my-password".toCharArray()).build();
+   ConnectionManager connectionManager = new ConnectionManager.Builder(clientConfig).build();
 ```
 
 #### GET Events 
 
 ```java
-    new EventsClientRest(connectionManager).getEvents(new EventsRequest.Builder().build(),
+  new EventsClientRest(connectionManager).getEvents(new EventsRequest.Builder().build(),
              new StreamObserver<Event>() {
                  public void onNext(Event event) {
                      // add your business logic
@@ -55,33 +55,33 @@
 #### SUBMIT Offer
 
 ```java
-    List<OfferPostRequest> offerPostRequests = new ArrayList<>();
-    OfferPostRequest offerPostRequest = new OfferPostRequest.Builder(2020L,
-                Side.BACK,
-                new BigDecimal("2.5"),
-                new BigDecimal("100")
-                ).build();
-        offerPostRequests.add(offerPostRequest);
-        OffersPostRequest offerSubmitRequest = new OffersPostRequest.Builder(OddsType.DECIMAL,
-                ExchangeType.BACK_LAY,
-                offerPostRequests)
-                .build();
-    
-        new OffersClientRest(connectionManager).submitOffers(offerSubmitRequest,
-                new StreamObserver<Offer>() {
-                    public void onNext(Offer offer) {
-                      // add your business logic
-                    }
-                    public void onCompleted() {
-                       // all messages successfully processed 
-                    }
-                    public <E extends MatchbookSDKException> void onError(E e) {
-                        // handle error 
-                    }
-                });
+  List<OfferPostRequest> offerPostRequests = new ArrayList<>();
+  OfferPostRequest offerPostRequest = new OfferPostRequest.Builder(2020L,
+                  Side.BACK,
+                  new BigDecimal("2.5"),
+                  new BigDecimal("100")
+                  ).build();
+          offerPostRequests.add(offerPostRequest);
+          OffersPostRequest offerSubmitRequest = new OffersPostRequest.Builder(OddsType.DECIMAL,
+                  ExchangeType.BACK_LAY,
+                  offerPostRequests)
+                  .build();
+      
+          new OffersClientRest(connectionManager).submitOffers(offerSubmitRequest,
+                  new StreamObserver<Offer>() {
+                      public void onNext(Offer offer) {
+                        // add your business logic
+                      }
+                      public void onCompleted() {
+                         // all messages successfully processed 
+                      }
+                      public <E extends MatchbookSDKException> void onError(E e) {
+                          // handle error 
+                      }
+                  });
 ````
 
-#### CANCEL Offer
+#### CANCEL Offers
 
 ```java
     new OffersClientRest(connectionManager).cancelOffer(new OfferDeleteRequest.Builder(1000L).build(),
@@ -101,8 +101,10 @@
 
 ## Built With
 
-* Maven - Dependency Management
-* 
+* maven - Dependency Management
+* jackson
+* slf4j
+* okhttp
 
 ## Contributing
 
