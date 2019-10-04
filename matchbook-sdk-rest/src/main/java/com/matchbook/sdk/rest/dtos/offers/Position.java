@@ -1,12 +1,10 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Set;
-
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
-public class Position implements RestResponse<Position> {
+import java.math.BigDecimal;
+
+public class Position implements RestResponse {
 
     private Long eventId;
     private Long marketId;
@@ -52,11 +50,6 @@ public class Position implements RestResponse<Position> {
 
     public void setPotentialLoss(BigDecimal potentialLoss) {
         this.potentialLoss = potentialLoss;
-    }
-
-    @Override
-    public Set<Position> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override

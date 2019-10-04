@@ -2,10 +2,7 @@ package com.matchbook.sdk.rest.dtos.events;
 
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
-import java.util.Collections;
-import java.util.Set;
-
-public class Sport implements RestResponse<Sport> {
+public class Sport implements RestResponse {
 
     private Long id;
     private String name;
@@ -24,11 +21,6 @@ public class Sport implements RestResponse<Sport> {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public Set<Sport> getContent() {
-        return Collections.singleton(this);
     }
 
     @Override

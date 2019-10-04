@@ -1,14 +1,25 @@
 package com.matchbook.sdk.rest.dtos.prices;
 
+import com.matchbook.sdk.rest.dtos.RestResponse;
+
 import java.math.BigDecimal;
 
-public class Price {
+public class Price implements RestResponse {
 
+    private ExchangeType exchangeType;
     private Side side;
     private OddsType oddsType;
     private Currency currency;
+    private Double odds;
     private BigDecimal availableAmount;
-    private BigDecimal odds;
+
+    public ExchangeType getExchangeType() {
+        return exchangeType;
+    }
+
+    public void setExchangeType(ExchangeType exchangeType) {
+        this.exchangeType = exchangeType;
+    }
 
     public Side getSide() {
         return side;
@@ -34,6 +45,14 @@ public class Price {
         this.currency = currency;
     }
 
+    public Double getOdds() {
+        return odds;
+    }
+
+    public void setOdds(Double odds) {
+        this.odds = odds;
+    }
+
     public BigDecimal getAvailableAmount() {
         return availableAmount;
     }
@@ -42,22 +61,15 @@ public class Price {
         this.availableAmount = availableAmount;
     }
 
-    public BigDecimal getOdds() {
-        return odds;
-    }
-
-    public void setOdds(BigDecimal odds) {
-        this.odds = odds;
-    }
-
     @Override
     public String toString() {
         return Price.class.getSimpleName() + " {" +
-                "side=" + side +
+                "exchangeType=" + exchangeType +
+                ", side=" + side +
                 ", oddsType=" + oddsType +
                 ", currency=" + currency +
-                ", availableAmount=" + availableAmount +
                 ", odds=" + odds +
+                ", availableAmount=" + availableAmount +
                 "}";
     }
 

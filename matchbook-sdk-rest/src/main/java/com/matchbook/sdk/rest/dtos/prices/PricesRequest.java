@@ -53,7 +53,7 @@ public class PricesRequest extends AbstractPricesRequest {
             parameters.put("side", side.name());
         }
         if (Objects.nonNull(minimumLiquidity)) {
-            parameters.put("minimum-liquidity", minimumLiquidity.toPlainString());
+            parameters.put("minimum-liquidity", String.valueOf(minimumLiquidity));
         }
         if (Objects.nonNull(priceMode)) {
             parameters.put("price-mode", priceMode.name());

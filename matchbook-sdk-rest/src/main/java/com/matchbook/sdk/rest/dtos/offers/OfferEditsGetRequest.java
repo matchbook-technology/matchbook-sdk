@@ -41,9 +41,8 @@ public class OfferEditsGetRequest extends PageableRequest {
 
         private Long offerId;
 
-        public T offerID(Long offerId) {
+        private Init(Long offerId) {
             this.offerId = offerId;
-            return self();
         }
 
         public OfferEditsGetRequest build() {
@@ -52,10 +51,16 @@ public class OfferEditsGetRequest extends PageableRequest {
     }
 
     public static class Builder extends Init<Builder> {
+
+        public Builder(Long offerId) {
+            super(offerId);
+        }
+
         @Override
         protected Builder self() {
             return this;
         }
+
     }
 
 }

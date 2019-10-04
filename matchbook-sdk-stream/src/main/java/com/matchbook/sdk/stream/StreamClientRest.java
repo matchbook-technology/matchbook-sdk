@@ -17,16 +17,15 @@ import org.slf4j.LoggerFactory;
 
 public class StreamClientRest implements StreamClient {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StreamClientRest.class);
+    private static Logger LOG = LoggerFactory.getLogger(StreamClientRest.class);
 
     private final PullerWorker pullerWorker;
-
     private final AtomicBoolean isShutdown;
 
     public StreamClientRest(ClientConfig clientConfig) {
         this.isShutdown = new AtomicBoolean();
 
-        ConnectionManager connectionManager = new ConnectionManager(clientConfig);
+        ConnectionManager connectionManager = new ConnectionManager.Builder(clientConfig).build();
         LOG.info("Matchbook client starting...");
         pullerWorker = new PullerWorkerRest(connectionManager);
         LOG.info("Matchbook client start completed.");

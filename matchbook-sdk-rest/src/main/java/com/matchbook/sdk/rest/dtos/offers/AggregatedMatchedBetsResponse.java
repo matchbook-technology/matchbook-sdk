@@ -1,25 +1,38 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
 import com.matchbook.sdk.rest.dtos.PageableResponse;
-
-import java.util.Collection;
-import java.util.List;
+import com.matchbook.sdk.rest.dtos.prices.Currency;
+import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
+import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
 public class AggregatedMatchedBetsResponse extends PageableResponse<AggregatedMatchedBet> {
 
-    private List<AggregatedMatchedBet> matchedBets;
+    private Currency currency;
+    private ExchangeType exchangeType;
+    private OddsType oddsType;
 
-    public List<AggregatedMatchedBet> getMatchedBets() {
-        return matchedBets;
+    public Currency getCurrency() {
+        return currency;
     }
 
-    public void setMatchedBets(List<AggregatedMatchedBet> matchedBets) {
-        this.matchedBets = matchedBets;
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
-    @Override
-    public Collection<AggregatedMatchedBet> getContent() {
-        return matchedBets;
+    public ExchangeType getExchangeType() {
+        return exchangeType;
+    }
+
+    public void setExchangeType(ExchangeType exchangeType) {
+        this.exchangeType = exchangeType;
+    }
+
+    public OddsType getOddsType() {
+        return oddsType;
+    }
+
+    public void setOddsType(OddsType oddsType) {
+        this.oddsType = oddsType;
     }
 
     @Override
@@ -28,7 +41,10 @@ public class AggregatedMatchedBetsResponse extends PageableResponse<AggregatedMa
                 "total=" + total +
                 ", offset=" + offset +
                 ", perPage=" + perPage +
-                ", matchedBets=" + matchedBets +
+                ", currency=" + currency +
+                ", exchangeType=" + exchangeType +
+                ", oddsType=" + oddsType +
+                ", matchedBets=" + items +
                 "}";
     }
 

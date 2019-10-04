@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <version>0.1.0-SNAPSHOT</version>
     <description>Matchbook SDK</description>
-    <url>https://github.com/volkodavs/matchbook-sdk</url>
+    <url>https://github.com/matchbook-technology/matchbook-sdk</url>
 
     <modules>
         <module>matchbook-sdk-core</module>
@@ -18,7 +18,7 @@
     </modules>
 
     <issueManagement>
-        <url>https://github.com/volkodavs/matchbook-sdk/issues</url>
+        <url>https://github.com/matchbook-technology/matchbook-sdk/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
@@ -30,6 +30,39 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <name>Sergii Volkodav</name>
+            <email>svolkodav@xanadu.ie</email>
+            <organization>Xanadu Consultancy</organization>
+            <organizationUrl>https://www.xanaduconsultancy.com/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Alessandro Dal Bello</name>
+            <email>adbello@xanadu.ie</email>
+            <organization>Xanadu Consultancy</organization>
+            <organizationUrl>https://www.xanaduconsultancy.com/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Claudio Madotto</name>
+            <email>cmadotto@xanadu.ie</email>
+            <organization>Xanadu Consultancy</organization>
+            <organizationUrl>https://www.xanaduconsultancy.com/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Matteo Dri</name>
+            <email>mdri@xanadu.ie</email>
+            <organization>Xanadu Consultancy</organization>
+            <organizationUrl>https://www.xanaduconsultancy.com/</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/matchbook-technology/matchbook-sdk</url>
+        <connection>scm:git:git@github.com:matchbook-technology/matchbook-sdk.git</connection>
+        <developerConnection>scm:git:git@github.com:matchbook-technology/matchbook-sdk.git</developerConnection>
+    </scm>
+
     <properties>
         <maven.compiler.source>1.9</maven.compiler.source>
         <maven.compiler.target>1.9</maven.compiler.target>
@@ -37,22 +70,25 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.automatic.module.name>com.matchbook.sdk</project.automatic.module.name>
 
+        <!-- Maven compiler -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
         <!-- Application dependencies -->
-        <okhttp.version>4.0.1</okhttp.version>
-        <jackson.version>2.9.8</jackson.version>
-        <lmax.version>3.4.2</lmax.version>
-        <assertj.version>3.11.1</assertj.version>
-        <wiremock.version>2.21.0</wiremock.version>
-        <mockito.version>1.10.19</mockito.version>
-        <slf4j.version>1.7.28</slf4j.version>
-        <logback.version>1.2.3</logback.version>
+        <assertj.version>3.12.2</assertj.version>
+        <jackson.version>2.9.9</jackson.version>
         <junit.version>4.12</junit.version>
+        <lmax.version>3.4.2</lmax.version>
+        <logback.version>1.2.3</logback.version>
+        <mockito.version>2.28.2</mockito.version>
+        <okhttp.version>4.2.0</okhttp.version>
+        <slf4j.version>1.7.26</slf4j.version>
+        <wiremock.version>2.24.1</wiremock.version>
 
         <!-- Maven plugins -->
-        <maven.jar.plugin.version>3.1.2</maven.jar.plugin.version>
-        <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
-        <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
-        <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
+        <maven.jacoco.plugin.version>0.8.4</maven.jacoco.plugin.version>
     </properties>
 
     <build>
@@ -78,7 +114,9 @@
                     <target>${maven.compiler.target}</target>
                     <compilerArgs>
                         <arg>-Xlint</arg>
+                        <!--
                         <arg>-Werror</arg>
+                        -->
                     </compilerArgs>
                 </configuration>
             </plugin>
@@ -129,4 +167,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

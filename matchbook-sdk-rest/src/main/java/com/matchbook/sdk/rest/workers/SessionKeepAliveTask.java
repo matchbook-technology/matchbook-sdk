@@ -1,21 +1,26 @@
-package com.matchbook.sdk.stream.schedulers;
+package com.matchbook.sdk.rest.workers;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.rest.UserClient;
 import com.matchbook.sdk.rest.dtos.user.Login;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class AuthenticationScheduler implements Runnable {
+class SessionKeepAliveTask implements Runnable {
 
-    private final UserClient userRestClient;
+    private static Logger LOG = LoggerFactory.getLogger(SessionKeepAliveTask.class);
 
-    public AuthenticationScheduler(UserClient userRestClient) {
-        this.userRestClient = userRestClient;
+    private final UserClient userClient;
+
+    SessionKeepAliveTask(UserClient userClient) {
+        this.userClient = userClient;
     }
 
     @Override
     public void run() {
-        userRestClient.login(new StreamObserver<Login>() {
+        userClient.login(new StreamObserver<Login>() {
+
             @Override
             public void onNext(Login login) {
                 //do nothing
@@ -23,12 +28,12 @@ public class AuthenticationScheduler implements Runnable {
 
             @Override
             public void onCompleted() {
-                //do nothing
+                LOG.info("Session token successfully updated.");
             }
 
             @Override
             public <E extends MatchbookSDKException> void onError(E exception) {
-                //TODO Add retry policy
+                LOG.warn("Fail to update session token.", exception);
             }
         });
     }

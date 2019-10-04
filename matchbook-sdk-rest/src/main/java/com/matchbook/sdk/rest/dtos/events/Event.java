@@ -5,11 +5,9 @@ import com.matchbook.sdk.rest.dtos.RestResponse;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
-public class Event implements RestResponse<Event> {
+public class Event implements RestResponse {
 
     private Long id;
     private Long sportId;
@@ -22,10 +20,12 @@ public class Event implements RestResponse<Event> {
     private Double volume;
     private List<Market> markets;
     private List<EventParticipant> eventParticipants;
+    private List<MetaTag> metaTags;
 
     public Event() {
         markets = new ArrayList<>();
         eventParticipants = new ArrayList<>();
+        metaTags = new ArrayList<>();
     }
 
     public Long getId() {
@@ -116,9 +116,12 @@ public class Event implements RestResponse<Event> {
         this.eventParticipants = eventParticipants;
     }
 
-    @Override
-    public Set<Event> getContent() {
-        return Collections.singleton(this);
+    public List<MetaTag> getMetaTags() {
+        return metaTags;
+    }
+
+    public void setMetaTags(List<MetaTag> metaTags) {
+        this.metaTags = metaTags;
     }
 
     @Override
@@ -135,6 +138,7 @@ public class Event implements RestResponse<Event> {
                 ", volume=" + volume +
                 ", markets=" + markets +
                 ", eventParticipants=" + eventParticipants +
+                ", metaTags=" + metaTags +
                 "}";
     }
 

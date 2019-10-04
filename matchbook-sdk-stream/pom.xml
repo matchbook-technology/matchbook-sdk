@@ -40,13 +40,13 @@
 
         <dependency>
             <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
+            <artifactId>logback-core</artifactId>
             <version>${logback.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
+            <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
             <scope>test</scope>
         </dependency>
@@ -65,15 +65,15 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.tomakehurst</groupId>
-            <artifactId>wiremock</artifactId>
-            <version>${wiremock.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>${wiremock.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
