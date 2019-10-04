@@ -1,15 +1,14 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
-import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
-import com.matchbook.sdk.rest.HttpConfig;
-import com.matchbook.sdk.rest.configs.HttpCallback;
-import com.matchbook.sdk.rest.configs.HttpClient;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
+import com.matchbook.sdk.rest.HttpConfig;
+import com.matchbook.sdk.rest.configs.HttpCallback;
+import com.matchbook.sdk.rest.configs.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -18,6 +17,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.jetbrains.annotations.TestOnly;
 
 public class HttpClientWrapper implements HttpClient {
 
@@ -30,8 +30,7 @@ public class HttpClientWrapper implements HttpClient {
 
     public HttpClientWrapper(HttpConfig httpConfig) {
         httpClient = initHttpClient(httpConfig);
-
-        this.jsonMediaType = MediaType.parse(MEDIA_TYPE_JSON);
+        jsonMediaType = MediaType.parse(MEDIA_TYPE_JSON);
     }
 
     private OkHttpClient initHttpClient(HttpConfig httpConfig) {
@@ -42,6 +41,12 @@ public class HttpClientWrapper implements HttpClient {
                 .followRedirects(false)
                 .cookieJar(new SDKCookieJar())
                 .build();
+    }
+
+    @TestOnly
+    HttpClientWrapper(OkHttpClient httpClient) {
+        this.httpClient = httpClient;
+        jsonMediaType = MediaType.parse(MEDIA_TYPE_JSON);
     }
 
     @Override
