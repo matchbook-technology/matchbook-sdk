@@ -2,6 +2,11 @@ module com.matchbook.sdk.rest {
 
     exports com.matchbook.sdk.rest;
     exports com.matchbook.sdk.rest.dtos;
+    exports com.matchbook.sdk.rest.dtos.events;
+    exports com.matchbook.sdk.rest.dtos.heartbeat;
+    exports com.matchbook.sdk.rest.dtos.offers;
+    exports com.matchbook.sdk.rest.dtos.prices;
+    exports com.matchbook.sdk.rest.dtos.user;
 
     requires com.matchbook.sdk.core;
     requires com.fasterxml.jackson.core;
