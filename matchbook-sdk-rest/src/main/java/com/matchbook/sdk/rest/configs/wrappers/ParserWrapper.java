@@ -6,6 +6,7 @@ import com.matchbook.sdk.rest.configs.Parser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.time.DateTimeException;
 import java.time.Instant;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -127,7 +128,7 @@ class ParserWrapper implements Parser {
     public Double getDouble() throws MatchbookSDKParsingException {
         if (isNotNullValue()) {
             try {
-                return jsonParser.getDoubleValue();
+                return jsonParser.getValueAsDouble();
             } catch (IOException e) {
                 throw new MatchbookSDKParsingException(e);
             }
@@ -152,7 +153,7 @@ class ParserWrapper implements Parser {
         if (isNotNullValue()) {
             try {
                 return Instant.parse(jsonParser.getValueAsString());
-            } catch (IOException e) {
+            } catch (IOException | DateTimeException e) {
                 throw new MatchbookSDKParsingException(e);
             }
         }
@@ -177,7 +178,7 @@ class ParserWrapper implements Parser {
     }
 
     private boolean isNotNullValue() {
-        return jsonParser.hasCurrentToken() && !jsonParser.hasToken(JsonToken.VALUE_NULL);
+        return !jsonParser.hasToken(JsonToken.VALUE_NULL);
     }
 
     @Override
