@@ -10,9 +10,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.ErrorType;
@@ -25,7 +25,7 @@ import com.matchbook.sdk.rest.dtos.user.Logout;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest> {
 
@@ -35,7 +35,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void loginTest() throws InterruptedException {
+    void loginTest() throws InterruptedException {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -80,7 +80,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void loginUsingIncorrectPasswordTest() throws InterruptedException {
+    void loginUsingIncorrectPasswordTest() throws InterruptedException {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -117,7 +117,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void loginEmptyResponseBodyTest() throws InterruptedException {
+    void loginEmptyResponseBodyTest() throws InterruptedException {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -152,7 +152,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void logoutTest() throws InterruptedException {
+    void logoutTest() throws InterruptedException {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(delete(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -192,7 +192,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void getAccountTest() throws InterruptedException {
+    void getAccountTest() throws InterruptedException {
         String url = "/edge/rest/account";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -239,7 +239,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void getBalanceTest() throws InterruptedException {
+    void getBalanceTest() throws InterruptedException {
         String url = "/edge/rest/account/balance";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -281,7 +281,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void loginAndGetBalanceTest() throws InterruptedException {
+    void loginAndGetBalanceTest() throws InterruptedException {
         // Perform first a login request with response that sets the session-token cookie
         // We expect that the following GET balance includes the same cookie in the request
 
@@ -317,7 +317,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void loginAndLogoutTest() throws InterruptedException {
+    void loginAndLogoutTest() throws InterruptedException {
         // Perform a login request with response that sets the session-token cookie
         // then a logout request that should expire the cookie.
         // We expect that the following GET balance doesn't include the session-token cookie

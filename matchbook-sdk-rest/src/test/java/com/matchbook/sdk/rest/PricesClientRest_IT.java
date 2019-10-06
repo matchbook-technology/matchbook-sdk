@@ -6,8 +6,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
@@ -17,7 +17,7 @@ import com.matchbook.sdk.rest.dtos.prices.PricesRequest;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PricesClientRest_IT extends MatchbookSDKClientRest_IT<PricesClientRest> {
 
@@ -27,7 +27,7 @@ public class PricesClientRest_IT extends MatchbookSDKClientRest_IT<PricesClientR
     }
 
     @Test
-    public void getPricesTest() throws InterruptedException {
+    void getPricesTest() throws InterruptedException {
         String url = "/edge/rest/events/395729780570010/markets/395729860260010/runners/395729860800010/prices";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
