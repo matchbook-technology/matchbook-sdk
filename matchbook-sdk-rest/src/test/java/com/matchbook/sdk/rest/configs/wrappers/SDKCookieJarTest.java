@@ -12,7 +12,7 @@ import okhttp3.HttpUrl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class SDKCookieJarTest {
+class SDKCookieJarTest {
 
     private static final String COOKIE_NAME = "mb-client-type";
     private static final String COOKIE_VALUE = "mb-sdk";

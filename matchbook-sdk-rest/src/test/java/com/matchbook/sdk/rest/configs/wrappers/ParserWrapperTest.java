@@ -1,7 +1,7 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -18,14 +18,14 @@ import java.time.Instant;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ParserWrapperTest {
+@ExtendWith(MockitoExtension.class)
+class ParserWrapperTest {
 
     @Mock
     private JsonFactory jsonFactory;
@@ -35,96 +35,101 @@ public class ParserWrapperTest {
 
     private ParserWrapper unit;
 
-    @Before
-    public void setUp() throws IOException {
+    @BeforeEach
+    void setUp() throws IOException {
         when(jsonFactory.createParser(any(InputStream.class))).thenReturn(jsonParser);
         InputStream inputStream = mock(InputStream.class);
         unit = new ParserWrapper(jsonFactory, inputStream);
     }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void instantiationFailedTest() throws IOException {
+    @Test
+    void instantiationFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonFactory).createParser(any(InputStream.class));
         InputStream inputStream = mock(InputStream.class);
-        new ParserWrapper(jsonFactory, inputStream);
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
+
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> new ParserWrapper(jsonFactory, inputStream));
     }
 
     @Test
-    public void hasCurrentTokenTest() {
+    void hasCurrentTokenTest() {
         when(jsonParser.hasCurrentToken()).thenReturn(true);
         boolean result = unit.hasCurrentToken();
         assertThat(result).isTrue();
     }
 
     @Test
-    public void isEndOfObjectTest() {
+    void isEndOfObjectTest() {
         when(jsonParser.hasToken(JsonToken.END_OBJECT)).thenReturn(true);
         boolean result = unit.isEndOfObject();
         assertThat(result).isTrue();
     }
 
     @Test
-    public void isEndOfArrayTest() {
+    void isEndOfArrayTest() {
         when(jsonParser.hasToken(JsonToken.END_ARRAY)).thenReturn(true);
         boolean result = unit.isEndOfArray();
         assertThat(result).isTrue();
     }
 
     @Test
-    public void moveToNextTokenTest() throws IOException {
+    void moveToNextTokenTest() throws IOException {
         unit.moveToNextToken();
         verify(jsonParser).nextToken();
     }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void moveToNextTokenFailedTest() throws IOException {
+    @Test
+    void moveToNextTokenFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).nextToken();
-        unit.moveToNextToken();
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
+
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> unit.moveToNextToken());
     }
 
     @Test
-    public void moveToNextValueTest() throws IOException {
+    void moveToNextValueTest() throws IOException {
         unit.moveToNextValue();
         verify(jsonParser).nextValue();
     }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void moveToNextValueFailedTest() throws IOException {
+    @Test
+    void moveToNextValueFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).nextValue();
-        unit.moveToNextValue();
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
+
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> unit.moveToNextValue());
     }
 
     @Test
-    public void skipChildrenTest() throws IOException {
+    void skipChildrenTest() throws IOException {
         unit.skipChildren();
         verify(jsonParser).skipChildren();
     }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void skipChildrenFailedTest() throws IOException {
+    @Test
+    void skipChildrenFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).skipChildren();
-        unit.skipChildren();
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
+
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> unit.skipChildren());
     }
 
     @Test
-    public void getFieldNameTest() throws IOException {
+    void getFieldNameTest() throws IOException {
         unit.getFieldName();
         verify(jsonParser).getCurrentName();
     }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void getFieldNameFailedTest() throws IOException {
+    @Test
+    void getFieldNameFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getCurrentName();
-        unit.getFieldName();
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
+
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> unit.getFieldName());
     }
 
     @Test
-    public void getBooleanTest() throws IOException {
+    void getBooleanTest() throws IOException {
         when(jsonParser.getValueAsBoolean()).thenReturn(true);
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
 
@@ -134,22 +139,23 @@ public class ParserWrapperTest {
     }
 
     @Test
-    public void getBooleanNullTest() {
+    void getBooleanNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         Boolean result = unit.getBoolean();
         assertThat(result).isNull();
     }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void getBooleanFailedTest() throws IOException {
+    @Test
+    void getBooleanFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getValueAsBoolean();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
-        unit.getBoolean();
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
+
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> unit.getBoolean());
     }
 
     @Test
-    public void getStringTest() throws IOException {
+    void getStringTest() throws IOException {
         String expectedResult = "a string";
         when(jsonParser.getValueAsString()).thenReturn(expectedResult);
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -160,22 +166,23 @@ public class ParserWrapperTest {
     }
 
     @Test
-    public void getStringNullTest() {
+    void getStringNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         String result = unit.getString();
         assertThat(result).isNull();
     }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void getStringFailedTest() throws IOException {
+    @Test
+    void getStringFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getValueAsString();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
-        unit.getString();
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
+
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> unit.getString());
     }
 
     @Test
-    public void getIntegerTest() throws IOException {
+    void getIntegerTest() throws IOException {
         Integer expectedResult = 42;
         when(jsonParser.getValueAsInt()).thenReturn(expectedResult);
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -186,22 +193,23 @@ public class ParserWrapperTest {
     }
 
     @Test
-    public void getIntegerNullTest() {
+    void getIntegerNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         Integer result = unit.getInteger();
         assertThat(result).isNull();
     }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void getIntegerFailedTest() throws IOException {
+    @Test
+    void getIntegerFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getValueAsInt();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
-        unit.getInteger();
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
+
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> unit.getInteger());
     }
 
     @Test
-    public void getLongTest() throws IOException {
+    void getLongTest() throws IOException {
         Long expectedResult = 42L;
         when(jsonParser.getValueAsLong()).thenReturn(expectedResult);
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -212,22 +220,23 @@ public class ParserWrapperTest {
     }
 
     @Test
-    public void getLongNullTest() {
+    void getLongNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         Long result = unit.getLong();
         assertThat(result).isNull();
     }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void getLongFailedTest() throws IOException {
+    @Test
+    void getLongFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getValueAsLong();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
-        unit.getLong();
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
+
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> unit.getLong());
     }
 
     @Test
-    public void getDoubleTest() throws IOException {
+    void getDoubleTest() throws IOException {
         Double expectedResult = 42.0;
         when(jsonParser.getValueAsDouble()).thenReturn(expectedResult);
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -238,22 +247,23 @@ public class ParserWrapperTest {
     }
 
     @Test
-    public void getDoubleNullTest() {
+    void getDoubleNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         Double result = unit.getDouble();
         assertThat(result).isNull();
     }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void getDoubleFailedTest() throws IOException {
+    @Test
+    void getDoubleFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getValueAsDouble();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
-        unit.getDouble();
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
+
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> unit.getDouble());
     }
 
     @Test
-    public void getDecimalTest() throws IOException {
+    void getDecimalTest() throws IOException {
         BigDecimal expectedResult = new BigDecimal("42");
         when(jsonParser.getDecimalValue()).thenReturn(expectedResult);
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -264,22 +274,23 @@ public class ParserWrapperTest {
     }
 
     @Test
-    public void getDecimalNullTest() {
+    void getDecimalNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         BigDecimal result = unit.getDecimal();
         assertThat(result).isNull();
     }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void getDecimalFailedTest() throws IOException {
+    @Test
+    void getDecimalFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getDecimalValue();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
-        unit.getDecimal();
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
+
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> unit.getDecimal());
     }
 
     @Test
-    public void getInstantTest() throws IOException {
+    void getInstantTest() throws IOException {
         String instantAsString = "2017-02-14T11:08:00.000Z";
         Instant expectedResult = Instant.parse(instantAsString);
         when(jsonParser.getValueAsString()).thenReturn(instantAsString);
@@ -291,31 +302,33 @@ public class ParserWrapperTest {
     }
 
     @Test
-    public void getInstantNullTest() {
+    void getInstantNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         Instant result = unit.getInstant();
         assertThat(result).isNull();
     }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void getInstantIncorrectFormatTest() throws IOException {
+    @Test
+    void getInstantIncorrectFormatTest() throws IOException {
         String badInstanceString = "not a well-formed timestamp";
         when(jsonParser.getValueAsString()).thenReturn(badInstanceString);
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
-        unit.getInstant();
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
-    }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void getInstantFailedTest() throws IOException {
-        doThrow(IOException.class).when(jsonParser).getValueAsString();
-        when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
-        unit.getInstant();
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> unit.getInstant());
     }
 
     @Test
-    public void getEnumTest() throws IOException {
+    void getInstantFailedTest() throws IOException {
+        doThrow(IOException.class).when(jsonParser).getValueAsString();
+        when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
+
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> unit.getInstant());
+    }
+
+    @Test
+    void getEnumTest() throws IOException {
         TestEnum expectedResult = TestEnum.VALUE;
         when(jsonParser.getValueAsString()).thenReturn(expectedResult.name());
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -326,7 +339,7 @@ public class ParserWrapperTest {
     }
 
     @Test
-    public void getEnumUnknownTest() throws IOException {
+    void getEnumUnknownTest() throws IOException {
         when(jsonParser.getValueAsString()).thenReturn("something not known");
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
 
@@ -336,22 +349,23 @@ public class ParserWrapperTest {
     }
 
     @Test
-    public void getEnumNullTest() {
+    void getEnumNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         TestEnum result = unit.getEnum(TestEnum.class);
         assertThat(result).isNull();
     }
 
-    @Test(expected = MatchbookSDKParsingException.class)
-    public void getEnumFailedTest() throws IOException {
+    @Test
+    void getEnumFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getValueAsString();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
-        unit.getEnum(TestEnum.class);
-        failBecauseExceptionWasNotThrown(MatchbookSDKParsingException.class);
+
+        assertThatExceptionOfType(MatchbookSDKParsingException.class)
+                .isThrownBy(() -> unit.getEnum(TestEnum.class));
     }
 
     @Test
-    public void closeTest() throws IOException {
+    void closeTest() throws IOException {
         unit.close();
         verify(jsonParser).close();
     }

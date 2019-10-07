@@ -38,6 +38,7 @@ import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collections;
 
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;

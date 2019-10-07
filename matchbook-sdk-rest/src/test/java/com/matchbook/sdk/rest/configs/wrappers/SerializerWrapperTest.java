@@ -7,20 +7,20 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.matchbook.sdk.rest.configs.Parser;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class SerializerWrapperTest {
+class SerializerWrapperTest {
 
     private SerializerWrapper unit;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         unit = new SerializerWrapper();
     }
 
     @Test
-    public void newParserTest() {
+    void newParserTest() {
         InputStream inputStream = new ByteArrayInputStream(new byte[]{ (byte) 0b101010 });
         Parser parser = unit.newParser(inputStream);
         assertThat(parser).isNotNull();
@@ -28,7 +28,7 @@ public class SerializerWrapperTest {
     }
 
     @Test
-    public void writeObjectAsStringTest() throws IOException {
+    void writeObjectAsStringTest() throws IOException {
         TestClass testObject1 = new TestClass();
         testObject1.fieldInt = 42;
         testObject1.fieldString = "value";

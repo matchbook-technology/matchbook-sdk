@@ -12,6 +12,7 @@ import com.matchbook.sdk.rest.dtos.events.EventRequest;
 import com.matchbook.sdk.rest.dtos.events.EventsRequest;
 import com.matchbook.sdk.rest.dtos.events.Market;
 import com.matchbook.sdk.rest.dtos.events.MarketRequest;
+import com.matchbook.sdk.rest.dtos.events.MarketType;
 import com.matchbook.sdk.rest.dtos.events.MarketsRequest;
 import com.matchbook.sdk.rest.dtos.events.Runner;
 import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
@@ -144,7 +145,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getMarketWithUnknownMarketTypeTest() {
+    void getMarketWithUnknownMarketTypeTest() {
         String url = "/edge/rest/events/395729780570010/markets/395729860260010";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
