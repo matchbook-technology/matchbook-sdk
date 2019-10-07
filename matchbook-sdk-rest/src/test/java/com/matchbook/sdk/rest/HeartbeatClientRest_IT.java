@@ -18,29 +18,15 @@ import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatGetRequest;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatSendRequest;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
 
-import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
-import java.util.TimeZone;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatClientRest> {
 
-    private SimpleDateFormat dateFormat;
-
     @Override
     protected HeartbeatClientRest newClientRest(ConnectionManager connectionManager) {
         return new HeartbeatClientRest(connectionManager);
-    }
-
-    @Override
-    @BeforeEach
-    public void setUp() {
-        super.setUp();
-
-        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        this.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     @Test

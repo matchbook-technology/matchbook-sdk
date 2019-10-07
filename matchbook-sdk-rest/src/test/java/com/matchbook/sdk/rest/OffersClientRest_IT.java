@@ -114,7 +114,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void submitOffersPartiallyFailedTest() {
+    void submitOffersPartiallyFailedTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -204,7 +204,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void editOffersPartiallyFailedTest() {
+    void editOffersPartiallyFailedTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(put(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
