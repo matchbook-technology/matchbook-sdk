@@ -10,8 +10,8 @@ import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.user.Account;
 import com.matchbook.sdk.rest.dtos.user.Login;
 import com.matchbook.sdk.stream.model.dataobjects.user.User;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class UserModelMapperTest {
 
@@ -27,13 +27,13 @@ public class UserModelMapperTest {
 
     private UserModelMapper unit;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         this.unit = new UserModelMapper();
     }
 
     @Test
-    public void mapLoginTest() {
+    void mapLoginTest() {
         Login login = mock(Login.class);
         when(login.getSessionToken()).thenReturn(SESSION_TOKEN);
         when(login.getUserId()).thenReturn(USER_ID);
@@ -67,7 +67,7 @@ public class UserModelMapperTest {
     }
 
     @Test
-    public void mapLoginTest_NullValues() {
+    void mapLoginTest_NullValues() {
         Login login = mock(Login.class);
         when(login.getUserId()).thenReturn(null);
 

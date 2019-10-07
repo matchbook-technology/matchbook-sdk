@@ -18,33 +18,20 @@ import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatGetRequest;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatSendRequest;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
 
-import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
-import java.util.TimeZone;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatClientRest> {
-
-    private SimpleDateFormat dateFormat;
 
     @Override
     protected HeartbeatClientRest newClientRest(ConnectionManager connectionManager) {
         return new HeartbeatClientRest(connectionManager);
     }
 
-    @Override
-    @Before
-    public void setUp() {
-        super.setUp();
-
-        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        this.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    }
-
     @Test
-    public void getHeartbeatTest() {
+    void getHeartbeatTest() {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -68,7 +55,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
     }
 
     @Test
-    public void sendHeartbeatTest() {
+    void sendHeartbeatTest() {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -92,7 +79,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
     }
 
     @Test
-    public void unsubscribeHeartbeatTest() {
+    void unsubscribeHeartbeatTest() {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(delete(urlPathEqualTo("/edge/rest/v1/heartbeat"))
                 .withHeader("Accept", equalTo("application/json"))

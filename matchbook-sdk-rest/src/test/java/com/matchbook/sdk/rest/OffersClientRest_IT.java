@@ -38,11 +38,10 @@ import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Collections;
 
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientRest> {
 
@@ -52,7 +51,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getOfferTest() {
+    void getOfferTest() {
         String url = "/edge/rest/v2/offers/382937981320019";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -71,7 +70,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getOffersTest() {
+    void getOffersTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -90,7 +89,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void submitOffersTest() {
+    void submitOffersTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -114,7 +113,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void submitOffersPartiallyFailedTest() {
+    void submitOffersPartiallyFailedTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -153,7 +152,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void editOfferTest() {
+    void editOfferTest() {
         String url = "/edge/rest/v2/offers/925183846730025";
         wireMockServer.stubFor(put(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -177,7 +176,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void editOffersTest() {
+    void editOffersTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(put(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -204,7 +203,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void editOffersPartiallyFailedTest() {
+    void editOffersPartiallyFailedTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(put(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -233,7 +232,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void deleteOfferTest() {
+    void deleteOfferTest() {
         String url = "/edge/rest/v2/offers/413775799780013";
         wireMockServer.stubFor(delete(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -252,7 +251,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void deleteOffersTest() {
+    void deleteOffersTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(delete(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -284,7 +283,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getOfferEditTest() {
+    void getOfferEditTest() {
         String url = "/edge/rest/v2/offers/925183846730025/offer-edits/925184068850125";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -303,7 +302,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getOfferEditsTest() {
+    void getOfferEditsTest() {
         String url = "/edge/rest/v2/offers/925183846730025/offer-edits";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -334,7 +333,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getAggregatedMatchedBetsTest() {
+    void getAggregatedMatchedBetsTest() {
         String url = "/edge/rest/bets/matched/aggregated";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -364,7 +363,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getCancelledMatchedBetsTest() {
+    void getCancelledMatchedBetsTest() {
         String url = "/edge/rest/bets";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withQueryParam("status", new EqualToPattern("CANCELLED"))
@@ -395,7 +394,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getPositionsTest() {
+    void getPositionsTest() {
         String url = "/edge/rest/account/positions";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))

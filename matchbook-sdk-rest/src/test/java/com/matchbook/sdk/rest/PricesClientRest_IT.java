@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.matchbook.sdk.rest.dtos.prices.Price;
 import com.matchbook.sdk.rest.dtos.prices.PricesRequest;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PricesClientRest_IT extends MatchbookSDKClientRest_IT<PricesClientRest> {
 
@@ -20,7 +20,7 @@ public class PricesClientRest_IT extends MatchbookSDKClientRest_IT<PricesClientR
     }
 
     @Test
-    public void getPricesTest() {
+    void getPricesTest() {
         String url = "/edge/rest/events/395729780570010/markets/395729860260010/runners/395729860800010/prices";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))

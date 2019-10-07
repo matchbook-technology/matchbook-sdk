@@ -9,8 +9,8 @@ import java.util.List;
 
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SDKCookieJarTest {
 
@@ -19,13 +19,13 @@ public class SDKCookieJarTest {
 
     private SDKCookieJar unit;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         unit = new SDKCookieJar();
     }
 
     @Test
-    public void saveFromResponseAndLoadForRequestTest() {
+    void saveFromResponseAndLoadForRequestTest() {
         HttpUrl httpUrl = newHttpUrl();
         Cookie cookie1 = buildCookie("cookie1", "value1").build();
         Cookie cookie2 = buildCookie("cookie2", "value2").build();
@@ -44,7 +44,7 @@ public class SDKCookieJarTest {
     }
 
     @Test
-    public void saveFromResponseAndLoadForRequestNoCookiesTest() {
+    void saveFromResponseAndLoadForRequestNoCookiesTest() {
         HttpUrl httpUrl = newHttpUrl();
         unit.saveFromResponse(httpUrl, null);
 
@@ -56,7 +56,7 @@ public class SDKCookieJarTest {
     }
 
     @Test
-    public void saveFromResponseAndLoadForRequestExpiredCookieTest() {
+    void saveFromResponseAndLoadForRequestExpiredCookieTest() {
         HttpUrl httpUrl = newHttpUrl();
         Cookie expiredCookie = buildCookie("cookie", "value")
                 .expiresAt(System.currentTimeMillis() - 100L)

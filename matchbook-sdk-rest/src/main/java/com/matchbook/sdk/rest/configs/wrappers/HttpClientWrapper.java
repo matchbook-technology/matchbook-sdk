@@ -35,9 +35,9 @@ public class HttpClientWrapper implements HttpClient {
 
     private OkHttpClient initHttpClient(HttpConfig httpConfig) {
         return new OkHttpClient.Builder()
-                .connectTimeout(httpConfig.getConnectionTimeout(), TimeUnit.MILLISECONDS)
-                .writeTimeout(httpConfig.getWriteTimeout(), TimeUnit.MILLISECONDS)
-                .readTimeout(httpConfig.getReadTimeout(), TimeUnit.MILLISECONDS)
+                .connectTimeout(httpConfig.getConnectionTimeoutInMillis(), TimeUnit.MILLISECONDS)
+                .writeTimeout(httpConfig.getWriteTimeoutInMillis(), TimeUnit.MILLISECONDS)
+                .readTimeout(httpConfig.getReadTimeoutInMillis(), TimeUnit.MILLISECONDS)
                 .followRedirects(false)
                 .cookieJar(new SDKCookieJar())
                 .build();

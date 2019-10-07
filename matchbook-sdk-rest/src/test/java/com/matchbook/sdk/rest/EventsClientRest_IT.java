@@ -12,7 +12,6 @@ import com.matchbook.sdk.rest.dtos.events.EventRequest;
 import com.matchbook.sdk.rest.dtos.events.EventsRequest;
 import com.matchbook.sdk.rest.dtos.events.Market;
 import com.matchbook.sdk.rest.dtos.events.MarketRequest;
-import com.matchbook.sdk.rest.dtos.events.MarketType;
 import com.matchbook.sdk.rest.dtos.events.MarketsRequest;
 import com.matchbook.sdk.rest.dtos.events.Runner;
 import com.matchbook.sdk.rest.dtos.events.RunnerRequest;
@@ -22,7 +21,7 @@ import com.matchbook.sdk.rest.dtos.events.SportsRequest;
 
 import java.util.Objects;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientRest> {
 
@@ -32,7 +31,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getSportsTest() {
+    void getSportsTest() {
         String url = "/edge/rest/lookups/sports";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -57,7 +56,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getEventTest() {
+    void getEventTest() {
         String url = "/edge/rest/events/395729780570010";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -76,7 +75,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getEventsTest() {
+    void getEventsTest() {
         String url = "/edge/rest/events";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -124,7 +123,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getMarketTest() {
+    void getMarketTest() {
         String url = "/edge/rest/events/395729780570010/markets/395729860260010";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -169,7 +168,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getMarketsTest() {
+    void getMarketsTest() {
         String url = "/edge/rest/events/395729780570010/markets";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -202,7 +201,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getRunnerTest() {
+    void getRunnerTest() {
         String url = "/edge/rest/events/395729780570010/markets/395729860260010/runners/395729860800010";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -223,7 +222,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getRunnersTest() {
+    void getRunnersTest() {
         String url = "/edge/rest/events/395729780570010/markets/395729860260010/runners";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
