@@ -10,10 +10,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
@@ -30,8 +30,8 @@ import java.util.TimeZone;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatClientRest> {
 
@@ -43,7 +43,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
     }
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() {
         super.setUp();
 
@@ -52,7 +52,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
     }
 
     @Test
-    public void getHeartbeatTest() throws InterruptedException, ParseException {
+    void getHeartbeatTest() throws InterruptedException, ParseException {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -95,7 +95,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
     }
 
     @Test
-    public void sendHeartbeatTest() throws InterruptedException, ParseException {
+    void sendHeartbeatTest() throws InterruptedException, ParseException {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -139,7 +139,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
     }
 
     @Test
-    public void unsubscribeHeartbeatTest() throws InterruptedException {
+    void unsubscribeHeartbeatTest() throws InterruptedException {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(delete(urlPathEqualTo("/edge/rest/v1/heartbeat"))
                 .withHeader("Accept", equalTo("application/json"))

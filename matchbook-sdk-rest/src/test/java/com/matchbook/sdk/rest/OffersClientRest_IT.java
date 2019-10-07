@@ -12,9 +12,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
@@ -47,7 +47,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientRest> {
 
@@ -57,7 +57,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getOfferTest() throws InterruptedException {
+    void getOfferTest() throws InterruptedException {
         String url = "/edge/rest/v2/offers/382937981320019";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -98,7 +98,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getOffersTest() throws InterruptedException {
+    void getOffersTest() throws InterruptedException {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -139,7 +139,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void submitOfferTest() throws InterruptedException {
+    void submitOfferTest() throws InterruptedException {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -185,7 +185,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void editOfferTest() throws InterruptedException {
+    void editOfferTest() throws InterruptedException {
         String url = "/edge/rest/v2/offers/925183846730025";
         wireMockServer.stubFor(put(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -229,7 +229,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void editOffersTest() throws InterruptedException {
+    void editOffersTest() throws InterruptedException {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(put(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -276,7 +276,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void deleteOfferTest() throws InterruptedException {
+    void deleteOfferTest() throws InterruptedException {
         String url = "/edge/rest/v2/offers/413775799780013";
         wireMockServer.stubFor(delete(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -317,7 +317,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void deleteOffersTest() throws InterruptedException {
+    void deleteOffersTest() throws InterruptedException {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(delete(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -371,7 +371,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getOfferEditTest() throws InterruptedException {
+    void getOfferEditTest() throws InterruptedException {
         String url = "/edge/rest/v2/offers/925183846730025/offer-edits/925184068850125";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -412,7 +412,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getOfferEditsTest() throws InterruptedException {
+    void getOfferEditsTest() throws InterruptedException {
         String url = "/edge/rest/v2/offers/925183846730025/offer-edits";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -465,7 +465,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getAggregatedMatchedBetsTest() throws InterruptedException {
+    void getAggregatedMatchedBetsTest() throws InterruptedException {
         String url = "/edge/rest/bets/matched/aggregated";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -513,7 +513,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getCancelledMatchedBetsTest() throws InterruptedException {
+    void getCancelledMatchedBetsTest() throws InterruptedException {
         String url = "/edge/rest/bets";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withQueryParam("status", new EqualToPattern("CANCELLED"))
@@ -562,7 +562,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getPositionsTest() throws InterruptedException {
+    void getPositionsTest() throws InterruptedException {
         String url = "/edge/rest/account/positions";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))

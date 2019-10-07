@@ -1,27 +1,27 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SDKCookieJarTest {
 
     private SDKCookieJar unit;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         unit = new SDKCookieJar();
     }
 
     @Test
-    public void saveFromResponseAndLoadForRequestTest() {
+    void saveFromResponseAndLoadForRequestTest() {
         HttpUrl httpUrl = HttpUrl.get("http://mydomain.com");
         List<Cookie> cookies = new ArrayList<>();
         Cookie cookie1 = createCookie("cookie1", "value1");
