@@ -19,7 +19,7 @@ import com.matchbook.sdk.rest.dtos.user.Balance;
 import com.matchbook.sdk.rest.dtos.user.Login;
 import com.matchbook.sdk.rest.dtos.user.Logout;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest> {
 
@@ -29,7 +29,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void loginTest() {
+    void loginTest() {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -54,7 +54,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void loginIncorrectPasswordTest() {
+    void loginIncorrectPasswordTest() {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -75,7 +75,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void loginEmptyResponseTest() {
+    void loginEmptyResponseTest() {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -96,7 +96,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void logoutTest() {
+    void logoutTest() {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(delete(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -121,7 +121,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void getAccountTest() {
+    void getAccountTest() {
         String url = "/edge/rest/account";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -149,7 +149,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void getBalanceTest() {
+    void getBalanceTest() {
         String url = "/edge/rest/account/balance";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -176,7 +176,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void loginAndGetBalanceTest() {
+    void loginAndGetBalanceTest() {
         /*
          * Perform a login request getting a response that sets the session-token cookie.
          * We expect that the following GET balance request includes the same cookie.
@@ -214,7 +214,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void loginAndLogoutTest() {
+    void loginAndLogoutTest() {
         /*
          * Firstly, perform a login request getting a response that sets the session-token cookie.
          * Then, a logout request that expires the cookie.
