@@ -6,8 +6,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
@@ -27,7 +27,7 @@ import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientRest> {
 
@@ -37,7 +37,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getSportsTest() throws InterruptedException {
+    void getSportsTest() throws InterruptedException {
         String url = "/edge/rest/lookups/sports";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -79,7 +79,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getEventTest() throws InterruptedException {
+    void getEventTest() throws InterruptedException {
         String url = "/edge/rest/events/395729780570010";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -118,7 +118,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getEventsTest() throws InterruptedException {
+    void getEventsTest() throws InterruptedException {
         String url = "/edge/rest/events";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -186,7 +186,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getMarketTest() throws InterruptedException {
+    void getMarketTest() throws InterruptedException {
         String url = "/edge/rest/events/395729780570010/markets/395729860260010";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -228,7 +228,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getMarketsTest() throws InterruptedException {
+    void getMarketsTest() throws InterruptedException {
         String url = "/edge/rest/events/395729780570010/markets";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -282,7 +282,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getRunnerTest() throws InterruptedException {
+    void getRunnerTest() throws InterruptedException {
         String url = "/edge/rest/events/395729780570010/markets/395729860260010/runners/395729860800010";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -325,7 +325,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
-    public void getRunnersTest() throws InterruptedException {
+    void getRunnersTest() throws InterruptedException {
         String url = "/edge/rest/events/395729780570010/markets/395729860260010/runners";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
