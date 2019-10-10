@@ -113,10 +113,7 @@
                         <id>default-compile</id>
                         <configuration>
                             <!-- compile everything to ensure module-info contains right entries -->
-                            <jdkToolchain>
-                                <version>9</version>
-                            </jdkToolchain>
-                            <release>9</release>
+                            <release>${maven.compiler.source}</release>
                         </configuration>
                     </execution>
                     <execution>
@@ -132,13 +129,11 @@
                         </configuration>
                     </execution>
                 </executions>
-
                 <configuration>
                     <jdkToolchain>
-                        <version>[1.5,9)</version>
+                        <version>${maven.compiler.source}</version>
                     </jdkToolchain>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <release>${maven.compiler.target}</release>
                     <compilerArgs>
                         <arg>-Xlint</arg>
                         <!--
