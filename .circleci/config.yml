@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build-java8:
     docker:
-      - image: circleci/openjdk:8-jdk
+      - image: circleci/openjdk:11-jdk
     working_directory: ~/matchbook-sdk
     steps:
       - checkout
@@ -33,22 +33,10 @@ jobs:
           path: matchbook-sdk-rest/target/site
           destination: matchbook-sdk-rest/reports
 
-  build-java11:
-    docker:
-      - image: circleci/openjdk:11-jdk
-    working_directory: ~/matchbook-sdk
-    steps:
-      - checkout
-      - run:
-          name: Build Matchbook SDK on Java 11
-          command: |
-            mvn clean verify -Dmaven.compiler.source=11 -Dmaven.compiler.target=11
-
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build-java11
       - build-java8
 
 
