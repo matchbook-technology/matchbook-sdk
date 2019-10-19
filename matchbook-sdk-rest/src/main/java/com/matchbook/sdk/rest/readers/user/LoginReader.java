@@ -1,9 +1,9 @@
 package com.matchbook.sdk.rest.readers.user;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
 import com.matchbook.sdk.rest.dtos.user.Account;
 import com.matchbook.sdk.rest.dtos.user.Login;
+import com.matchbook.sdk.rest.readers.ResponseReader;
 
 public class LoginReader extends ResponseReader<Login> {
 
@@ -25,13 +25,17 @@ public class LoginReader extends ResponseReader<Login> {
             } else if ("user-id".equals(fieldName)) {
                 login.setUserId(parser.getLong());
             } else if ("account".equals(fieldName)) {
-                accountReader.startReading(parser);
-                Account account = accountReader.readFullResponse();
+                Account account = readAccount();
                 login.setAccount(account);
             }
             parser.moveToNextToken();
         }
         return login;
+    }
+
+    private Account readAccount() {
+        accountReader.init(parser);
+        return accountReader.readFullResponse();
     }
 
 }

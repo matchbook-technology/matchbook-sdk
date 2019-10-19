@@ -2,16 +2,15 @@ package com.matchbook.sdk.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.configs.HttpCallback;
-import com.matchbook.sdk.rest.configs.Parser;
 import com.matchbook.sdk.rest.configs.Serializer;
+import com.matchbook.sdk.rest.dtos.FailableRestResponse;
+import com.matchbook.sdk.rest.dtos.PartiallyFailableResponse;
 import com.matchbook.sdk.rest.dtos.RestRequest;
 import com.matchbook.sdk.rest.dtos.RestResponse;
 import com.matchbook.sdk.rest.readers.Reader;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.stream.Collectors;
 
 abstract class AbstractClientRest implements Client {
@@ -22,54 +21,6 @@ abstract class AbstractClientRest implements Client {
         this.connectionManager = connectionManager;
     }
 
-    protected <REQ extends RestRequest, RESP extends RestResponse, T> void getRequest(
-            String url,
-            REQ request,
-            StreamObserver<T> observer,
-            Reader<T, RESP> reader) {
-        String requestUrl = buildUrl(url, request);
-        Serializer serializer = connectionManager.getSerializer();
-        connectionManager.getHttpClient().get(requestUrl, new RestCallback<>(observer, serializer, reader));
-    }
-
-    protected <REQ extends RestRequest, RESP extends RestResponse, T> void postRequest(
-            String url,
-            REQ request,
-            StreamObserver<T> observer,
-            Reader<T, RESP> reader) {
-        try {
-            Serializer serializer = connectionManager.getSerializer();
-            String requestBody = serializer.writeObjectAsString(request);
-            connectionManager.getHttpClient().post(url, requestBody, new RestCallback<>(observer, serializer, reader));
-        } catch (IOException e) {
-            observer.onError(new MatchbookSDKHttpException(e.getMessage(), e));
-        }
-    }
-
-    protected <REQ extends RestRequest, RESP extends RestResponse, T> void putRequest(
-            String url,
-            REQ request,
-            StreamObserver<T> observer,
-            Reader<T, RESP> reader) {
-        try {
-            Serializer serializer = connectionManager.getSerializer();
-            String requestBody = serializer.writeObjectAsString(request);
-            connectionManager.getHttpClient().put(url, requestBody, new RestCallback<>(observer, serializer, reader));
-        } catch (IOException e) {
-            observer.onError(new MatchbookSDKHttpException(e.getMessage(), e));
-        }
-    }
-
-    protected <REQ extends RestRequest, RESP extends RestResponse, T> void deleteRequest(
-            String url,
-            REQ request,
-            StreamObserver<T> observer,
-            Reader<T, RESP> reader) {
-        String requestUrl = buildUrl(url, request);
-        Serializer serializer = connectionManager.getSerializer();
-        connectionManager.getHttpClient().delete(requestUrl, new RestCallback<>(observer, serializer, reader));
-    }
-
     protected String buildSportsUrl(String path) {
         return connectionManager.getClientConfig().getSportsUrl() + "/" + path;
     }
@@ -78,44 +29,82 @@ abstract class AbstractClientRest implements Client {
         return connectionManager.getClientConfig().getLoginUrl();
     }
 
+    protected <REQ extends RestRequest, RESP extends RestResponse, T> void getRequest(
+            String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
+        String requestUrl = buildUrl(url, request);
+        Serializer serializer = connectionManager.getSerializer();
+        connectionManager.getHttpClient().get(requestUrl, new RestResponseCallback<>(observer, serializer, reader));
+    }
+
+    protected <REQ extends RestRequest, RESP extends PartiallyFailableResponse<T>, T extends FailableRestResponse>
+            void partiallyFailablePostRequest(String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
+        HttpCallback httpCallback = new PartiallyFailableResponseCallback<>(observer, connectionManager.getSerializer(), reader);
+        postRequest(url, request, observer, httpCallback);
+    }
+
+    protected <REQ extends RestRequest, RESP extends RestResponse, T> void postRequest(
+            String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
+        HttpCallback httpCallback = new RestResponseCallback<>(observer, connectionManager.getSerializer(), reader);
+        postRequest(url, request, observer, httpCallback);
+    }
+
+    private <REQ extends RestRequest, T> void postRequest(String url, REQ request,
+            StreamObserver<T> observer, HttpCallback httpCallback) {
+        try {
+            Serializer serializer = connectionManager.getSerializer();
+            String requestBody = serializer.writeObjectAsString(request);
+            connectionManager.getHttpClient().post(url, requestBody, httpCallback);
+        } catch (IOException ioe) {
+            MatchbookSDKHttpException matchbookException = new MatchbookSDKHttpException(ioe.getMessage(), ioe);
+            observer.onError(matchbookException);
+        }
+    }
+
+    protected <REQ extends RestRequest, RESP extends PartiallyFailableResponse<T>, T extends FailableRestResponse>
+            void partiallyFailablePutRequest(String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
+        HttpCallback httpCallback = new PartiallyFailableResponseCallback<>(observer, connectionManager.getSerializer(), reader);
+        putRequest(url, request, observer, httpCallback);
+    }
+
+    protected <REQ extends RestRequest, RESP extends RestResponse, T> void putRequest(
+            String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
+        HttpCallback httpCallback = new RestResponseCallback<>(observer, connectionManager.getSerializer(), reader);
+        putRequest(url, request, observer, httpCallback);
+    }
+
+    private <REQ extends RestRequest, T> void putRequest(String url, REQ request,
+            StreamObserver<T> observer, HttpCallback httpCallback) {
+        try {
+            Serializer serializer = connectionManager.getSerializer();
+            String requestBody = serializer.writeObjectAsString(request);
+            connectionManager.getHttpClient().put(url, requestBody, httpCallback);
+        } catch (IOException ioe) {
+            MatchbookSDKHttpException matchbookException = new MatchbookSDKHttpException(ioe.getMessage(), ioe);
+            observer.onError(matchbookException);
+        }
+    }
+
+    protected <REQ extends RestRequest, RESP extends PartiallyFailableResponse<T>, T extends FailableRestResponse>
+            void partiallyFailableDeleteRequest(String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
+        HttpCallback httpCallback = new PartiallyFailableResponseCallback<>(observer, connectionManager.getSerializer(), reader);
+        deleteRequest(url, request, httpCallback);
+    }
+
+    protected <REQ extends RestRequest, RESP extends RestResponse, T> void deleteRequest(
+            String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
+        HttpCallback httpCallback = new RestResponseCallback<>(observer, connectionManager.getSerializer(), reader);
+        deleteRequest(url, request, httpCallback);
+    }
+
+    private <REQ extends RestRequest, T> void deleteRequest(String url, REQ request, HttpCallback httpCallback) {
+        String requestUrl = buildUrl(url, request);
+        connectionManager.getHttpClient().delete(requestUrl, httpCallback);
+    }
+
     private <REQ extends RestRequest> String buildUrl(String baseUrl, REQ request) {
         return baseUrl + "?" + request.parameters().entrySet().stream()
                 .map(entry -> entry.getKey() + "=" + entry.getValue())
                 .collect(Collectors.joining("&"));
-    }
-
-    private static class RestCallback<T, RESP extends RestResponse> implements HttpCallback {
-
-        private final StreamObserver<T> observer;
-        private final Serializer serializer;
-        private final Reader<T, RESP> reader;
-
-        private RestCallback(StreamObserver<T> observer, Serializer serializer, Reader<T, RESP> reader) {
-            this.observer = observer;
-            this.serializer = serializer;
-            this.reader = reader;
-        }
-
-        @Override
-        public void onResponse(InputStream inputStream) {
-            try (Parser parser = serializer.newParser(inputStream)) {
-                reader.startReading(parser);
-                while (reader.hasMoreItems()) {
-                    T item = reader.readNextItem();
-                    observer.onNext(item);
-                }
-                observer.onCompleted();
-            } catch (IOException e) {
-                MatchbookSDKParsingException exception = new MatchbookSDKParsingException(e.getMessage(), e);
-                observer.onError(exception);
-            }
-        }
-
-        @Override
-        public void onFailure(MatchbookSDKHttpException exception) {
-            observer.onError(exception);
-        }
-
     }
 
 }

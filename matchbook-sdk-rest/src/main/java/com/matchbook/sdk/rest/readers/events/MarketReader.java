@@ -63,7 +63,7 @@ public class MarketReader extends ResponseReader<Market> {
         List<Runner> runners = new ArrayList<>();
         parser.moveToNextToken();
         while (!parser.isEndOfArray()) {
-            runnerReader.startReading(parser);
+            runnerReader.init(parser);
             Runner runner = runnerReader.readFullResponse();
             if (Objects.nonNull(runner)) {
                 runners.add(runner);

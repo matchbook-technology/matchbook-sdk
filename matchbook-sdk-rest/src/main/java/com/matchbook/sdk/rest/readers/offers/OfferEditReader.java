@@ -1,15 +1,25 @@
 package com.matchbook.sdk.rest.readers.offers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
+import com.matchbook.sdk.rest.dtos.errors.Error;
+import com.matchbook.sdk.rest.dtos.errors.Errors;
 import com.matchbook.sdk.rest.dtos.offers.OfferEdit;
 import com.matchbook.sdk.rest.dtos.offers.OfferEditStatus;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
+import com.matchbook.sdk.rest.readers.ResponseReader;
+import com.matchbook.sdk.rest.readers.errors.ErrorReader;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class OfferEditReader extends ResponseReader<OfferEdit> {
 
+    private final ErrorReader errorReader;
+
     public OfferEditReader() {
         super();
+        errorReader = new ErrorReader();
     }
 
     @Override
@@ -40,10 +50,37 @@ public class OfferEditReader extends ResponseReader<OfferEdit> {
                 offerEdit.setDelay(parser.getDouble());
             } else if ("edit-time".equals(fieldName)) {
                 offerEdit.setEditTime(parser.getInstant());
+            } else if ("errors".equals(fieldName)) {
+                Errors errors = readErrors();
+                offerEdit.setErrors(errors);
             }
             parser.moveToNextToken();
         }
         return offerEdit;
+    }
+
+    private Errors readErrors() {
+        List<Error> errorsList = readErrorsList();
+        if (!errorsList.isEmpty()) {
+            final Errors errors = new Errors();
+            errors.setErrors(errorsList);
+            return errors;
+        }
+        return null;
+    }
+
+    private List<Error> readErrorsList() {
+        List<Error> errorsList = new ArrayList<>(1);
+        parser.moveToNextToken();
+        while (!parser.isEndOfArray()) {
+            errorReader.init(parser);
+            Error error = errorReader.readFullResponse();
+            if (Objects.nonNull(error)) {
+                errorsList.add(error);
+            }
+            parser.moveToNextToken();
+        }
+        return errorsList;
     }
 
 }

@@ -1,11 +1,8 @@
 package com.matchbook.sdk.rest.readers.offers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
+import com.matchbook.sdk.rest.dtos.errors.Error;
+import com.matchbook.sdk.rest.dtos.errors.Errors;
 import com.matchbook.sdk.rest.dtos.events.MarketType;
 import com.matchbook.sdk.rest.dtos.offers.CommissionType;
 import com.matchbook.sdk.rest.dtos.offers.MatchedBet;
@@ -16,16 +13,24 @@ import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.rest.dtos.prices.Side;
+import com.matchbook.sdk.rest.readers.ResponseReader;
+import com.matchbook.sdk.rest.readers.errors.ErrorReader;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class OfferReader extends ResponseReader<Offer> {
 
     private final MatchedBetReader matchedBetReader;
     private final OfferEditReader offerEditReader;
+    private final ErrorReader errorReader;
 
     public OfferReader() {
         super();
         matchedBetReader = new MatchedBetReader();
         offerEditReader = new OfferEditReader();
+        errorReader = new ErrorReader();
     }
 
     @Override
@@ -87,23 +92,30 @@ public class OfferReader extends ResponseReader<Offer> {
             } else if ("keep-in-play".equals(fieldName)) {
                 offer.setKeepInPlay(parser.getBoolean());
             } else if ("offer-edit".equals(fieldName)) {
-                offerEditReader.startReading(parser);
-                OfferEdit offerEdit = offerEditReader.readFullResponse();
+                OfferEdit offerEdit = readOfferEdit();
                 offer.setOfferEdit(offerEdit);
             } else if ("matched-bets".equals(fieldName)) {
                 List<MatchedBet> matchedBets = readMatchedBets();
                 offer.setMatchedBets(matchedBets);
+            } else if ("errors".equals(fieldName)) {
+                Errors errors = readErrors();
+                offer.setErrors(errors);
             }
             parser.moveToNextToken();
         }
         return offer;
     }
 
+    private OfferEdit readOfferEdit() {
+        offerEditReader.init(parser);
+        return offerEditReader.readFullResponse();
+    }
+
     private List<MatchedBet> readMatchedBets() {
         List<MatchedBet> matchedBets = new ArrayList<>();
         parser.moveToNextToken();
         while (!parser.isEndOfArray()) {
-            matchedBetReader.startReading(parser);
+            matchedBetReader.init(parser);
             MatchedBet market = matchedBetReader.readFullResponse();
             if (Objects.nonNull(market)) {
                 matchedBets.add(market);
@@ -111,6 +123,30 @@ public class OfferReader extends ResponseReader<Offer> {
             parser.moveToNextToken();
         }
         return matchedBets;
+    }
+
+    private Errors readErrors() {
+        List<Error> errorsList = readErrorsList();
+        if (!errorsList.isEmpty()) {
+             final Errors errors = new Errors();
+             errors.setErrors(errorsList);
+             return errors;
+        }
+        return null;
+    }
+
+    private List<Error> readErrorsList() {
+        List<Error> errorsList = new ArrayList<>(1);
+        parser.moveToNextToken();
+        while (!parser.isEndOfArray()) {
+            errorReader.init(parser);
+            Error error = errorReader.readFullResponse();
+            if (Objects.nonNull(error)) {
+                errorsList.add(error);
+            }
+            parser.moveToNextToken();
+        }
+        return errorsList;
     }
 
 }

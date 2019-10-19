@@ -1,14 +1,15 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
-import java.io.IOException;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-
-import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
 import com.matchbook.sdk.rest.HttpConfig;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.HttpClient;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -96,52 +97,26 @@ public class HttpClientWrapper implements HttpClient {
 
         private final HttpCallback httpCallback;
 
-        RequestCallback(HttpCallback httpCallback) {
+        private RequestCallback(HttpCallback httpCallback) {
             this.httpCallback = httpCallback;
         }
 
         @Override
         public void onResponse(Call call, Response response) {
-            try (ResponseBody responseBody = response.body()) {
-                if (response.isSuccessful() && Objects.nonNull(responseBody)) {
-                    httpCallback.onResponse(responseBody.byteStream());
-                } else {
-                    MatchbookSDKHttpException matchbookException = getExceptionForResponse(response);
-                    httpCallback.onFailure(matchbookException);
-                }
+            ResponseBody responseBody = response.body();
+            Objects.requireNonNull(responseBody, "The content of the HTTP response cannot be null.");
+
+            InputStream responseInputStream = responseBody.byteStream();
+            if (response.isSuccessful()) {
+                httpCallback.onSuccessfulResponse(responseInputStream);
+            } else {
+                httpCallback.onFailedResponse(responseInputStream, response.code());
             }
         }
 
         @Override
         public void onFailure(Call call, IOException exception) {
-            MatchbookSDKHttpException matchbookException = new MatchbookSDKHttpException(exception.getMessage(), exception);
-            httpCallback.onFailure(matchbookException);
-        }
-
-        private MatchbookSDKHttpException getExceptionForResponse(Response response) {
-            try {
-                ResponseBody responseBody = response.body();
-                byte[] responseBytes = Objects.nonNull(responseBody) ? responseBody.bytes() : null;
-                if (Objects.nonNull(responseBytes) && responseBytes.length > 0
-                        && isAuthenticationErrorPresent(responseBytes)) {
-                    return unauthenticatedException();
-                }
-            } catch (IOException e) {
-                // do nothing
-            }
-            return httpException(response.code());
-        }
-
-        private boolean isAuthenticationErrorPresent(byte[] responseBytes) {
-            return new String(responseBytes).toLowerCase().contains("cannot login");
-        }
-
-        private MatchbookSDKHttpException unauthenticatedException() {
-            return new MatchbookSDKHttpException("Unable to authenticate user: invalid credentials", ErrorType.UNAUTHENTICATED);
-        }
-
-        private MatchbookSDKHttpException httpException(int responseCode) {
-            return new MatchbookSDKHttpException("Unexpected HTTP code " + responseCode, ErrorType.HTTP);
+            httpCallback.onException(exception);
         }
 
     }

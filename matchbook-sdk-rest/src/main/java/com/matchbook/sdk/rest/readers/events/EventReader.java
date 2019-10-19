@@ -77,7 +77,7 @@ public class EventReader extends ResponseReader<Event> {
         List<Market> markets = new ArrayList<>();
         parser.moveToNextToken();
         while (!parser.isEndOfArray()) {
-            marketReader.startReading(parser);
+            marketReader.init(parser);
             Market market = marketReader.readFullResponse();
             if (Objects.nonNull(market)) {
                 markets.add(market);

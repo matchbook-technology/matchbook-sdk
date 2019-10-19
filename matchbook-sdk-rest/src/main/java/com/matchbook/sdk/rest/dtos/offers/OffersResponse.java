@@ -1,11 +1,11 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
-import com.matchbook.sdk.rest.dtos.PageableResponse;
+import com.matchbook.sdk.rest.dtos.PartiallyFailableResponse;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
-public class OffersResponse extends PageableResponse<Offer> {
+public class OffersResponse extends PartiallyFailableResponse<Offer> {
 
     private Currency currency;
     private ExchangeType exchangeType;

@@ -1,24 +1,18 @@
 package com.matchbook.sdk.rest.configs;
 
+import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-
 public interface Parser extends AutoCloseable {
 
-    boolean isStartOfObject();
-
-    boolean isStartOfArray();
-
-    boolean isStartOfBlock();
+    boolean hasCurrentToken();
 
     boolean isEndOfObject();
 
     boolean isEndOfArray();
-
-    boolean isEndOfBlock();
 
     void moveToNextToken() throws MatchbookSDKParsingException;
 

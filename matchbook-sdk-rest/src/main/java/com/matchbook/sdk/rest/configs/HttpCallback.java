@@ -1,13 +1,14 @@
 package com.matchbook.sdk.rest.configs;
 
-import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
-
+import java.io.IOException;
 import java.io.InputStream;
 
 public interface HttpCallback {
 
-    void onResponse(InputStream inputStream);
+    void onSuccessfulResponse(InputStream responseInputStream);
 
-    void onFailure(MatchbookSDKHttpException exception);
+    void onFailedResponse(InputStream responseInputStream, int responseCode);
+
+    void onException(IOException ioException);
 
 }
