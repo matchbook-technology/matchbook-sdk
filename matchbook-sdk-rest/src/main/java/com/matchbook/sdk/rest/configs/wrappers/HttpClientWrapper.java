@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.HttpConfig;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.HttpClient;
@@ -30,8 +31,7 @@ public class HttpClientWrapper implements HttpClient {
 
     public HttpClientWrapper(HttpConfig httpConfig) {
         httpClient = initHttpClient(httpConfig);
-
-        this.jsonMediaType = MediaType.parse(MEDIA_TYPE_JSON);
+        jsonMediaType = MediaType.parse(MEDIA_TYPE_JSON);
     }
 
     private OkHttpClient initHttpClient(HttpConfig httpConfig) {
@@ -42,6 +42,12 @@ public class HttpClientWrapper implements HttpClient {
                 .followRedirects(false)
                 .cookieJar(new SDKCookieJar())
                 .build();
+    }
+
+    @VisibleForTesting
+    HttpClientWrapper(OkHttpClient httpClient) {
+        this.httpClient = httpClient;
+        jsonMediaType = MediaType.parse(MEDIA_TYPE_JSON);
     }
 
     @Override
