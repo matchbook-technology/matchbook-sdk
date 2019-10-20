@@ -20,7 +20,6 @@ import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
 
 import java.time.temporal.ChronoUnit;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatClientRest> {

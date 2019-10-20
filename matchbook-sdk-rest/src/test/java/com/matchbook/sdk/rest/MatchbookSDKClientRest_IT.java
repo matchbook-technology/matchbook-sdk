@@ -1,7 +1,5 @@
 package com.matchbook.sdk.rest;
 
-import com.matchbook.sdk.core.StreamObserver;
-
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.jupiter.api.AfterAll;
