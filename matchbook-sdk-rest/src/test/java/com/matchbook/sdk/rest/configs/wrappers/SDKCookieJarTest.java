@@ -10,6 +10,7 @@ import java.util.List;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class SDKCookieJarTest {
@@ -25,7 +26,21 @@ class SDKCookieJarTest {
     }
 
     @Test
-    void saveFromResponseAndLoadForRequestTest() {
+    @DisplayName("No cookies in response")
+    void saveFromResponseAndLoadForRequestNoCookiesTest() {
+        HttpUrl httpUrl = newHttpUrl();
+        unit.saveFromResponse(httpUrl, null);
+
+        List<Cookie> requestCookies = unit.loadForRequest(httpUrl);
+        assertThat(requestCookies).isNotNull();
+        assertThat(requestCookies).hasSize(1);
+        assertThat(requestCookies).extracting("name", "value")
+                .containsExactly(tuple(COOKIE_NAME, COOKIE_VALUE));
+    }
+
+    @Test
+    @DisplayName("Two valid cookies in response")
+    void saveFromResponseAndLoadForRequestOnlyValidCookiesTest() {
         HttpUrl httpUrl = newHttpUrl();
         Cookie cookie1 = buildCookie("cookie1", "value1").build();
         Cookie cookie2 = buildCookie("cookie2", "value2").build();
@@ -44,19 +59,8 @@ class SDKCookieJarTest {
     }
 
     @Test
-    void saveFromResponseAndLoadForRequestNoCookiesTest() {
-        HttpUrl httpUrl = newHttpUrl();
-        unit.saveFromResponse(httpUrl, null);
-
-        List<Cookie> requestCookies = unit.loadForRequest(httpUrl);
-        assertThat(requestCookies).isNotNull();
-        assertThat(requestCookies).hasSize(1);
-        assertThat(requestCookies).extracting("name", "value")
-                .containsExactly(tuple(COOKIE_NAME, COOKIE_VALUE));
-    }
-
-    @Test
-    void saveFromResponseAndLoadForRequestExpiredCookieTest() {
+    @DisplayName("One expired cookie in response")
+    void saveFromResponseAndLoadForRequestOnlyExpiredCookiesTest() {
         HttpUrl httpUrl = newHttpUrl();
         Cookie expiredCookie = buildCookie("cookie", "value")
                 .expiresAt(System.currentTimeMillis() - 100L)
@@ -69,6 +73,27 @@ class SDKCookieJarTest {
         assertThat(requestCookies).hasSize(1);
         assertThat(requestCookies).extracting("name", "value")
                 .containsExactly(tuple(COOKIE_NAME, COOKIE_VALUE));
+    }
+
+    @Test
+    @DisplayName("One valid cookie and one expired cookie in response")
+    void saveFromResponseAndLoadForRequestMixedValidAndExpiredCookiesTest() {
+        HttpUrl httpUrl = newHttpUrl();
+        Cookie validCookie = buildCookie("cookie1", "value1").build();
+        Cookie expiredCookie = buildCookie("cookie2", "value2")
+                .expiresAt(System.currentTimeMillis() - 100L)
+                .build();
+        List<Cookie> cookies = Arrays.asList(validCookie, expiredCookie);
+        unit.saveFromResponse(httpUrl, cookies);
+
+        List<Cookie> requestCookies = unit.loadForRequest(httpUrl);
+        assertThat(requestCookies).isNotNull();
+        assertThat(requestCookies).hasSize(2);
+        assertThat(requestCookies).extracting("name", "value")
+                .containsExactlyInAnyOrder(
+                        tuple(COOKIE_NAME, COOKIE_VALUE),
+                        tuple(validCookie.name(), validCookie.value())
+                );
     }
 
     private HttpUrl newHttpUrl() {
