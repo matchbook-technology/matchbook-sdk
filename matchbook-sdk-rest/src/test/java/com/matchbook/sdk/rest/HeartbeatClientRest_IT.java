@@ -22,8 +22,10 @@ import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
 import java.time.temporal.ChronoUnit;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+@Tag("integration")
 public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatClientRest> {
 
     @Override

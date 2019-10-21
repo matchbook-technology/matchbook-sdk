@@ -24,8 +24,10 @@ import com.matchbook.sdk.rest.dtos.events.SportsRequest;
 import java.util.Objects;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+@Tag("integration")
 public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientRest> {
 
     @Override

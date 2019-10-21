@@ -20,8 +20,10 @@ import com.matchbook.sdk.rest.dtos.user.Login;
 import com.matchbook.sdk.rest.dtos.user.Logout;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+@Tag("integration")
 public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest> {
 
     @Override

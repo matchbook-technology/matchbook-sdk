@@ -12,8 +12,10 @@ import com.matchbook.sdk.rest.dtos.prices.Price;
 import com.matchbook.sdk.rest.dtos.prices.PricesRequest;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+@Tag("integration")
 public class PricesClientRest_IT extends MatchbookSDKClientRest_IT<PricesClientRest> {
 
     @Override
