@@ -12,6 +12,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
+import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.rest.dtos.heartbeat.ActionPerformed;
 import com.matchbook.sdk.rest.dtos.heartbeat.Heartbeat;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatGetRequest;
@@ -20,6 +21,7 @@ import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
 
 import java.time.temporal.ChronoUnit;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatClientRest> {
@@ -30,6 +32,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
     }
 
     @Test
+    @DisplayName("Check heartbeat")
     void getHeartbeatTest() {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -54,6 +57,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
     }
 
     @Test
+    @DisplayName("Send heartbeat")
     void sendHeartbeatTest() {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
@@ -78,6 +82,7 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
     }
 
     @Test
+    @DisplayName("Unsubscribe from heartbeat")
     void unsubscribeHeartbeatTest() {
         String url = "/edge/rest/v1/heartbeat";
         wireMockServer.stubFor(delete(urlPathEqualTo("/edge/rest/v1/heartbeat"))
@@ -98,6 +103,52 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
         streamObserver.waitTermination();
 
         wireMockServer.verify(deleteRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    @Test
+    @DisplayName("Unexpected server error in heartbeat API")
+    void unexpectedServerErrorTest() {
+        String url = "/edge/rest/v1/heartbeat";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(500)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/serverErrorResponse.json")));
+
+        HeartbeatGetRequest heartbeatGetRequest = new HeartbeatGetRequest.Builder().build();
+        ResponseStreamObserver<Heartbeat> streamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.HTTP);
+        });
+        clientRest.getHeartbeat(heartbeatGetRequest, streamObserver);
+        streamObserver.waitTermination();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    @Test
+    @DisplayName("Unexpected empty response in heartbeat API")
+    void unexpectedEmptyResponseTest() {
+        String url = "/edge/rest/v1/heartbeat";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("")));
+
+        HeartbeatGetRequest heartbeatGetRequest = new HeartbeatGetRequest.Builder().build();
+        ResponseStreamObserver<Heartbeat> streamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.HTTP);
+        });
+        clientRest.getHeartbeat(heartbeatGetRequest, streamObserver);
+        streamObserver.waitTermination();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 

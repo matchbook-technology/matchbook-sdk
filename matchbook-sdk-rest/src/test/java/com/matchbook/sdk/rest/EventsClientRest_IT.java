@@ -7,6 +7,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.rest.dtos.events.Event;
 import com.matchbook.sdk.rest.dtos.events.EventRequest;
 import com.matchbook.sdk.rest.dtos.events.EventsRequest;
@@ -22,6 +23,7 @@ import com.matchbook.sdk.rest.dtos.events.SportsRequest;
 
 import java.util.Objects;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientRest> {
@@ -32,6 +34,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
+    @DisplayName("Get all sports")
     void getSportsTest() {
         String url = "/edge/rest/lookups/sports";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -57,6 +60,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
+    @DisplayName("Get single event")
     void getEventTest() {
         String url = "/edge/rest/events/395729780570010";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -76,6 +80,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
+    @DisplayName("Get all events")
     void getEventsTest() {
         String url = "/edge/rest/events";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -124,6 +129,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
+    @DisplayName("Get single market")
     void getMarketTest() {
         String url = "/edge/rest/events/395729780570010/markets/395729860260010";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -145,6 +151,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
+    @DisplayName("Get a market with a not known type")
     void getMarketWithUnknownMarketTypeTest() {
         String url = "/edge/rest/events/395729780570010/markets/395729860260010";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -169,6 +176,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
+    @DisplayName("Get all markets")
     void getMarketsTest() {
         String url = "/edge/rest/events/395729780570010/markets";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -202,6 +210,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
+    @DisplayName("Get a single runner")
     void getRunnerTest() {
         String url = "/edge/rest/events/395729780570010/markets/395729860260010/runners/395729860800010";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -223,6 +232,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
     }
 
     @Test
+    @DisplayName("Get all runners")
     void getRunnersTest() {
         String url = "/edge/rest/events/395729780570010/markets/395729860260010/runners";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -256,6 +266,52 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
                 assertThat(price.getOdds()).isNotNull();
             });
         }
+    }
+
+    @Test
+    @DisplayName("Unexpected server error in events API")
+    void serverErrorTest() {
+        String url = "/edge/rest/lookups/sports";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(500)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/serverErrorResponse.json")));
+
+        SportsRequest sportsRequest = new SportsRequest.Builder().build();
+        ResponseStreamObserver<Sport> streamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.HTTP);
+        });
+        clientRest.getSports(sportsRequest, streamObserver);
+        streamObserver.waitTermination();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    @Test
+    @DisplayName("Unexpected empty response in events API")
+    void unexpectedEmptyResponseTest() {
+        String url = "/edge/rest/lookups/sports";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("")));
+
+        SportsRequest sportsRequest = new SportsRequest.Builder().build();
+        ResponseStreamObserver<Sport> streamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.HTTP);
+        });
+        clientRest.getSports(sportsRequest, streamObserver);
+        streamObserver.waitTermination();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
 }

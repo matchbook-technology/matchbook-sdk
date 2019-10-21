@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -43,6 +44,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Unable to create a parser at instantiation")
     void instantiationFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonFactory).createParser(any(InputStream.class));
         InputStream inputStream = mock(InputStream.class);
@@ -52,6 +54,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read current token")
     void hasCurrentTokenTest() {
         when(jsonParser.hasCurrentToken()).thenReturn(true);
         boolean result = unit.hasCurrentToken();
@@ -59,6 +62,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Check end of JSON object")
     void isEndOfObjectTest() {
         when(jsonParser.hasToken(JsonToken.END_OBJECT)).thenReturn(true);
         boolean result = unit.isEndOfObject();
@@ -66,6 +70,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Check end of JSON array")
     void isEndOfArrayTest() {
         when(jsonParser.hasToken(JsonToken.END_ARRAY)).thenReturn(true);
         boolean result = unit.isEndOfArray();
@@ -73,12 +78,14 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Move to next token")
     void moveToNextTokenTest() throws IOException {
         unit.moveToNextToken();
         verify(jsonParser).nextToken();
     }
 
     @Test
+    @DisplayName("Exception moving to next token")
     void moveToNextTokenFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).nextToken();
 
@@ -87,12 +94,14 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Move to next value")
     void moveToNextValueTest() throws IOException {
         unit.moveToNextValue();
         verify(jsonParser).nextValue();
     }
 
     @Test
+    @DisplayName("Exception moving to next value")
     void moveToNextValueFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).nextValue();
 
@@ -101,12 +110,14 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Skip nested JSON structures")
     void skipChildrenTest() throws IOException {
         unit.skipChildren();
         verify(jsonParser).skipChildren();
     }
 
     @Test
+    @DisplayName("Exception skipping nested JSON structures")
     void skipChildrenFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).skipChildren();
 
@@ -115,12 +126,14 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read field name")
     void getFieldNameTest() throws IOException {
         unit.getFieldName();
         verify(jsonParser).getCurrentName();
     }
 
     @Test
+    @DisplayName("Exception reading field name")
     void getFieldNameFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getCurrentName();
 
@@ -129,6 +142,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read boolean value")
     void getBooleanTest() throws IOException {
         when(jsonParser.getValueAsBoolean()).thenReturn(true);
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -139,6 +153,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read null boolean value")
     void getBooleanNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         Boolean result = unit.getBoolean();
@@ -146,6 +161,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Exception reading boolean value")
     void getBooleanFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getValueAsBoolean();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -155,6 +171,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read string value")
     void getStringTest() throws IOException {
         String expectedResult = "a string";
         when(jsonParser.getValueAsString()).thenReturn(expectedResult);
@@ -166,6 +183,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read null string value")
     void getStringNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         String result = unit.getString();
@@ -173,6 +191,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Exception reading string value")
     void getStringFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getValueAsString();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -182,6 +201,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read integer value")
     void getIntegerTest() throws IOException {
         Integer expectedResult = 42;
         when(jsonParser.getValueAsInt()).thenReturn(expectedResult);
@@ -193,6 +213,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read null integer value")
     void getIntegerNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         Integer result = unit.getInteger();
@@ -200,6 +221,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Exception reading integer value")
     void getIntegerFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getValueAsInt();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -209,6 +231,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read long value")
     void getLongTest() throws IOException {
         Long expectedResult = 42L;
         when(jsonParser.getValueAsLong()).thenReturn(expectedResult);
@@ -220,6 +243,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read null long value")
     void getLongNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         Long result = unit.getLong();
@@ -227,6 +251,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Exception reading long value")
     void getLongFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getValueAsLong();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -236,6 +261,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read double value")
     void getDoubleTest() throws IOException {
         Double expectedResult = 42.0;
         when(jsonParser.getValueAsDouble()).thenReturn(expectedResult);
@@ -247,6 +273,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read null double value")
     void getDoubleNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         Double result = unit.getDouble();
@@ -254,6 +281,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Exception reading double value")
     void getDoubleFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getValueAsDouble();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -263,6 +291,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read decimal value")
     void getDecimalTest() throws IOException {
         BigDecimal expectedResult = new BigDecimal("42");
         when(jsonParser.getDecimalValue()).thenReturn(expectedResult);
@@ -274,6 +303,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read null decimal value")
     void getDecimalNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         BigDecimal result = unit.getDecimal();
@@ -281,6 +311,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Exception reading time instant value")
     void getDecimalFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getDecimalValue();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -290,6 +321,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read time instant value")
     void getInstantTest() throws IOException {
         String instantAsString = "2017-02-14T11:08:00.000Z";
         Instant expectedResult = Instant.parse(instantAsString);
@@ -302,6 +334,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read null time instant value")
     void getInstantNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         Instant result = unit.getInstant();
@@ -309,6 +342,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read bad formatted time instant value")
     void getInstantIncorrectFormatTest() throws IOException {
         String badInstanceString = "not a well-formed timestamp";
         when(jsonParser.getValueAsString()).thenReturn(badInstanceString);
@@ -319,6 +353,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Exception reading time instant value")
     void getInstantFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getValueAsString();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -328,6 +363,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read enum value")
     void getEnumTest() throws IOException {
         TestEnum expectedResult = TestEnum.VALUE;
         when(jsonParser.getValueAsString()).thenReturn(expectedResult.name());
@@ -339,6 +375,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read not known enum value")
     void getEnumUnknownTest() throws IOException {
         when(jsonParser.getValueAsString()).thenReturn("something not known");
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -349,6 +386,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Read null enum value")
     void getEnumNullTest() {
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(true);
         TestEnum result = unit.getEnum(TestEnum.class);
@@ -356,6 +394,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Exception reading enum value")
     void getEnumFailedTest() throws IOException {
         doThrow(IOException.class).when(jsonParser).getValueAsString();
         when(jsonParser.hasToken(JsonToken.VALUE_NULL)).thenReturn(false);
@@ -365,6 +404,7 @@ class ParserWrapperTest {
     }
 
     @Test
+    @DisplayName("Close parser")
     void closeTest() throws IOException {
         unit.close();
         verify(jsonParser).close();

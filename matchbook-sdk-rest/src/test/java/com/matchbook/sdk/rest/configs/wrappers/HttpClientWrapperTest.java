@@ -14,6 +14,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -34,7 +35,7 @@ class HttpClientWrapperTest {
 
     @BeforeEach
     void setUp() {
-        Call call = mock(Call.class);
+        final Call call = mock(Call.class);
         doNothing().when(call).enqueue(any(Callback.class));
         when(okHttpClient.newCall(any(Request.class))).thenReturn(call);
 
@@ -42,6 +43,7 @@ class HttpClientWrapperTest {
     }
 
     @Test
+    @DisplayName("GET request")
     void getTest() {
         String url = "http://mydomain.com/";
         HttpCallback httpCallback = mock(HttpCallback.class);
@@ -53,6 +55,7 @@ class HttpClientWrapperTest {
     }
 
     @Test
+    @DisplayName("POST request")
     void postTest() {
         String url = "http://mydomain.com/";
         HttpCallback httpCallback = mock(HttpCallback.class);
@@ -64,6 +67,7 @@ class HttpClientWrapperTest {
     }
 
     @Test
+    @DisplayName("PUT request")
     void putTest() {
         String url = "http://mydomain.com/";
         HttpCallback httpCallback = mock(HttpCallback.class);
@@ -75,6 +79,7 @@ class HttpClientWrapperTest {
     }
 
     @Test
+    @DisplayName("DELETE request")
     void deleteTest() {
         String url = "http://mydomain.com/";
         HttpCallback httpCallback = mock(HttpCallback.class);
