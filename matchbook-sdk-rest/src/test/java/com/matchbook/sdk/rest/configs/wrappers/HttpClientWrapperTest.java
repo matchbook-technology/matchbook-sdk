@@ -35,7 +35,7 @@ class HttpClientWrapperTest {
 
     @BeforeEach
     void setUp() {
-        final Call call = mock(Call.class);
+        Call call = mock(Call.class);
         doNothing().when(call).enqueue(any(Callback.class));
         when(okHttpClient.newCall(any(Request.class))).thenReturn(call);
 
