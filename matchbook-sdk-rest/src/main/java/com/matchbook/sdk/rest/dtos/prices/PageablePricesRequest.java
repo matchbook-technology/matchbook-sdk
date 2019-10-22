@@ -53,7 +53,6 @@ public abstract class PageablePricesRequest extends PageableRequest {
 
     protected Map<String, String> pricesParameters() {
         Map<String, String> parameters = new HashMap<>();
-
         if (Objects.nonNull(currency)) {
             parameters.put("currency", currency.name());
         }
@@ -78,12 +77,12 @@ public abstract class PageablePricesRequest extends PageableRequest {
 
     protected static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
 
-        protected OddsType oddsType;
-        protected ExchangeType exchangeType;
-        protected Side side;
-        protected Currency currency;
-        protected BigDecimal minimumLiquidity;
-        protected PriceMode priceMode;
+        private OddsType oddsType;
+        private ExchangeType exchangeType;
+        private Side side;
+        private Currency currency;
+        private BigDecimal minimumLiquidity;
+        private PriceMode priceMode;
 
         public T oddsType(OddsType oddsType) {
             this.oddsType = oddsType;
@@ -114,6 +113,7 @@ public abstract class PageablePricesRequest extends PageableRequest {
             this.priceMode = priceMode;
             return self();
         }
+
     }
 
     public static class Builder extends Init<Builder> {

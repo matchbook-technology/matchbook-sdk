@@ -1,20 +1,31 @@
 package com.matchbook.sdk.rest.dtos.events;
 
+import com.matchbook.sdk.rest.dtos.prices.AbstractPricesRequestTest;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
-import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequestTest;
 import com.matchbook.sdk.rest.dtos.prices.PriceMode;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
 import java.math.BigDecimal;
 
-class EventsRequestTest extends PageablePricesRequestTest<EventsRequest> {
+import org.junit.jupiter.api.BeforeEach;
+
+class EventRequestTest extends AbstractPricesRequestTest<EventRequest> {
+
+    private Long eventId;
 
     @Override
-    protected EventsRequest newPageablePricesRequest(OddsType oddsType, ExchangeType exchangeType, Side side,
-            Currency currency, BigDecimal minimumLiquidity, PriceMode priceMode, int offset, int perPage) {
-        return new EventsRequest.Builder()
+    @BeforeEach
+    protected void setUp() {
+        eventId = 395729780570010L;
+        super.setUp();
+    }
+
+    @Override
+    protected EventRequest newPricesRequest(OddsType oddsType, ExchangeType exchangeType, Side side,
+            Currency currency, BigDecimal minimumLiquidity, PriceMode priceMode) {
+        return new EventRequest.Builder(eventId)
                 .includePrices(true)
                 .oddsType(oddsType)
                 .exchangeType(exchangeType)
@@ -22,14 +33,12 @@ class EventsRequestTest extends PageablePricesRequestTest<EventsRequest> {
                 .currency(currency)
                 .minimumLiquidity(minimumLiquidity)
                 .priceMode(priceMode)
-                .offset(offset)
-                .perPage(perPage)
                 .build();
     }
 
     @Override
-    protected EventsRequest newEmptyRequest() {
-        return new EventsRequest.Builder().build();
+    protected EventRequest newEmptyRequest() {
+        return new EventRequest.Builder(eventId).build();
     }
 
 }

@@ -19,7 +19,7 @@ public abstract class PageableRequestTest<T extends PageableRequest> {
     protected abstract T newPageableRequest(int offset, int perPage);
 
     @BeforeEach
-    void setUp() {
+    protected void setUp() {
         offset = 5;
         perPage = 100;
         unit = newPageableRequest(offset, perPage);
@@ -40,8 +40,8 @@ public abstract class PageableRequestTest<T extends PageableRequest> {
     }
 
     @Test
-    @DisplayName("Query parameters contain pagination values")
-    void parametersTest() {
+    @DisplayName("Query parameters contain pagination params")
+    void pageParametersTest() {
         Map<String, String> parameters = unit.parameters();
         assertThat(parameters).extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
                 .contains(

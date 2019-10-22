@@ -49,6 +49,7 @@ public abstract class PageableRequest implements RestRequest {
             this.perPage = perPage;
             return self();
         }
+
     }
 
     public static class Builder extends Init<Builder> {

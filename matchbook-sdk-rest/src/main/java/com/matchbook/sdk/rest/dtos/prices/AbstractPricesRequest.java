@@ -1,5 +1,6 @@
 package com.matchbook.sdk.rest.dtos.prices;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -12,7 +13,7 @@ public abstract class AbstractPricesRequest implements RestRequest {
     protected final ExchangeType exchangeType;
     protected final Side side;
     protected final Currency currency;
-    protected final Double minimumLiquidity;
+    protected final BigDecimal minimumLiquidity;
     protected final PriceMode priceMode;
 
     protected AbstractPricesRequest(Init<?> init) {
@@ -40,7 +41,7 @@ public abstract class AbstractPricesRequest implements RestRequest {
         return currency;
     }
 
-    public Double getMinimumLiquidity() {
+    public BigDecimal getMinimumLiquidity() {
         return minimumLiquidity;
     }
 
@@ -63,7 +64,7 @@ public abstract class AbstractPricesRequest implements RestRequest {
             parameters.put("side", side.name());
         }
         if (Objects.nonNull(minimumLiquidity)) {
-            parameters.put("minimum-liquidity", String.valueOf(minimumLiquidity));
+            parameters.put("minimum-liquidity", minimumLiquidity.toPlainString());
         }
         if (Objects.nonNull(priceMode)) {
             parameters.put("price-mode", priceMode.name());
@@ -73,12 +74,12 @@ public abstract class AbstractPricesRequest implements RestRequest {
 
     protected static abstract class Init<T extends Init<T>> {
 
-        protected OddsType oddsType;
-        protected ExchangeType exchangeType;
-        protected Side side;
-        protected Currency currency;
-        protected Double minimumLiquidity;
-        protected PriceMode priceMode;
+        private OddsType oddsType;
+        private ExchangeType exchangeType;
+        private Side side;
+        private Currency currency;
+        private BigDecimal minimumLiquidity;
+        private PriceMode priceMode;
 
         protected abstract T self();
 
@@ -102,7 +103,7 @@ public abstract class AbstractPricesRequest implements RestRequest {
             return self();
         }
 
-        public T minimumLiquidity(Double minimumLiquidity) {
+        public T minimumLiquidity(BigDecimal minimumLiquidity) {
             this.minimumLiquidity = minimumLiquidity;
             return self();
         }
