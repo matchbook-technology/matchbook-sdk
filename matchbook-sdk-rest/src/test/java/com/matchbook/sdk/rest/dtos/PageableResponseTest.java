@@ -17,7 +17,7 @@ public abstract class PageableResponseTest<T extends PageableResponse<R>, R> {
     protected abstract R mockItem();
 
     @BeforeEach
-    void setUp() {
+    protected void setUp() {
         unit = newPageableResponse();
     }
 

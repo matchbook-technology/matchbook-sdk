@@ -3,7 +3,7 @@ package com.matchbook.sdk.rest.dtos.offers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-import com.matchbook.sdk.rest.dtos.PartiallyFailableResponseTest;
+import com.matchbook.sdk.rest.dtos.PageableResponseTest;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
@@ -11,22 +11,22 @@ import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class OffersResponseTest extends PartiallyFailableResponseTest<OffersResponse, Offer> {
+class AggregatedMatchedBetsResponseTest extends PageableResponseTest<AggregatedMatchedBetsResponse, AggregatedMatchedBet> {
 
     @Override
-    protected OffersResponse newPageableResponse() {
-        return new OffersResponse();
+    protected AggregatedMatchedBetsResponse newPageableResponse() {
+        return new AggregatedMatchedBetsResponse();
     }
 
     @Override
-    protected Offer mockItem() {
-        return mock(Offer.class);
+    protected AggregatedMatchedBet mockItem() {
+        return mock(AggregatedMatchedBet.class);
     }
 
     @Test
     @DisplayName("Set and get currency")
     void currencyTest() {
-        Currency currency = Currency.USD;
+        Currency currency = Currency.HKD;
         unit.setCurrency(currency);
         assertThat(unit.getCurrency()).isEqualTo(currency);
     }
@@ -34,7 +34,7 @@ class OffersResponseTest extends PartiallyFailableResponseTest<OffersResponse, O
     @Test
     @DisplayName("Set and get odds type")
     void oddsTypeTest() {
-        OddsType oddsType = OddsType.US;
+        OddsType oddsType = OddsType.HK;
         unit.setOddsType(oddsType);
         assertThat(unit.getOddsType()).isEqualTo(oddsType);
     }
@@ -42,7 +42,7 @@ class OffersResponseTest extends PartiallyFailableResponseTest<OffersResponse, O
     @Test
     @DisplayName("Set and get exchange type")
     void exchangeTypeTest() {
-        ExchangeType exchangeType = ExchangeType.BINARY;
+        ExchangeType exchangeType = ExchangeType.BACK_LAY;
         unit.setExchangeType(exchangeType);
         assertThat(unit.getExchangeType()).isEqualTo(exchangeType);
     }
