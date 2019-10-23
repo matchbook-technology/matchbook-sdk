@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class AggregatedMatchedBetsResponseTest extends PageableResponseTest<AggregatedMatchedBetsResponse, AggregatedMatchedBet> {
 
     @Override
-    protected AggregatedMatchedBetsResponse newPageableResponse() {
+    protected AggregatedMatchedBetsResponse newResponse() {
         return new AggregatedMatchedBetsResponse();
     }
 

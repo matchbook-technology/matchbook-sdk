@@ -3,14 +3,15 @@ package com.matchbook.sdk.rest.dtos.prices;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
+import com.matchbook.sdk.rest.dtos.RestRequestTest;
+
 import java.math.BigDecimal;
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public abstract class AbstractPricesRequestTest<T extends AbstractPricesRequest> {
+public abstract class AbstractPricesRequestTest<T extends AbstractPricesRequest> extends RestRequestTest<T> {
 
     private OddsType oddsType;
     private ExchangeType exchangeType;
@@ -19,25 +20,18 @@ public abstract class AbstractPricesRequestTest<T extends AbstractPricesRequest>
     private BigDecimal minimumLiquidity;
     private PriceMode priceMode;
 
-    private T unit;
-    private T emptyUnit;
-
     protected abstract T newPricesRequest(OddsType oddsType, ExchangeType exchangeType, Side side,
             Currency currency, BigDecimal minimumLiquidity, PriceMode priceMode);
 
-    protected abstract T newEmptyRequest();
-
-    @BeforeEach
-    protected void setUp() {
+    @Override
+    protected T newRequest() {
         oddsType = OddsType.DECIMAL;
         exchangeType = ExchangeType.BACK_LAY;
         side = Side.LAY;
         currency = Currency.EUR;
         minimumLiquidity = BigDecimal.TEN;
         priceMode = PriceMode.EXPANDED;
-
-        unit = newPricesRequest(oddsType, exchangeType, side, currency, minimumLiquidity, priceMode);
-        emptyUnit = newEmptyRequest();
+        return newPricesRequest(oddsType, exchangeType, side, currency, minimumLiquidity, priceMode);
     }
 
     @Test

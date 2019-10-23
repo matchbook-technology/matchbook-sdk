@@ -4,22 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public abstract class PageableResponseTest<T extends PageableResponse<R>, R> {
-
-    protected T unit;
-
-    protected abstract T newPageableResponse();
+public abstract class PageableResponseTest<T extends PageableResponse<R>, R> extends RestResponseTest<T> {
 
     protected abstract R mockItem();
-
-    @BeforeEach
-    protected void setUp() {
-        unit = newPageableResponse();
-    }
 
     @Test
     @DisplayName("Set and get total")

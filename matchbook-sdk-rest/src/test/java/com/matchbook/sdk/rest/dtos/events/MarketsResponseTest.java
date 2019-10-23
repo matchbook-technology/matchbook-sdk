@@ -7,7 +7,7 @@ import com.matchbook.sdk.rest.dtos.PageableResponseTest;
 class MarketsResponseTest extends PageableResponseTest<MarketsResponse, Market> {
 
     @Override
-    protected MarketsResponse newPageableResponse() {
+    protected MarketsResponse newResponse() {
         return new MarketsResponse();
     }
 

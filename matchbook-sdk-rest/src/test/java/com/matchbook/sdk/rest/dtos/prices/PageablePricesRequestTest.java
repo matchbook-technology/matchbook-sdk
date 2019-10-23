@@ -8,7 +8,6 @@ import com.matchbook.sdk.rest.dtos.PageableRequestTest;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,29 +20,17 @@ public abstract class PageablePricesRequestTest<T extends PageablePricesRequest>
     private BigDecimal minimumLiquidity;
     private PriceMode priceMode;
 
-    private T emptyUnit;
-
     protected abstract T newPageablePricesRequest(OddsType oddsType, ExchangeType exchangeType, Side side,
             Currency currency, BigDecimal minimumLiquidity, PriceMode priceMode, int offset, int perPage);
 
-    protected abstract T newEmptyRequest();
-
     @Override
-    @BeforeEach
-    protected void setUp() {
+    protected T newPageableRequest(int offset, int perPage) {
         oddsType = OddsType.DECIMAL;
         exchangeType = ExchangeType.BACK_LAY;
         side = Side.LAY;
         currency = Currency.EUR;
         minimumLiquidity = BigDecimal.TEN;
         priceMode = PriceMode.EXPANDED;
-
-        super.setUp();
-        emptyUnit = newEmptyRequest();
-    }
-
-    @Override
-    protected T newPageableRequest(int offset, int perPage) {
         return newPageablePricesRequest(oddsType, exchangeType, side, currency, minimumLiquidity, priceMode, offset, perPage);
     }
 

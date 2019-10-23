@@ -7,7 +7,7 @@ import com.matchbook.sdk.rest.dtos.PageableResponseTest;
 class PositionsResponseTest extends PageableResponseTest<PositionsResponse, Position> {
 
     @Override
-    protected PositionsResponse newPageableResponse() {
+    protected PositionsResponse newResponse() {
         return new PositionsResponse();
     }
 

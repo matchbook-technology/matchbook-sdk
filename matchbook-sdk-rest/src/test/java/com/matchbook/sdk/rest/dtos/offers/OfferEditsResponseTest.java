@@ -7,7 +7,7 @@ import com.matchbook.sdk.rest.dtos.PartiallyFailableResponseTest;
 class OfferEditsResponseTest extends PartiallyFailableResponseTest<OfferEditsResponse, OfferEdit> {
 
     @Override
-    protected OfferEditsResponse newPageableResponse() {
+    protected OfferEditsResponse newResponse() {
         return new OfferEditsResponse();
     }
 

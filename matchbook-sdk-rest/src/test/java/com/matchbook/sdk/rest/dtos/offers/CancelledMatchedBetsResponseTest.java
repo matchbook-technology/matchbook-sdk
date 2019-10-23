@@ -8,7 +8,7 @@ import com.matchbook.sdk.rest.dtos.PartiallyFailableResponseTest;
 class CancelledMatchedBetsResponseTest extends PageableResponseTest<CancelledMatchedBetsResponse, MatchedBet> {
 
     @Override
-    protected CancelledMatchedBetsResponse newPageableResponse() {
+    protected CancelledMatchedBetsResponse newResponse() {
         return new CancelledMatchedBetsResponse();
     }
 

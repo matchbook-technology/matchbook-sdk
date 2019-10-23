@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class OffersResponseTest extends PartiallyFailableResponseTest<OffersResponse, Offer> {
 
     @Override
-    protected OffersResponse newPageableResponse() {
+    protected OffersResponse newResponse() {
         return new OffersResponse();
     }
 

@@ -7,7 +7,7 @@ import com.matchbook.sdk.rest.dtos.PageableResponseTest;
 class PricesResponseTest extends PageableResponseTest<PricesResponse, Price> {
 
     @Override
-    protected PricesResponse newPageableResponse() {
+    protected PricesResponse newResponse() {
         return new PricesResponse();
     }
 
