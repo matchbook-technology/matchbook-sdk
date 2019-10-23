@@ -1,4 +1,4 @@
-module com.matchbook.sdk.rest {
+open module com.matchbook.sdk.rest {
 
     exports com.matchbook.sdk.rest;
     exports com.matchbook.sdk.rest.dtos;
