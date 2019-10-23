@@ -1,6 +1,6 @@
 package com.matchbook.sdk.rest.dtos.events;
 
-import com.matchbook.sdk.rest.dtos.prices.AbstractPricesRequestTest;
+import com.matchbook.sdk.rest.dtos.prices.BasePricesRequestTest;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.BeforeEach;
 
-class EventRequestTest extends AbstractPricesRequestTest<EventRequest> {
+class EventRequestTest extends BasePricesRequestTest<EventRequest> {
 
     private Long eventId;
 
@@ -19,6 +19,7 @@ class EventRequestTest extends AbstractPricesRequestTest<EventRequest> {
     @BeforeEach
     protected void setUp() {
         eventId = 395729780570010L;
+
         super.setUp();
     }
 

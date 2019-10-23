@@ -13,11 +13,11 @@ import com.matchbook.sdk.rest.readers.Reader;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-abstract class AbstractClientRest implements Client {
+abstract class BaseClientRest implements Client {
 
     protected final ConnectionManager connectionManager;
 
-    protected AbstractClientRest(ConnectionManager connectionManager) {
+    protected BaseClientRest(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
 

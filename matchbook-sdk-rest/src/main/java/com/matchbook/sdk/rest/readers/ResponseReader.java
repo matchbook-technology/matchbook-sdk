@@ -3,7 +3,7 @@ package com.matchbook.sdk.rest.readers;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
-public abstract class ResponseReader<T extends RestResponse> extends AbstractReader<T, T> {
+public abstract class ResponseReader<T extends RestResponse> extends BaseReader<T, T> {
 
     abstract protected T readItem() throws MatchbookSDKParsingException;
 

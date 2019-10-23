@@ -8,7 +8,7 @@ import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.dtos.PageableResponse;
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
-public abstract class PageableResponseReader<T extends RestResponse, R extends PageableResponse<T>> extends AbstractReader<T, R> {
+public abstract class PageableResponseReader<T extends RestResponse, R extends PageableResponse<T>> extends BaseReader<T, R> {
 
     final private ResponseReader<T> itemsReader;
 

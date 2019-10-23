@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
-public abstract class AbstractMatchedBet {
+public abstract class BaseMatchedBet {
 
     protected MatchedBetStatus status;
     protected OddsType oddsType;

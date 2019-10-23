@@ -3,9 +3,9 @@ package com.matchbook.sdk.rest.dtos.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.matchbook.sdk.rest.dtos.prices.AbstractPricesRequest;
+import com.matchbook.sdk.rest.dtos.prices.BasePricesRequest;
 
-public class RunnerRequest extends AbstractPricesRequest {
+public class RunnerRequest extends BasePricesRequest {
 
     private final Long runnerId;
     private final Long eventId;
@@ -72,7 +72,7 @@ public class RunnerRequest extends AbstractPricesRequest {
                 "}";
     }
 
-    private static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
+    private static abstract class Init<T extends Init<T>> extends BasePricesRequest.Init<T> {
 
         private final Long eventId;
         private final Long marketId;

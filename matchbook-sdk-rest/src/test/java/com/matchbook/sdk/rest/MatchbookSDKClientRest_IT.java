@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
-public abstract class MatchbookSDKClientRest_IT<T extends AbstractClientRest> {
+public abstract class MatchbookSDKClientRest_IT<T extends BaseClientRest> {
 
     protected static WireMockServer wireMockServer;
 

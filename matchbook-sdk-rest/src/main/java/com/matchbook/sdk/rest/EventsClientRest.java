@@ -20,7 +20,7 @@ import com.matchbook.sdk.rest.readers.events.RunnerReader;
 import com.matchbook.sdk.rest.readers.events.RunnersReader;
 import com.matchbook.sdk.rest.readers.events.SportsReader;
 
-public class EventsClientRest extends AbstractClientRest implements EventsClient {
+public class EventsClientRest extends BaseClientRest implements EventsClient {
 
     public EventsClientRest(ConnectionManager connectionManager) {
         super(connectionManager);

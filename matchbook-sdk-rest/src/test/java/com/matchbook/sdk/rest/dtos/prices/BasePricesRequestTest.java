@@ -8,10 +8,11 @@ import com.matchbook.sdk.rest.dtos.RestRequestTest;
 import java.math.BigDecimal;
 import java.util.Map;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public abstract class AbstractPricesRequestTest<T extends AbstractPricesRequest> extends RestRequestTest<T> {
+public abstract class BasePricesRequestTest<T extends BasePricesRequest> extends RestRequestTest<T> {
 
     private OddsType oddsType;
     private ExchangeType exchangeType;
@@ -24,13 +25,20 @@ public abstract class AbstractPricesRequestTest<T extends AbstractPricesRequest>
             Currency currency, BigDecimal minimumLiquidity, PriceMode priceMode);
 
     @Override
-    protected T newRequest() {
+    @BeforeEach
+    protected void setUp() {
         oddsType = OddsType.DECIMAL;
         exchangeType = ExchangeType.BACK_LAY;
         side = Side.LAY;
         currency = Currency.EUR;
         minimumLiquidity = BigDecimal.TEN;
         priceMode = PriceMode.EXPANDED;
+
+        super.setUp();
+    }
+
+    @Override
+    protected T newRequest() {
         return newPricesRequest(oddsType, exchangeType, side, currency, minimumLiquidity, priceMode);
     }
 

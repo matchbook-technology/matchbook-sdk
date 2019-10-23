@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.tuple;
 
 import java.util.Map;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,9 +17,16 @@ public abstract class PageableRequestTest<T extends PageableRequest> extends Res
     protected abstract T newPageableRequest(int offset, int perPage);
 
     @Override
-    protected T newRequest() {
+    @BeforeEach
+    protected void setUp() {
         offset = 5;
         perPage = 100;
+
+        super.setUp();
+    }
+
+    @Override
+    protected T newRequest() {
         return newPageableRequest(offset, perPage);
     }
 
