@@ -3,8 +3,8 @@ package com.matchbook.sdk.rest;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.rest.dtos.heartbeat.Heartbeat;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatGetRequest;
-import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatSendRequest;
-import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
+import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatPostRequest;
+import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatDeleteRequest;
 import com.matchbook.sdk.rest.readers.heartbeat.HeartbeatReader;
 
 public class HeartbeatClientRest extends BaseClientRest implements HeartbeatClient {
@@ -20,15 +20,15 @@ public class HeartbeatClientRest extends BaseClientRest implements HeartbeatClie
     }
 
     @Override
-    public void sendHeartbeat(HeartbeatSendRequest heartbeatSendRequest, StreamObserver<Heartbeat> heartbeatObserver) {
-        String url = buildSportsUrl(heartbeatSendRequest.resourcePath());
-        postRequest(url, heartbeatSendRequest, heartbeatObserver, new HeartbeatReader());
+    public void sendHeartbeat(HeartbeatPostRequest heartbeatPostRequest, StreamObserver<Heartbeat> heartbeatObserver) {
+        String url = buildSportsUrl(heartbeatPostRequest.resourcePath());
+        postRequest(url, heartbeatPostRequest, heartbeatObserver, new HeartbeatReader());
     }
 
     @Override
-    public void unsubscribeHeartbeat(HeartbeatUnsubscribeRequest heartbeatUnsubscribeRequest,
+    public void unsubscribeHeartbeat(HeartbeatDeleteRequest heartbeatDeleteRequest,
         StreamObserver<Heartbeat> heartbeatObserver) {
-        String url = buildSportsUrl(heartbeatUnsubscribeRequest.resourcePath());
-        deleteRequest(url, heartbeatUnsubscribeRequest, heartbeatObserver, new HeartbeatReader());
+        String url = buildSportsUrl(heartbeatDeleteRequest.resourcePath());
+        deleteRequest(url, heartbeatDeleteRequest, heartbeatObserver, new HeartbeatReader());
     }
 }

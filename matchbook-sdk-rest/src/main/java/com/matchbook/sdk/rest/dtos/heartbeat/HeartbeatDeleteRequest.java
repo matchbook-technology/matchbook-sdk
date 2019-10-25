@@ -5,9 +5,9 @@ import java.util.Map;
 
 import com.matchbook.sdk.rest.dtos.RestRequest;
 
-public class HeartbeatUnsubscribeRequest implements RestRequest {
+public class HeartbeatDeleteRequest implements RestRequest {
 
-    private HeartbeatUnsubscribeRequest() {
+    private HeartbeatDeleteRequest() {
         // not visible
     }
 
@@ -23,13 +23,13 @@ public class HeartbeatUnsubscribeRequest implements RestRequest {
 
     @Override
     public String toString() {
-        return HeartbeatUnsubscribeRequest.class.getSimpleName();
+        return HeartbeatDeleteRequest.class.getSimpleName();
     }
 
     public static class Builder {
 
-        public HeartbeatUnsubscribeRequest build() {
-            return new HeartbeatUnsubscribeRequest();
+        public HeartbeatDeleteRequest build() {
+            return new HeartbeatDeleteRequest();
         }
 
     }

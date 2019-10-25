@@ -16,8 +16,8 @@ import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.rest.dtos.heartbeat.ActionPerformed;
 import com.matchbook.sdk.rest.dtos.heartbeat.Heartbeat;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatGetRequest;
-import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatSendRequest;
-import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatUnsubscribeRequest;
+import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatPostRequest;
+import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatDeleteRequest;
 
 import java.time.temporal.ChronoUnit;
 
@@ -69,14 +69,14 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/heartbeat/postHeartbeatSuccessfulResponse.json")));
 
-        HeartbeatSendRequest heartbeatSendRequest = new HeartbeatSendRequest.Builder(20).build();
+        HeartbeatPostRequest heartbeatPostRequest = new HeartbeatPostRequest.Builder(20).build();
         ResponseStreamObserver<Heartbeat> streamObserver = new SuccessfulResponseStreamObserver<>(1, heartbeat -> {
             assertThat(heartbeat).isNotNull();
             assertThat(heartbeat.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_ACTIVATED);
             assertThat(heartbeat.getTimeoutTime()).isCloseTo("2019-07-12T10:01:00Z", within(1, ChronoUnit.SECONDS));
             assertThat(heartbeat.getActualTimeout()).isEqualTo(20);
         });
-        clientRest.sendHeartbeat(heartbeatSendRequest, streamObserver);
+        clientRest.sendHeartbeat(heartbeatPostRequest, streamObserver);
         streamObserver.waitTermination();
 
         wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
@@ -94,14 +94,14 @@ public class HeartbeatClientRest_IT extends MatchbookSDKClientRest_IT<HeartbeatC
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/heartbeat/deleteHeartbeatSuccessfulResponse.json")));
 
-        HeartbeatUnsubscribeRequest heartbeatUnsubscribeRequest = new HeartbeatUnsubscribeRequest.Builder().build();
+        HeartbeatDeleteRequest heartbeatDeleteRequest = new HeartbeatDeleteRequest.Builder().build();
         ResponseStreamObserver<Heartbeat> streamObserver = new SuccessfulResponseStreamObserver<>(1, heartbeat -> {
             assertThat(heartbeat).isNotNull();
             assertThat(heartbeat.getActionPerformed()).isEqualTo(ActionPerformed.HEARTBEAT_TERMINATED);
             assertThat(heartbeat.getTimeoutTime()).isNull();
             assertThat(heartbeat.getActualTimeout()).isNull();
         });
-        clientRest.unsubscribeHeartbeat(heartbeatUnsubscribeRequest, streamObserver);
+        clientRest.unsubscribeHeartbeat(heartbeatDeleteRequest, streamObserver);
         streamObserver.waitTermination();
 
         wireMockServer.verify(deleteRequestedFor(urlPathEqualTo(url))

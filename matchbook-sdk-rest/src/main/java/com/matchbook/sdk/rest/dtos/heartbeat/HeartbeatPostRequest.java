@@ -5,17 +5,21 @@ import java.util.Map;
 
 import com.matchbook.sdk.rest.dtos.RestRequest;
 
-public class HeartbeatSendRequest implements RestRequest {
+public class HeartbeatPostRequest implements RestRequest {
 
     private final Integer timeout;
 
-    private HeartbeatSendRequest(HeartbeatSendRequest.Builder builder) {
+    private HeartbeatPostRequest(HeartbeatPostRequest.Builder builder) {
         this.timeout = builder.timeout;
     }
 
     @Override
     public String resourcePath() {
         return "v1/heartbeat";
+    }
+
+    public Integer getTimeout() {
+        return timeout;
     }
 
     @Override
@@ -25,7 +29,7 @@ public class HeartbeatSendRequest implements RestRequest {
 
     @Override
     public String toString() {
-        return HeartbeatSendRequest.class.getSimpleName() + " {" +
+        return HeartbeatPostRequest.class.getSimpleName() + " {" +
             "timeout=" + timeout +
             "}";
     }
@@ -38,8 +42,8 @@ public class HeartbeatSendRequest implements RestRequest {
             this.timeout = timeout;
         }
 
-        public HeartbeatSendRequest build() {
-            return new HeartbeatSendRequest(this);
+        public HeartbeatPostRequest build() {
+            return new HeartbeatPostRequest(this);
         }
 
     }
