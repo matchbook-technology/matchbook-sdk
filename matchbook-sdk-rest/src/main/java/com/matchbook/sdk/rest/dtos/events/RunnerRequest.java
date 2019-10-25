@@ -7,22 +7,18 @@ import com.matchbook.sdk.rest.dtos.prices.BasePricesRequest;
 
 public class RunnerRequest extends BasePricesRequest {
 
-    private final Long runnerId;
     private final Long eventId;
     private final Long marketId;
+    private final Long runnerId;
     private final boolean includePrices;
 
     private RunnerRequest(Init<?> init) {
         super(init);
 
-        this.runnerId = init.runnerId;
         this.eventId = init.eventId;
         this.marketId = init.marketId;
+        this.runnerId = init.runnerId;
         this.includePrices = init.includePrices;
-    }
-
-    public Long getRunnerId() {
-        return runnerId;
     }
 
     public Long getEventId() {
@@ -31,6 +27,10 @@ public class RunnerRequest extends BasePricesRequest {
 
     public Long getMarketId() {
         return marketId;
+    }
+
+    public Long getRunnerId() {
+        return runnerId;
     }
 
     public boolean includePrices() {
@@ -57,9 +57,9 @@ public class RunnerRequest extends BasePricesRequest {
     @Override
     public String toString() {
         return RunnerRequest.class.getSimpleName() + " {" +
-                "runnerId=" + runnerId +
-                ", eventId=" + eventId +
+                "eventId=" + eventId +
                 ", marketId=" + marketId +
+                ", runnerId=" + runnerId +
                 ", includePrices=" + includePrices +
                 (includePrices ? (
                         ", oddsType=" + oddsType +

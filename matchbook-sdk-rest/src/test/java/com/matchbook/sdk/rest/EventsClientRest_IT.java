@@ -142,7 +142,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
                         .withBodyFile("matchbook/events/getMarketSuccessfulResponse.json")));
 
         MarketRequest marketRequest = new MarketRequest
-                .Builder(395729860260010L, 395729780570010L)
+                .Builder(395729780570010L, 395729860260010L)
                 .build();
         ResponseStreamObserver<Market> streamObserver = new SuccessfulResponseStreamObserver<>(1, this::verifyMarket);
         clientRest.getMarket(marketRequest, streamObserver);
@@ -164,7 +164,7 @@ public class EventsClientRest_IT extends MatchbookSDKClientRest_IT<EventsClientR
                         .withBodyFile("matchbook/events/getMarketOfUnknownTypeSuccessfulResponse.json")));
 
         MarketRequest marketRequest = new MarketRequest
-                .Builder(395729860260010L, 395729780570010L)
+                .Builder(395729780570010L, 395729860260010L)
                 .build();
         ResponseStreamObserver<Market> streamObserver = new SuccessfulResponseStreamObserver<>(1, market -> {
             verifyMarket(market);

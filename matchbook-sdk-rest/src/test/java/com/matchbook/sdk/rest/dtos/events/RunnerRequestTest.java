@@ -17,23 +17,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class EventRequestTest extends BasePricesRequestTest<EventRequest> {
+class RunnerRequestTest extends BasePricesRequestTest<RunnerRequest> {
 
     private Long eventId;
+    private Long marketId;
+    private Long runnerId;
 
     @Override
     @BeforeEach
     protected void setUp() {
         eventId = 395729780570010L;
+        marketId = 395729860260010L;
+        runnerId = 410499974510009L;
 
         super.setUp();
     }
 
     @Override
-    protected EventRequest newPricesRequest(OddsType oddsType, ExchangeType exchangeType, Side side,
+    protected RunnerRequest newPricesRequest(OddsType oddsType, ExchangeType exchangeType, Side side,
             Currency currency, BigDecimal minimumLiquidity, PriceMode priceMode) {
-        return new EventRequest.Builder(eventId)
-                .includeEventParticipants(true)
+        return new RunnerRequest.Builder(eventId, marketId, runnerId)
                 .includePrices(true)
                 .oddsType(oddsType)
                 .exchangeType(exchangeType)
@@ -45,15 +48,15 @@ class EventRequestTest extends BasePricesRequestTest<EventRequest> {
     }
 
     @Override
-    protected EventRequest newEmptyRequest() {
-        return new EventRequest.Builder(eventId).build();
+    protected RunnerRequest newEmptyRequest() {
+        return new RunnerRequest.Builder(eventId, marketId, runnerId).build();
     }
 
     @Test
     @DisplayName("Verify resource path")
     void resourcePathTest() {
         String path = unit.resourcePath();
-        assertThat(path).isEqualTo("events/" + eventId);
+        assertThat(path).isEqualTo("events/" + eventId + "/markets/" + marketId + "/runners/" + runnerId);
     }
 
     @Test
@@ -64,10 +67,17 @@ class EventRequestTest extends BasePricesRequestTest<EventRequest> {
     }
 
     @Test
-    @DisplayName("Check include event participants")
-    void includeEventParticipantsTest() {
-        assertThat(unit.includeEventParticipants()).isTrue();
-        assertThat(emptyUnit.includeEventParticipants()).isFalse();
+    @DisplayName("Check market ID")
+    void marketIdTest() {
+        Long actualMarketId = unit.getMarketId();
+        assertThat(actualMarketId).isEqualTo(emptyUnit.getMarketId()).isEqualTo(marketId);
+    }
+
+    @Test
+    @DisplayName("Check runner ID")
+    void runnerIdTest() {
+        Long actualRunnerId = unit.getRunnerId();
+        assertThat(actualRunnerId).isEqualTo(emptyUnit.getRunnerId()).isEqualTo(runnerId);
     }
 
     @Test
@@ -82,15 +92,10 @@ class EventRequestTest extends BasePricesRequestTest<EventRequest> {
     void parametersTest() {
         assertThat(unit.parameters()).extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
                 .contains(
-                        tuple("include-event-participants", "true"),
                         tuple("include-prices", "true")
                 );
 
-        assertThat(emptyUnit.parameters())
-                .doesNotContainKeys("include-prices")
-                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue).contains(
-                        tuple("include-event-participants", "false")
-                );
+        assertThat(emptyUnit.parameters()).doesNotContainKeys("include-prices");
     }
 
 }

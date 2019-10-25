@@ -3,37 +3,45 @@ package com.matchbook.sdk.rest.dtos.events;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-import com.matchbook.sdk.rest.dtos.prices.BasePricesRequestTest;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
+import com.matchbook.sdk.rest.dtos.prices.PageablePricesRequestTest;
 import com.matchbook.sdk.rest.dtos.prices.PriceMode;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class EventRequestTest extends BasePricesRequestTest<EventRequest> {
+class MarketsRequestTest extends PageablePricesRequestTest<MarketsRequest> {
 
     private Long eventId;
+    private Set<MarketType> types;
+    private Set<MarketStatus> statuses;
 
     @Override
     @BeforeEach
     protected void setUp() {
         eventId = 395729780570010L;
+        types = Collections.singleton(MarketType.CORRECT_SCORE);
+        statuses = Collections.singleton(MarketStatus.CLOSED);
 
         super.setUp();
     }
 
     @Override
-    protected EventRequest newPricesRequest(OddsType oddsType, ExchangeType exchangeType, Side side,
-            Currency currency, BigDecimal minimumLiquidity, PriceMode priceMode) {
-        return new EventRequest.Builder(eventId)
-                .includeEventParticipants(true)
+    protected MarketsRequest newPageablePricesRequest(OddsType oddsType, ExchangeType exchangeType, Side side,
+            Currency currency, BigDecimal minimumLiquidity, PriceMode priceMode, int offset, int perPage) {
+        return new MarketsRequest.Builder(eventId)
+                .types(types)
+                .statuses(statuses)
                 .includePrices(true)
                 .oddsType(oddsType)
                 .exchangeType(exchangeType)
@@ -41,19 +49,21 @@ class EventRequestTest extends BasePricesRequestTest<EventRequest> {
                 .currency(currency)
                 .minimumLiquidity(minimumLiquidity)
                 .priceMode(priceMode)
+                .offset(offset)
+                .perPage(perPage)
                 .build();
     }
 
     @Override
-    protected EventRequest newEmptyRequest() {
-        return new EventRequest.Builder(eventId).build();
+    protected MarketsRequest newEmptyRequest() {
+        return new MarketsRequest.Builder(eventId).build();
     }
 
     @Test
     @DisplayName("Verify resource path")
     void resourcePathTest() {
         String path = unit.resourcePath();
-        assertThat(path).isEqualTo("events/" + eventId);
+        assertThat(path).isEqualTo("events/" + eventId + "/markets");
     }
 
     @Test
@@ -64,10 +74,21 @@ class EventRequestTest extends BasePricesRequestTest<EventRequest> {
     }
 
     @Test
-    @DisplayName("Check include event participants")
-    void includeEventParticipantsTest() {
-        assertThat(unit.includeEventParticipants()).isTrue();
-        assertThat(emptyUnit.includeEventParticipants()).isFalse();
+    @DisplayName("Check types")
+    void typesTest() {
+        Set<MarketType> actualTypes = unit.getTypes();
+        assertThat(unit.getTypes()).containsExactlyInAnyOrderElementsOf(actualTypes);
+
+        assertThat(emptyUnit.getTypes()).isNullOrEmpty();
+    }
+
+    @Test
+    @DisplayName("Check statuses")
+    void statusesTest() {
+        Set<MarketStatus> actualStatuses = unit.getStatuses();
+        assertThat(unit.getStatuses()).containsExactlyInAnyOrderElementsOf(actualStatuses);
+
+        assertThat(emptyUnit.getStatuses()).isNullOrEmpty();
     }
 
     @Test
@@ -82,15 +103,12 @@ class EventRequestTest extends BasePricesRequestTest<EventRequest> {
     void parametersTest() {
         assertThat(unit.parameters()).extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
                 .contains(
-                        tuple("include-event-participants", "true"),
+                        tuple("types", types.stream().map(MarketType::name).collect(Collectors.joining(","))),
+                        tuple("states", statuses.stream().map(MarketStatus::name).collect(Collectors.joining(","))),
                         tuple("include-prices", "true")
                 );
 
-        assertThat(emptyUnit.parameters())
-                .doesNotContainKeys("include-prices")
-                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue).contains(
-                        tuple("include-event-participants", "false")
-                );
+        assertThat(emptyUnit.parameters()).doesNotContainKeys("types", "states", "include-prices");
     }
 
 }

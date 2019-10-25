@@ -97,10 +97,9 @@ public abstract class BasePricesRequestTest<T extends BasePricesRequest> extends
     }
 
     @Test
-    @DisplayName("Query parameters contain prices params")
+    @DisplayName("Check prices query parameters")
     void pricesParametersTest() {
-        Map<String, String> parameters = unit.parameters();
-        assertThat(parameters).extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
+        assertThat(unit.parameters()).extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
                 .contains(
                         tuple("odds-type", oddsType.name()),
                         tuple("exchange-type", exchangeType.name()),
@@ -110,9 +109,8 @@ public abstract class BasePricesRequestTest<T extends BasePricesRequest> extends
                         tuple("price-mode", priceMode.name())
                 );
 
-        Map<String, String> emptyParameters = emptyUnit.parameters();
-        assertThat(emptyParameters).doesNotContainKeys("odds-type", "exchange-type", "side",
-                "currency", "minimum-liquidity", "price-mode");
+        assertThat(emptyUnit.parameters())
+                .doesNotContainKeys("odds-type", "exchange-type", "side", "currency", "minimum-liquidity", "price-mode");
     }
 
 }

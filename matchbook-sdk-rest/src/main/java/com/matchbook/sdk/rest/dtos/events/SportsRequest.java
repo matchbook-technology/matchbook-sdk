@@ -6,7 +6,7 @@ import com.matchbook.sdk.rest.dtos.PageableRequest;
 
 public class SportsRequest extends PageableRequest {
 
-    protected SportsRequest(Init<?> init) {
+    private SportsRequest(Init<?> init) {
         super(init);
     }
 
@@ -29,12 +29,15 @@ public class SportsRequest extends PageableRequest {
     }
 
     private static abstract class Init<T extends Init<T>> extends PageableRequest.Init<T> {
+
         public SportsRequest build() {
             return new SportsRequest(this);
         }
+
     }
 
     public static class Builder extends Init<Builder> {
+
         @Override
         protected Builder self() {
             return this;
