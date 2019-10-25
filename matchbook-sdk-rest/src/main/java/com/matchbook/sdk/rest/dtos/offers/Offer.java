@@ -21,8 +21,8 @@ public class Offer implements FailableRestResponse {
     private Long runnerId;
     private String eventName;
     private String marketName;
-    private MarketType marketType;
     private String runnerName;
+    private MarketType marketType;
     private OfferStatus status;
     private ExchangeType exchangeType;
     private Side side;
@@ -291,8 +291,8 @@ public class Offer implements FailableRestResponse {
                 ", runnerId=" + runnerId +
                 ", eventName=" + eventName +
                 ", marketName=" + marketName +
-                ", marketType=" + marketType +
                 ", runnerName=" + runnerName +
+                ", marketType=" + marketType +
                 ", status=" + status +
                 ", exchangeType=" + exchangeType +
                 ", side=" + side +

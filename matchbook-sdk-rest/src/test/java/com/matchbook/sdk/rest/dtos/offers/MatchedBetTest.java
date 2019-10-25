@@ -43,7 +43,7 @@ class MatchedBetTest extends BaseMatchedBetTest<MatchedBet> {
 
     @Test
     @DisplayName("Set and get creation time")
-    void startTest() {
+    void createdAtTest() {
         Instant createdAt = Instant.now();
         unit.setCreatedAt(createdAt);
         assertThat(unit.getCreatedAt()).isCloseTo(createdAt, within(1L, ChronoUnit.SECONDS));

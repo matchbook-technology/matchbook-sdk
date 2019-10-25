@@ -33,7 +33,7 @@ class PositionTest extends RestResponseTest<Position> {
 
     @Test
     @DisplayName("Set and get runner ID")
-    void idTest() {
+    void runnerIdTest() {
         Long runnerId = 395750978870010L;
         unit.setRunnerId(runnerId);
         assertThat(unit.getRunnerId()).isEqualTo(runnerId);
