@@ -1,9 +1,8 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
-import com.matchbook.sdk.rest.dtos.RestResponse;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
-public class AggregatedMatchedBet extends BaseMatchedBet implements RestResponse {
+public class AggregatedMatchedBet extends BaseMatchedBet {
 
     private Long eventId;
     private Long marketId;

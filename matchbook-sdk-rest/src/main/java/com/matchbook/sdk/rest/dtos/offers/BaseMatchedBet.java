@@ -2,10 +2,11 @@ package com.matchbook.sdk.rest.dtos.offers;
 
 import java.math.BigDecimal;
 
+import com.matchbook.sdk.rest.dtos.RestResponse;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
-public abstract class BaseMatchedBet {
+public abstract class BaseMatchedBet implements RestResponse {
 
     protected MatchedBetStatus status;
     protected OddsType oddsType;
