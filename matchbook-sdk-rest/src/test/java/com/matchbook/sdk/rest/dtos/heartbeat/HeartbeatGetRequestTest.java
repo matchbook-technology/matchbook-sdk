@@ -13,11 +13,6 @@ class HeartbeatGetRequestTest extends RestRequestTest<HeartbeatGetRequest> {
         return new HeartbeatGetRequest.Builder().build();
     }
 
-    @Override
-    protected HeartbeatGetRequest newEmptyRequest() {
-        return newRequest();
-    }
-
     @Test
     @DisplayName("Verify resource path")
     void resourcePathTest() {

@@ -60,13 +60,6 @@ class RunnersRequestTest extends PageablePricesRequestTest<RunnersRequest> {
     }
 
     @Test
-    @DisplayName("Verify resource path")
-    void resourcePathTest() {
-        String path = unit.resourcePath();
-        assertThat(path).isEqualTo("events/" + eventId + "/markets/" + marketId + "/runners");
-    }
-
-    @Test
     @DisplayName("Check event ID")
     void eventIdTest() {
         Long actualEventId = unit.getEventId();
@@ -101,6 +94,13 @@ class RunnersRequestTest extends PageablePricesRequestTest<RunnersRequest> {
     void includePricesTest() {
         assertThat(unit.includePrices()).isTrue();
         assertThat(emptyUnit.includePrices()).isFalse();
+    }
+
+    @Test
+    @DisplayName("Verify resource path")
+    void resourcePathTest() {
+        String path = unit.resourcePath();
+        assertThat(path).isEqualTo("events/" + eventId + "/markets/" + marketId + "/runners");
     }
 
     @Test

@@ -13,7 +13,9 @@ public abstract class RestRequestTest<T extends RestRequest> {
 
     protected abstract T newRequest();
 
-    protected abstract T newEmptyRequest();
+    protected T newEmptyRequest() {
+        return null;
+    }
 
     @BeforeEach
     protected void setUp() {

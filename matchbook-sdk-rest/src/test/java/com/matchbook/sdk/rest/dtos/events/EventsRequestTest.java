@@ -74,13 +74,6 @@ class EventsRequestTest extends PageablePricesRequestTest<EventsRequest> {
     }
 
     @Test
-    @DisplayName("Verify resource path")
-    void resourcePathTest() {
-        String path = unit.resourcePath();
-        assertThat(path).isEqualTo("events");
-    }
-
-    @Test
     @DisplayName("Check instant after limit")
     void afterTest() {
         Instant actualAfter = unit.getAfter();
@@ -146,6 +139,13 @@ class EventsRequestTest extends PageablePricesRequestTest<EventsRequest> {
     void includePricesTest() {
         assertThat(unit.includePrices()).isTrue();
         assertThat(emptyUnit.includePrices()).isFalse();
+    }
+
+    @Test
+    @DisplayName("Verify resource path")
+    void resourcePathTest() {
+        String path = unit.resourcePath();
+        assertThat(path).isEqualTo("events");
     }
 
     @Test

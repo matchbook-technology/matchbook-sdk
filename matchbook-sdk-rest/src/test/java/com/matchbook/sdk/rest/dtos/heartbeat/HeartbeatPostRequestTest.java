@@ -24,9 +24,11 @@ class HeartbeatPostRequestTest extends RestRequestTest<HeartbeatPostRequest> {
         return new HeartbeatPostRequest.Builder(timeout).build();
     }
 
-    @Override
-    protected HeartbeatPostRequest newEmptyRequest() {
-        return newRequest();
+    @Test
+    @DisplayName("Check timeout")
+    void timeoutTest() {
+        Integer actualTimeout = unit.getTimeout();
+        assertThat(actualTimeout).isEqualTo(timeout);
     }
 
     @Test
@@ -34,13 +36,6 @@ class HeartbeatPostRequestTest extends RestRequestTest<HeartbeatPostRequest> {
     void resourcePathTest() {
         String path = unit.resourcePath();
         assertThat(path).isEqualTo("v1/heartbeat");
-    }
-
-    @Test
-    @DisplayName("Check timeout")
-    void eventIdTest() {
-        Integer actualTimeout = unit.getTimeout();
-        assertThat(actualTimeout).isEqualTo(emptyUnit.getTimeout()).isEqualTo(timeout);
     }
 
     @Test

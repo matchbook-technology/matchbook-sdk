@@ -1,4 +1,4 @@
-package com.matchbook.sdk.rest.dtos.heartbeat;
+package com.matchbook.sdk.rest.dtos.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,18 +6,17 @@ import com.matchbook.sdk.rest.dtos.RestRequestTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class HeartbeatDeleteRequestTest extends RestRequestTest<HeartbeatDeleteRequest> {
+class LogoutRequestTest extends RestRequestTest<LogoutRequest> {
 
     @Override
-    protected HeartbeatDeleteRequest newRequest() {
-        return new HeartbeatDeleteRequest.Builder().build();
+    protected LogoutRequest newRequest() {
+        return new LogoutRequest.Builder().build();
     }
 
     @Test
     @DisplayName("Verify resource path")
     void resourcePathTest() {
-        String path = unit.resourcePath();
-        assertThat(path).isEqualTo("v1/heartbeat");
+        assertThat(unit.resourcePath()).isEmpty();
     }
 
     @Test
