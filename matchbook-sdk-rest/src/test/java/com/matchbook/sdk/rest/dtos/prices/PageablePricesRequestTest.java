@@ -82,7 +82,7 @@ public abstract class PageablePricesRequestTest<T extends PageablePricesRequest>
     @DisplayName("Check minimum liquidity")
     void minimumLiquidityTest() {
         BigDecimal actualMinimumLiquidity = unit.getMinimumLiquidity();
-        assertThat(actualMinimumLiquidity).isEqualByComparingTo(unit.getMinimumLiquidity());
+        assertThat(actualMinimumLiquidity).isEqualByComparingTo(minimumLiquidity);
 
         assertThat(emptyUnit.getMinimumLiquidity()).isNull();
     }

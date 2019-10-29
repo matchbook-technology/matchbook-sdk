@@ -77,7 +77,7 @@ class RunnersRequestTest extends PageablePricesRequestTest<RunnersRequest> {
     @DisplayName("Check statuses")
     void statusesTest() {
         Set<RunnerStatus> actualStatuses = unit.getStatuses();
-        assertThat(unit.getStatuses()).containsExactlyInAnyOrderElementsOf(actualStatuses);
+        assertThat(actualStatuses).containsExactlyInAnyOrderElementsOf(statuses);
 
         assertThat(emptyUnit.getStatuses()).isNullOrEmpty();
     }
@@ -114,9 +114,8 @@ class RunnersRequestTest extends PageablePricesRequestTest<RunnersRequest> {
                 );
 
         assertThat(emptyUnit.parameters()).doesNotContainKeys("types", "states", "include-prices")
-                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue).contains(
-                        tuple("include-withdrawn", "true")
-                );
+                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
+                .contains(tuple("include-withdrawn", "true"));
     }
 
 }

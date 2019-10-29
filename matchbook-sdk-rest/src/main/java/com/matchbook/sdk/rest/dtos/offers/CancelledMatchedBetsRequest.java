@@ -1,9 +1,9 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
-import java.util.Collections;
-import java.util.Map;
-
 import com.matchbook.sdk.rest.dtos.PageableRequest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CancelledMatchedBetsRequest extends PageableRequest {
 
@@ -28,7 +28,10 @@ public class CancelledMatchedBetsRequest extends PageableRequest {
 
     @Override
     public Map<String, String> parameters() {
-        return Collections.singletonMap("status", status.name());
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("status", status.name());
+        parameters.putAll(pageParameters());
+        return parameters;
     }
 
     @Override

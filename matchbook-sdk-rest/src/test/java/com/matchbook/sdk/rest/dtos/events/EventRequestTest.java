@@ -88,9 +88,8 @@ class EventRequestTest extends BasePricesRequestTest<EventRequest> {
 
         assertThat(emptyUnit.parameters())
                 .doesNotContainKeys("include-prices")
-                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue).contains(
-                        tuple("include-event-participants", "false")
-                );
+                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
+                .contains(tuple("include-event-participants", "false"));
     }
 
 }

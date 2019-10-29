@@ -90,10 +90,9 @@ class RunnerRequestTest extends BasePricesRequestTest<RunnerRequest> {
     @Test
     @DisplayName("Check query parameters")
     void parametersTest() {
-        assertThat(unit.parameters()).extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
-                .contains(
-                        tuple("include-prices", "true")
-                );
+        assertThat(unit.parameters())
+                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
+                .contains(tuple("include-prices", "true"));
 
         assertThat(emptyUnit.parameters()).doesNotContainKeys("include-prices");
     }

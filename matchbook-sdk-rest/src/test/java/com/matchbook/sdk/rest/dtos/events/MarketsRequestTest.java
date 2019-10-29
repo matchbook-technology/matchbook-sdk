@@ -70,7 +70,7 @@ class MarketsRequestTest extends PageablePricesRequestTest<MarketsRequest> {
     @DisplayName("Check types")
     void typesTest() {
         Set<MarketType> actualTypes = unit.getTypes();
-        assertThat(unit.getTypes()).containsExactlyInAnyOrderElementsOf(actualTypes);
+        assertThat(actualTypes).containsExactlyInAnyOrderElementsOf(types);
 
         assertThat(emptyUnit.getTypes()).isNullOrEmpty();
     }
@@ -79,7 +79,7 @@ class MarketsRequestTest extends PageablePricesRequestTest<MarketsRequest> {
     @DisplayName("Check statuses")
     void statusesTest() {
         Set<MarketStatus> actualStatuses = unit.getStatuses();
-        assertThat(unit.getStatuses()).containsExactlyInAnyOrderElementsOf(actualStatuses);
+        assertThat(actualStatuses).containsExactlyInAnyOrderElementsOf(statuses);
 
         assertThat(emptyUnit.getStatuses()).isNullOrEmpty();
     }

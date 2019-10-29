@@ -77,7 +77,7 @@ class EventsRequestTest extends PageablePricesRequestTest<EventsRequest> {
     @DisplayName("Check instant after limit")
     void afterTest() {
         Instant actualAfter = unit.getAfter();
-        assertThat(unit.getAfter()).isCloseTo(actualAfter, within(1L, ChronoUnit.SECONDS));
+        assertThat(actualAfter).isCloseTo(after, within(1L, ChronoUnit.SECONDS));
 
         assertThat(emptyUnit.getAfter()).isNull();
     }
@@ -86,7 +86,7 @@ class EventsRequestTest extends PageablePricesRequestTest<EventsRequest> {
     @DisplayName("Check instant before limit")
     void beforeTest() {
         Instant actualBefore = unit.getBefore();
-        assertThat(unit.getBefore()).isCloseTo(actualBefore, within(1L, ChronoUnit.SECONDS));
+        assertThat(actualBefore).isCloseTo(before, within(1L, ChronoUnit.SECONDS));
 
         assertThat(emptyUnit.getBefore()).isNull();
     }
@@ -95,7 +95,7 @@ class EventsRequestTest extends PageablePricesRequestTest<EventsRequest> {
     @DisplayName("Check sports IDs")
     void sportIdsTest() {
         Set<Long> actualSportIds = unit.getSportIds();
-        assertThat(unit.getSportIds()).containsExactlyInAnyOrderElementsOf(actualSportIds);
+        assertThat(actualSportIds).containsExactlyInAnyOrderElementsOf(sportIds);
 
         assertThat(emptyUnit.getSportIds()).isNullOrEmpty();
     }
@@ -104,7 +104,7 @@ class EventsRequestTest extends PageablePricesRequestTest<EventsRequest> {
     @DisplayName("Check category IDs")
     void categoryIdsTest() {
         Set<Long> actualCategoryIds = unit.getCategoryIds();
-        assertThat(unit.getCategoryIds()).containsExactlyInAnyOrderElementsOf(actualCategoryIds);
+        assertThat(actualCategoryIds).containsExactlyInAnyOrderElementsOf(categoryIds);
 
         assertThat(emptyUnit.getCategoryIds()).isNullOrEmpty();
     }
@@ -113,7 +113,7 @@ class EventsRequestTest extends PageablePricesRequestTest<EventsRequest> {
     @DisplayName("Check event IDs")
     void eventIdsTest() {
         Set<Long> actualEventIds = unit.getEventIds();
-        assertThat(unit.getEventIds()).containsExactlyInAnyOrderElementsOf(actualEventIds);
+        assertThat(actualEventIds).containsExactlyInAnyOrderElementsOf(eventIds);
 
         assertThat(emptyUnit.getEventIds()).isNullOrEmpty();
     }
@@ -122,7 +122,7 @@ class EventsRequestTest extends PageablePricesRequestTest<EventsRequest> {
     @DisplayName("Check statuses")
     void statusesTest() {
         Set<EventStatus> actualStatuses = unit.getStatuses();
-        assertThat(unit.getStatuses()).containsExactlyInAnyOrderElementsOf(actualStatuses);
+        assertThat(actualStatuses).containsExactlyInAnyOrderElementsOf(statuses);
 
         assertThat(emptyUnit.getStatuses()).isNullOrEmpty();
     }
@@ -165,9 +165,8 @@ class EventsRequestTest extends PageablePricesRequestTest<EventsRequest> {
 
         assertThat(emptyUnit.parameters())
                 .doesNotContainKeys("after", "before", "sport-ids", "category-ids", "ids", "states", "include-prices")
-                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue).contains(
-                        tuple("include-event-participants", "false")
-                );
+                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
+                .contains(tuple("include-event-participants", "false"));
     }
 
 }
