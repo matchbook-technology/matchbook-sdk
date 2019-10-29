@@ -1,11 +1,11 @@
 package com.matchbook.sdk.rest.dtos.prices;
 
+import com.matchbook.sdk.rest.dtos.PageableRequest;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import com.matchbook.sdk.rest.dtos.PageableRequest;
 
 public abstract class PageablePricesRequest extends PageableRequest {
 
@@ -114,13 +114,6 @@ public abstract class PageablePricesRequest extends PageableRequest {
             return self();
         }
 
-    }
-
-    public static class Builder extends Init<Builder> {
-        @Override
-        protected Builder self() {
-            return this;
-        }
     }
 
 }

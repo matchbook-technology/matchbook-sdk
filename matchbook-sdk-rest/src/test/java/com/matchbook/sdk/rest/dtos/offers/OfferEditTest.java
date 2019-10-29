@@ -8,13 +8,14 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+import com.matchbook.sdk.rest.dtos.FailableRestResponseTest;
 import com.matchbook.sdk.rest.dtos.RestResponseTest;
 import com.matchbook.sdk.rest.dtos.errors.Errors;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class OfferEditTest extends RestResponseTest<OfferEdit> {
+class OfferEditTest extends FailableRestResponseTest<OfferEdit> {
 
     @Override
     protected OfferEdit newResponse() {

@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 
+import com.matchbook.sdk.rest.dtos.FailableRestResponseTest;
 import com.matchbook.sdk.rest.dtos.RestResponseTest;
 import com.matchbook.sdk.rest.dtos.errors.Errors;
 import com.matchbook.sdk.rest.dtos.events.MarketType;
@@ -19,7 +20,7 @@ import com.matchbook.sdk.rest.dtos.prices.Side;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class OfferTest extends RestResponseTest<Offer> {
+class OfferTest extends FailableRestResponseTest<Offer> {
 
     @Override
     protected Offer newResponse() {

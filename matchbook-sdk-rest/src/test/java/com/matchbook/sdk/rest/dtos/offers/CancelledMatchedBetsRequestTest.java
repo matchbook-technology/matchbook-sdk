@@ -21,6 +21,13 @@ public class CancelledMatchedBetsRequestTest extends PageableRequestTest<Cancell
     }
 
     @Test
+    @DisplayName("Check status")
+    void statusTest() {
+        MatchedBetStatus actualStatus = unit.getStatus();
+        assertThat(actualStatus).isEqualTo(MatchedBetStatus.CANCELLED);
+    }
+
+    @Test
     @DisplayName("Verify resource path")
     void resourcePathTest() {
         String path = unit.resourcePath();

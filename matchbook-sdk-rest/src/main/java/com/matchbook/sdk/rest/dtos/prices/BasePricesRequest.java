@@ -1,11 +1,11 @@
 package com.matchbook.sdk.rest.dtos.prices;
 
+import com.matchbook.sdk.rest.dtos.RestRequest;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import com.matchbook.sdk.rest.dtos.RestRequest;
 
 public abstract class BasePricesRequest implements RestRequest {
 
@@ -113,13 +113,6 @@ public abstract class BasePricesRequest implements RestRequest {
             return self();
         }
 
-    }
-
-    public static class Builder extends Init<Builder> {
-        @Override
-        protected Builder self() {
-            return this;
-        }
     }
 
 }
