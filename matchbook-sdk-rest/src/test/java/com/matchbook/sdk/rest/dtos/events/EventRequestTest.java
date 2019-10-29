@@ -80,7 +80,8 @@ class EventRequestTest extends BasePricesRequestTest<EventRequest> {
     @Test
     @DisplayName("Check query parameters")
     void parametersTest() {
-        assertThat(unit.parameters()).extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
+        assertThat(unit.parameters())
+                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
                 .contains(
                         tuple("include-event-participants", "true"),
                         tuple("include-prices", "true")

@@ -99,7 +99,8 @@ public abstract class BasePricesRequestTest<T extends BasePricesRequest> extends
     @Test
     @DisplayName("Check prices query parameters")
     void pricesParametersTest() {
-        assertThat(unit.parameters()).extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
+        assertThat(unit.parameters())
+                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
                 .contains(
                         tuple("odds-type", oddsType.name()),
                         tuple("exchange-type", exchangeType.name()),

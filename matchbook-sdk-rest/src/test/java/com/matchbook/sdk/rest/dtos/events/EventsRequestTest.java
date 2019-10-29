@@ -151,7 +151,8 @@ class EventsRequestTest extends PageablePricesRequestTest<EventsRequest> {
     @Test
     @DisplayName("Check query parameters")
     void parametersTest() {
-        assertThat(unit.parameters()).extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
+        assertThat(unit.parameters())
+                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
                 .contains(
                         tuple("after", after.toString()),
                         tuple("before", before.toString()),

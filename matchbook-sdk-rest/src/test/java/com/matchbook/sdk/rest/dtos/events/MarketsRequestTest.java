@@ -101,7 +101,8 @@ class MarketsRequestTest extends PageablePricesRequestTest<MarketsRequest> {
     @Test
     @DisplayName("Check query parameters")
     void parametersTest() {
-        assertThat(unit.parameters()).extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
+        assertThat(unit.parameters())
+                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
                 .contains(
                         tuple("types", types.stream().map(MarketType::name).collect(Collectors.joining(","))),
                         tuple("states", statuses.stream().map(MarketStatus::name).collect(Collectors.joining(","))),

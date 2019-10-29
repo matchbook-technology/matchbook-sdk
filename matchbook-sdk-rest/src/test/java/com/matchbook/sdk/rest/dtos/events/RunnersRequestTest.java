@@ -106,7 +106,8 @@ class RunnersRequestTest extends PageablePricesRequestTest<RunnersRequest> {
     @Test
     @DisplayName("Check query parameters")
     void parametersTest() {
-        assertThat(unit.parameters()).extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
+        assertThat(unit.parameters())
+                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
                 .contains(
                         tuple("states", statuses.stream().map(RunnerStatus::name).collect(Collectors.joining(","))),
                         tuple("include-withdrawn", "false"),
