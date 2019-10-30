@@ -30,15 +30,13 @@ class OfferEditGetRequestTest extends RestRequestTest<OfferEditGetRequest> {
     @Test
     @DisplayName("Check offer edit ID")
     void offerEditIdTest() {
-        Long actualOfferEditId = unit.getOfferEditId();
-        assertThat(actualOfferEditId).isEqualTo(offerEditId);
+        assertThat(unit.getOfferEditId()).isEqualTo(offerEditId);
     }
 
     @Test
     @DisplayName("Check offer ID")
     void offerIdTest() {
-        Long actualOfferId = unit.getOfferId();
-        assertThat(actualOfferId).isEqualTo(offerId);
+        assertThat(unit.getOfferId()).isEqualTo(offerId);
     }
 
     @Test

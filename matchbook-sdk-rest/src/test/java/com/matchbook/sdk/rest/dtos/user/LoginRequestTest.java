@@ -29,15 +29,13 @@ class LoginRequestTest extends RestRequestTest<LoginRequest> {
     @Test
     @DisplayName("Check username")
     void usernameTest() {
-        char[] actualUsername = unit.getUsername();
-        assertThat(actualUsername).isEqualTo(username);
+        assertThat(unit.getUsername()).isEqualTo(username);
     }
 
     @Test
     @DisplayName("Check password")
     void passwordTest() {
-        char[] actualPassword = unit.getPassword();
-        assertThat(actualPassword).isEqualTo(password);
+        assertThat(unit.getPassword()).isEqualTo(password);
     }
 
     @Test

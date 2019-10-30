@@ -45,54 +45,42 @@ public abstract class BasePricesRequestTest<T extends BasePricesRequest> extends
     @Test
     @DisplayName("Check odds type")
     void oddsTypeTest() {
-        OddsType actualOddsType = unit.getOddsType();
-        assertThat(actualOddsType).isEqualTo(oddsType);
-
+        assertThat(unit.getOddsType()).isEqualTo(oddsType);
         assertThat(emptyUnit.getOddsType()).isNull();
     }
 
     @Test
     @DisplayName("Check exchange type")
     void exchangeTypeTest() {
-        ExchangeType actualExchangeType = unit.getExchangeType();
-        assertThat(actualExchangeType).isEqualTo(exchangeType);
-
+        assertThat(unit.getExchangeType()).isEqualTo(exchangeType);
         assertThat(emptyUnit.getExchangeType()).isNull();
     }
 
     @Test
     @DisplayName("Check side")
     void sideTest() {
-        Side actualSide = unit.getSide();
-        assertThat(actualSide).isEqualTo(side);
-
+        assertThat(unit.getSide()).isEqualTo(side);
         assertThat(emptyUnit.getSide()).isNull();
     }
 
     @Test
     @DisplayName("Check currency")
     void currencyTest() {
-        Currency actualCurrency = unit.getCurrency();
-        assertThat(actualCurrency).isEqualTo(currency);
-
+        assertThat(unit.getCurrency()).isEqualTo(currency);
         assertThat(emptyUnit.getCurrency()).isNull();
     }
 
     @Test
     @DisplayName("Check minimum liquidity")
     void minimumLiquidityTest() {
-        BigDecimal actualMinimumLiquidity = unit.getMinimumLiquidity();
-        assertThat(actualMinimumLiquidity).isEqualByComparingTo(minimumLiquidity);
-
+        assertThat(unit.getMinimumLiquidity()).isEqualByComparingTo(minimumLiquidity);
         assertThat(emptyUnit.getMinimumLiquidity()).isNull();
     }
 
     @Test
     @DisplayName("Check price mode")
     void priceModeTest() {
-        PriceMode actualPriceMode = unit.getPriceMode();
-        assertThat(actualPriceMode).isEqualTo(priceMode);
-
+        assertThat(unit.getPriceMode()).isEqualTo(priceMode);
         assertThat(emptyUnit.getPriceMode()).isNull();
     }
 

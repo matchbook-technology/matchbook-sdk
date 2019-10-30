@@ -17,9 +17,9 @@ class LoginTest extends RestResponseTest<Login> {
     @Test
     @DisplayName("Set and get user ID")
     void userIdTest() {
-        Long actualUserId = 4242L;
-        unit.setUserId(actualUserId);
-        assertThat(unit.getUserId()).isEqualTo(actualUserId);
+        Long userId = 4242L;
+        unit.setUserId(userId);
+        assertThat(unit.getUserId()).isEqualTo(userId);
     }
 
     @Test

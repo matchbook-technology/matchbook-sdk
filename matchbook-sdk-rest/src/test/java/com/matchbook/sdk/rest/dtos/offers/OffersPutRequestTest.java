@@ -34,8 +34,7 @@ class OffersPutRequestTest extends RestRequestTest<OffersPutRequest> {
     @Test
     @DisplayName("Check offers")
     void offersTest() {
-        List<OfferPutRequest> actualOffers = unit.getOffers();
-        assertThat(actualOffers).containsExactlyInAnyOrderElementsOf(offers);
+        assertThat(unit.getOffers()).containsExactlyInAnyOrderElementsOf(offers);
     }
 
     @Test

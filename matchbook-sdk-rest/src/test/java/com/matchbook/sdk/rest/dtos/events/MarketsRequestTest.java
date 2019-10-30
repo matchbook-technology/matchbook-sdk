@@ -62,25 +62,21 @@ class MarketsRequestTest extends PageablePricesRequestTest<MarketsRequest> {
     @Test
     @DisplayName("Check event ID")
     void eventIdTest() {
-        Long actualEventId = unit.getEventId();
-        assertThat(actualEventId).isEqualTo(emptyUnit.getEventId()).isEqualTo(eventId);
+        assertThat(unit.getEventId()).isEqualTo(eventId)
+                .isEqualTo(emptyUnit.getEventId());
     }
 
     @Test
     @DisplayName("Check types")
     void typesTest() {
-        Set<MarketType> actualTypes = unit.getTypes();
-        assertThat(actualTypes).containsExactlyInAnyOrderElementsOf(types);
-
+        assertThat(unit.getTypes()).containsExactlyInAnyOrderElementsOf(types);
         assertThat(emptyUnit.getTypes()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check statuses")
     void statusesTest() {
-        Set<MarketStatus> actualStatuses = unit.getStatuses();
-        assertThat(actualStatuses).containsExactlyInAnyOrderElementsOf(statuses);
-
+        assertThat(unit.getStatuses()).containsExactlyInAnyOrderElementsOf(statuses);
         assertThat(emptyUnit.getStatuses()).isNullOrEmpty();
     }
 

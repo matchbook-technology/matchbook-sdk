@@ -63,63 +63,49 @@ class OffersGetRequestTest extends PageableRequestTest<OffersGetRequest> {
     @Test
     @DisplayName("Check sports IDs")
     void sportIdsTest() {
-        Set<Long> actualSportIds = unit.getSportIds();
-        assertThat(actualSportIds).containsExactlyInAnyOrderElementsOf(sportIds);
-
+        assertThat(unit.getSportIds()).containsExactlyInAnyOrderElementsOf(sportIds);
         assertThat(emptyUnit.getSportIds()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check event IDs")
     void eventIdsTest() {
-        Set<Long> actualEventIds = unit.getEventIds();
-        assertThat(actualEventIds).containsExactlyInAnyOrderElementsOf(eventIds);
-
+        assertThat(unit.getEventIds()).containsExactlyInAnyOrderElementsOf(eventIds);
         assertThat(emptyUnit.getEventIds()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check market IDs")
     void marketIdsTest() {
-        Set<Long> actualMarketIds = unit.getMarketIds();
-        assertThat(actualMarketIds).containsExactlyInAnyOrderElementsOf(marketIds);
-
+        assertThat(unit.getMarketIds()).containsExactlyInAnyOrderElementsOf(marketIds);
         assertThat(emptyUnit.getMarketIds()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check runner IDs")
     void runnerIdsTest() {
-        Set<Long> actualRunnerIds = unit.getRunnersIds();
-        assertThat(actualRunnerIds).containsExactlyInAnyOrderElementsOf(runnersIds);
-
+        assertThat(unit.getRunnersIds()).containsExactlyInAnyOrderElementsOf(runnersIds);
         assertThat(emptyUnit.getRunnersIds()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check statuses")
     void statusesTest() {
-        Set<OfferStatus> actualStatuses = unit.getStatuses();
-        assertThat(actualStatuses).containsExactlyInAnyOrderElementsOf(statuses);
-
+        assertThat(unit.getStatuses()).containsExactlyInAnyOrderElementsOf(statuses);
         assertThat(emptyUnit.getStatuses()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check side")
     void sideTest() {
-        Side actualSide = unit.getSide();
-        assertThat(actualSide).isEqualTo(side);
-
+        assertThat(unit.getSide()).isEqualTo(side);
         assertThat(emptyUnit.getSide()).isNull();
     }
 
     @Test
     @DisplayName("Check interval")
     void intervalTest() {
-        Integer actualInterval = unit.getInterval();
-        assertThat(actualInterval).isEqualTo(interval);
-
+        assertThat(unit.getInterval()).isEqualTo(interval);
         assertThat(emptyUnit.getInterval()).isNull();
     }
 

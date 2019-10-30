@@ -23,8 +23,7 @@ public class CancelledMatchedBetsRequestTest extends PageableRequestTest<Cancell
     @Test
     @DisplayName("Check status")
     void statusTest() {
-        MatchedBetStatus actualStatus = unit.getStatus();
-        assertThat(actualStatus).isEqualTo(MatchedBetStatus.CANCELLED);
+        assertThat(unit.getStatus()).isEqualTo(MatchedBetStatus.CANCELLED);
     }
 
     @Test

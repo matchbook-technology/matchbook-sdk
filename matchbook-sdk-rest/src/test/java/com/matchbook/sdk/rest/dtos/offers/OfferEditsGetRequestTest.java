@@ -31,8 +31,7 @@ public class OfferEditsGetRequestTest extends PageableRequestTest<OfferEditsGetR
     @Test
     @DisplayName("Check offer ID")
     void offerIdTest() {
-        Long actualOfferId = unit.getOfferId();
-        assertThat(actualOfferId).isEqualTo(offerId);
+        assertThat(unit.getOfferId()).isEqualTo(offerId);
     }
 
     @Test

@@ -46,39 +46,35 @@ class OfferPutRequestTest extends RestRequestTest<OfferPutRequest> {
     @Test
     @DisplayName("Check offer ID")
     void idTest() {
-        Long actualId = unit.getId();
-        assertThat(actualId).isEqualTo(emptyUnit.getId()).isEqualTo(id);
+        assertThat(unit.getId()).isEqualTo(id)
+                .isEqualTo(emptyUnit.getId());
     }
 
     @Test
     @DisplayName("Check new odds")
     void newOddsTest() {
-        Double actualNewOdds = unit.getNewOdds();
-        assertThat(actualNewOdds).isEqualTo(emptyUnit.getNewOdds()).isEqualTo(newOdds);
+        assertThat(unit.getNewOdds()).isEqualTo(newOdds)
+                .isEqualTo(emptyUnit.getNewOdds());
     }
 
     @Test
     @DisplayName("Check current odds")
     void currentOddsTest() {
-        Double actualCurrentOdds = unit.getCurrentOdds();
-        assertThat(actualCurrentOdds).isEqualTo(currentOdds);
-
+        assertThat(unit.getCurrentOdds()).isEqualTo(currentOdds);
         assertThat(emptyUnit.getCurrentOdds()).isNull();
     }
 
     @Test
     @DisplayName("Check new stake")
     void newStakeTest() {
-        BigDecimal actualNewStake = unit.getNewStake();
-        assertThat(actualNewStake).isEqualByComparingTo(emptyUnit.getNewStake()).isEqualByComparingTo(newStake);
+        assertThat(unit.getNewStake()).isEqualByComparingTo(newStake)
+                .isEqualByComparingTo(emptyUnit.getNewStake());
     }
 
     @Test
     @DisplayName("Check current stake")
     void currentStakeTest() {
-        BigDecimal actualCurrentStake = unit.getCurrentStake();
-        assertThat(actualCurrentStake).isEqualByComparingTo(currentStake);
-
+        assertThat(unit.getCurrentStake()).isEqualByComparingTo(currentStake);
         assertThat(emptyUnit.getCurrentStake()).isNull();
     }
 

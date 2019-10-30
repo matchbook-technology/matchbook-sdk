@@ -50,36 +50,28 @@ class OffersDeleteRequestTest extends RestRequestTest<OffersDeleteRequest> {
     @Test
     @DisplayName("Check event IDs")
     void eventIdsTest() {
-        Set<Long> actualEventIds = unit.getEventIds();
-        assertThat(actualEventIds).containsExactlyInAnyOrderElementsOf(eventIds);
-
+        assertThat(unit.getEventIds()).containsExactlyInAnyOrderElementsOf(eventIds);
         assertThat(emptyUnit.getEventIds()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check market IDs")
     void marketIdsTest() {
-        Set<Long> actualMarketIds = unit.getMarketIds();
-        assertThat(actualMarketIds).containsExactlyInAnyOrderElementsOf(marketIds);
-
+        assertThat(unit.getMarketIds()).containsExactlyInAnyOrderElementsOf(marketIds);
         assertThat(emptyUnit.getMarketIds()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check runner IDs")
     void runnerIdsTest() {
-        Set<Long> actualRunnerIds = unit.getRunnersIds();
-        assertThat(actualRunnerIds).containsExactlyInAnyOrderElementsOf(runnersIds);
-
+        assertThat(unit.getRunnersIds()).containsExactlyInAnyOrderElementsOf(runnersIds);
         assertThat(emptyUnit.getRunnersIds()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check offer IDs")
     void offerIdsTest() {
-        Set<Long> actualOfferIds = unit.getOfferIds();
-        assertThat(actualOfferIds).containsExactlyInAnyOrderElementsOf(offersIds);
-
+        assertThat(unit.getOfferIds()).containsExactlyInAnyOrderElementsOf(offersIds);
         assertThat(emptyUnit.getOfferIds()).isNullOrEmpty();
     }
 

@@ -44,29 +44,29 @@ class OfferPostRequestTest extends RestRequestTest<OfferPostRequest> {
     @Test
     @DisplayName("Check runner ID")
     void runnerIdTest() {
-        Long actualRunnerId = unit.getRunnerId();
-        assertThat(actualRunnerId).isEqualTo(emptyUnit.getRunnerId()).isEqualTo(runnerId);
+        assertThat(unit.getRunnerId()).isEqualTo(runnerId)
+                .isEqualTo(emptyUnit.getRunnerId());
     }
 
     @Test
     @DisplayName("Check side")
     void sideTest() {
-        Side actualSide = unit.getSide();
-        assertThat(actualSide).isEqualTo(emptyUnit.getSide()).isEqualTo(side);
+        assertThat(unit.getSide()).isEqualTo(side)
+                .isEqualTo(emptyUnit.getSide());
     }
 
     @Test
     @DisplayName("Check odds")
     void oddsTest() {
-        Double actualOdds = unit.getOdds();
-        assertThat(actualOdds).isEqualTo(emptyUnit.getOdds()).isEqualTo(odds);
+        assertThat(unit.getOdds()).isEqualTo(odds)
+                .isEqualTo(emptyUnit.getOdds());
     }
 
     @Test
     @DisplayName("Check stake")
     void stakeTest() {
-        BigDecimal actualStake = unit.getStake();
-        assertThat(actualStake).isEqualByComparingTo(emptyUnit.getStake()).isEqualByComparingTo(stake);
+        assertThat(unit.getStake()).isEqualByComparingTo(stake)
+                .isEqualByComparingTo(emptyUnit.getStake());
     }
 
     @Test

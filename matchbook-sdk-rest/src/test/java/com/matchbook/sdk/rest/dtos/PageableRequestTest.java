@@ -33,22 +33,21 @@ public abstract class PageableRequestTest<T extends PageableRequest> extends Res
     @Test
     @DisplayName("Check page offset")
     void offsetTest() {
-        int actualOffset = unit.getOffset();
-        assertThat(actualOffset).isEqualTo(offset);
+        assertThat(unit.getOffset()).isEqualTo(offset);
     }
 
     @Test
     @DisplayName("Check items per page")
     void perPageTest() {
-        int actualPerPage = unit.getPerPage();
-        assertThat(actualPerPage).isEqualTo(perPage);
+        assertThat(unit.getPerPage()).isEqualTo(perPage);
     }
 
     @Test
     @DisplayName("Query parameters contain pagination params")
     void pageParametersTest() {
         Map<String, String> parameters = unit.parameters();
-        assertThat(parameters).extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
+        assertThat(parameters)
+                .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
                 .contains(
                         tuple("offset", String.valueOf(offset)),
                         tuple("per-page", String.valueOf(perPage))

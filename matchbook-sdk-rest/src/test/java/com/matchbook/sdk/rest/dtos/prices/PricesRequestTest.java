@@ -45,22 +45,19 @@ class PricesRequestTest extends BasePricesRequestTest<PricesRequest> {
     @Test
     @DisplayName("Check event ID")
     void eventIdTest() {
-        Long actualEventId = unit.getEventId();
-        assertThat(actualEventId).isEqualTo(eventId);
+        assertThat(unit.getEventId()).isEqualTo(eventId);
     }
 
     @Test
     @DisplayName("Check market ID")
     void marketIdTest() {
-        Long actualMarketId = unit.getMarketId();
-        assertThat(actualMarketId).isEqualTo(marketId);
+        assertThat(unit.getMarketId()).isEqualTo(marketId);
     }
 
     @Test
     @DisplayName("Check runner ID")
     void runnerIdTest() {
-        Long actualRunnerId = unit.getRunnerId();
-        assertThat(actualRunnerId).isEqualTo(runnerId);
+        assertThat(unit.getRunnerId()).isEqualTo(runnerId);
     }
 
     @Test

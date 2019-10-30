@@ -55,22 +55,22 @@ class RunnerRequestTest extends BasePricesRequestTest<RunnerRequest> {
     @Test
     @DisplayName("Check event ID")
     void eventIdTest() {
-        Long actualEventId = unit.getEventId();
-        assertThat(actualEventId).isEqualTo(emptyUnit.getEventId()).isEqualTo(eventId);
+        assertThat(unit.getEventId()).isEqualTo(eventId)
+                .isEqualTo(emptyUnit.getEventId());
     }
 
     @Test
     @DisplayName("Check market ID")
     void marketIdTest() {
-        Long actualMarketId = unit.getMarketId();
-        assertThat(actualMarketId).isEqualTo(emptyUnit.getMarketId()).isEqualTo(marketId);
+        assertThat(unit.getMarketId()).isEqualTo(marketId)
+                .isEqualTo(emptyUnit.getMarketId());
     }
 
     @Test
     @DisplayName("Check runner ID")
     void runnerIdTest() {
-        Long actualRunnerId = unit.getRunnerId();
-        assertThat(actualRunnerId).isEqualTo(emptyUnit.getRunnerId()).isEqualTo(runnerId);
+        assertThat(unit.getRunnerId()).isEqualTo(runnerId)
+                .isEqualTo(emptyUnit.getRunnerId());
     }
 
     @Test

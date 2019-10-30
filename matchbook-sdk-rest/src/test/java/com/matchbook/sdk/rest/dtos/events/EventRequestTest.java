@@ -52,8 +52,8 @@ class EventRequestTest extends BasePricesRequestTest<EventRequest> {
     @Test
     @DisplayName("Check event ID")
     void eventIdTest() {
-        Long actualEventId = unit.getEventId();
-        assertThat(actualEventId).isEqualTo(emptyUnit.getEventId()).isEqualTo(eventId);
+        assertThat(unit.getEventId()).isEqualTo(eventId)
+                .isEqualTo(emptyUnit.getEventId());
     }
 
     @Test

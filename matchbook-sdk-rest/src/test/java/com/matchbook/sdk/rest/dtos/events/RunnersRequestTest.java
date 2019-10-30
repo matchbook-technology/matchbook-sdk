@@ -62,23 +62,21 @@ class RunnersRequestTest extends PageablePricesRequestTest<RunnersRequest> {
     @Test
     @DisplayName("Check event ID")
     void eventIdTest() {
-        Long actualEventId = unit.getEventId();
-        assertThat(actualEventId).isEqualTo(emptyUnit.getEventId()).isEqualTo(eventId);
+        assertThat(unit.getEventId()).isEqualTo(eventId)
+                .isEqualTo(emptyUnit.getEventId());
     }
 
     @Test
     @DisplayName("Check market ID")
     void marketIdTest() {
-        Long actualMarketId = unit.getMarketId();
-        assertThat(actualMarketId).isEqualTo(emptyUnit.getMarketId()).isEqualTo(marketId);
+        assertThat(unit.getMarketId()).isEqualTo(marketId)
+                .isEqualTo(emptyUnit.getMarketId());
     }
 
     @Test
     @DisplayName("Check statuses")
     void statusesTest() {
-        Set<RunnerStatus> actualStatuses = unit.getStatuses();
-        assertThat(actualStatuses).containsExactlyInAnyOrderElementsOf(statuses);
-
+        assertThat(unit.getStatuses()).containsExactlyInAnyOrderElementsOf(statuses);
         assertThat(emptyUnit.getStatuses()).isNullOrEmpty();
     }
 
@@ -114,7 +112,8 @@ class RunnersRequestTest extends PageablePricesRequestTest<RunnersRequest> {
                         tuple("include-prices", "true")
                 );
 
-        assertThat(emptyUnit.parameters()).doesNotContainKeys("types", "states", "include-prices")
+        assertThat(emptyUnit.parameters())
+                .doesNotContainKeys("types", "states", "include-prices")
                 .extractingFromEntries(Map.Entry::getKey, Map.Entry::getValue)
                 .contains(tuple("include-withdrawn", "true"));
     }

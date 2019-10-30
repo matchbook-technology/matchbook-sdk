@@ -27,8 +27,7 @@ class HeartbeatPostRequestTest extends RestRequestTest<HeartbeatPostRequest> {
     @Test
     @DisplayName("Check timeout")
     void timeoutTest() {
-        Integer actualTimeout = unit.getTimeout();
-        assertThat(actualTimeout).isEqualTo(timeout);
+        assertThat(unit.getTimeout()).isEqualTo(timeout);
     }
 
     @Test

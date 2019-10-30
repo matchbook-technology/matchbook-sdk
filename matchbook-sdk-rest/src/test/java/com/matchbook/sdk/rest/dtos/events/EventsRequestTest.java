@@ -76,54 +76,42 @@ class EventsRequestTest extends PageablePricesRequestTest<EventsRequest> {
     @Test
     @DisplayName("Check instant after limit")
     void afterTest() {
-        Instant actualAfter = unit.getAfter();
-        assertThat(actualAfter).isCloseTo(after, within(1L, ChronoUnit.SECONDS));
-
+        assertThat(unit.getAfter()).isCloseTo(after, within(1L, ChronoUnit.SECONDS));
         assertThat(emptyUnit.getAfter()).isNull();
     }
 
     @Test
     @DisplayName("Check instant before limit")
     void beforeTest() {
-        Instant actualBefore = unit.getBefore();
-        assertThat(actualBefore).isCloseTo(before, within(1L, ChronoUnit.SECONDS));
-
+        assertThat(unit.getBefore()).isCloseTo(before, within(1L, ChronoUnit.SECONDS));
         assertThat(emptyUnit.getBefore()).isNull();
     }
 
     @Test
     @DisplayName("Check sports IDs")
     void sportIdsTest() {
-        Set<Long> actualSportIds = unit.getSportIds();
-        assertThat(actualSportIds).containsExactlyInAnyOrderElementsOf(sportIds);
-
+        assertThat(unit.getSportIds()).containsExactlyInAnyOrderElementsOf(sportIds);
         assertThat(emptyUnit.getSportIds()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check category IDs")
     void categoryIdsTest() {
-        Set<Long> actualCategoryIds = unit.getCategoryIds();
-        assertThat(actualCategoryIds).containsExactlyInAnyOrderElementsOf(categoryIds);
-
+        assertThat(unit.getCategoryIds()).containsExactlyInAnyOrderElementsOf(categoryIds);
         assertThat(emptyUnit.getCategoryIds()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check event IDs")
     void eventIdsTest() {
-        Set<Long> actualEventIds = unit.getEventIds();
-        assertThat(actualEventIds).containsExactlyInAnyOrderElementsOf(eventIds);
-
+        assertThat(unit.getEventIds()).containsExactlyInAnyOrderElementsOf(eventIds);
         assertThat(emptyUnit.getEventIds()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check statuses")
     void statusesTest() {
-        Set<EventStatus> actualStatuses = unit.getStatuses();
-        assertThat(actualStatuses).containsExactlyInAnyOrderElementsOf(statuses);
-
+        assertThat(unit.getStatuses()).containsExactlyInAnyOrderElementsOf(statuses);
         assertThat(emptyUnit.getStatuses()).isNullOrEmpty();
     }
 

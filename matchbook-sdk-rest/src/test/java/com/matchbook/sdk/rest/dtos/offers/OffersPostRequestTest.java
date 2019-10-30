@@ -40,22 +40,19 @@ class OffersPostRequestTest extends RestRequestTest<OffersPostRequest> {
     @Test
     @DisplayName("Check odds type")
     void oddsTypeTest() {
-        OddsType actualOddsType = unit.getOddsType();
-        assertThat(actualOddsType).isEqualTo(oddsType);
+        assertThat(unit.getOddsType()).isEqualTo(oddsType);
     }
 
     @Test
     @DisplayName("Check exchange type")
     void exchangeTypeTest() {
-        ExchangeType actualExchangeType = unit.getExchangeType();
-        assertThat(actualExchangeType).isEqualTo(exchangeType);
+        assertThat(unit.getExchangeType()).isEqualTo(exchangeType);
     }
 
     @Test
     @DisplayName("Check offers")
     void offersTest() {
-        List<OfferPostRequest> actualOffers = unit.getOffers();
-        assertThat(actualOffers).containsExactlyInAnyOrderElementsOf(offers);
+        assertThat(unit.getOffers()).containsExactlyInAnyOrderElementsOf(offers);
     }
 
     @Test

@@ -56,45 +56,35 @@ public class AggregatedMatchedBetsRequestTest extends PageableRequestTest<Aggreg
     @Test
     @DisplayName("Check event IDs")
     void eventIdsTest() {
-        Set<Long> actualEventIds = unit.getEventIds();
-        assertThat(actualEventIds).containsExactlyInAnyOrderElementsOf(eventIds);
-
+        assertThat(unit.getEventIds()).containsExactlyInAnyOrderElementsOf(eventIds);
         assertThat(emptyUnit.getEventIds()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check market IDs")
     void marketIdsTest() {
-        Set<Long> actualMarketIds = unit.getMarketIds();
-        assertThat(actualMarketIds).containsExactlyInAnyOrderElementsOf(marketIds);
-
+        assertThat(unit.getMarketIds()).containsExactlyInAnyOrderElementsOf(marketIds);
         assertThat(emptyUnit.getMarketIds()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check runner IDs")
     void runnerIdsTest() {
-        Set<Long> actualRunnerIds = unit.getRunnersIds();
-        assertThat(actualRunnerIds).containsExactlyInAnyOrderElementsOf(runnerIds);
-
+        assertThat(unit.getRunnersIds()).containsExactlyInAnyOrderElementsOf(runnerIds);
         assertThat(emptyUnit.getRunnersIds()).isNullOrEmpty();
     }
 
     @Test
     @DisplayName("Check side")
     void sideTest() {
-        Side actualSide = unit.getSide();
-        assertThat(actualSide).isEqualTo(side);
-
+        assertThat(unit.getSide()).isEqualTo(side);
         assertThat(emptyUnit.getSide()).isNull();
     }
 
     @Test
     @DisplayName("Check aggregation type")
     void aggregationTypeTest() {
-        AggregationType actualAggregationType = unit.getAggregationType();
-        assertThat(actualAggregationType).isEqualTo(actualAggregationType);
-
+        assertThat(unit.getAggregationType()).isEqualTo(aggregationType);
         assertThat(emptyUnit.getAggregationType()).isNull();
     }
 

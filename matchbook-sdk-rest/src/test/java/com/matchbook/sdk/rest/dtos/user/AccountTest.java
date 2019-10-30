@@ -22,9 +22,9 @@ class AccountTest extends RestResponseTest<Account> {
     @Test
     @DisplayName("Set and get account ID")
     void idTest() {
-        Long actualId = 4242L;
-        unit.setId(actualId);
-        assertThat(unit.getId()).isEqualTo(actualId);
+        Long accountId = 4242L;
+        unit.setId(accountId);
+        assertThat(unit.getId()).isEqualTo(accountId);
     }
 
     @Test
