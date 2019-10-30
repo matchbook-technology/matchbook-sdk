@@ -8,6 +8,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.matchbook.sdk.core.exceptions.ErrorType;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.dtos.prices.Price;
 import com.matchbook.sdk.rest.dtos.prices.PricesRequest;
 

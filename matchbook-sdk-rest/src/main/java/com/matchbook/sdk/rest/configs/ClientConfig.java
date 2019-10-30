@@ -1,4 +1,4 @@
-package com.matchbook.sdk.rest;
+package com.matchbook.sdk.rest.configs;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -82,7 +82,8 @@ public class ClientConfig {
 
         public ClientConfig build() {
             if (Objects.isNull(httpConfig)) {
-                httpClientConfig(new HttpConfig.Builder().build());
+                HttpConfig defaultHttpConfig = new HttpConfig.Builder().build();
+                httpClientConfig(defaultHttpConfig);
             }
             return new ClientConfig(this);
         }

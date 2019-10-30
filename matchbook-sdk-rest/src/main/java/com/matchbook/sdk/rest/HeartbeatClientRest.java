@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.dtos.heartbeat.Heartbeat;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatGetRequest;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatPostRequest;

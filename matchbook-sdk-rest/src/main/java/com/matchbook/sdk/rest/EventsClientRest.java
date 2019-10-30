@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.dtos.events.Event;
 import com.matchbook.sdk.rest.dtos.events.EventRequest;
 import com.matchbook.sdk.rest.dtos.events.EventsRequest;

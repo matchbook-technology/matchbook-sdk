@@ -2,6 +2,7 @@ package com.matchbook.sdk.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.Serializer;
 import com.matchbook.sdk.rest.dtos.FailableRestResponse;

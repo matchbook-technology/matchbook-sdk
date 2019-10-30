@@ -9,7 +9,7 @@ import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
-import com.matchbook.sdk.rest.ConnectionManager;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.UserClient;
 import com.matchbook.sdk.rest.UserClientRest;
 import com.matchbook.sdk.rest.dtos.user.Login;
@@ -31,7 +31,7 @@ public class SessionKeepAliveScheduler {
         this.userClient = new UserClientRest(connectionManager);
 
         this.sessionKeepAliveExecutor = Executors.newSingleThreadScheduledExecutor(runnable -> {
-            Thread thread = new Thread(runnable);
+            final Thread thread = new Thread(runnable);
             thread.setDaemon(true);
             thread.setName("mb-sdk-session-manager");
             return thread;
@@ -58,7 +58,7 @@ public class SessionKeepAliveScheduler {
     private void doLogin() {
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-        userClient.login(new StreamObserver<Login>() {
+        userClient.login(new StreamObserver<>() {
 
             @Override
             public void onNext(Login login) {

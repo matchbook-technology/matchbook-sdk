@@ -1,10 +1,8 @@
-package com.matchbook.sdk.rest;
+package com.matchbook.sdk.rest.configs;
 
 import java.io.Closeable;
 import java.util.Objects;
 
-import com.matchbook.sdk.rest.configs.HttpClient;
-import com.matchbook.sdk.rest.configs.Serializer;
 import com.matchbook.sdk.rest.configs.wrappers.HttpClientWrapper;
 import com.matchbook.sdk.rest.configs.wrappers.SerializerWrapper;
 import com.matchbook.sdk.rest.workers.SessionKeepAliveScheduler;
@@ -14,6 +12,7 @@ public class ConnectionManager implements Closeable {
     private final ClientConfig clientConfig;
     private final HttpClient httpClient;
     private final Serializer serializer;
+    private final boolean autoManageSession;
 
     private SessionKeepAliveScheduler sessionKeepAliveScheduler;
 
@@ -21,8 +20,9 @@ public class ConnectionManager implements Closeable {
         this.clientConfig = builder.clientConfig;
         this.httpClient = builder.httpClient;
         this.serializer = builder.serializer;
+        this.autoManageSession = builder.autoManageSession;
 
-        if (builder.autoManageSession) {
+        if (autoManageSession) {
             sessionKeepAliveScheduler = new SessionKeepAliveScheduler(this);
             sessionKeepAliveScheduler.start();
         }
@@ -38,6 +38,10 @@ public class ConnectionManager implements Closeable {
 
     public Serializer getSerializer() {
         return serializer;
+    }
+
+    public boolean isSessionAutoManaged() {
+        return autoManageSession;
     }
 
     @Override

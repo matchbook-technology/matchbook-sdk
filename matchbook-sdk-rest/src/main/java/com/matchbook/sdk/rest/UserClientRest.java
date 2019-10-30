@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.dtos.user.Account;
 import com.matchbook.sdk.rest.dtos.user.AccountRequest;
 import com.matchbook.sdk.rest.dtos.user.Balance;

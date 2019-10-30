@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
 import com.matchbook.sdk.core.exceptions.ErrorType;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.dtos.heartbeat.ActionPerformed;
 import com.matchbook.sdk.rest.dtos.heartbeat.Heartbeat;
 import com.matchbook.sdk.rest.dtos.heartbeat.HeartbeatGetRequest;

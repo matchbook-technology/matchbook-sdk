@@ -1,4 +1,4 @@
-package com.matchbook.sdk.rest;
+package com.matchbook.sdk.rest.configs;
 
 import java.util.concurrent.TimeUnit;
 
