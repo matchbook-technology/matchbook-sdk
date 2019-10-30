@@ -58,7 +58,7 @@ public class SessionKeepAliveScheduler {
     private void doLogin() {
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-        userClient.login(new StreamObserver<>() {
+        userClient.login(new StreamObserver<Login>() {
 
             @Override
             public void onNext(Login login) {
