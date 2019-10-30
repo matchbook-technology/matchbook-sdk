@@ -12,6 +12,7 @@ import com.matchbook.sdk.rest.dtos.RestResponse;
 import com.matchbook.sdk.rest.readers.Reader;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 abstract class BaseClientRest implements Client {
@@ -103,9 +104,12 @@ abstract class BaseClientRest implements Client {
     }
 
     private <REQ extends RestRequest> String buildUrl(String baseUrl, REQ request) {
-        return baseUrl + "?" + request.parameters().entrySet().stream()
-                .map(entry -> entry.getKey() + "=" + entry.getValue())
-                .collect(Collectors.joining("&"));
+        Map<String, String> queryParameters = request.parameters();
+        return baseUrl + (queryParameters.isEmpty() ? "" :
+                "?" + queryParameters.entrySet().stream()
+                        .map(entry -> entry.getKey() + "=" + entry.getValue())
+                        .collect(Collectors.joining("&"))
+        );
     }
 
 }
