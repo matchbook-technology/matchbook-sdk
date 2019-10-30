@@ -27,8 +27,7 @@ public class HeartbeatClientRest extends BaseClientRest implements HeartbeatClie
     }
 
     @Override
-    public void unsubscribeHeartbeat(HeartbeatDeleteRequest heartbeatDeleteRequest,
-        StreamObserver<Heartbeat> heartbeatObserver) {
+    public void unsubscribeHeartbeat(HeartbeatDeleteRequest heartbeatDeleteRequest, StreamObserver<Heartbeat> heartbeatObserver) {
         String url = buildSportsUrl(heartbeatDeleteRequest.resourcePath());
         deleteRequest(url, heartbeatDeleteRequest, heartbeatObserver, new HeartbeatReader());
     }

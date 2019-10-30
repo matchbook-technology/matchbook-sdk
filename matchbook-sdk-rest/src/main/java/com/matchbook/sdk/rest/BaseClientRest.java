@@ -1,7 +1,7 @@
 package com.matchbook.sdk.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.Serializer;
@@ -57,7 +57,7 @@ abstract class BaseClientRest implements Client {
             String requestBody = serializer.writeObjectAsString(request);
             connectionManager.getHttpClient().post(url, requestBody, httpCallback);
         } catch (IOException ioe) {
-            MatchbookSDKHttpException matchbookException = new MatchbookSDKHttpException(ioe.getMessage(), ioe);
+            MatchbookSDKParsingException matchbookException = new MatchbookSDKParsingException(ioe.getMessage(), ioe);
             observer.onError(matchbookException);
         }
     }
@@ -81,7 +81,7 @@ abstract class BaseClientRest implements Client {
             String requestBody = serializer.writeObjectAsString(request);
             connectionManager.getHttpClient().put(url, requestBody, httpCallback);
         } catch (IOException ioe) {
-            MatchbookSDKHttpException matchbookException = new MatchbookSDKHttpException(ioe.getMessage(), ioe);
+            MatchbookSDKParsingException matchbookException = new MatchbookSDKParsingException(ioe.getMessage(), ioe);
             observer.onError(matchbookException);
         }
     }
