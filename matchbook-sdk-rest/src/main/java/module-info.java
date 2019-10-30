@@ -1,6 +1,7 @@
 open module com.matchbook.sdk.rest {
 
     exports com.matchbook.sdk.rest;
+    exports com.matchbook.sdk.rest.configs;
     exports com.matchbook.sdk.rest.dtos;
     exports com.matchbook.sdk.rest.dtos.errors;
     exports com.matchbook.sdk.rest.dtos.events;
