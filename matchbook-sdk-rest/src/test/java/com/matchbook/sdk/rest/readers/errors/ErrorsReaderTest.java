@@ -30,7 +30,7 @@ class ErrorsReaderTest extends ResponseReaderTest<ErrorsReader> {
 
         when(parser.isEndOfArray()).thenReturn(false, false, true);
         Error error = mock(Error.class);
-        when(errorReader.readFullResponse()).thenReturn(error).thenReturn(null);
+        when(errorReader.readFullResponse()).thenReturn(error);
 
         Errors errors = unit.readNextItem();
 

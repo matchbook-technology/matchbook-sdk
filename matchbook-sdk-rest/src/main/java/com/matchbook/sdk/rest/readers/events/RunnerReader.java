@@ -10,7 +10,6 @@ import com.matchbook.sdk.rest.readers.prices.PriceReader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class RunnerReader extends ResponseReader<Runner> {
 
@@ -65,9 +64,7 @@ public class RunnerReader extends ResponseReader<Runner> {
         while (!parser.isEndOfArray()) {
             priceReader.init(parser);
             Price price = priceReader.readFullResponse();
-            if (Objects.nonNull(price)) {
-                prices.add(price);
-            }
+            prices.add(price);
             parser.moveToNextToken();
         }
         return prices;

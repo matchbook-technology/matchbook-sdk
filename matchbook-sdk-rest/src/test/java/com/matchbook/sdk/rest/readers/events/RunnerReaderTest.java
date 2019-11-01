@@ -7,8 +7,6 @@ import static org.mockito.Mockito.when;
 import com.matchbook.sdk.rest.dtos.events.Runner;
 import com.matchbook.sdk.rest.dtos.events.RunnerStatus;
 import com.matchbook.sdk.rest.dtos.prices.Price;
-import com.matchbook.sdk.rest.dtos.user.Account;
-import com.matchbook.sdk.rest.dtos.user.Login;
 import com.matchbook.sdk.rest.readers.ResponseReaderTest;
 import com.matchbook.sdk.rest.readers.prices.PriceReader;
 
@@ -41,7 +39,7 @@ class RunnerReaderTest extends ResponseReaderTest<RunnerReader> {
 
         when(parser.isEndOfArray()).thenReturn(false, false, true);
         Price price = mock(Price.class);
-        when(priceReader.readFullResponse()).thenReturn(price).thenReturn(null);
+        when(priceReader.readFullResponse()).thenReturn(price);
 
         Runner runner = unit.readNextItem();
 

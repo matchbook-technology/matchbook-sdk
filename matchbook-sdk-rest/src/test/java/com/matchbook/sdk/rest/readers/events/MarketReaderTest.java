@@ -8,8 +8,6 @@ import com.matchbook.sdk.rest.dtos.events.Market;
 import com.matchbook.sdk.rest.dtos.events.MarketStatus;
 import com.matchbook.sdk.rest.dtos.events.MarketType;
 import com.matchbook.sdk.rest.dtos.events.Runner;
-import com.matchbook.sdk.rest.dtos.events.RunnerStatus;
-import com.matchbook.sdk.rest.dtos.prices.Price;
 import com.matchbook.sdk.rest.readers.ResponseReaderTest;
 
 import org.junit.jupiter.api.DisplayName;
@@ -43,7 +41,7 @@ class MarketReaderTest extends ResponseReaderTest<MarketReader> {
 
         when(parser.isEndOfArray()).thenReturn(false, false, true);
         Runner runner = mock(Runner.class);
-        when(runnerReader.readFullResponse()).thenReturn(runner).thenReturn(null);
+        when(runnerReader.readFullResponse()).thenReturn(runner);
 
         Market market = unit.readNextItem();
 

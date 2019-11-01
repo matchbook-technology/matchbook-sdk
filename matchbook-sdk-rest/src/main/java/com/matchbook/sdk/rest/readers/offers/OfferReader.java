@@ -18,7 +18,6 @@ import com.matchbook.sdk.rest.readers.errors.ErrorReader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class OfferReader extends ResponseReader<Offer> {
 
@@ -117,9 +116,7 @@ public class OfferReader extends ResponseReader<Offer> {
         while (!parser.isEndOfArray()) {
             matchedBetReader.init(parser);
             MatchedBet market = matchedBetReader.readFullResponse();
-            if (Objects.nonNull(market)) {
-                matchedBets.add(market);
-            }
+            matchedBets.add(market);
             parser.moveToNextToken();
         }
         return matchedBets;
@@ -141,9 +138,7 @@ public class OfferReader extends ResponseReader<Offer> {
         while (!parser.isEndOfArray()) {
             errorReader.init(parser);
             Error error = errorReader.readFullResponse();
-            if (Objects.nonNull(error)) {
-                errorsList.add(error);
-            }
+            errorsList.add(error);
             parser.moveToNextToken();
         }
         return errorsList;

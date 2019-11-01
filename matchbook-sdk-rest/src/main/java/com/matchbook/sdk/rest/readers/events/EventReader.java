@@ -12,7 +12,6 @@ import com.matchbook.sdk.rest.readers.ResponseReader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class EventReader extends ResponseReader<Event> {
 
@@ -85,9 +84,7 @@ public class EventReader extends ResponseReader<Event> {
         while (!parser.isEndOfArray()) {
             marketReader.init(parser);
             Market market = marketReader.readFullResponse();
-            if (Objects.nonNull(market)) {
-                markets.add(market);
-            }
+            markets.add(market);
             parser.moveToNextToken();
         }
         return markets;

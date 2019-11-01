@@ -10,7 +10,6 @@ import com.matchbook.sdk.rest.readers.ResponseReader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MarketReader extends ResponseReader<Market> {
 
@@ -71,9 +70,7 @@ public class MarketReader extends ResponseReader<Market> {
         while (!parser.isEndOfArray()) {
             runnerReader.init(parser);
             Runner runner = runnerReader.readFullResponse();
-            if (Objects.nonNull(runner)) {
-                runners.add(runner);
-            }
+            runners.add(runner);
             parser.moveToNextToken();
         }
         return runners;

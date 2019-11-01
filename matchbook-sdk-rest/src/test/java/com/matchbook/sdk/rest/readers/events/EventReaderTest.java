@@ -54,7 +54,7 @@ class EventReaderTest extends ResponseReaderTest<EventReader> {
 
         when(parser.isEndOfArray()).thenReturn(false, true, false, false, true, false, true, false, true);
         Market market = mock(Market.class);
-        when(marketReader.readFullResponse()).thenReturn(market).thenReturn(null);
+        when(marketReader.readFullResponse()).thenReturn(market);
 
         Event event = unit.readNextItem();
 

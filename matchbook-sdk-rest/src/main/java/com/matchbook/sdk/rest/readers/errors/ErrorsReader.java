@@ -8,7 +8,6 @@ import com.matchbook.sdk.rest.readers.ResponseReader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ErrorsReader extends ResponseReader<Errors> {
 
@@ -45,9 +44,7 @@ public class ErrorsReader extends ResponseReader<Errors> {
         while (!parser.isEndOfArray()) {
             errorReader.init(parser);
             Error error = errorReader.readFullResponse();
-            if (Objects.nonNull(error)) {
-                errors.add(error);
-            }
+            errors.add(error);
             parser.moveToNextToken();
         }
         return errors;

@@ -11,7 +11,6 @@ import com.matchbook.sdk.rest.readers.errors.ErrorReader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class OfferEditReader extends ResponseReader<OfferEdit> {
 
@@ -75,9 +74,7 @@ public class OfferEditReader extends ResponseReader<OfferEdit> {
         while (!parser.isEndOfArray()) {
             errorReader.init(parser);
             Error error = errorReader.readFullResponse();
-            if (Objects.nonNull(error)) {
-                errorsList.add(error);
-            }
+            errorsList.add(error);
             parser.moveToNextToken();
         }
         return errorsList;
