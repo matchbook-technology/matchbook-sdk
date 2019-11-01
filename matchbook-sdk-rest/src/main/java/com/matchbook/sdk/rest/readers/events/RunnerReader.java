@@ -1,15 +1,15 @@
 package com.matchbook.sdk.rest.readers.events;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
 import com.matchbook.sdk.rest.dtos.events.Runner;
 import com.matchbook.sdk.rest.dtos.events.RunnerStatus;
 import com.matchbook.sdk.rest.dtos.prices.Price;
+import com.matchbook.sdk.rest.readers.ResponseReader;
 import com.matchbook.sdk.rest.readers.prices.PriceReader;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class RunnerReader extends ResponseReader<Runner> {
 

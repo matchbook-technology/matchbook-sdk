@@ -1,12 +1,12 @@
 package com.matchbook.sdk.rest.readers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.dtos.PageableResponse;
 import com.matchbook.sdk.rest.dtos.RestResponse;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public abstract class PageableResponseReader<T extends RestResponse, R extends PageableResponse<T>> extends BaseReader<T, R> {
 

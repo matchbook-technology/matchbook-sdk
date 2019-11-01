@@ -1,8 +1,8 @@
 package com.matchbook.sdk.rest.readers.offers;
 
-import com.matchbook.sdk.rest.readers.PageableResponseReader;
 import com.matchbook.sdk.rest.dtos.offers.OfferEdit;
 import com.matchbook.sdk.rest.dtos.offers.OfferEditsResponse;
+import com.matchbook.sdk.rest.readers.PageableResponseReader;
 
 public class OfferEditsReader extends PageableResponseReader<OfferEdit, OfferEditsResponse> {
 

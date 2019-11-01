@@ -1,17 +1,17 @@
 package com.matchbook.sdk.rest.readers.events;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
 import com.matchbook.sdk.rest.dtos.events.Event;
 import com.matchbook.sdk.rest.dtos.events.EventParticipant;
 import com.matchbook.sdk.rest.dtos.events.EventStatus;
 import com.matchbook.sdk.rest.dtos.events.Market;
 import com.matchbook.sdk.rest.dtos.events.MetaTag;
 import com.matchbook.sdk.rest.dtos.events.TagType;
+import com.matchbook.sdk.rest.readers.ResponseReader;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class EventReader extends ResponseReader<Event> {
 

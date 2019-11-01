@@ -1,14 +1,14 @@
 package com.matchbook.sdk.rest.readers.offers;
 
-import java.util.List;
-
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.PageableResponseReader;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBet;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBetsResponse;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
+import com.matchbook.sdk.rest.readers.PageableResponseReader;
+
+import java.util.List;
 
 public class AggregatedMatchedBetsReader
         extends PageableResponseReader<AggregatedMatchedBet, AggregatedMatchedBetsResponse> {

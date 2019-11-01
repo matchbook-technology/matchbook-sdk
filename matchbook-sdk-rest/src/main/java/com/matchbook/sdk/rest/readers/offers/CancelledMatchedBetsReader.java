@@ -1,8 +1,8 @@
 package com.matchbook.sdk.rest.readers.offers;
 
-import com.matchbook.sdk.rest.readers.PageableResponseReader;
 import com.matchbook.sdk.rest.dtos.offers.CancelledMatchedBetsResponse;
 import com.matchbook.sdk.rest.dtos.offers.MatchedBet;
+import com.matchbook.sdk.rest.readers.PageableResponseReader;
 
 public class CancelledMatchedBetsReader extends PageableResponseReader<MatchedBet, CancelledMatchedBetsResponse> {
 

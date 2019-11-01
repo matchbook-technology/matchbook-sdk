@@ -1,8 +1,8 @@
 package com.matchbook.sdk.rest.readers.user;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
 import com.matchbook.sdk.rest.dtos.user.Balance;
+import com.matchbook.sdk.rest.readers.ResponseReader;
 
 public class BalanceReader extends ResponseReader<Balance> {
 

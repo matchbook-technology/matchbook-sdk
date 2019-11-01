@@ -1,8 +1,8 @@
 package com.matchbook.sdk.rest.readers.events;
 
-import com.matchbook.sdk.rest.readers.PageableResponseReader;
 import com.matchbook.sdk.rest.dtos.events.Sport;
 import com.matchbook.sdk.rest.dtos.events.SportsResponse;
+import com.matchbook.sdk.rest.readers.PageableResponseReader;
 
 public class SportsReader extends PageableResponseReader<Sport, SportsResponse> {
 

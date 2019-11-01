@@ -1,11 +1,11 @@
 package com.matchbook.sdk.rest.readers.offers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
 import com.matchbook.sdk.rest.dtos.offers.MatchedBet;
 import com.matchbook.sdk.rest.dtos.offers.MatchedBetStatus;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
+import com.matchbook.sdk.rest.readers.ResponseReader;
 
 public class MatchedBetReader extends ResponseReader<MatchedBet> {
 

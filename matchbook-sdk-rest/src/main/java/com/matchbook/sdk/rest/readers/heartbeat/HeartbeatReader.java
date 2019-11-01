@@ -1,9 +1,9 @@
 package com.matchbook.sdk.rest.readers.heartbeat;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
 import com.matchbook.sdk.rest.dtos.heartbeat.ActionPerformed;
 import com.matchbook.sdk.rest.dtos.heartbeat.Heartbeat;
+import com.matchbook.sdk.rest.readers.ResponseReader;
 
 public class HeartbeatReader extends ResponseReader<Heartbeat> {
 

@@ -1,8 +1,8 @@
 package com.matchbook.sdk.rest.readers.events;
 
-import com.matchbook.sdk.rest.readers.PageableResponseReader;
 import com.matchbook.sdk.rest.dtos.events.Event;
 import com.matchbook.sdk.rest.dtos.events.EventsResponse;
+import com.matchbook.sdk.rest.readers.PageableResponseReader;
 
 public class EventsReader extends PageableResponseReader<Event, EventsResponse> {
 
