@@ -22,13 +22,13 @@ class ErrorReaderTest extends ResponseReaderTest<ErrorReader> {
         when(parser.isEndOfObject()).thenReturn(false, false, true);
         when(parser.isEndOfArray()).thenReturn(false, true);
         when(parser.getFieldName()).thenReturn("field", "messages");
-        when(parser.getString()).thenReturn("field", "message");
+        when(parser.getString()).thenReturn("stake", "Stake must be at least 0.01 EUR");
 
         Error error = unit.readNextItem();
 
         assertThat(error).isNotNull();
-        assertThat(error.getField()).isEqualTo("field");
-        assertThat(error.getMessages()).containsOnly("message");
+        assertThat(error.getField()).isEqualTo("stake");
+        assertThat(error.getMessages()).containsOnly("Stake must be at least 0.01 EUR");
         assertThat(unit.hasMoreItems()).isFalse();
     }
 
