@@ -1,9 +1,10 @@
 package com.matchbook.sdk.rest.readers.errors;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.dtos.errors.Error;
 import com.matchbook.sdk.rest.dtos.errors.Errors;
+import com.matchbook.sdk.rest.readers.ResponseReader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,11 @@ public class ErrorsReader extends ResponseReader<Errors> {
     public ErrorsReader() {
         super();
         errorReader = new ErrorReader();
+    }
+
+    @VisibleForTesting
+    ErrorsReader(ErrorReader errorReader) {
+        this.errorReader = errorReader;
     }
 
     @Override
