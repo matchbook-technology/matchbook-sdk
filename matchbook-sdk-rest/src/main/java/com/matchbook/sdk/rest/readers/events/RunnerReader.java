@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest.readers.events;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.dtos.events.Runner;
 import com.matchbook.sdk.rest.dtos.events.RunnerStatus;
 import com.matchbook.sdk.rest.dtos.prices.Price;
@@ -18,6 +19,11 @@ public class RunnerReader extends ResponseReader<Runner> {
     public RunnerReader() {
         super();
         priceReader = new PriceReader();
+    }
+
+    @VisibleForTesting
+    RunnerReader(PriceReader priceReader) {
+        this.priceReader = priceReader;
     }
 
     @Override

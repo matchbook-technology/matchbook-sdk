@@ -23,35 +23,19 @@ class ErrorsReaderTest extends ResponseReaderTest<ErrorsReader> {
     }
 
     @Test
-    @DisplayName("Read next item with content")
+    @DisplayName("Read next item")
     void readNextItemWithContentTest() {
         when(parser.isEndOfObject()).thenReturn(false, true);
-        when(parser.isEndOfArray()).thenReturn(false, true);
         when(parser.getFieldName()).thenReturn("errors");
 
+        when(parser.isEndOfArray()).thenReturn(false, false, true);
         Error error = mock(Error.class);
-        when(errorReader.readFullResponse()).thenReturn(error);
+        when(errorReader.readFullResponse()).thenReturn(error).thenReturn(null);
 
         Errors errors = unit.readNextItem();
 
         assertThat(errors).isNotNull();
         assertThat(errors.getErrors()).containsOnly(error);
-        assertThat(unit.hasMoreItems()).isFalse();
-    }
-
-    @Test
-    @DisplayName("Read next item with no content")
-    void readNextItemWithNoContentTest() {
-        when(parser.isEndOfObject()).thenReturn(false, true);
-        when(parser.isEndOfArray()).thenReturn(false, true);
-        when(parser.getFieldName()).thenReturn("errors");
-
-        when(errorReader.readFullResponse()).thenReturn(null);
-
-        Errors errors = unit.readNextItem();
-
-        assertThat(errors).isNotNull();
-        assertThat(errors.getErrors()).isEmpty();
         assertThat(unit.hasMoreItems()).isFalse();
     }
 

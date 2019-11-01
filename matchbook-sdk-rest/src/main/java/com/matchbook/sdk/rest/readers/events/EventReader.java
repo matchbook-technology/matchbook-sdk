@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest.readers.events;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.dtos.events.Event;
 import com.matchbook.sdk.rest.dtos.events.EventParticipant;
 import com.matchbook.sdk.rest.dtos.events.EventStatus;
@@ -20,6 +21,11 @@ public class EventReader extends ResponseReader<Event> {
     public EventReader() {
         super();
         marketReader = new MarketReader();
+    }
+
+    @VisibleForTesting
+    EventReader(MarketReader marketReader) {
+        this.marketReader = marketReader;
     }
 
     @Override
