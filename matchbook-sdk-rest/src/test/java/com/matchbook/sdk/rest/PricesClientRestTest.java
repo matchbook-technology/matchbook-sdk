@@ -33,7 +33,7 @@ class PricesClientRestTest {
     @Mock
     private HttpClient httpClient;
 
-    protected PricesClientRest unit;
+    private PricesClientRest unit;
 
     @BeforeEach
     void setUp() {

@@ -1,18 +1,20 @@
 package com.matchbook.sdk.rest.workers;
 
+import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.core.exceptions.ErrorType;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
+import com.matchbook.sdk.rest.UserClient;
+import com.matchbook.sdk.rest.UserClientRest;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
+import com.matchbook.sdk.rest.dtos.user.Login;
+
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.exceptions.ErrorType;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
-import com.matchbook.sdk.rest.configs.ConnectionManager;
-import com.matchbook.sdk.rest.UserClient;
-import com.matchbook.sdk.rest.UserClientRest;
-import com.matchbook.sdk.rest.dtos.user.Login;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,14 +30,21 @@ public class SessionKeepAliveScheduler {
 
     public SessionKeepAliveScheduler(ConnectionManager connectionManager) {
         loginTimeout = connectionManager.getClientConfig().getHttpConfig().getWriteTimeoutInMillis();
-        this.userClient = new UserClientRest(connectionManager);
+        userClient = new UserClientRest(connectionManager);
 
-        this.sessionKeepAliveExecutor = Executors.newSingleThreadScheduledExecutor(runnable -> {
+        sessionKeepAliveExecutor = Executors.newSingleThreadScheduledExecutor(runnable -> {
             final Thread thread = new Thread(runnable);
             thread.setDaemon(true);
             thread.setName("mb-sdk-session-manager");
             return thread;
         });
+    }
+
+    @VisibleForTesting
+    SessionKeepAliveScheduler(long loginTimeout, UserClient userClient, ScheduledExecutorService executor) {
+        this.loginTimeout = loginTimeout;
+        this.userClient = userClient;
+        this.sessionKeepAliveExecutor = executor;
     }
 
     public void start() {

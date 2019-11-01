@@ -42,7 +42,7 @@ class EventsClientRestTest {
     @Mock
     private HttpClient httpClient;
 
-    protected EventsClientRest unit;
+    private EventsClientRest unit;
 
     @BeforeEach
     void setUp() {

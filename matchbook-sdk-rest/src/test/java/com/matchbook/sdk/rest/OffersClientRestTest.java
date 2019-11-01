@@ -56,7 +56,7 @@ class OffersClientRestTest {
     @Mock
     private Serializer serializer;
 
-    protected OffersClientRest unit;
+    private OffersClientRest unit;
 
     @BeforeEach
     void setUp() {

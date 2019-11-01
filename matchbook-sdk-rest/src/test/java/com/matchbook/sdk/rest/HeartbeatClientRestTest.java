@@ -43,7 +43,7 @@ class HeartbeatClientRestTest {
     @Mock
     private Serializer serializer;
 
-    protected HeartbeatClientRest unit;
+    private HeartbeatClientRest unit;
 
     @BeforeEach
     void setUp() {

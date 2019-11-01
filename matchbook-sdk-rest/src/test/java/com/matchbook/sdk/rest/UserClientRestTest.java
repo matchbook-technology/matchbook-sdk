@@ -43,7 +43,7 @@ class UserClientRestTest {
     @Mock
     private Serializer serializer;
 
-    protected UserClientRest unit;
+    private UserClientRest unit;
 
     @BeforeEach
     void setUp() {
