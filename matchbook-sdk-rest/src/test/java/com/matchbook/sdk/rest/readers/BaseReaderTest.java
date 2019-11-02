@@ -1,11 +1,8 @@
 package com.matchbook.sdk.rest.readers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.configs.Parser;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -16,17 +13,17 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public abstract class BaseReaderTest<T extends BaseReader> {
+public abstract class BaseReaderTest<X extends BaseReader> {
 
     @Mock
     protected Parser parser;
 
-    protected T unit;
+    protected X unit;
 
-    protected abstract T newReader();
+    protected abstract X newReader();
 
     @BeforeEach
-    protected void setUp() {
+    void setUp() {
         unit = newReader();
 
         when(parser.hasCurrentToken()).thenReturn(true);
@@ -49,15 +46,6 @@ public abstract class BaseReaderTest<T extends BaseReader> {
         unit.init(parser);
 
         assertThat(unit.readingItemStatus).isEqualTo(BaseReader.ReadingItemsStatus.READ);
-    }
-
-    @Test
-    @DisplayName("Init with exception")
-    void initErrorTest() {
-        doThrow(MatchbookSDKParsingException.class).when(parser).hasCurrentToken();
-
-        assertThatExceptionOfType(MatchbookSDKParsingException.class)
-                .isThrownBy(() -> unit.init(parser));
     }
 
     @Test

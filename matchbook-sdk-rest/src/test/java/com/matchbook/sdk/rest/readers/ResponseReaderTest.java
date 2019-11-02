@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public abstract class ResponseReaderTest<T extends ResponseReader> extends BaseReaderTest<T> {
+public abstract class ResponseReaderTest<X extends ResponseReader> extends BaseReaderTest<X> {
 
     @Test
     @DisplayName("Next item is null if already read")
