@@ -52,7 +52,7 @@ class EventReaderTest extends ResponseReaderTest<EventReader> {
         Instant startTime = Instant.now();
         when(parser.getInstant()).thenReturn(startTime);
 
-        when(parser.isEndOfArray()).thenReturn(false, true, false, false, true, false, true, false, true);
+        when(parser.isEndOfArray()).thenReturn(false, true, false, true, false, true, false, true);
         Market market = mock(Market.class);
         when(marketReader.readFullResponse()).thenReturn(market);
 

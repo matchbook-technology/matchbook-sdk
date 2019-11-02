@@ -37,7 +37,7 @@ class RunnerReaderTest extends ResponseReaderTest<RunnerReader> {
         when(parser.getBoolean()).thenReturn(false);
         when(parser.getDouble()).thenReturn(1.5d, 317660.08d);
 
-        when(parser.isEndOfArray()).thenReturn(false, false, true);
+        when(parser.isEndOfArray()).thenReturn(false, true);
         Price price = mock(Price.class);
         when(priceReader.readFullResponse()).thenReturn(price);
 

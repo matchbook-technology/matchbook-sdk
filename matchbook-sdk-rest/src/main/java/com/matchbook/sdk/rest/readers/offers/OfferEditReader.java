@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest.readers.offers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.dtos.errors.Error;
 import com.matchbook.sdk.rest.dtos.errors.Errors;
 import com.matchbook.sdk.rest.dtos.offers.OfferEdit;
@@ -19,6 +20,11 @@ public class OfferEditReader extends ResponseReader<OfferEdit> {
     public OfferEditReader() {
         super();
         errorReader = new ErrorReader();
+    }
+
+    @VisibleForTesting
+    OfferEditReader(ErrorReader errorReader) {
+        this.errorReader = errorReader;
     }
 
     @Override

@@ -39,7 +39,7 @@ class MarketReaderTest extends ResponseReaderTest<MarketReader> {
         when(parser.getDouble()).thenReturn(1.5d, 317660.08d, 100.51d, 99.17d);
         when(parser.getInteger()).thenReturn(1);
 
-        when(parser.isEndOfArray()).thenReturn(false, false, true);
+        when(parser.isEndOfArray()).thenReturn(false, true);
         Runner runner = mock(Runner.class);
         when(runnerReader.readFullResponse()).thenReturn(runner);
 

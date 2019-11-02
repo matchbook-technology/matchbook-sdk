@@ -28,7 +28,7 @@ class ErrorsReaderTest extends ResponseReaderTest<ErrorsReader> {
         when(parser.isEndOfObject()).thenReturn(false, true);
         when(parser.getFieldName()).thenReturn("errors");
 
-        when(parser.isEndOfArray()).thenReturn(false, false, true);
+        when(parser.isEndOfArray()).thenReturn(false, true);
         Error error = mock(Error.class);
         when(errorReader.readFullResponse()).thenReturn(error);
 

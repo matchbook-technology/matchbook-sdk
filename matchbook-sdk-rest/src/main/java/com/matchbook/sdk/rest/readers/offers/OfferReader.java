@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest.readers.offers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.dtos.errors.Error;
 import com.matchbook.sdk.rest.dtos.errors.Errors;
 import com.matchbook.sdk.rest.dtos.events.MarketType;
@@ -30,6 +31,13 @@ public class OfferReader extends ResponseReader<Offer> {
         matchedBetReader = new MatchedBetReader();
         offerEditReader = new OfferEditReader();
         errorReader = new ErrorReader();
+    }
+
+    @VisibleForTesting
+    OfferReader(MatchedBetReader matchedBetReader, OfferEditReader offerEditReader, ErrorReader errorReader) {
+        this.matchedBetReader = matchedBetReader;
+        this.offerEditReader = offerEditReader;
+        this.errorReader = errorReader;
     }
 
     @Override
