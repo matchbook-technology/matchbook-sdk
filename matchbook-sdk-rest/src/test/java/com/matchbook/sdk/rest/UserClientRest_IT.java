@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 @Tag("integration")
-public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest> {
+class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest> {
 
     @Override
     protected UserClientRest newClientRest(ConnectionManager connectionManager) {

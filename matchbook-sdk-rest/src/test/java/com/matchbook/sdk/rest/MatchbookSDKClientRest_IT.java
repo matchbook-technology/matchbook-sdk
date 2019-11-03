@@ -10,7 +10,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
-public abstract class MatchbookSDKClientRest_IT<T extends BaseClientRest> {
+abstract class MatchbookSDKClientRest_IT<T extends BaseClientRest> {
 
     protected static WireMockServer wireMockServer;
 
@@ -21,18 +21,18 @@ public abstract class MatchbookSDKClientRest_IT<T extends BaseClientRest> {
     protected abstract T newClientRest(ConnectionManager connectionManager);
 
     @BeforeAll
-    public static void setUpBeforeClass() {
+    static void setUpBeforeClass() {
         wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().port(8089));
         wireMockServer.start();
     }
 
     @AfterAll
-    public static void tearDownAfterClass() {
+    static void tearDownAfterClass() {
         wireMockServer.stop();
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         ClientConfig clientConfig = new ClientConfig.Builder("login".toCharArray(), "password".toCharArray())
                 .sportsUrl("http://localhost:8089/edge/rest")
                 .loginUrl("http://localhost:8089/bpapi/rest/security/session")
@@ -44,7 +44,7 @@ public abstract class MatchbookSDKClientRest_IT<T extends BaseClientRest> {
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         connectionManager.close();
     }
 

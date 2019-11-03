@@ -49,7 +49,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 @Tag("integration")
-public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientRest> {
+class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientRest> {
 
     @Override
     protected OffersClientRest newClientRest(ConnectionManager connectionManager) {
