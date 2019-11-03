@@ -61,7 +61,7 @@ public abstract class PageableResponseReaderTest<X extends PageableResponseReade
 
     @Test
     @DisplayName("Read full response")
-    void readFullResponseTest() {
+    protected void readFullResponseTest() {
         when(parser.isEndOfObject()).thenReturn(false, false, false, false, true);
         when(parser.getFieldName()).thenReturn("total", "offset", "per-page", getItemsFieldName());
         when(parser.getInteger()).thenReturn(42, 0, 20);

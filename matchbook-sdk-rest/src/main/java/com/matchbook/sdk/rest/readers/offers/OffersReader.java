@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest.readers.offers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.dtos.offers.Offer;
 import com.matchbook.sdk.rest.dtos.offers.OffersResponse;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
@@ -14,6 +15,11 @@ public class OffersReader extends PageableResponseReader<Offer, OffersResponse> 
 
     public OffersReader() {
         super(new OfferReader());
+    }
+
+    @VisibleForTesting
+    OffersReader(OfferReader offerReader) {
+        super(offerReader);
     }
 
     @Override
@@ -44,12 +50,13 @@ public class OffersReader extends PageableResponseReader<Offer, OffersResponse> 
                 pageableResponse.setExchangeType(parser.getEnum(ExchangeType.class));
             } else if ("odds-type".equals(fieldName)) {
                 pageableResponse.setOddsType(parser.getEnum(OddsType.class));
-            } else if (itemsFieldName().equals(fieldName)) {
+            } else if ("offers".equals(fieldName)) {
                 List<Offer> items = readItems();
                 pageableResponse.setItems(items);
             }
             parser.moveToNextToken();
         }
+        readingItemStatus = ReadingItemsStatus.READ;
         return pageableResponse;
     }
 

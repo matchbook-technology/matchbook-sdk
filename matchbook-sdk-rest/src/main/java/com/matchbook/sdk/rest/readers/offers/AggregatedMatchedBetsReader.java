@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest.readers.offers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBet;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBetsResponse;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
@@ -15,6 +16,11 @@ public class AggregatedMatchedBetsReader
 
     public AggregatedMatchedBetsReader() {
         super(new AggregatedMatchedBetReader());
+    }
+
+    @VisibleForTesting
+    AggregatedMatchedBetsReader(AggregatedMatchedBetReader aggregatedMatchedBetReader) {
+        super(aggregatedMatchedBetReader);
     }
 
     @Override
@@ -45,12 +51,13 @@ public class AggregatedMatchedBetsReader
                 pageableResponse.setExchangeType(parser.getEnum(ExchangeType.class));
             } else if ("odds-type".equals(fieldName)) {
                 pageableResponse.setOddsType(parser.getEnum(OddsType.class));
-            } else if (itemsFieldName().equals(fieldName)) {
+            } else if ("matched-bets".equals(fieldName)) {
                 List<AggregatedMatchedBet> items = readItems();
                 pageableResponse.setItems(items);
             }
             parser.moveToNextToken();
         }
+        readingItemStatus = ReadingItemsStatus.READ;
         return pageableResponse;
     }
 
