@@ -4,6 +4,7 @@ import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.ErrorType;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.Parser;
 import com.matchbook.sdk.rest.configs.Serializer;
@@ -18,18 +19,23 @@ import java.util.Objects;
 
 class RestResponseCallback<T, RESP extends RestResponse> implements HttpCallback {
 
-    protected final StreamObserver<T> observer;
+    protected final StreamObserver<T> streamObserver;
     protected final Serializer serializer;
     protected final Reader<T, RESP> reader;
 
     private final ErrorsReader errorsReader;
 
-    protected RestResponseCallback(StreamObserver<T> observer, Serializer serializer, Reader<T, RESP> reader) {
-        this.observer = observer;
+    protected RestResponseCallback(StreamObserver<T> streamObserver, Serializer serializer, Reader<T, RESP> reader) {
+        this(streamObserver, serializer, reader, new ErrorsReader());
+    }
+
+    @VisibleForTesting
+    RestResponseCallback(StreamObserver<T> streamObserver, Serializer serializer,
+            Reader<T, RESP> reader, ErrorsReader errorsReader) {
+        this.streamObserver = streamObserver;
         this.serializer = serializer;
         this.reader = reader;
-
-        errorsReader = new ErrorsReader();
+        this.errorsReader = errorsReader;
     }
 
     @Override
@@ -38,14 +44,14 @@ class RestResponseCallback<T, RESP extends RestResponse> implements HttpCallback
             reader.init(parser);
             while (reader.hasMoreItems()) {
                 T item = reader.readNextItem();
-                observer.onNext(item);
+                streamObserver.onNext(item);
             }
-            observer.onCompleted();
+            streamObserver.onCompleted();
         } catch (MatchbookSDKParsingException parsingException) {
-            observer.onError(parsingException);
+            streamObserver.onError(parsingException);
         } catch (IOException ioException) {
             MatchbookSDKParsingException exception = parsingException(ioException);
-            observer.onError(exception);
+            streamObserver.onError(exception);
         }
     }
 
@@ -57,12 +63,12 @@ class RestResponseCallback<T, RESP extends RestResponse> implements HttpCallback
 
             MatchbookSDKHttpException matchbookException = Objects.nonNull(errors) && isAuthenticationError(errors) ?
                     unauthenticatedException() : httpException(responseCode);
-            observer.onError(matchbookException);
+            streamObserver.onError(matchbookException);
         } catch (MatchbookSDKParsingException parsingException) {
-            observer.onError(parsingException);
+            streamObserver.onError(parsingException);
         } catch (IOException ioException) {
             MatchbookSDKParsingException exception = parsingException(ioException);
-            observer.onError(exception);
+            streamObserver.onError(exception);
         }
     }
 
@@ -76,7 +82,7 @@ class RestResponseCallback<T, RESP extends RestResponse> implements HttpCallback
     @Override
     public void onException(IOException ioException) {
         MatchbookSDKHttpException matchbookException = httpException(ioException);
-        observer.onError(matchbookException);
+        streamObserver.onError(matchbookException);
     }
 
     protected MatchbookSDKParsingException parsingException(IOException ioException) {

@@ -2,11 +2,13 @@ package com.matchbook.sdk.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.configs.Parser;
 import com.matchbook.sdk.rest.configs.Serializer;
 import com.matchbook.sdk.rest.dtos.FailableRestResponse;
 import com.matchbook.sdk.rest.dtos.PartiallyFailableResponse;
 import com.matchbook.sdk.rest.readers.Reader;
+import com.matchbook.sdk.rest.readers.errors.ErrorsReader;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,6 +23,12 @@ class PartiallyFailableResponseCallback<T extends FailableRestResponse, RESP ext
 
     PartiallyFailableResponseCallback(StreamObserver<T> observer, Serializer serializer, Reader<T, RESP> reader) {
         super(observer, serializer, reader);
+    }
+
+    @VisibleForTesting
+    PartiallyFailableResponseCallback(StreamObserver<T> observer, Serializer serializer,
+            Reader<T, RESP> reader, ErrorsReader errorsReader) {
+        super(observer, serializer, reader, errorsReader);
     }
 
     @Override
@@ -38,7 +46,7 @@ class PartiallyFailableResponseCallback<T extends FailableRestResponse, RESP ext
             try (Parser parser = serializer.newParser(copiedInputStream)) {
                 boolean isPartiallyFailedResponse = tryPartiallyFailedResponse(parser);
                 if (isPartiallyFailedResponse) {
-                    observer.onCompleted();
+                    streamObserver.onCompleted();
                 } else {
                     secondParsing(responseBytes, responseCode);
                 }
@@ -47,7 +55,7 @@ class PartiallyFailableResponseCallback<T extends FailableRestResponse, RESP ext
             }
         } catch (IOException ioException) {
             MatchbookSDKParsingException exception = parsingException(ioException);
-            observer.onError(exception);
+            streamObserver.onError(exception);
         }
     }
 
@@ -62,17 +70,13 @@ class PartiallyFailableResponseCallback<T extends FailableRestResponse, RESP ext
         return  outputStream;
     }
 
-    private InputStream copyInputStream(ByteArrayOutputStream byteArrayOutputStream) {
-        return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-    }
-
     private boolean tryPartiallyFailedResponse(Parser parser) {
         boolean isPartiallyFailedResponse = false;
         reader.init(parser);
         while (reader.hasMoreItems()) {
             T item = reader.readNextItem();
             isPartiallyFailedResponse |= Objects.nonNull(item);
-            observer.onNext(item);
+            streamObserver.onNext(item);
         }
         return isPartiallyFailedResponse;
     }
@@ -82,8 +86,12 @@ class PartiallyFailableResponseCallback<T extends FailableRestResponse, RESP ext
             super.onFailedResponse(otherResponseInputStream, responseCode);
         } catch (IOException ioException) {
             MatchbookSDKParsingException exception = parsingException(ioException);
-            observer.onError(exception);
+            streamObserver.onError(exception);
         }
+    }
+
+    private InputStream copyInputStream(ByteArrayOutputStream byteArrayOutputStream) {
+        return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     }
 
 }
