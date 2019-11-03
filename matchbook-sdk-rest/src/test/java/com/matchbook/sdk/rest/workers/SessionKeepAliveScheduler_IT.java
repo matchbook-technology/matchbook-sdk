@@ -116,4 +116,21 @@ class SessionKeepAliveScheduler_IT {
                 .matches(e -> e.getErrorType().equals(ErrorType.HTTP));
     }
 
+    @Test
+    @DisplayName("Stop scheduler")
+    void stopTest() {
+        wireMockServer.stubFor(post(urlPathEqualTo("/bpapi/rest/security/session"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/user/loginSuccessfulResponse.json")));
+
+        sessionKeepAliveScheduler.start();
+        assertThat(sessionKeepAliveScheduler.isStarted()).isTrue();
+
+        sessionKeepAliveScheduler.stop();
+        assertThat(sessionKeepAliveScheduler.isStarted()).isFalse();
+    }
+
 }
