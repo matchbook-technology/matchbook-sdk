@@ -65,7 +65,7 @@ class UserClientRestTest {
 
         unit.login(streamObserver);
 
-        verify(httpClient).post(eq("https://matchbook.example.com/login"), anyString(), any(RestResponseCallback.class));
+        verify(httpClient).post(eq("https://matchbook.example.com/login"), anyString(), any(ResponseCallback.class));
     }
 
     @Test
@@ -76,7 +76,7 @@ class UserClientRestTest {
 
         unit.logout(streamObserver);
 
-        verify(httpClient).delete(eq("https://matchbook.example.com/login"), any(RestResponseCallback.class));
+        verify(httpClient).delete(eq("https://matchbook.example.com/login"), any(ResponseCallback.class));
     }
 
     @Test
@@ -87,7 +87,7 @@ class UserClientRestTest {
 
         unit.getAccount(streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/account"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/account"), any(ResponseCallback.class));
     }
 
     @Test
@@ -98,7 +98,7 @@ class UserClientRestTest {
 
         unit.getBalance(streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/account/balance"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/account/balance"), any(ResponseCallback.class));
     }
 
 }

@@ -10,9 +10,9 @@ import com.matchbook.sdk.rest.readers.errors.ErrorsReader;
 
 import org.mockito.Mock;
 
-class RestResponseCallbackTest
-        extends BaseResponseCallbackTest<RestResponseCallback<Object, RestResponseCallbackTest.TestRestResponse>,
-                Object, RestResponseCallbackTest.TestRestResponse> {
+class ResponseCallbackTest
+        extends BaseResponseCallbackTest<ResponseCallback<Object, ResponseCallbackTest.TestRestResponse>,
+                Object, ResponseCallbackTest.TestRestResponse> {
 
     @Mock
     private StreamObserver<Object> streamObserver;
@@ -31,9 +31,9 @@ class RestResponseCallbackTest
     }
 
     @Override
-    protected RestResponseCallback<Object, TestRestResponse> newResponseCallback(StreamObserver<Object> streamObserver,
+    protected ResponseCallback<Object, TestRestResponse> newResponseCallback(StreamObserver<Object> streamObserver,
             Serializer serializer, Reader<Object, TestRestResponse> reader, ErrorsReader errorsReader) {
-        return new RestResponseCallback<>(streamObserver, serializer, reader, errorsReader);
+        return new ResponseCallback<>(streamObserver, serializer, reader, errorsReader);
     }
 
     @Override

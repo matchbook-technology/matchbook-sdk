@@ -35,7 +35,7 @@ abstract class BaseClientRest implements Client {
             String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
         String requestUrl = buildUrl(url, request);
         Serializer serializer = connectionManager.getSerializer();
-        connectionManager.getHttpClient().get(requestUrl, new RestResponseCallback<>(observer, serializer, reader));
+        connectionManager.getHttpClient().get(requestUrl, new ResponseCallback<>(observer, serializer, reader));
     }
 
     protected <REQ extends RestRequest, RESP extends PartiallyFailableResponse<T>, T extends FailableRestResponse>
@@ -46,7 +46,7 @@ abstract class BaseClientRest implements Client {
 
     protected <REQ extends RestRequest, RESP extends RestResponse, T> void postRequest(
             String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
-        HttpCallback httpCallback = new RestResponseCallback<>(observer, connectionManager.getSerializer(), reader);
+        HttpCallback httpCallback = new ResponseCallback<>(observer, connectionManager.getSerializer(), reader);
         postRequest(url, request, observer, httpCallback);
     }
 
@@ -70,7 +70,7 @@ abstract class BaseClientRest implements Client {
 
     protected <REQ extends RestRequest, RESP extends RestResponse, T> void putRequest(
             String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
-        HttpCallback httpCallback = new RestResponseCallback<>(observer, connectionManager.getSerializer(), reader);
+        HttpCallback httpCallback = new ResponseCallback<>(observer, connectionManager.getSerializer(), reader);
         putRequest(url, request, observer, httpCallback);
     }
 
@@ -94,7 +94,7 @@ abstract class BaseClientRest implements Client {
 
     protected <REQ extends RestRequest, RESP extends RestResponse, T> void deleteRequest(
             String url, REQ request, StreamObserver<T> observer, Reader<T, RESP> reader) {
-        HttpCallback httpCallback = new RestResponseCallback<>(observer, connectionManager.getSerializer(), reader);
+        HttpCallback httpCallback = new ResponseCallback<>(observer, connectionManager.getSerializer(), reader);
         deleteRequest(url, request, httpCallback);
     }
 

@@ -67,7 +67,7 @@ class HeartbeatClientRestTest {
 
         unit.getHeartbeat(heartbeatGetRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(ResponseCallback.class));
     }
 
     @Test
@@ -82,7 +82,7 @@ class HeartbeatClientRestTest {
 
         unit.sendHeartbeat(heartbeatPostRequest, streamObserver);
 
-        verify(httpClient).post(eq("https://matchbook.example.com/sports/path"), eq("{}"), any(RestResponseCallback.class));
+        verify(httpClient).post(eq("https://matchbook.example.com/sports/path"), eq("{}"), any(ResponseCallback.class));
     }
 
     @Test
@@ -97,7 +97,7 @@ class HeartbeatClientRestTest {
         unit.sendHeartbeat(heartbeatPostRequest, streamObserver);
 
         verify(streamObserver).onError(any(MatchbookSDKParsingException.class));
-        verify(httpClient, never()).post(anyString(), anyString(), any(RestResponseCallback.class));
+        verify(httpClient, never()).post(anyString(), anyString(), any(ResponseCallback.class));
     }
 
     @Test
@@ -112,7 +112,7 @@ class HeartbeatClientRestTest {
 
         unit.unsubscribeHeartbeat(heartbeatDeleteRequest, streamObserver);
 
-        verify(httpClient).delete(eq("https://matchbook.example.com/sports/path"), any(RestResponseCallback.class));
+        verify(httpClient).delete(eq("https://matchbook.example.com/sports/path"), any(ResponseCallback.class));
     }
 
 }

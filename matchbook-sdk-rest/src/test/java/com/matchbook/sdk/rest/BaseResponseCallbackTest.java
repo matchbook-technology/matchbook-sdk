@@ -33,7 +33,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-abstract class BaseResponseCallbackTest<X extends RestResponseCallback<T, RESP>, T, RESP extends RestResponse> {
+abstract class BaseResponseCallbackTest<X extends ResponseCallback<T, RESP>, T, RESP extends RestResponse> {
 
     @Mock
     protected Serializer serializer;

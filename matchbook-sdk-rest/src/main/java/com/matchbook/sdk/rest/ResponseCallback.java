@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-class RestResponseCallback<T, RESP extends RestResponse> implements HttpCallback {
+class ResponseCallback<T, RESP extends RestResponse> implements HttpCallback {
 
     protected final StreamObserver<T> streamObserver;
     protected final Serializer serializer;
@@ -25,13 +25,13 @@ class RestResponseCallback<T, RESP extends RestResponse> implements HttpCallback
 
     private final ErrorsReader errorsReader;
 
-    protected RestResponseCallback(StreamObserver<T> streamObserver, Serializer serializer, Reader<T, RESP> reader) {
+    protected ResponseCallback(StreamObserver<T> streamObserver, Serializer serializer, Reader<T, RESP> reader) {
         this(streamObserver, serializer, reader, new ErrorsReader());
     }
 
     @VisibleForTesting
-    RestResponseCallback(StreamObserver<T> streamObserver, Serializer serializer,
-            Reader<T, RESP> reader, ErrorsReader errorsReader) {
+    ResponseCallback(StreamObserver<T> streamObserver, Serializer serializer,
+                     Reader<T, RESP> reader, ErrorsReader errorsReader) {
         this.streamObserver = streamObserver;
         this.serializer = serializer;
         this.reader = reader;

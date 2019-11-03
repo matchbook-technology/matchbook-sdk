@@ -58,7 +58,7 @@ class PricesClientRestTest {
 
         unit.getPrices(pricesRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(ResponseCallback.class));
     }
 
 }

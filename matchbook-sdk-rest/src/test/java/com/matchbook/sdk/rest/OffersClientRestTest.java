@@ -80,7 +80,7 @@ class OffersClientRestTest {
 
         unit.getOffer(offerRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path/42"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path/42"), any(ResponseCallback.class));
     }
 
     @Test
@@ -95,7 +95,7 @@ class OffersClientRestTest {
 
         unit.getOffers(offersRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(ResponseCallback.class));
     }
 
     @Test
@@ -110,7 +110,7 @@ class OffersClientRestTest {
 
         unit.getOfferEdit(offerEditRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path/42"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path/42"), any(ResponseCallback.class));
     }
 
     @Test
@@ -125,7 +125,7 @@ class OffersClientRestTest {
 
         unit.getOfferEdits(offerEditsRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(ResponseCallback.class));
     }
 
     @Test
@@ -140,7 +140,7 @@ class OffersClientRestTest {
 
         unit.getPositions(positionRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(ResponseCallback.class));
     }
 
     @Test
@@ -155,7 +155,7 @@ class OffersClientRestTest {
 
         unit.getAggregatedMatchedBets(aggregatedMatchedBetRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(ResponseCallback.class));
     }
 
     @Test
@@ -170,7 +170,7 @@ class OffersClientRestTest {
 
         unit.getCancelledMatchedBets(cancelledMatchedBetRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(ResponseCallback.class));
     }
 
     @Test
@@ -217,7 +217,7 @@ class OffersClientRestTest {
         unit.editOffer(offerPutRequest, streamObserver);
 
         verify(httpClient).put(eq("https://matchbook.example.com/sports/path/42"), eq("{}"),
-                any(RestResponseCallback.class));
+                any(ResponseCallback.class));
     }
 
     @Test
@@ -232,7 +232,7 @@ class OffersClientRestTest {
         unit.editOffer(offerPutRequest, streamObserver);
 
         verify(streamObserver).onError(any(MatchbookSDKParsingException.class));
-        verify(httpClient, never()).put(anyString(), anyString(), any(RestResponseCallback.class));
+        verify(httpClient, never()).put(anyString(), anyString(), any(ResponseCallback.class));
     }
 
     @Test
@@ -278,7 +278,7 @@ class OffersClientRestTest {
 
         unit.cancelOffer(offerDeleteRequest, streamObserver);
 
-        verify(httpClient).delete(eq("https://matchbook.example.com/sports/path"), any(RestResponseCallback.class));
+        verify(httpClient).delete(eq("https://matchbook.example.com/sports/path"), any(ResponseCallback.class));
     }
 
     @Test

@@ -67,7 +67,7 @@ class EventsClientRestTest {
 
         unit.getSports(sportsRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(ResponseCallback.class));
     }
 
     @Test
@@ -80,7 +80,7 @@ class EventsClientRestTest {
 
         unit.getEvent(eventRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path/42"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path/42"), any(ResponseCallback.class));
     }
 
     @Test
@@ -93,7 +93,7 @@ class EventsClientRestTest {
 
         unit.getEvents(eventsRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(ResponseCallback.class));
     }
 
     @Test
@@ -106,7 +106,7 @@ class EventsClientRestTest {
 
         unit.getMarket(marketRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path/42"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path/42"), any(ResponseCallback.class));
     }
 
     @Test
@@ -119,7 +119,7 @@ class EventsClientRestTest {
 
         unit.getMarkets(marketsRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(ResponseCallback.class));
     }
 
     @Test
@@ -132,7 +132,7 @@ class EventsClientRestTest {
 
         unit.getRunner(runnerRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path/42"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path/42"), any(ResponseCallback.class));
     }
 
     @Test
@@ -145,7 +145,7 @@ class EventsClientRestTest {
 
         unit.getRunners(runnersRequest, streamObserver);
 
-        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(RestResponseCallback.class));
+        verify(httpClient).get(eq("https://matchbook.example.com/sports/path?param=value"), any(ResponseCallback.class));
     }
 
 }
