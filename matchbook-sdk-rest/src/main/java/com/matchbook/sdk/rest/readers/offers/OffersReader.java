@@ -34,7 +34,7 @@ public class OffersReader extends PageableResponseReader<Offer, OffersResponse> 
 
     @Override
     public OffersResponse readFullResponse() throws MatchbookSDKParsingException {
-        final OffersResponse pageableResponse = new OffersResponse();
+        final OffersResponse pageableResponse = newPageableResponse();
         while (!parser.isEndOfObject()) {
             parser.moveToNextValue();
             String fieldName = parser.getFieldName();
@@ -50,7 +50,7 @@ public class OffersReader extends PageableResponseReader<Offer, OffersResponse> 
                 pageableResponse.setExchangeType(parser.getEnum(ExchangeType.class));
             } else if ("odds-type".equals(fieldName)) {
                 pageableResponse.setOddsType(parser.getEnum(OddsType.class));
-            } else if ("offers".equals(fieldName)) {
+            } else if (itemsFieldName().equals(fieldName)) {
                 List<Offer> items = readItems();
                 pageableResponse.setItems(items);
             }

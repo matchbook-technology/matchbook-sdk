@@ -51,7 +51,7 @@ public class AggregatedMatchedBetsReader
                 pageableResponse.setExchangeType(parser.getEnum(ExchangeType.class));
             } else if ("odds-type".equals(fieldName)) {
                 pageableResponse.setOddsType(parser.getEnum(OddsType.class));
-            } else if ("matched-bets".equals(fieldName)) {
+            } else if (itemsFieldName().equals(fieldName)) {
                 List<AggregatedMatchedBet> items = readItems();
                 pageableResponse.setItems(items);
             }
