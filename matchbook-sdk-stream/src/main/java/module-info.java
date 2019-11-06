@@ -1,4 +1,4 @@
-module com.matchbook.sdk.stream {
+open module com.matchbook.sdk.stream {
 
     exports com.matchbook.sdk.stream;
 

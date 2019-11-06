@@ -4,6 +4,7 @@ import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
 import com.matchbook.sdk.rest.UserClient;
 import com.matchbook.sdk.rest.dtos.user.Login;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,12 +24,12 @@ class SessionKeepAliveTask implements Runnable {
 
             @Override
             public void onNext(Login login) {
-                //do nothing
+                LOG.info("Session token of user {} successfully updated.", login.getAccount().getUsername());
             }
 
             @Override
             public void onCompleted() {
-                LOG.info("Session token successfully updated.");
+                // do nothing
             }
 
             @Override

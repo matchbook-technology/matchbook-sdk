@@ -3,9 +3,9 @@ package com.matchbook.sdk.rest.dtos.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.matchbook.sdk.rest.dtos.prices.AbstractPricesRequest;
+import com.matchbook.sdk.rest.dtos.prices.BasePricesRequest;
 
-public class EventRequest extends AbstractPricesRequest {
+public class EventRequest extends BasePricesRequest {
 
     private final Long eventId;
     private final boolean includeEventParticipants;
@@ -53,16 +53,19 @@ public class EventRequest extends AbstractPricesRequest {
                 "eventId=" + eventId +
                 ", includeEventParticipants=" + includeEventParticipants +
                 ", includePrices=" + includePrices +
-                ", oddsType=" + oddsType +
-                ", exchangeType=" + exchangeType +
-                ", side=" + side +
-                ", currency=" + currency +
-                ", minimumLiquidity=" + minimumLiquidity +
-                ", priceMode=" + priceMode +
+                (includePrices ? (
+                        ", oddsType=" + oddsType +
+                        ", exchangeType=" + exchangeType +
+                        ", side=" + side +
+                        ", currency=" + currency +
+                        ", minimumLiquidity=" + minimumLiquidity +
+                        ", priceMode=" + priceMode
+                ) : "") +
                 "}";
     }
 
-    private static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
+    private static abstract class Init<T extends Init<T>> extends BasePricesRequest.Init<T> {
+
         private final Long eventId;
         private boolean includeEventParticipants;
         private boolean includePrices;

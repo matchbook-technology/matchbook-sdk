@@ -3,28 +3,28 @@ package com.matchbook.sdk.rest.dtos.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.matchbook.sdk.rest.dtos.prices.AbstractPricesRequest;
+import com.matchbook.sdk.rest.dtos.prices.BasePricesRequest;
 
-public class MarketRequest extends AbstractPricesRequest {
+public class MarketRequest extends BasePricesRequest {
 
-    private final Long marketId;
     private final Long eventId;
+    private final Long marketId;
     private final boolean includePrices;
 
     private MarketRequest(Init<?> init) {
         super(init);
 
-        this.marketId = init.marketId;
         this.eventId = init.eventId;
+        this.marketId = init.marketId;
         this.includePrices = init.includePrices;
-    }
-
-    public Long getMarketId() {
-        return marketId;
     }
 
     public Long getEventId() {
         return eventId;
+    }
+
+    public Long getMarketId() {
+        return marketId;
     }
 
     public boolean includePrices() {
@@ -50,8 +50,8 @@ public class MarketRequest extends AbstractPricesRequest {
     @Override
     public String toString() {
         return MarketRequest.class.getSimpleName() + " {" +
-                "marketId=" + marketId +
-                ", eventId=" + eventId +
+                "eventId=" + eventId +
+                ", marketId=" + marketId +
                 ", includePrices=" + includePrices +
                 (includePrices ? (
                         ", oddsType=" + oddsType +
@@ -64,13 +64,13 @@ public class MarketRequest extends AbstractPricesRequest {
                 "}";
     }
 
-    private static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
+    private static abstract class Init<T extends Init<T>> extends BasePricesRequest.Init<T> {
 
-        private final Long marketId;
         private final Long eventId;
+        private final Long marketId;
         private boolean includePrices;
 
-        private Init(Long marketId, Long eventId) {
+        private Init(Long eventId, Long marketId) {
             this.eventId = eventId;
             this.marketId = marketId;
             includePrices = false;
@@ -89,8 +89,8 @@ public class MarketRequest extends AbstractPricesRequest {
 
     public static class Builder extends Init<Builder> {
 
-        public Builder(Long marketId, Long eventId) {
-            super(marketId, eventId);
+        public Builder(Long eventId, Long marketId) {
+            super(eventId, marketId);
         }
 
         @Override

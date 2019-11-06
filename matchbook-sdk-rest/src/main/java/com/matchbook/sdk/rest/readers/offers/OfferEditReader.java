@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest.readers.offers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.dtos.errors.Error;
 import com.matchbook.sdk.rest.dtos.errors.Errors;
 import com.matchbook.sdk.rest.dtos.offers.OfferEdit;
@@ -11,7 +12,6 @@ import com.matchbook.sdk.rest.readers.errors.ErrorReader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class OfferEditReader extends ResponseReader<OfferEdit> {
 
@@ -20,6 +20,11 @@ public class OfferEditReader extends ResponseReader<OfferEdit> {
     public OfferEditReader() {
         super();
         errorReader = new ErrorReader();
+    }
+
+    @VisibleForTesting
+    OfferEditReader(ErrorReader errorReader) {
+        this.errorReader = errorReader;
     }
 
     @Override
@@ -75,9 +80,7 @@ public class OfferEditReader extends ResponseReader<OfferEdit> {
         while (!parser.isEndOfArray()) {
             errorReader.init(parser);
             Error error = errorReader.readFullResponse();
-            if (Objects.nonNull(error)) {
-                errorsList.add(error);
-            }
+            errorsList.add(error);
             parser.moveToNextToken();
         }
         return errorsList;

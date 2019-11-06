@@ -1,19 +1,25 @@
 package com.matchbook.sdk.rest.readers.offers;
 
-import java.util.List;
-
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.PageableResponseReader;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.dtos.offers.Offer;
 import com.matchbook.sdk.rest.dtos.offers.OffersResponse;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
+import com.matchbook.sdk.rest.readers.PageableResponseReader;
+
+import java.util.List;
 
 public class OffersReader extends PageableResponseReader<Offer, OffersResponse> {
 
     public OffersReader() {
         super(new OfferReader());
+    }
+
+    @VisibleForTesting
+    OffersReader(OfferReader offerReader) {
+        super(offerReader);
     }
 
     @Override
@@ -28,7 +34,7 @@ public class OffersReader extends PageableResponseReader<Offer, OffersResponse> 
 
     @Override
     public OffersResponse readFullResponse() throws MatchbookSDKParsingException {
-        final OffersResponse pageableResponse = new OffersResponse();
+        final OffersResponse pageableResponse = newPageableResponse();
         while (!parser.isEndOfObject()) {
             parser.moveToNextValue();
             String fieldName = parser.getFieldName();
@@ -50,6 +56,7 @@ public class OffersReader extends PageableResponseReader<Offer, OffersResponse> 
             }
             parser.moveToNextToken();
         }
+        readingItemStatus = ReadingItemsStatus.READ;
         return pageableResponse;
     }
 

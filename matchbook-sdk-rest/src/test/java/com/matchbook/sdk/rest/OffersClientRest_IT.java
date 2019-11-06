@@ -13,6 +13,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.matchbook.sdk.core.exceptions.ErrorType;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBet;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBetsRequest;
 import com.matchbook.sdk.rest.dtos.offers.CancelledMatchedBetsRequest;
@@ -42,9 +44,12 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientRest> {
+@Tag("integration")
+class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientRest> {
 
     @Override
     protected OffersClientRest newClientRest(ConnectionManager connectionManager) {
@@ -52,6 +57,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Get a single offer")
     void getOfferTest() {
         String url = "/edge/rest/v2/offers/382937981320019";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -71,6 +77,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Get all offers")
     void getOffersTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -90,6 +97,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Submit an offer")
     void submitOffersTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
@@ -114,6 +122,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Submit multiple offers and one fails")
     void submitOffersPartiallyFailedTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
@@ -153,6 +162,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Edit a single offer")
     void editOfferTest() {
         String url = "/edge/rest/v2/offers/925183846730025";
         wireMockServer.stubFor(put(urlPathEqualTo(url))
@@ -177,6 +187,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Edit multiple offers")
     void editOffersTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(put(urlPathEqualTo(url))
@@ -204,6 +215,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Edit multiple offers and one fails")
     void editOffersPartiallyFailedTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(put(urlPathEqualTo(url))
@@ -233,6 +245,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Cancel a single offer")
     void deleteOfferTest() {
         String url = "/edge/rest/v2/offers/413775799780013";
         wireMockServer.stubFor(delete(urlPathEqualTo(url))
@@ -252,6 +265,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Cancel multiple offers")
     void deleteOffersTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(delete(urlPathEqualTo(url))
@@ -284,6 +298,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Get a single offer edit")
     void getOfferEditTest() {
         String url = "/edge/rest/v2/offers/925183846730025/offer-edits/925184068850125";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -303,6 +318,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Get all offer edits")
     void getOfferEditsTest() {
         String url = "/edge/rest/v2/offers/925183846730025/offer-edits";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -334,6 +350,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Get all aggregated matched bets")
     void getAggregatedMatchedBetsTest() {
         String url = "/edge/rest/bets/matched/aggregated";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -364,6 +381,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Get all cancelled matched bets")
     void getCancelledMatchedBetsTest() {
         String url = "/edge/rest/bets";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -395,6 +413,7 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
+    @DisplayName("Get all positions")
     void getPositionsTest() {
         String url = "/edge/rest/account/positions";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -420,6 +439,52 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
         assertThat(position.getRunnerId()).isNotNull();
         assertThat(Arrays.asList(position.getPotentialProfit(), position.getPotentialLoss()))
                 .containsOnlyOnce((BigDecimal) null);
+    }
+
+    @Test
+    @DisplayName("Unexpected server error in offers API")
+    void unexpectedServerErrorTest() {
+        String url = "/edge/rest/v2/offers";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(500)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/serverErrorResponse.json")));
+
+        OffersGetRequest offersGetRequest = new OffersGetRequest.Builder().build();
+        ResponseStreamObserver<Offer> streamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.HTTP);
+        });
+        clientRest.getOffers(offersGetRequest, streamObserver);
+        streamObserver.waitTermination();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    @Test
+    @DisplayName("Unexpected empty response in offers API")
+    void unexpectedEmptyResponseTest() {
+        String url = "/edge/rest/v2/offers";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("")));
+
+        OffersGetRequest offersGetRequest = new OffersGetRequest.Builder().build();
+        ResponseStreamObserver<Offer> streamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.HTTP);
+        });
+        clientRest.getOffers(offersGetRequest, streamObserver);
+        streamObserver.waitTermination();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
 }

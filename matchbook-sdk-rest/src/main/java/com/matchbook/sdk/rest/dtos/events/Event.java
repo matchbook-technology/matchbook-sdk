@@ -18,13 +18,13 @@ public class Event implements RestResponse {
     private boolean inRunning;
     private boolean allowLiveBetting;
     private Double volume;
-    private List<Market> markets;
     private List<EventParticipant> eventParticipants;
+    private List<Market> markets;
     private List<MetaTag> metaTags;
 
     public Event() {
-        markets = new ArrayList<>();
         eventParticipants = new ArrayList<>();
+        markets = new ArrayList<>();
         metaTags = new ArrayList<>();
     }
 
@@ -100,20 +100,20 @@ public class Event implements RestResponse {
         this.volume = volume;
     }
 
-    public List<Market> getMarkets() {
-        return markets;
-    }
-
-    public void setMarkets(List<Market> markets) {
-        this.markets = markets;
-    }
-
     public List<EventParticipant> getEventParticipants() {
         return eventParticipants;
     }
 
     public void setEventParticipants(List<EventParticipant> eventParticipants) {
         this.eventParticipants = eventParticipants;
+    }
+
+    public List<Market> getMarkets() {
+        return markets;
+    }
+
+    public void setMarkets(List<Market> markets) {
+        this.markets = markets;
     }
 
     public List<MetaTag> getMetaTags() {
@@ -136,8 +136,8 @@ public class Event implements RestResponse {
                 ", inRunning=" + inRunning +
                 ", allowLiveBetting=" + allowLiveBetting +
                 ", volume=" + volume +
-                ", markets=" + markets +
                 ", eventParticipants=" + eventParticipants +
+                ", markets=" + markets +
                 ", metaTags=" + metaTags +
                 "}";
     }

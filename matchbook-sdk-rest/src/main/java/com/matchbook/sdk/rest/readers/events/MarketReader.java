@@ -1,15 +1,15 @@
 package com.matchbook.sdk.rest.readers.events;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.dtos.events.Market;
 import com.matchbook.sdk.rest.dtos.events.MarketStatus;
 import com.matchbook.sdk.rest.dtos.events.MarketType;
 import com.matchbook.sdk.rest.dtos.events.Runner;
+import com.matchbook.sdk.rest.readers.ResponseReader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MarketReader extends ResponseReader<Market> {
 
@@ -18,6 +18,11 @@ public class MarketReader extends ResponseReader<Market> {
     public MarketReader() {
         super();
         runnerReader = new RunnerReader();
+    }
+
+    @VisibleForTesting
+    MarketReader(RunnerReader runnerReader) {
+        this.runnerReader = runnerReader;
     }
 
     @Override
@@ -65,9 +70,7 @@ public class MarketReader extends ResponseReader<Market> {
         while (!parser.isEndOfArray()) {
             runnerReader.init(parser);
             Runner runner = runnerReader.readFullResponse();
-            if (Objects.nonNull(runner)) {
-                runners.add(runner);
-            }
+            runners.add(runner);
             parser.moveToNextToken();
         }
         return runners;

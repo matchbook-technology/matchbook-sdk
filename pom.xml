@@ -75,7 +75,7 @@
         <!-- Application dependencies -->
         <assertj.version>3.12.2</assertj.version>
         <jackson.version>2.9.9</jackson.version>
-        <junit.jupiter.version>5.4.2</junit.jupiter.version>
+        <junit.jupiter.version>5.5.2</junit.jupiter.version>
         <lmax.version>3.4.2</lmax.version>
         <logback.version>1.2.3</logback.version>
         <mockito.version>2.28.2</mockito.version>

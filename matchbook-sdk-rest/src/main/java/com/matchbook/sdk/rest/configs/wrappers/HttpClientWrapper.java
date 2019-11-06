@@ -2,7 +2,7 @@ package com.matchbook.sdk.rest.configs.wrappers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKHttpException;
 import com.matchbook.sdk.core.utils.VisibleForTesting;
-import com.matchbook.sdk.rest.HttpConfig;
+import com.matchbook.sdk.rest.configs.HttpConfig;
 import com.matchbook.sdk.rest.configs.HttpCallback;
 import com.matchbook.sdk.rest.configs.HttpClient;
 

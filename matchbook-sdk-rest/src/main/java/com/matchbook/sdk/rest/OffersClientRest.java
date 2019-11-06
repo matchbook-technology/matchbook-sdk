@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBet;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBetsRequest;
 import com.matchbook.sdk.rest.dtos.offers.CancelledMatchedBetsRequest;
@@ -26,7 +27,7 @@ import com.matchbook.sdk.rest.readers.offers.OfferReader;
 import com.matchbook.sdk.rest.readers.offers.OffersReader;
 import com.matchbook.sdk.rest.readers.offers.PositionsReader;
 
-public class OffersClientRest extends AbstractClientRest implements OffersClient {
+public class OffersClientRest extends BaseClientRest implements OffersClient {
 
     public OffersClientRest(ConnectionManager connectionManager) {
         super(connectionManager);

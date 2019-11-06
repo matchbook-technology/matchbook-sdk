@@ -1,14 +1,14 @@
 package com.matchbook.sdk.rest.readers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.dtos.PageableResponse;
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
-public abstract class PageableResponseReader<T extends RestResponse, R extends PageableResponse<T>> extends AbstractReader<T, R> {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+public abstract class PageableResponseReader<T extends RestResponse, R extends PageableResponse<T>> extends BaseReader<T, R> {
 
     final private ResponseReader<T> itemsReader;
 
@@ -19,41 +19,6 @@ public abstract class PageableResponseReader<T extends RestResponse, R extends P
     abstract protected R newPageableResponse();
 
     abstract protected String itemsFieldName();
-
-    @Override
-    public R readFullResponse() throws MatchbookSDKParsingException {
-        final R pageableResponse = newPageableResponse();
-        while (!parser.isEndOfObject()) {
-            parser.moveToNextValue();
-            String fieldName = parser.getFieldName();
-            if ("total".equals(fieldName)) {
-                pageableResponse.setTotal(parser.getInteger());
-            } else if ("offset".equals(fieldName)) {
-                pageableResponse.setOffset(parser.getInteger());
-            } else if ("per-page".equals(fieldName)) {
-                pageableResponse.setPerPage(parser.getInteger());
-            } else if (itemsFieldName().equals(fieldName)) {
-                List<T> items = readItems();
-                pageableResponse.setItems(items);
-            }
-            parser.moveToNextToken();
-        }
-        return pageableResponse;
-    }
-
-    protected List<T> readItems() {
-        List<T> items = new ArrayList<>();
-        parser.moveToNextToken();
-        while (!parser.isEndOfArray()) {
-            itemsReader.init(parser);
-            T item = itemsReader.readFullResponse();
-            if (Objects.nonNull(item)) {
-                items.add(item);
-            }
-            parser.moveToNextToken();
-        }
-        return items;
-    }
 
     @Override
     public T readNextItem() throws MatchbookSDKParsingException {
@@ -77,6 +42,40 @@ public abstract class PageableResponseReader<T extends RestResponse, R extends P
         while (!parser.isEndOfObject() && !parser.isEndOfArray() && !itemsFieldName().equals(parser.getFieldName())) {
             parser.moveToNextValue();
         }
+    }
+
+    @Override
+    public R readFullResponse() throws MatchbookSDKParsingException {
+        final R pageableResponse = newPageableResponse();
+        while (!parser.isEndOfObject()) {
+            parser.moveToNextValue();
+            String fieldName = parser.getFieldName();
+            if ("total".equals(fieldName)) {
+                pageableResponse.setTotal(parser.getInteger());
+            } else if ("offset".equals(fieldName)) {
+                pageableResponse.setOffset(parser.getInteger());
+            } else if ("per-page".equals(fieldName)) {
+                pageableResponse.setPerPage(parser.getInteger());
+            } else if (itemsFieldName().equals(fieldName)) {
+                List<T> items = readItems();
+                pageableResponse.setItems(items);
+            }
+            parser.moveToNextToken();
+        }
+        readingItemStatus = ReadingItemsStatus.READ;
+        return pageableResponse;
+    }
+
+    protected List<T> readItems() {
+        List<T> items = new ArrayList<>();
+        parser.moveToNextToken();
+        while (!parser.isEndOfArray()) {
+            itemsReader.init(parser);
+            T item = itemsReader.readFullResponse();
+            items.add(item);
+            parser.moveToNextToken();
+        }
+        return items;
     }
 
 }

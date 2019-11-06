@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest.readers.offers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.dtos.errors.Error;
 import com.matchbook.sdk.rest.dtos.errors.Errors;
 import com.matchbook.sdk.rest.dtos.events.MarketType;
@@ -18,7 +19,6 @@ import com.matchbook.sdk.rest.readers.errors.ErrorReader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class OfferReader extends ResponseReader<Offer> {
 
@@ -31,6 +31,13 @@ public class OfferReader extends ResponseReader<Offer> {
         matchedBetReader = new MatchedBetReader();
         offerEditReader = new OfferEditReader();
         errorReader = new ErrorReader();
+    }
+
+    @VisibleForTesting
+    OfferReader(MatchedBetReader matchedBetReader, OfferEditReader offerEditReader, ErrorReader errorReader) {
+        this.matchedBetReader = matchedBetReader;
+        this.offerEditReader = offerEditReader;
+        this.errorReader = errorReader;
     }
 
     @Override
@@ -117,9 +124,7 @@ public class OfferReader extends ResponseReader<Offer> {
         while (!parser.isEndOfArray()) {
             matchedBetReader.init(parser);
             MatchedBet market = matchedBetReader.readFullResponse();
-            if (Objects.nonNull(market)) {
-                matchedBets.add(market);
-            }
+            matchedBets.add(market);
             parser.moveToNextToken();
         }
         return matchedBets;
@@ -141,9 +146,7 @@ public class OfferReader extends ResponseReader<Offer> {
         while (!parser.isEndOfArray()) {
             errorReader.init(parser);
             Error error = errorReader.readFullResponse();
-            if (Objects.nonNull(error)) {
-                errorsList.add(error);
-            }
+            errorsList.add(error);
             parser.moveToNextToken();
         }
         return errorsList;

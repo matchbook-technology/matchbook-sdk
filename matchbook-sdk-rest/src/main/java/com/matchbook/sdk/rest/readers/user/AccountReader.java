@@ -1,12 +1,12 @@
 package com.matchbook.sdk.rest.readers.user;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
 import com.matchbook.sdk.rest.dtos.offers.CommissionType;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.rest.dtos.user.Account;
+import com.matchbook.sdk.rest.readers.ResponseReader;
 
 public class AccountReader extends ResponseReader<Account> {
 

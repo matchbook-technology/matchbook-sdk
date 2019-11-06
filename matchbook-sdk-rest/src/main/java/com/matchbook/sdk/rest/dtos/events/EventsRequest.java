@@ -109,8 +109,8 @@ public class EventsRequest extends PageablePricesRequest {
         parameters.put("include-event-participants", String.valueOf(includeEventParticipants));
         if (includePrices) {
             parameters.put("include-prices", "true");
+            parameters.putAll(pricesParameters());
         }
-        parameters.putAll(pricesParameters());
 
         return parameters;
     }
@@ -140,6 +140,7 @@ public class EventsRequest extends PageablePricesRequest {
     }
 
     private static abstract class Init<T extends Init<T>> extends PageablePricesRequest.Init<T> {
+
         private Instant after;
         private Instant before;
         private Set<Long> sportIds;

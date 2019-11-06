@@ -4,8 +4,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.ClientConfig;
-import com.matchbook.sdk.rest.ConnectionManager;
+import com.matchbook.sdk.rest.configs.ClientConfig;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.stream.model.dataobjects.betting.Offer;
 import com.matchbook.sdk.stream.model.dataobjects.betting.Position;
 import com.matchbook.sdk.stream.model.dataobjects.events.Event;

@@ -1,8 +1,8 @@
 package com.matchbook.sdk.rest.readers.offers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
 import com.matchbook.sdk.rest.dtos.offers.Position;
+import com.matchbook.sdk.rest.readers.ResponseReader;
 
 public class PositionReader extends ResponseReader<Position> {
 

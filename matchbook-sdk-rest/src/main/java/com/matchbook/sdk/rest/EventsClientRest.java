@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.dtos.events.Event;
 import com.matchbook.sdk.rest.dtos.events.EventRequest;
 import com.matchbook.sdk.rest.dtos.events.EventsRequest;
@@ -20,7 +21,7 @@ import com.matchbook.sdk.rest.readers.events.RunnerReader;
 import com.matchbook.sdk.rest.readers.events.RunnersReader;
 import com.matchbook.sdk.rest.readers.events.SportsReader;
 
-public class EventsClientRest extends AbstractClientRest implements EventsClient {
+public class EventsClientRest extends BaseClientRest implements EventsClient {
 
     public EventsClientRest(ConnectionManager connectionManager) {
         super(connectionManager);

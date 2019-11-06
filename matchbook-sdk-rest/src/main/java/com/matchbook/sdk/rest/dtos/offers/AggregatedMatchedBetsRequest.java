@@ -18,7 +18,7 @@ public class AggregatedMatchedBetsRequest extends PageableRequest {
     private final Side side;
     private final AggregationType aggregationType;
 
-    public AggregatedMatchedBetsRequest(Init<?> init) {
+    private AggregatedMatchedBetsRequest(Init<?> init) {
         super(init);
 
         this.eventIds = init.eventIds;

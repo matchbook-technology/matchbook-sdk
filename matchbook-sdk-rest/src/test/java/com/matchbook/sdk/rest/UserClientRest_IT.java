@@ -14,14 +14,18 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.matchbook.sdk.core.exceptions.ErrorType;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.dtos.user.Account;
 import com.matchbook.sdk.rest.dtos.user.Balance;
 import com.matchbook.sdk.rest.dtos.user.Login;
 import com.matchbook.sdk.rest.dtos.user.Logout;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest> {
+@Tag("integration")
+class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest> {
 
     @Override
     protected UserClientRest newClientRest(ConnectionManager connectionManager) {
@@ -29,6 +33,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
+    @DisplayName("Login successfully")
     void loginTest() {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
@@ -54,6 +59,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
+    @DisplayName("Login with incorrect password")
     void loginIncorrectPasswordTest() {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
@@ -75,27 +81,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    void loginEmptyResponseTest() {
-        String url = "/bpapi/rest/security/session";
-        wireMockServer.stubFor(post(urlPathEqualTo(url))
-                .withHeader("Accept", equalTo("application/json"))
-                .willReturn(aResponse()
-                        .withStatus(400)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("")));
-
-        ResponseStreamObserver<Login> streamObserver = new FailedResponseStreamObserver<>(exception -> {
-            assertThat(exception).isNotNull();
-            assertThat(exception.getErrorType()).isEqualTo(ErrorType.HTTP);
-        });
-        clientRest.login(streamObserver);
-        streamObserver.waitTermination();
-
-        wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
-                .withCookie("mb-client-type", equalTo("mb-sdk")));
-    }
-
-    @Test
+    @DisplayName("Logout successfully")
     void logoutTest() {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(delete(urlPathEqualTo(url))
@@ -121,6 +107,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
+    @DisplayName("Get account details")
     void getAccountTest() {
         String url = "/edge/rest/account";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -149,6 +136,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
+    @DisplayName("Get balance")
     void getBalanceTest() {
         String url = "/edge/rest/account/balance";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
@@ -176,6 +164,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
+    @DisplayName("Set session token after login")
     void loginAndGetBalanceTest() {
         /*
          * Perform a login request getting a response that sets the session-token cookie.
@@ -214,6 +203,7 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
+    @DisplayName("Remove session token after logout")
     void loginAndLogoutTest() {
         /*
          * Firstly, perform a login request getting a response that sets the session-token cookie.
@@ -264,6 +254,50 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(balanceUrl))
                 .withoutHeader("set-cookie"));
         wireMockServer.verify(anyRequestedFor(anyUrl())
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    @Test
+    @DisplayName("Unexpected server error in users API")
+    void serverErrorTest() {
+        String url = "/edge/rest/account/balance";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(500)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/serverErrorResponse.json")));
+
+        ResponseStreamObserver<Balance> streamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.HTTP);
+        });
+        clientRest.getBalance(streamObserver);
+        streamObserver.waitTermination();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    @Test
+    @DisplayName("Unexpected empty response in users API")
+    void unexpectedEmptyResponseTest() {
+        String url = "/bpapi/rest/security/session";
+        wireMockServer.stubFor(post(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("")));
+
+        ResponseStreamObserver<Login> streamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.HTTP);
+        });
+        clientRest.login(streamObserver);
+        streamObserver.waitTermination();
+
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
