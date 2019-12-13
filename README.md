@@ -70,7 +70,7 @@ You should update your pom.xml to pull SNAPSHOT version from Sonatype Release Re
       });
 ```
 
-Submit multiple offers 
+#### SUBMIT Multiple Offers 
 
 ```java
   List<OfferPostRequest> offerPostRequests = new ArrayList<>();
@@ -99,7 +99,7 @@ Submit multiple offers
                   });
 ````
 
-Cancel offer 
+#### CANCEL Offer 
 
 ```java
     new OffersClientRest(connectionManager).cancelOffer(new OfferDeleteRequest.Builder(1000L).build(),
