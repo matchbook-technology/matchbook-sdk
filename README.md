@@ -6,6 +6,7 @@
 
 [![CircleCI](https://circleci.com/gh/matchbook-technology/matchbook-sdk.svg?style=svg)](https://circleci.com/gh/matchbook-technology/matchbook-sdk)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f91f929fa3184482abb2704f98615f46)](https://www.codacy.com/app/volkodav_s/matchbook-sdk?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=volkodavs/matchbook-sdk&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/f91f929fa3184482abb2704f98615f46)](https://www.codacy.com/manual/volkodav_s/matchbook-sdk?utm_source=github.com&utm_medium=referral&utm_content=volkodavs/matchbook-sdk&utm_campaign=Badge_Coverage)
 
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/matchbook-sdk/community)
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
