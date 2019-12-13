@@ -133,10 +133,11 @@ You should update your pom.xml to pull SNAPSHOT version from Sonatype Release Re
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please, read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Code Style
 
+Please, use custom for the MB-SDK project [Code Style](codestyle/matchbookCodeStyle.xml) 
 
 ## Pull requests welcome!
 
