@@ -139,7 +139,7 @@ Please, read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of condu
 
 Please, use custom for the MB-SDK project [Code Style](codestyle/matchbookCodeStyle.xml) 
 
-## Pull requests welcome\!
+## Pull requests welcome
 
 Spotted an error? Something doesn't make sense? Send a [pull request](https://github.com/matchbook-technology/matchbook-sdk/pulls)! Please avoid making stylistic changes though 
 -- they are unlikely to be accepted. Thanks!
