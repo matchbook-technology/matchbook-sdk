@@ -21,7 +21,7 @@
 
 ## Getting Started
 
-![event-animation](https://user-images.githubusercontent.com/4140597/66122695-4849bf00-e5d8-11e9-8138-0ae565471328.gif)
+![event-animation](https://user-images.githubusercontent.com/4140597/70796614-a5ad7980-1d9a-11ea-8d2f-98dbaa02235f.gif)
 
 ### Maven dependency 
 
