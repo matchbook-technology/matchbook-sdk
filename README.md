@@ -14,11 +14,11 @@
 
 ## Features
 
-* **High Performance** 
-* **Full Support REST API** 
-* **Session Management** A user session automatically managed
-* **Configurable** Provides a number of configuration options to control its behaviour at runtime
-* **Multi-platform** The library works on Java 8 or higher
+*   **High Performance** 
+*   **Full Support REST API** 
+*   **Session Management** A user session automatically managed
+*   **Configurable** Provides a number of configuration options to control its behaviour at runtime
+*   **Multi-platform** The library works on Java 8 or higher
 
 ## Getting Started
 
@@ -121,15 +121,15 @@ You should update your pom.xml to pull SNAPSHOT version from Sonatype Release Re
 
 ## Core modules
 
-* [matchbook-sdk-core](matchbook-sdk-core)
-* [matchbook-sdk-rest](matchbook-sdk-rest)
+*   [matchbook-sdk-core](matchbook-sdk-core)
+*   [matchbook-sdk-rest](matchbook-sdk-rest)
 
 ## Built With
 
-* [okhttp](https://square.github.io/okhttp/) - Is an efficient HTTP client 
-* [jackson](https://github.com/FasterXML/jackson) - Json marshaling 
-* [slf4j](https://www.slf4j.org/) - Logging Facade for Java
-* [maven](https://maven.apache.org/) - Dependency Management
+*   [okhttp](https://square.github.io/okhttp/) - Is an efficient HTTP client 
+*   [jackson](https://github.com/FasterXML/jackson) - Json marshaling 
+*   [slf4j](https://www.slf4j.org/) - Logging Facade for Java
+*   [maven](https://maven.apache.org/) - Dependency Management
 
 ## Contributing
 
