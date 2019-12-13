@@ -18,7 +18,7 @@ jobs:
           key: matchbook-sdk-{{ checksum "pom.xml" }}
 
       - run:
-          name: Build Matchbook SDK on Java 8
+          name: Build Matchbook SDK
           command: |
             mvn -s settings.xml clean verify
             mvn surefire-report:report-only
@@ -38,7 +38,7 @@ jobs:
 
   maven-deploy:
     docker:
-      - image: circleci/openjdk:8-jdk
+      - image: circleci/openjdk:11-jdk
     working_directory: ~/matchbook-sdk
     environment:
       MAVEN_OPTS: -Xmx3200m
