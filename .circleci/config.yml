@@ -47,7 +47,7 @@ jobs:
       - run:
           name: Build Matchbook SDK on Java 11
           command: |
-            mvn clean verify -Dmaven.compiler.source=11 -Dmaven.compiler.target=11
+            mvn clean verify
 
   maven-deploy:
     docker:
