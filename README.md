@@ -13,9 +13,9 @@
 
 ## Features
 
-* **High Performance** TODO
-* **Full Support REST API** TODO
-* **Session Management** A user session is automatically managed
+* **High Performance** 
+* **Full Support REST API** 
+* **Session Management** A user session automatically managed
 * **Configurable** Provides a number of configuration options to control its behaviour at runtime
 * **Multi-platform** The library works on Java 8 or higher
 
@@ -24,6 +24,23 @@
 ![event-animation](https://user-images.githubusercontent.com/4140597/70796614-a5ad7980-1d9a-11ea-8d2f-98dbaa02235f.gif)
 
 ### Maven dependency 
+
+You should update your pom.xml to pull SNAPSHOT version from Sonatype Release Repository, a.k.a. OSSRH  
+  
+```
+    <repositories>
+        <repository>
+            <id>oss.sonatype.org-snapshot</id>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+```
 
 ### Examples
 
@@ -103,8 +120,8 @@ Cancel offer
 
 ## Core modules
 
-* **matchbook-sdk-core**
-* **matchbook-sdk-rest**
+* [matchbook-sdk-core](matchbook-sdk-core)
+* [matchbook-sdk-rest](matchbook-sdk-rest)
 
 ## Built With
 
@@ -121,6 +138,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 
 ## Pull requests welcome!
+
 Spotted an error? Something doesn't make sense? Send a [pull request](https://github.com/matchbook-technology/matchbook-sdk/pulls)! Please avoid making stylistic changes though 
 -- they are unlikely to be accepted. Thanks!
 
