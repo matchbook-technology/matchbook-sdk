@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
-import com.matchbook.sdk.rest.dtos.RestResponse;
+import com.matchbook.sdk.rest.dtos.FailableRestResponse;
+import com.matchbook.sdk.rest.dtos.errors.Errors;
 import com.matchbook.sdk.rest.dtos.events.MarketType;
 import com.matchbook.sdk.rest.dtos.prices.Currency;
 import com.matchbook.sdk.rest.dtos.prices.ExchangeType;
@@ -12,7 +13,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Offer implements RestResponse {
+public class Offer implements FailableRestResponse {
 
     private Long id;
     private Long eventId;
@@ -20,8 +21,8 @@ public class Offer implements RestResponse {
     private Long runnerId;
     private String eventName;
     private String marketName;
-    private MarketType marketType;
     private String runnerName;
+    private MarketType marketType;
     private OfferStatus status;
     private ExchangeType exchangeType;
     private Side side;
@@ -42,6 +43,7 @@ public class Offer implements RestResponse {
     private Instant createdAt;
     private List<MatchedBet> matchedBets;
     private OfferEdit offerEdit;
+    private Errors errors;
 
     public Offer() {
         matchedBets = new ArrayList<>();
@@ -272,6 +274,15 @@ public class Offer implements RestResponse {
     }
 
     @Override
+    public Errors getErrors() {
+        return errors;
+    }
+
+    public void setErrors(Errors errors) {
+        this.errors = errors;
+    }
+
+    @Override
     public String toString() {
         return Offer.class.getSimpleName() + " {" +
                 "id=" + id +
@@ -280,8 +291,8 @@ public class Offer implements RestResponse {
                 ", runnerId=" + runnerId +
                 ", eventName=" + eventName +
                 ", marketName=" + marketName +
-                ", marketType=" + marketType +
                 ", runnerName=" + runnerName +
+                ", marketType=" + marketType +
                 ", status=" + status +
                 ", exchangeType=" + exchangeType +
                 ", side=" + side +
@@ -302,6 +313,7 @@ public class Offer implements RestResponse {
                 ", createdAt=" + createdAt +
                 ", matchedBets=" + matchedBets +
                 ", offerEdit=" + offerEdit +
+                ", errors=" + errors +
                 "}";
     }
 

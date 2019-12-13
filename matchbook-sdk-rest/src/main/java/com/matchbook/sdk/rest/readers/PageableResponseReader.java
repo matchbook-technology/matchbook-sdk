@@ -1,14 +1,14 @@
 package com.matchbook.sdk.rest.readers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
 import com.matchbook.sdk.rest.dtos.PageableResponse;
 import com.matchbook.sdk.rest.dtos.RestResponse;
 
-public abstract class PageableResponseReader<T extends RestResponse, R extends PageableResponse<T>> extends AbstractReader<T, R> {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+public abstract class PageableResponseReader<T extends RestResponse, R extends PageableResponse<T>> extends BaseReader<T, R> {
 
     final private ResponseReader<T> itemsReader;
 
@@ -19,6 +19,30 @@ public abstract class PageableResponseReader<T extends RestResponse, R extends P
     abstract protected R newPageableResponse();
 
     abstract protected String itemsFieldName();
+
+    @Override
+    public T readNextItem() throws MatchbookSDKParsingException {
+        if (readingItemStatus == ReadingItemsStatus.READ) {
+            return null;
+        } else if (readingItemStatus == ReadingItemsStatus.NOT_READ) {
+            skipToItems();
+            readingItemStatus = ReadingItemsStatus.READING;
+        }
+
+        itemsReader.init(parser);
+        T item = itemsReader.readFullResponse();
+        parser.moveToNextToken();
+        if (parser.isEndOfArray()) {
+            readingItemStatus = ReadingItemsStatus.READ;
+        }
+        return item;
+    }
+
+    private void skipToItems() throws MatchbookSDKParsingException {
+        while (!parser.isEndOfObject() && !parser.isEndOfArray() && !itemsFieldName().equals(parser.getFieldName())) {
+            parser.moveToNextValue();
+        }
+    }
 
     @Override
     public R readFullResponse() throws MatchbookSDKParsingException {
@@ -38,6 +62,7 @@ public abstract class PageableResponseReader<T extends RestResponse, R extends P
             }
             parser.moveToNextToken();
         }
+        readingItemStatus = ReadingItemsStatus.READ;
         return pageableResponse;
     }
 
@@ -45,38 +70,12 @@ public abstract class PageableResponseReader<T extends RestResponse, R extends P
         List<T> items = new ArrayList<>();
         parser.moveToNextToken();
         while (!parser.isEndOfArray()) {
-            itemsReader.startReading(parser);
+            itemsReader.init(parser);
             T item = itemsReader.readFullResponse();
-            if (Objects.nonNull(item)) {
-                items.add(item);
-            }
+            items.add(item);
             parser.moveToNextToken();
         }
         return items;
-    }
-
-    @Override
-    public T readNextItem() throws MatchbookSDKParsingException {
-        if (readingItemStatus == ReadingItemsStatus.READ) {
-            return null;
-        } else if (readingItemStatus == ReadingItemsStatus.NOT_READ) {
-            skipToItems();
-            readingItemStatus = ReadingItemsStatus.READING;
-        }
-
-        itemsReader.startReading(parser);
-        T item = itemsReader.readFullResponse();
-        parser.moveToNextToken();
-        if (parser.isEndOfArray()) {
-            readingItemStatus = ReadingItemsStatus.READ;
-        }
-        return item;
-    }
-
-    private void skipToItems() throws MatchbookSDKParsingException {
-        while (!parser.isEndOfBlock() && !itemsFieldName().equals(parser.getFieldName())) {
-            parser.moveToNextValue();
-        }
     }
 
 }

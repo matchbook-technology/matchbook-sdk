@@ -10,7 +10,7 @@ import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
-import com.matchbook.sdk.rest.ConnectionManager;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.UserClientRest;
 import com.matchbook.sdk.stream.disruptor.UserDisruptorPipeliner;
 import com.matchbook.sdk.stream.disruptor.messages.UserMessage;

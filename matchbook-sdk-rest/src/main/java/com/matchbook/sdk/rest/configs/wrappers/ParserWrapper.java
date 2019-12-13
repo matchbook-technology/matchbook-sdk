@@ -1,15 +1,17 @@
 package com.matchbook.sdk.rest.configs.wrappers;
 
+import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
+import com.matchbook.sdk.rest.configs.Parser;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.time.DateTimeException;
 import java.time.Instant;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.configs.Parser;
 
 class ParserWrapper implements Parser {
 
@@ -24,18 +26,8 @@ class ParserWrapper implements Parser {
     }
 
     @Override
-    public boolean isStartOfObject() {
-        return jsonParser.hasToken(JsonToken.START_OBJECT);
-    }
-
-    @Override
-    public boolean isStartOfArray() {
-        return jsonParser.hasToken(JsonToken.START_ARRAY);
-    }
-
-    @Override
-    public boolean isStartOfBlock() {
-        return isStartOfObject() || isStartOfArray();
+    public boolean hasCurrentToken() {
+        return jsonParser.hasCurrentToken();
     }
 
     @Override
@@ -46,11 +38,6 @@ class ParserWrapper implements Parser {
     @Override
     public boolean isEndOfArray() {
         return jsonParser.hasToken(JsonToken.END_ARRAY);
-    }
-
-    @Override
-    public boolean isEndOfBlock() {
-        return isEndOfObject() || isEndOfArray();
     }
 
     @Override
@@ -141,7 +128,7 @@ class ParserWrapper implements Parser {
     public Double getDouble() throws MatchbookSDKParsingException {
         if (isNotNullValue()) {
             try {
-                return jsonParser.getDoubleValue();
+                return jsonParser.getValueAsDouble();
             } catch (IOException e) {
                 throw new MatchbookSDKParsingException(e);
             }
@@ -166,7 +153,7 @@ class ParserWrapper implements Parser {
         if (isNotNullValue()) {
             try {
                 return Instant.parse(jsonParser.getValueAsString());
-            } catch (IOException e) {
+            } catch (IOException | DateTimeException e) {
                 throw new MatchbookSDKParsingException(e);
             }
         }
@@ -178,7 +165,11 @@ class ParserWrapper implements Parser {
         if (isNotNullValue()) {
             try {
                 String value = jsonParser.getValueAsString().toUpperCase().replace('-', '_');
-                return Enum.valueOf(enumClass, value);
+                try {
+                    return Enum.valueOf(enumClass, value);
+                } catch (IllegalArgumentException iae) {
+                    return Enum.valueOf(enumClass, "UNKNOWN");
+                }
             } catch (IOException e) {
                 throw new MatchbookSDKParsingException(e);
             }
@@ -187,7 +178,7 @@ class ParserWrapper implements Parser {
     }
 
     private boolean isNotNullValue() {
-        return jsonParser.hasCurrentToken() && !jsonParser.hasToken(JsonToken.VALUE_NULL);
+        return !jsonParser.hasToken(JsonToken.VALUE_NULL);
     }
 
     @Override

@@ -1,11 +1,9 @@
 package com.matchbook.sdk.rest.dtos.offers;
 
-import com.matchbook.sdk.rest.dtos.RestResponse;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 
-public class MatchedBet extends AbstractMatchedBet implements RestResponse {
+public class MatchedBet extends BaseMatchedBet {
 
     private Long id;
     private Long offerId;

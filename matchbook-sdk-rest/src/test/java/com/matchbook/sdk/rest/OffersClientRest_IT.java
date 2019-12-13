@@ -12,12 +12,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
-import com.matchbook.sdk.core.StreamObserver;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.core.exceptions.ErrorType;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBet;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBetsRequest;
 import com.matchbook.sdk.rest.dtos.offers.CancelledMatchedBetsRequest;
@@ -31,6 +28,7 @@ import com.matchbook.sdk.rest.dtos.offers.OfferEditsGetRequest;
 import com.matchbook.sdk.rest.dtos.offers.OfferGetRequest;
 import com.matchbook.sdk.rest.dtos.offers.OfferPostRequest;
 import com.matchbook.sdk.rest.dtos.offers.OfferPutRequest;
+import com.matchbook.sdk.rest.dtos.offers.OfferStatus;
 import com.matchbook.sdk.rest.dtos.offers.OffersDeleteRequest;
 import com.matchbook.sdk.rest.dtos.offers.OffersGetRequest;
 import com.matchbook.sdk.rest.dtos.offers.OffersPostRequest;
@@ -42,14 +40,16 @@ import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.rest.dtos.prices.Side;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientRest> {
+@Tag("integration")
+class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientRest> {
 
     @Override
     protected OffersClientRest newClientRest(ConnectionManager connectionManager) {
@@ -57,7 +57,8 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
     }
 
     @Test
-    public void getOfferTest() throws InterruptedException {
+    @DisplayName("Get a single offer")
+    void getOfferTest() {
         String url = "/edge/rest/v2/offers/382937981320019";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -66,39 +67,18 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/offers/getOfferSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-
         OfferGetRequest offerGetRequest = new OfferGetRequest.Builder(382937981320019L).build();
-
-        clientRest.getOffer(offerGetRequest, new StreamObserver<Offer>() {
-
-            @Override
-            public void onNext(Offer offer) {
-                verifyOffer(offer);
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
-            }
-
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        ResponseStreamObserver<Offer> streamObserver = new SuccessfulResponseStreamObserver<>(1, this::verifyOffer);
+        clientRest.getOffer(offerGetRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
-    public void getOffersTest() throws InterruptedException {
+    @DisplayName("Get all offers")
+    void getOffersTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -107,39 +87,18 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/offers/getOffersSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-
         OffersGetRequest offersGetRequest = new OffersGetRequest.Builder().build();
-
-        clientRest.getOffers(offersGetRequest, new StreamObserver<Offer>() {
-
-            @Override
-            public void onNext(Offer offer) {
-                verifyOffer(offer);
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
-            }
-
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        ResponseStreamObserver<Offer> streamObserver = new SuccessfulResponseStreamObserver<>(2, this::verifyOffer);
+        clientRest.getOffers(offersGetRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
-    public void submitOfferTest() throws InterruptedException {
+    @DisplayName("Submit an offer")
+    void submitOffersTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -148,44 +107,63 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/offers/postOffersSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-
         OfferPostRequest offerRequest = new OfferPostRequest
                 .Builder(401525949430009L, Side.BACK, 2.4, new BigDecimal("5"))
                 .build();
         OffersPostRequest offersPostRequest = new OffersPostRequest
                 .Builder(OddsType.DECIMAL, ExchangeType.BACK_LAY, Collections.singletonList(offerRequest))
                 .build();
-
-        clientRest.submitOffers(offersPostRequest, new StreamObserver<Offer>() {
-
-            @Override
-            public void onNext(Offer offer) {
-                verifyOffer(offer);
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
-            }
-
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        ResponseStreamObserver<Offer> streamObserver = new SuccessfulResponseStreamObserver<>(1, this::verifyOffer);
+        clientRest.submitOffers(offersPostRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
-    public void editOfferTest() throws InterruptedException {
+    @DisplayName("Submit multiple offers and one fails")
+    void submitOffersPartiallyFailedTest() {
+        String url = "/edge/rest/v2/offers";
+        wireMockServer.stubFor(post(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/offers/postOffersPartiallyFailedResponse.json")));
+
+        OfferPostRequest offerRequest1 = new OfferPostRequest
+                .Builder(1227187302310017L, Side.BACK, 11d, new BigDecimal("-2"))
+                .build();
+        OfferPostRequest offerRequest2 = new OfferPostRequest
+                .Builder(1227187302350017L, Side.BACK, 1.2d, new BigDecimal("1"))
+                .build();
+        OffersPostRequest offersPostRequest = new OffersPostRequest
+                .Builder(OddsType.DECIMAL, ExchangeType.BACK_LAY, Arrays.asList(offerRequest1, offerRequest2))
+                .build();
+        ResponseStreamObserver<Offer> streamObserver = new SuccessfulResponseStreamObserver<>(2, offer -> {
+            assertThat(offer).isNotNull();
+            assertThat(offer.getRunnerId()).isNotNull();
+            assertThat(offer.getStatus()).isNotNull();
+            assertThat(offer.getSide()).isNotNull();
+            assertThat(offer.getOddsType()).isNotNull();
+            assertThat(offer.getOdds()).isNotNull();
+            assertThat(offer.getStake()).isNotNull();
+            if (offer.getStatus() == OfferStatus.FAILED) {
+                assertThat(offer.getErrors()).isNotNull();
+                assertThat(offer.getErrors().getErrors()).isNotEmpty();
+            }
+        });
+        clientRest.submitOffers(offersPostRequest, streamObserver);
+        streamObserver.waitTermination();
+
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    @Test
+    @DisplayName("Edit a single offer")
+    void editOfferTest() {
         String url = "/edge/rest/v2/offers/925183846730025";
         wireMockServer.stubFor(put(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -194,42 +172,23 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/offers/putOfferSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-
         OfferPutRequest offerPutRequest = new OfferPutRequest
                 .Builder(925183846730025L, 3.0, new BigDecimal("100"))
                 .build();
-
-        clientRest.editOffer(offerPutRequest, new StreamObserver<Offer>() {
-
-            @Override
-            public void onNext(Offer offer) {
-                verifyOffer(offer);
-                verifyOfferEdit(offer.getOfferEdit());
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
-            }
-
+        ResponseStreamObserver<Offer> streamObserver = new SuccessfulResponseStreamObserver<>(1, offer -> {
+            verifyOffer(offer);
+            verifyOfferEdit(offer.getOfferEdit());
         });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        clientRest.editOffer(offerPutRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(putRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
-    public void editOffersTest() throws InterruptedException {
+    @DisplayName("Edit multiple offers")
+    void editOffersTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(put(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -238,45 +197,56 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/offers/putOffersSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-
         OfferPutRequest offerPutRequest = new OfferPutRequest
                 .Builder(925183846730025L, 3.0, new BigDecimal("100"))
                 .build();
         OffersPutRequest offersPutRequest = new OffersPutRequest
                 .Builder(Collections.singletonList(offerPutRequest))
                 .build();
-
-        clientRest.editOffers(offersPutRequest, new StreamObserver<Offer>() {
-
-            @Override
-            public void onNext(Offer offer) {
-                verifyOffer(offer);
-                verifyOfferEdit(offer.getOfferEdit());
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
-            }
-
+        ResponseStreamObserver<Offer> streamObserver = new SuccessfulResponseStreamObserver<>(1, offer -> {
+            verifyOffer(offer);
+            verifyOfferEdit(offer.getOfferEdit());
         });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        clientRest.editOffers(offersPutRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(putRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
-    public void deleteOfferTest() throws InterruptedException {
+    @DisplayName("Edit multiple offers and one fails")
+    void editOffersPartiallyFailedTest() {
+        String url = "/edge/rest/v2/offers";
+        wireMockServer.stubFor(put(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/offers/putOffersPartiallyFailedResponse.json")));
+
+        OfferPutRequest offerPutRequest = new OfferPutRequest
+                .Builder(1239207305820024L, 1.238, new BigDecimal("-2"))
+                .build();
+        OffersPutRequest offersPutRequest = new OffersPutRequest
+                .Builder(Collections.singletonList(offerPutRequest))
+                .build();
+        ResponseStreamObserver<Offer> streamObserver = new SuccessfulResponseStreamObserver<>(1, offer -> {
+            assertThat(offer).isNotNull();
+            assertThat(offer.getOfferEdit()).isNotNull();
+            assertThat(offer.getOfferEdit().getErrors()).isNotNull();
+            assertThat(offer.getOfferEdit().getErrors().getErrors()).isNotEmpty();
+        });
+        clientRest.editOffers(offersPutRequest, streamObserver);
+        streamObserver.waitTermination();
+
+        wireMockServer.verify(putRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    @Test
+    @DisplayName("Cancel a single offer")
+    void deleteOfferTest() {
         String url = "/edge/rest/v2/offers/413775799780013";
         wireMockServer.stubFor(delete(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -285,39 +255,18 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/offers/deleteOfferSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-
         OfferDeleteRequest offerDeleteRequest = new OfferDeleteRequest.Builder(413775799780013L).build();
-
-        clientRest.cancelOffer(offerDeleteRequest, new StreamObserver<Offer>() {
-
-            @Override
-            public void onNext(Offer offer) {
-                verifyOffer(offer);
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
-            }
-
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        ResponseStreamObserver<Offer> streamObserver = new SuccessfulResponseStreamObserver<>(1, this::verifyOffer);
+        clientRest.cancelOffer(offerDeleteRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(deleteRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
-    public void deleteOffersTest() throws InterruptedException {
+    @DisplayName("Cancel multiple offers")
+    void deleteOffersTest() {
         String url = "/edge/rest/v2/offers";
         wireMockServer.stubFor(delete(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -326,52 +275,31 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/offers/deleteOffersSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-
         OffersDeleteRequest offersDeleteRequest = new OffersDeleteRequest.Builder().build();
-
-        clientRest.cancelOffers(offersDeleteRequest, new StreamObserver<Offer>() {
-
-            @Override
-            public void onNext(Offer offer) {
-                verifyOffer(offer);
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
-            }
-
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        ResponseStreamObserver<Offer> streamObserver = new SuccessfulResponseStreamObserver<>(1, this::verifyOffer);
+        clientRest.cancelOffers(offersDeleteRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(deleteRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     private void verifyOffer(Offer offer) {
-        assertNotNull(offer);
-        assertNotNull(offer.getId());
-        assertNotNull(offer.getEventId());
-        assertNotNull(offer.getMarketId());
-        assertNotNull(offer.getRunnerId());
-        assertNotNull(offer.getStatus());
-        assertNotNull(offer.getSide());
-        assertNotNull(offer.getOddsType());
-        assertNotNull(offer.getOdds());
-        assertNotNull(offer.getStake());
+        assertThat(offer).isNotNull();
+        assertThat(offer.getId()).isNotNull();
+        assertThat(offer.getEventId()).isNotNull();
+        assertThat(offer.getMarketId()).isNotNull();
+        assertThat(offer.getRunnerId()).isNotNull();
+        assertThat(offer.getStatus()).isNotNull();
+        assertThat(offer.getSide()).isNotNull();
+        assertThat(offer.getOddsType()).isNotNull();
+        assertThat(offer.getOdds()).isNotNull();
+        assertThat(offer.getStake()).isNotNull();
     }
 
     @Test
-    public void getOfferEditTest() throws InterruptedException {
+    @DisplayName("Get a single offer edit")
+    void getOfferEditTest() {
         String url = "/edge/rest/v2/offers/925183846730025/offer-edits/925184068850125";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -380,39 +308,18 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/offers/getOfferEditSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-
         OfferEditGetRequest offerEditGetRequest = new OfferEditGetRequest.Builder(925184068850125L, 925183846730025L).build();
-
-        clientRest.getOfferEdit(offerEditGetRequest, new StreamObserver<OfferEdit>() {
-
-            @Override
-            public void onNext(OfferEdit offerEdit) {
-                verifyOfferEdit(offerEdit);
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
-            }
-
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        ResponseStreamObserver<OfferEdit> streamObserver = new SuccessfulResponseStreamObserver<>(1, this::verifyOfferEdit);
+        clientRest.getOfferEdit(offerEditGetRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
-    public void getOfferEditsTest() throws InterruptedException {
+    @DisplayName("Get all offer edits")
+    void getOfferEditsTest() {
         String url = "/edge/rest/v2/offers/925183846730025/offer-edits";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -421,51 +328,30 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/offers/getOfferEditsSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(3);
-
         OfferEditsGetRequest offerEditsGetRequest = new OfferEditsGetRequest.Builder(925183846730025L).build();
-
-        clientRest.getOfferEdits(offerEditsGetRequest, new StreamObserver<OfferEdit>() {
-
-            @Override
-            public void onNext(OfferEdit offerEdit) {
-                verifyOfferEdit(offerEdit);
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
-            }
-
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        ResponseStreamObserver<OfferEdit> streamObserver = new SuccessfulResponseStreamObserver<>(2, this::verifyOfferEdit);
+        clientRest.getOfferEdits(offerEditsGetRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     private void verifyOfferEdit(OfferEdit offerEdit) {
-        assertNotNull(offerEdit);
-        assertNotNull(offerEdit.getId());
-        assertNotNull(offerEdit.getOfferId());
-        assertNotNull(offerEdit.getStatus());
-        assertNotNull(offerEdit.getOddsType());
-        assertNotNull(offerEdit.getOddsBefore());
-        assertNotNull(offerEdit.getOddsAfter());
-        assertNotNull(offerEdit.getStakeBefore());
-        assertNotNull(offerEdit.getStakeAfter());
+        assertThat(offerEdit).isNotNull();
+        assertThat(offerEdit.getId()).isNotNull();
+        assertThat(offerEdit.getOfferId()).isNotNull();
+        assertThat(offerEdit.getStatus()).isNotNull();
+        assertThat(offerEdit.getOddsType()).isNotNull();
+        assertThat(offerEdit.getOddsBefore()).isNotNull();
+        assertThat(offerEdit.getOddsAfter()).isNotNull();
+        assertThat(offerEdit.getStakeBefore()).isNotNull();
+        assertThat(offerEdit.getStakeAfter()).isNotNull();
     }
 
     @Test
-    public void getAggregatedMatchedBetsTest() throws InterruptedException {
+    @DisplayName("Get all aggregated matched bets")
+    void getAggregatedMatchedBetsTest() {
         String url = "/edge/rest/bets/matched/aggregated";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -474,46 +360,29 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/offers/getAggregatedMatchedBetsResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(3);
-
         AggregatedMatchedBetsRequest aggregatedMatchedBetsRequest = new AggregatedMatchedBetsRequest.Builder().build();
-
-        clientRest.getAggregatedMatchedBets(aggregatedMatchedBetsRequest, new StreamObserver<AggregatedMatchedBet>() {
-
-            @Override
-            public void onNext(AggregatedMatchedBet aggregatedMatchedBet) {
-                assertNotNull(aggregatedMatchedBet);
-                assertNotNull(aggregatedMatchedBet.getEventId());
-                assertNotNull(aggregatedMatchedBet.getMarketId());
-                assertNotNull(aggregatedMatchedBet.getRunnerId());
-                assertNotNull(aggregatedMatchedBet.getSide());
-                assertNotNull(aggregatedMatchedBet.getOddsType());
-                assertNotNull(aggregatedMatchedBet.getOdds());
-                assertNotNull(aggregatedMatchedBet.getStake());
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
-            }
-
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        ResponseStreamObserver<AggregatedMatchedBet> streamObserver = new SuccessfulResponseStreamObserver<>(2, this::verifyAggregatedMatchedBet);
+        clientRest.getAggregatedMatchedBets(aggregatedMatchedBetsRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
+    private void verifyAggregatedMatchedBet(AggregatedMatchedBet aggregatedMatchedBet) {
+        assertThat(aggregatedMatchedBet).isNotNull();
+        assertThat(aggregatedMatchedBet.getEventId()).isNotNull();
+        assertThat(aggregatedMatchedBet.getMarketId()).isNotNull();
+        assertThat(aggregatedMatchedBet.getRunnerId()).isNotNull();
+        assertThat(aggregatedMatchedBet.getSide()).isNotNull();
+        assertThat(aggregatedMatchedBet.getOddsType()).isNotNull();
+        assertThat(aggregatedMatchedBet.getOdds()).isNotNull();
+        assertThat(aggregatedMatchedBet.getStake()).isNotNull();
+    }
+
     @Test
-    public void getCancelledMatchedBetsTest() throws InterruptedException {
+    @DisplayName("Get all cancelled matched bets")
+    void getCancelledMatchedBetsTest() {
         String url = "/edge/rest/bets";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withQueryParam("status", new EqualToPattern("CANCELLED"))
@@ -523,46 +392,29 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/offers/getCancelledMatchedBetsResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-
         CancelledMatchedBetsRequest cancelledMatchedBetsRequest = new CancelledMatchedBetsRequest.Builder().build();
-
-        clientRest.getCancelledMatchedBets(cancelledMatchedBetsRequest, new StreamObserver<MatchedBet>() {
-
-            @Override
-            public void onNext(MatchedBet matchedBet) {
-                assertNotNull(matchedBet);
-                assertNotNull(matchedBet.getOfferId());
-                assertNotNull(matchedBet.getCurrency());
-                assertNotNull(matchedBet.getOddsType());
-                assertNotNull(matchedBet.getOdds());
-                assertNotNull(matchedBet.getStake());
-                assertNotNull(matchedBet.getCommission());
-                assertEquals(MatchedBetStatus.CANCELLED, matchedBet.getStatus());
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
-            }
-
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        ResponseStreamObserver<MatchedBet> streamObserver = new SuccessfulResponseStreamObserver<>(1, this::verifyCancelledMatchedBet);
+        clientRest.getCancelledMatchedBets(cancelledMatchedBetsRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
+    private void verifyCancelledMatchedBet(MatchedBet matchedBet) {
+        assertThat(matchedBet).isNotNull();
+        assertThat(matchedBet.getOfferId()).isNotNull();
+        assertThat(matchedBet.getCurrency()).isNotNull();
+        assertThat(matchedBet.getOddsType()).isNotNull();
+        assertThat(matchedBet.getOdds()).isNotNull();
+        assertThat(matchedBet.getStake()).isNotNull();
+        assertThat(matchedBet.getCommission()).isNotNull();
+        assertThat(matchedBet.getStatus()).isEqualTo(MatchedBetStatus.CANCELLED);
+    }
+
     @Test
-    public void getPositionsTest() throws InterruptedException {
+    @DisplayName("Get all positions")
+    void getPositionsTest() {
         String url = "/edge/rest/account/positions";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -571,35 +423,65 @@ public class OffersClientRest_IT extends MatchbookSDKClientRest_IT<OffersClientR
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/offers/getPositionsResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(4);
-
         PositionsRequest positionsRequest = new PositionsRequest.Builder().build();
+        ResponseStreamObserver<Position> streamObserver = new SuccessfulResponseStreamObserver<>(3, this::verifyPosition);
+        clientRest.getPositions(positionsRequest, streamObserver);
+        streamObserver.waitTermination();
 
-        clientRest.getPositions(positionsRequest, new StreamObserver<Position>() {
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
 
-            @Override
-            public void onNext(Position position) {
-                assertNotNull(position);
-                assertNotNull(position.getEventId());
-                assertNotNull(position.getMarketId());
-                assertNotNull(position.getRunnerId());
-                countDownLatch.countDown();
-            }
+    private void verifyPosition(Position position) {
+        assertThat(position).isNotNull();
+        assertThat(position.getEventId()).isNotNull();
+        assertThat(position.getMarketId()).isNotNull();
+        assertThat(position.getRunnerId()).isNotNull();
+        assertThat(Arrays.asList(position.getPotentialProfit(), position.getPotentialLoss()))
+                .containsOnlyOnce((BigDecimal) null);
+    }
 
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
+    @Test
+    @DisplayName("Unexpected server error in offers API")
+    void unexpectedServerErrorTest() {
+        String url = "/edge/rest/v2/offers";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(500)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/serverErrorResponse.json")));
 
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail(e.getMessage());
-            }
-
+        OffersGetRequest offersGetRequest = new OffersGetRequest.Builder().build();
+        ResponseStreamObserver<Offer> streamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.HTTP);
         });
+        clientRest.getOffers(offersGetRequest, streamObserver);
+        streamObserver.waitTermination();
 
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    @Test
+    @DisplayName("Unexpected empty response in offers API")
+    void unexpectedEmptyResponseTest() {
+        String url = "/edge/rest/v2/offers";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("")));
+
+        OffersGetRequest offersGetRequest = new OffersGetRequest.Builder().build();
+        ResponseStreamObserver<Offer> streamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.HTTP);
+        });
+        clientRest.getOffers(offersGetRequest, streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));

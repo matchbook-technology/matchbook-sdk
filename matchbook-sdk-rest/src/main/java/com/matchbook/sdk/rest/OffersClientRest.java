@@ -1,6 +1,7 @@
 package com.matchbook.sdk.rest;
 
 import com.matchbook.sdk.core.StreamObserver;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBet;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBetsRequest;
 import com.matchbook.sdk.rest.dtos.offers.CancelledMatchedBetsRequest;
@@ -26,7 +27,7 @@ import com.matchbook.sdk.rest.readers.offers.OfferReader;
 import com.matchbook.sdk.rest.readers.offers.OffersReader;
 import com.matchbook.sdk.rest.readers.offers.PositionsReader;
 
-public class OffersClientRest extends AbstractClientRest implements OffersClient {
+public class OffersClientRest extends BaseClientRest implements OffersClient {
 
     public OffersClientRest(ConnectionManager connectionManager) {
         super(connectionManager);
@@ -79,7 +80,7 @@ public class OffersClientRest extends AbstractClientRest implements OffersClient
     @Override
     public void submitOffers(OffersPostRequest offersPostRequest, StreamObserver<Offer> offersObserver) {
         String url = buildSportsUrl(offersPostRequest.resourcePath());
-        postRequest(url, offersPostRequest, offersObserver, new OffersReader());
+        partiallyFailablePostRequest(url, offersPostRequest, offersObserver, new OffersReader());
     }
 
     @Override
@@ -91,7 +92,7 @@ public class OffersClientRest extends AbstractClientRest implements OffersClient
     @Override
     public void editOffers(OffersPutRequest offersPutRequest, StreamObserver<Offer> offersObserver) {
         String url = buildSportsUrl(offersPutRequest.resourcePath());
-        putRequest(url, offersPutRequest, offersObserver, new OffersReader());
+        partiallyFailablePutRequest(url, offersPutRequest, offersObserver, new OffersReader());
     }
 
     @Override
@@ -103,7 +104,7 @@ public class OffersClientRest extends AbstractClientRest implements OffersClient
     @Override
     public void cancelOffers(OffersDeleteRequest offersDeleteRequest, StreamObserver<Offer> offersObserver) {
         String url = buildSportsUrl(offersDeleteRequest.resourcePath());
-        deleteRequest(url, offersDeleteRequest, offersObserver, new OffersReader());
+        partiallyFailableDeleteRequest(url, offersDeleteRequest, offersObserver, new OffersReader());
     }
 
 }

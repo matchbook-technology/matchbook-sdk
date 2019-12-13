@@ -15,7 +15,7 @@ public class PositionsRequest extends PageableRequest {
     private final Set<Long> marketIds;
     private final Set<Long> runnersIds;
 
-    protected PositionsRequest(Init<?> init) {
+    private PositionsRequest(Init<?> init) {
         super(init);
 
         this.eventIds = init.eventIds;

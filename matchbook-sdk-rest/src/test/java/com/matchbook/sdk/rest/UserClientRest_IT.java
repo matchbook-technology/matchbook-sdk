@@ -1,6 +1,8 @@
 package com.matchbook.sdk.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -10,24 +12,20 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
-import com.matchbook.sdk.core.StreamObserver;
 import com.matchbook.sdk.core.exceptions.ErrorType;
-import com.matchbook.sdk.core.exceptions.MatchbookSDKException;
+import com.matchbook.sdk.rest.configs.ConnectionManager;
 import com.matchbook.sdk.rest.dtos.user.Account;
 import com.matchbook.sdk.rest.dtos.user.Balance;
 import com.matchbook.sdk.rest.dtos.user.Login;
 import com.matchbook.sdk.rest.dtos.user.Logout;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
-
-public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest> {
+@Tag("integration")
+class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest> {
 
     @Override
     protected UserClientRest newClientRest(ConnectionManager connectionManager) {
@@ -35,7 +33,8 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
     }
 
     @Test
-    public void loginTest() throws InterruptedException {
+    @DisplayName("Login successfully")
+    void loginTest() {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -44,43 +43,24 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/user/loginSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-
-        clientRest.login(new StreamObserver<Login>() {
-
-            @Override
-            public void onNext(Login login) {
-                verifyLogin(login);
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        ResponseStreamObserver<Login> streamObserver = new SuccessfulResponseStreamObserver<>(1, this::verifyLogin);
+        clientRest.login(streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     private void verifyLogin(Login login) {
-        assertNotNull(login);
-        assertNotNull(login.getUserId());
+        assertThat(login).isNotNull();
+        assertThat(login.getUserId()).isNotNull();
         assertThat(login.getSessionToken()).isNotEmpty();
         verifyAccount(login.getAccount());
     }
 
     @Test
-    public void loginUsingIncorrectPasswordTest() throws InterruptedException {
+    @DisplayName("Login with incorrect password")
+    void loginIncorrectPasswordTest() {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -89,70 +69,20 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/user/loginFailedResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-        clientRest.login(new StreamObserver<Login>() {
-
-            @Override
-            public void onNext(Login login) {
-                fail();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException exception) {
-                assertEquals(ErrorType.UNAUTHENTICATED, exception.getErrorType());
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                fail();
-            }
+        ResponseStreamObserver<Login> streamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.UNAUTHENTICATED);
         });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        clientRest.login(streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
-    public void loginEmptyResponseBodyTest() throws InterruptedException {
-        String url = "/bpapi/rest/security/session";
-        wireMockServer.stubFor(post(urlPathEqualTo(url))
-                .withHeader("Accept", equalTo("application/json"))
-                .willReturn(aResponse()
-                        .withStatus(400)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("")));
-
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-
-        clientRest.login(new StreamObserver<Login>() {
-
-            @Override
-            public void onNext(Login login) {
-                fail();
-            }
-
-            @Override
-            public void onError(MatchbookSDKException exception) {
-                assertEquals(ErrorType.HTTP, exception.getErrorType());
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                fail();
-            }
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
-    }
-
-    @Test
-    public void logoutTest() throws InterruptedException {
+    @DisplayName("Logout successfully")
+    void logoutTest() {
         String url = "/bpapi/rest/security/session";
         wireMockServer.stubFor(delete(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -161,38 +91,24 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/user/logoutSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-        clientRest.logout(new StreamObserver<Logout>() {
-
-            @Override
-            public void onNext(Logout logout) {
-                assertNotNull(logout);
-                assertNotNull(logout.getUserId());
-                assertThat(logout.getSessionToken()).isNotEmpty();
-                assertThat(logout.getUsername()).isNotEmpty();
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public <E extends MatchbookSDKException> void onError(E exception) {
-                fail();
-            }
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        ResponseStreamObserver<Logout> streamObserver = new SuccessfulResponseStreamObserver<>(1, this::verifyLogout);
+        clientRest.logout(streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(deleteRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
+    private void verifyLogout(Logout logout) {
+        assertThat(logout).isNotNull();
+        assertThat(logout.getUserId()).isNotNull();
+        assertThat(logout.getSessionToken()).isNotEmpty();
+        assertThat(logout.getUsername()).isNotEmpty();
+    }
+
     @Test
-    public void getAccountTest() throws InterruptedException {
+    @DisplayName("Get account details")
+    void getAccountTest() {
         String url = "/edge/rest/account";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -201,45 +117,27 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/user/getAccountSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-
-        clientRest.getAccount(new StreamObserver<Account>() {
-
-            @Override
-            public void onNext(Account account) {
-                verifyAccount(account);
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public <E extends MatchbookSDKException> void onError(E exception) {
-                fail();
-            }
-        });
-
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        ResponseStreamObserver<Account> streamObserver = new SuccessfulResponseStreamObserver<>(1, this::verifyAccount);
+        clientRest.getAccount(streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     private void verifyAccount(Account account) {
-        assertNotNull(account);
-        assertNotNull(account.getId());
+        assertThat(account).isNotNull();
+        assertThat(account.getId()).isNotNull();
         assertThat(account.getUsername()).isNotEmpty();
-        assertNotNull(account.getCurrency());
-        assertNotNull(account.getOddsType());
-        assertNotNull(account.getBalance());
+        assertThat(account.getCurrency()).isNotNull();
+        assertThat(account.getOddsType()).isNotNull();
+        assertThat(account.getBalance()).isNotNull();
         assertThat(account.getBalance()).isNotNegative();
     }
 
     @Test
-    public void getBalanceTest() throws InterruptedException {
+    @DisplayName("Get balance")
+    void getBalanceTest() {
         String url = "/edge/rest/account/balance";
         wireMockServer.stubFor(get(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
@@ -248,142 +146,159 @@ public class UserClientRest_IT extends MatchbookSDKClientRest_IT<UserClientRest>
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("matchbook/user/getAccountBalanceSuccessfulResponse.json")));
 
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
+        ResponseStreamObserver<Balance> streamObserver = new SuccessfulResponseStreamObserver<>(1, this::verifyBalance);
+        clientRest.getBalance(streamObserver);
+        streamObserver.waitTermination();
 
-        clientRest.getBalance(new StreamObserver<Balance>() {
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
 
-            @Override
-            public void onNext(Balance balance) {
-                assertNotNull(balance);
-                assertNotNull(balance.getId());
-                assertThat(balance.getBalance()).isPositive();
-                assertThat(balance.getCommissionReserve()).isPositive();
-                assertThat(balance.getExposure()).isPositive();
-                assertThat(balance.getFreeFunds()).isPositive();
-            }
+    private void verifyBalance(Balance balance) {
+        assertThat(balance).isNotNull();
+        assertThat(balance.getId()).isNotNull();
+        assertThat(balance.getBalance()).isNotNegative();
+        assertThat(balance.getCommissionReserve()).isNotNegative();
+        assertThat(balance.getExposure()).isNotNegative();
+        assertThat(balance.getFreeFunds()).isNotNegative();
+    }
 
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
+    @Test
+    @DisplayName("Set session token after login")
+    void loginAndGetBalanceTest() {
+        /*
+         * Perform a login request getting a response that sets the session-token cookie.
+         * We expect that the following GET balance request includes the same cookie.
+         */
+        String loginUrl = "/bpapi/rest/security/session";
+        String sessionToken = "2574_d4dcd1c54caacb4755a";
+        wireMockServer.stubFor(post(urlPathEqualTo(loginUrl))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Set-Cookie", "session-token=" + sessionToken)
+                        .withBodyFile("matchbook/user/loginSuccessfulResponse.json")));
 
-            @Override
-            public <E extends MatchbookSDKException> void onError(E exception) {
-                fail();
-            }
+        String balanceUrl = "/edge/rest/account/balance";
+        wireMockServer.stubFor(get(urlPathEqualTo(balanceUrl))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/user/getAccountBalanceSuccessfulResponse.json")));
+
+        ResponseStreamObserver<Login> loginStreamObserver = new SuccessfulResponseStreamObserver<>(1);
+        clientRest.login(loginStreamObserver);
+        loginStreamObserver.waitTermination();
+
+        ResponseStreamObserver<Balance> balanceStreamObserver = new SuccessfulResponseStreamObserver<>(1);
+        clientRest.getBalance(balanceStreamObserver);
+        balanceStreamObserver.waitTermination();
+
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(balanceUrl))
+                .withCookie("session-token", equalTo(sessionToken)));
+        wireMockServer.verify(anyRequestedFor(anyUrl())
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    @Test
+    @DisplayName("Remove session token after logout")
+    void loginAndLogoutTest() {
+        /*
+         * Firstly, perform a login request getting a response that sets the session-token cookie.
+         * Then, a logout request that expires the cookie.
+         * We expect that the following GET balance request doesn't include the session-token cookie.
+         */
+        String loginLogoutUrl = "/bpapi/rest/security/session";
+        String sessionToken = "2574_d4dcd1c54caacb4755a";
+        wireMockServer.stubFor(post(urlPathEqualTo(loginLogoutUrl))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Set-Cookie", "session-token=" + sessionToken)
+                        .withBodyFile("matchbook/user/loginSuccessfulResponse.json")));
+
+        wireMockServer.stubFor(delete(urlPathEqualTo(loginLogoutUrl))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Set-Cookie", "session-token=" + sessionToken + "; Max-Age=0")
+                        .withBodyFile("matchbook/user/logoutSuccessfulResponse.json")));
+
+        String balanceUrl = "/edge/rest/account/balance";
+        wireMockServer.stubFor(get(urlPathEqualTo(balanceUrl))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/user/unauthorizedResponse.json")));
+
+        ResponseStreamObserver<Login> loginStreamObserver = new SuccessfulResponseStreamObserver<>(1);
+        clientRest.login(loginStreamObserver);
+        loginStreamObserver.waitTermination();
+
+        ResponseStreamObserver<Logout> logoutStreamObserver = new SuccessfulResponseStreamObserver<>(1);
+        clientRest.logout(logoutStreamObserver);
+        logoutStreamObserver.waitTermination();
+
+        ResponseStreamObserver<Balance> balanceStreamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.UNAUTHENTICATED);
         });
+        clientRest.getBalance(balanceStreamObserver);
+        balanceStreamObserver.waitTermination();
 
-        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
+        wireMockServer.verify(getRequestedFor(urlPathEqualTo(balanceUrl))
+                .withoutHeader("set-cookie"));
+        wireMockServer.verify(anyRequestedFor(anyUrl())
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
+    }
+
+    @Test
+    @DisplayName("Unexpected server error in users API")
+    void serverErrorTest() {
+        String url = "/edge/rest/account/balance";
+        wireMockServer.stubFor(get(urlPathEqualTo(url))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(500)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("matchbook/serverErrorResponse.json")));
+
+        ResponseStreamObserver<Balance> streamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.HTTP);
+        });
+        clientRest.getBalance(streamObserver);
+        streamObserver.waitTermination();
 
         wireMockServer.verify(getRequestedFor(urlPathEqualTo(url))
                 .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
     @Test
-    public void loginAndGetBalanceTest() throws InterruptedException {
-        // Perform first a login request with response that sets the session-token cookie
-        // We expect that the following GET balance includes the same cookie in the request
-
-        wireMockServer.stubFor(post(urlPathEqualTo("/bpapi/rest/security/session"))
+    @DisplayName("Unexpected empty response in users API")
+    void unexpectedEmptyResponseTest() {
+        String url = "/bpapi/rest/security/session";
+        wireMockServer.stubFor(post(urlPathEqualTo(url))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
-                        .withStatus(200)
+                        .withStatus(400)
                         .withHeader("Content-Type", "application/json")
-                        .withHeader("Set-Cookie", "session-token=2574_d4dcd1c54caacb4755a")
-                        .withBodyFile("matchbook/user/loginSuccessfulResponse.json")));
+                        .withBody("")));
 
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/account/balance"))
-                .withHeader("Accept", equalTo("application/json"))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/user/getAccountBalanceSuccessfulResponse.json")));
+        ResponseStreamObserver<Login> streamObserver = new FailedResponseStreamObserver<>(exception -> {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.HTTP);
+        });
+        clientRest.login(streamObserver);
+        streamObserver.waitTermination();
 
-        final CountDownLatch loginCountDownLatch = new CountDownLatch(1);
-        clientRest.login(buildStreamObserverWithCountdownLatch(loginCountDownLatch));
-
-        boolean await = loginCountDownLatch.await(1, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
-
-        final CountDownLatch balanceCountDownLatch = new CountDownLatch(1);
-        clientRest.getBalance(buildStreamObserverWithCountdownLatch(balanceCountDownLatch));
-
-        await = balanceCountDownLatch.await(1, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
-
-        wireMockServer.verify(getRequestedFor(urlPathEqualTo("/edge/rest/account/balance"))
-                .withCookie("session-token", equalTo("2574_d4dcd1c54caacb4755a")));
-    }
-
-    @Test
-    public void loginAndLogoutTest() throws InterruptedException {
-        // Perform a login request with response that sets the session-token cookie
-        // then a logout request that should expire the cookie.
-        // We expect that the following GET balance doesn't include the session-token cookie
-
-        wireMockServer.stubFor(post(urlPathEqualTo("/bpapi/rest/security/session"))
-                .withHeader("Accept", equalTo("application/json"))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withHeader("Set-Cookie", "session-token=2574_d4dcd1c54caacb4755a")
-                        .withBodyFile("matchbook/user/loginSuccessfulResponse.json")));
-
-        wireMockServer.stubFor(delete(urlPathEqualTo("/bpapi/rest/security/session"))
-                .withHeader("Accept", equalTo("application/json"))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withHeader("Set-Cookie", "session-token=2574_d4dcd1c54caacb4755a; Max-Age=0")
-                        .withBodyFile("matchbook/user/logoutSuccessfulResponse.json")));
-
-        wireMockServer.stubFor(get(urlPathEqualTo("/edge/rest/account/balance"))
-                .withHeader("Accept", equalTo("application/json"))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBodyFile("matchbook/user/getAccountBalanceSuccessfulResponse.json")));
-
-        final CountDownLatch loginCountDownLatch = new CountDownLatch(1);
-        clientRest.login(buildStreamObserverWithCountdownLatch(loginCountDownLatch));
-
-        boolean await = loginCountDownLatch.await(1, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
-
-        final CountDownLatch logoutCountDownLatch = new CountDownLatch(1);
-        clientRest.logout(buildStreamObserverWithCountdownLatch(logoutCountDownLatch));
-
-        await = logoutCountDownLatch.await(1, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
-
-        final CountDownLatch balanceCountDownLatch = new CountDownLatch(1);
-        clientRest.getBalance(buildStreamObserverWithCountdownLatch(balanceCountDownLatch));
-
-        await = balanceCountDownLatch.await(1, TimeUnit.SECONDS);
-        assertThat(await).isTrue();
-
-        wireMockServer.verify(getRequestedFor(urlPathEqualTo("/edge/rest/account/balance"))
-                .withoutHeader("set-cookie"));
-    }
-
-    private <T> StreamObserver<T> buildStreamObserverWithCountdownLatch(CountDownLatch countDownLatch) {
-        return new StreamObserver<T>() {
-            @Override
-            public void onNext(T response) {
-                // do nothing
-            }
-
-            @Override
-            public void onError(MatchbookSDKException e) {
-                fail();
-            }
-
-            @Override
-            public void onCompleted() {
-                countDownLatch.countDown();
-            }
-        };
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(url))
+                .withCookie("mb-client-type", equalTo("mb-sdk")));
     }
 
 }

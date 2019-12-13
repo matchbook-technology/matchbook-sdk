@@ -1,10 +1,10 @@
 package com.matchbook.sdk.rest.readers.offers;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
 import com.matchbook.sdk.rest.dtos.offers.AggregatedMatchedBet;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 import com.matchbook.sdk.rest.dtos.prices.Side;
+import com.matchbook.sdk.rest.readers.ResponseReader;
 
 public class AggregatedMatchedBetReader extends ResponseReader<AggregatedMatchedBet> {
 

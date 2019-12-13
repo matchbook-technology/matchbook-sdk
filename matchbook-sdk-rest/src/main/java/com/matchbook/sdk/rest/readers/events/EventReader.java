@@ -1,17 +1,17 @@
 package com.matchbook.sdk.rest.readers.events;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.dtos.events.Event;
 import com.matchbook.sdk.rest.dtos.events.EventParticipant;
 import com.matchbook.sdk.rest.dtos.events.EventStatus;
 import com.matchbook.sdk.rest.dtos.events.Market;
 import com.matchbook.sdk.rest.dtos.events.MetaTag;
 import com.matchbook.sdk.rest.dtos.events.TagType;
+import com.matchbook.sdk.rest.readers.ResponseReader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventReader extends ResponseReader<Event> {
 
@@ -20,6 +20,11 @@ public class EventReader extends ResponseReader<Event> {
     public EventReader() {
         super();
         marketReader = new MarketReader();
+    }
+
+    @VisibleForTesting
+    EventReader(MarketReader marketReader) {
+        this.marketReader = marketReader;
     }
 
     @Override
@@ -77,11 +82,9 @@ public class EventReader extends ResponseReader<Event> {
         List<Market> markets = new ArrayList<>();
         parser.moveToNextToken();
         while (!parser.isEndOfArray()) {
-            marketReader.startReading(parser);
+            marketReader.init(parser);
             Market market = marketReader.readFullResponse();
-            if (Objects.nonNull(market)) {
-                markets.add(market);
-            }
+            markets.add(market);
             parser.moveToNextToken();
         }
         return markets;

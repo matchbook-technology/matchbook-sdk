@@ -6,14 +6,12 @@ import com.matchbook.sdk.rest.dtos.RestResponse;
 
 public interface Reader<T, R extends RestResponse> {
 
-    void startReading(Parser parser) throws MatchbookSDKParsingException;
+    void init(Parser parser) throws MatchbookSDKParsingException;
 
     T readNextItem() throws MatchbookSDKParsingException;
 
-    boolean hasMoreItems();
+    R readFullResponse() throws MatchbookSDKParsingException;
 
-    default R readFullResponse() throws MatchbookSDKParsingException {
-        throw new UnsupportedOperationException("This reader does not support parsing the full message.");
-    }
+    boolean hasMoreItems();
 
 }

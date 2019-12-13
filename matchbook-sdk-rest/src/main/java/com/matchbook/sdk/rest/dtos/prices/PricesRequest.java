@@ -1,10 +1,8 @@
 package com.matchbook.sdk.rest.dtos.prices;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-public class PricesRequest extends AbstractPricesRequest {
+public class PricesRequest extends BasePricesRequest {
 
     private final Long eventId;
     private final Long marketId;
@@ -39,26 +37,7 @@ public class PricesRequest extends AbstractPricesRequest {
 
     @Override
     public Map<String, String> parameters() {
-        Map<String, String> parameters = new HashMap<>();
-        if (Objects.nonNull(currency)) {
-            parameters.put("currency", currency.name());
-        }
-        if (Objects.nonNull(exchangeType)) {
-            parameters.put("exchange-type", exchangeType.name());
-        }
-        if (Objects.nonNull(oddsType)) {
-            parameters.put("odds-type", oddsType.name());
-        }
-        if (Objects.nonNull(side)) {
-            parameters.put("side", side.name());
-        }
-        if (Objects.nonNull(minimumLiquidity)) {
-            parameters.put("minimum-liquidity", String.valueOf(minimumLiquidity));
-        }
-        if (Objects.nonNull(priceMode)) {
-            parameters.put("price-mode", priceMode.name());
-        }
-        return parameters;
+        return pricesParameters();
     }
 
     @Override
@@ -76,7 +55,7 @@ public class PricesRequest extends AbstractPricesRequest {
                 "}";
     }
 
-    private static abstract class Init<T extends Init<T>> extends AbstractPricesRequest.Init<T> {
+    private static abstract class Init<T extends Init<T>> extends BasePricesRequest.Init<T> {
         private final Long eventId;
         private final Long marketId;
         private final Long runnerId;

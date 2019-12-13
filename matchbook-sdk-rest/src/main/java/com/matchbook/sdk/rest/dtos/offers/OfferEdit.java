@@ -3,10 +3,11 @@ package com.matchbook.sdk.rest.dtos.offers;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-import com.matchbook.sdk.rest.dtos.RestResponse;
+import com.matchbook.sdk.rest.dtos.FailableRestResponse;
+import com.matchbook.sdk.rest.dtos.errors.Errors;
 import com.matchbook.sdk.rest.dtos.prices.OddsType;
 
-public class OfferEdit implements RestResponse {
+public class OfferEdit implements FailableRestResponse {
 
     private Long id;
     private Long offerId;
@@ -19,6 +20,7 @@ public class OfferEdit implements RestResponse {
     private BigDecimal stakeAfter;
     private Double delay;
     private Instant editTime;
+    private Errors errors;
 
     public Long getId() {
         return id;
@@ -109,6 +111,15 @@ public class OfferEdit implements RestResponse {
     }
 
     @Override
+    public Errors getErrors() {
+        return errors;
+    }
+
+    public void setErrors(Errors errors) {
+        this.errors = errors;
+    }
+
+    @Override
     public String toString() {
         return OfferEdit.class.getSimpleName() + " {" +
                 "id=" + id +
@@ -122,6 +133,7 @@ public class OfferEdit implements RestResponse {
                 ", stakeAfter=" + stakeAfter +
                 ", delay=" + delay +
                 ", editTime=" + editTime +
+                ", errors=" + errors +
                 "}";
     }
 

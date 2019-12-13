@@ -1,8 +1,8 @@
 package com.matchbook.sdk.rest.readers.events;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
 import com.matchbook.sdk.rest.dtos.events.Sport;
+import com.matchbook.sdk.rest.readers.ResponseReader;
 
 public class SportReader extends ResponseReader<Sport> {
 

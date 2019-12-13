@@ -1,0 +1,61 @@
+{
+  "language": "en",
+  "currency": "EUR",
+  "exchange-type": "back-lay",
+  "odds-type": "DECIMAL",
+  "offers": [
+    {
+      "event-id": "1227187301300017",
+      "event-name": "Manchester United vs Arsenal",
+      "market-id": "1227187301910017",
+      "market-name": "Match Odds",
+      "market-type": "one_x_two",
+      "runner-id": "1227187302310017",
+      "runner-name": "Arsenal",
+      "exchange-type": "back-lay",
+      "side": "back",
+      "odds": 11,
+      "odds-type": "DECIMAL",
+      "stake": -2,
+      "currency": "EUR",
+      "status": "failed",
+      "keep-in-play": false,
+      "errors": [
+        {
+          "field": "stake",
+          "messages": [
+            "-2 is not a valid stake. Stake must be at least EUR0.1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1239196494160023",
+      "event-id": "1227187301300017",
+      "event-name": "Manchester United vs Arsenal",
+      "market-id": "1227187301910017",
+      "market-name": "Match Odds",
+      "market-type": "one_x_two",
+      "runner-id": "1227187302350017",
+      "runner-name": "DRAW (Man/Ars)",
+      "exchange-type": "back-lay",
+      "side": "back",
+      "odds": 1.2,
+      "odds-type": "DECIMAL",
+      "decimal-odds": 1.2,
+      "stake": 1,
+      "remaining": 1,
+      "potential-profit": 0.2,
+      "remaining-potential-profit": 0.2,
+      "commission-type": "NET_WIN",
+      "originator-commission-rate": 0.02,
+      "acceptor-commission-rate": 0.02,
+      "commission-reserve": 0,
+      "currency": "EUR",
+      "created-at": "2019-09-30T20:48:40.846Z",
+      "status": "open",
+      "in-play": true,
+      "keep-in-play": false
+    }
+  ]
+}

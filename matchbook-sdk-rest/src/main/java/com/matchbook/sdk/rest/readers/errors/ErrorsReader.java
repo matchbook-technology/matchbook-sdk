@@ -1,13 +1,13 @@
 package com.matchbook.sdk.rest.readers.errors;
 
 import com.matchbook.sdk.core.exceptions.MatchbookSDKParsingException;
-import com.matchbook.sdk.rest.readers.ResponseReader;
+import com.matchbook.sdk.core.utils.VisibleForTesting;
 import com.matchbook.sdk.rest.dtos.errors.Error;
 import com.matchbook.sdk.rest.dtos.errors.Errors;
+import com.matchbook.sdk.rest.readers.ResponseReader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ErrorsReader extends ResponseReader<Errors> {
 
@@ -16,6 +16,11 @@ public class ErrorsReader extends ResponseReader<Errors> {
     public ErrorsReader() {
         super();
         errorReader = new ErrorReader();
+    }
+
+    @VisibleForTesting
+    ErrorsReader(ErrorReader errorReader) {
+        this.errorReader = errorReader;
     }
 
     @Override
@@ -27,8 +32,6 @@ public class ErrorsReader extends ResponseReader<Errors> {
             if ("errors".equals(fieldName)) {
                 List<Error> errorsList = readErrors();
                 errors.setErrors(errorsList);
-            } else {
-                parser.skipChildren();
             }
             parser.moveToNextToken();
         }
@@ -39,11 +42,9 @@ public class ErrorsReader extends ResponseReader<Errors> {
         List<Error> errors = new ArrayList<>();
         parser.moveToNextToken();
         while (!parser.isEndOfArray()) {
-            errorReader.startReading(parser);
+            errorReader.init(parser);
             Error error = errorReader.readFullResponse();
-            if (Objects.nonNull(error)) {
-                errors.add(error);
-            }
+            errors.add(error);
             parser.moveToNextToken();
         }
         return errors;

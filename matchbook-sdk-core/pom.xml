@@ -5,11 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>matchbook-sdk</artifactId>
         <groupId>com.matchbook</groupId>
+        <artifactId>matchbook-sdk</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>matchbook-sdk-core</artifactId>
+
+    <properties>
+        <project.automatic.module.name>com.matchbook.sdk.core</project.automatic.module.name>
+    </properties>
 
 </project>
