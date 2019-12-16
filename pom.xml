@@ -14,7 +14,6 @@
     <modules>
         <module>matchbook-sdk-core</module>
         <module>matchbook-sdk-rest</module>
-        <module>matchbook-sdk-stream</module>
     </modules>
 
     <issueManagement>
@@ -87,7 +86,6 @@
         <!-- Application dependencies -->
         <jackson.version>2.9.9</jackson.version>
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
-        <lmax.version>3.4.2</lmax.version>
         <logback.version>1.2.3</logback.version>
         <okhttp.version>4.2.0</okhttp.version>
         <slf4j.version>1.7.28</slf4j.version>
