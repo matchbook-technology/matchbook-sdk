@@ -14,11 +14,11 @@
 
 ## Features
 
-*   **High Performance** 
-*   **Full Support REST API** 
-*   **Session Management** A user session automatically managed
-*   **Configurable** Provides a number of configuration options to control its behaviour at runtime
-*   **Multi-platform** The library works on Java 8 or higher
+*  **High performance**: we take efficiency very seriously
+*  **Full support to Matchbook REST API**: all Matchbook powerful REST API is implemented in the SDK
+*  **Session management**: user sessions are managed automatically
+*  **Configurable**: we provide a number of configuration options to control the SDK behaviour at runtime
+*  **Multi-platform**: all Java 8+ versions are supported
 
 ## Getting Started
 
@@ -26,8 +26,8 @@
 
 ### Maven dependency 
 
-You should update your pom.xml to pull SNAPSHOT version from Sonatype Release Repository, a.k.a. OSSRH  
-  
+You should update your _pom.xml_ to pull SNAPSHOT version from Sonatype Release Repository (OSSRH)
+
 ```xml
     <repositories>
         <repository>
@@ -45,104 +45,109 @@ You should update your pom.xml to pull SNAPSHOT version from Sonatype Release Re
 
 ### Examples
 
-#### Configure Connection Manager
-
-```java 
-   ClientConfig clientConfig = new ClientConfig.Builder("my-username".toCharArray(),
-           "my-password".toCharArray()).build();
-   ConnectionManager connectionManager = new ConnectionManager.Builder(clientConfig).build();
-```
-
-#### GET Events 
+#### Configure ConnectionManager
 
 ```java
-  new EventsClientRest(connectionManager).getEvents(new EventsRequest.Builder().build(),
-             new StreamObserver<Event>() {
-                 public void onNext(Event event) {
-                     // add your business logic here 
-                 }
-                 public void onCompleted() {
-                      // all messages successfully processed 
-                 }
-                 public <E extends MatchbookSDKException> void onError(E e) {
-                     // handle error 
-                 }
-      });
+    ClientConfig clientConfig = new ClientConfig.Builder("my-username".toCharArray(), "my-password".toCharArray()).build();
+    ConnectionManager connectionManager = new ConnectionManager.Builder(clientConfig).build();
 ```
 
-#### SUBMIT Multiple Offers 
+#### Get events
 
 ```java
-  List<OfferPostRequest> offerPostRequests = new ArrayList<>();
-  OfferPostRequest offerPostRequest = new OfferPostRequest.Builder(2020L,
-                  Side.BACK,
-                  new BigDecimal("2.5"),
-                  new BigDecimal("100")
-                  ).build();
-          offerPostRequests.add(offerPostRequest);
-          OffersPostRequest offerSubmitRequest = new OffersPostRequest.Builder(OddsType.DECIMAL,
-                  ExchangeType.BACK_LAY,
-                  offerPostRequests)
-                  .build();
-      
-          new OffersClientRest(connectionManager).submitOffers(offerSubmitRequest,
-                  new StreamObserver<Offer>() {
-                      public void onNext(Offer offer) {
-                        // add your business logic here
-                      }
-                      public void onCompleted() {
-                         // all messages successfully processed 
-                      }
-                      public <E extends MatchbookSDKException> void onError(E e) {
-                          // handle error 
-                      }
-                  });
+    new EventsClientRest(connectionManager).getEvents(new EventsRequest.Builder().build(),
+        new StreamObserver<Event>() {
+                @Override
+                public void onNext(Event event) {
+                    // add your business logic here
+                }
+                @Override
+                public void onCompleted() {
+                    // all messages successfully processed
+                }
+                @Override
+                public <E extends MatchbookSDKException> void onError(E error) {
+                    // handle error
+                }
+        });
+```
+
+#### Submit multiple offers
+
+```java
+    OfferPostRequest offerPostRequest = new OfferPostRequest.Builder(2020L,
+        Side.BACK,
+        new BigDecimal("2.5"),
+        new BigDecimal("100")
+    ).build();
+    List<OfferPostRequest> offers = new ArrayList();
+    offers.add(offerPostRequest);
+    OffersPostRequest offersPostRequest = new OffersPostRequest.Builder(OddsType.DECIMAL,
+        ExchangeType.BACK_LAY,
+        offers
+    ).build();
+
+    new OffersClientRest(connectionManager).submitOffers(offersPostRequest,
+        new StreamObserver<Offer>() {
+                @Override
+                public void onNext(Offer offer) {
+                    // add your business logic here
+                }
+                @Override
+                public void onCompleted() {
+                    // all messages successfully processed
+                }
+                @Override
+                public <E extends MatchbookSDKException> void onError(E error) {
+                    // handle error
+                }
+        });
 ````
 
-#### CANCEL Offer 
+#### Cancel offer
 
 ```java
     new OffersClientRest(connectionManager).cancelOffer(new OfferDeleteRequest.Builder(1000L).build(),
-          new StreamObserver<Offer>() {
-              @Override
-              public void onNext(Offer offer) {
-                  // add your business logic here 
-              }
-              @Override
-              public void onCompleted() {
-                // all messages successfully processed 
-              }
-              @Override
-              public <E extends MatchbookSDKException> void onError(E e) {
-                // handle error 
-              }
-          });
+        new StreamObserver<Offer>() {
+                @Override
+                public void onNext(Offer offer) {
+                    // add your business logic here
+                }
+                @Override
+                public void onCompleted() {
+                    // all messages successfully processed
+                }
+                @Override
+                public <E extends MatchbookSDKException> void onError(E error) {
+                    // handle error
+                }
+        });
 ```
 
 ## Core modules
 
-*   [matchbook-sdk-core](matchbook-sdk-core)
-*   [matchbook-sdk-rest](matchbook-sdk-rest)
+*  [matchbook-sdk-core](matchbook-sdk-core)
+*  [matchbook-sdk-rest](matchbook-sdk-rest)
 
-## Built With
+## Built with
 
-*   [okhttp](https://square.github.io/okhttp/) - Is an efficient HTTP client 
-*   [jackson](https://github.com/FasterXML/jackson) - Json marshaling 
-*   [slf4j](https://www.slf4j.org/) - Logging Facade for Java
-*   [maven](https://maven.apache.org/) - Dependency Management
+*  [okhttp](https://square.github.io/okhttp/) - An efficient HTTP client
+*  [jackson](https://github.com/FasterXML/jackson) - JSON serialisation/deserialisation
+*  [slf4j](https://www.slf4j.org/) - Logging facade for Java
+*  [maven](https://maven.apache.org/) - Dependency management system
 
-## Contributing
+## How to contribute
 
-Please, read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please, read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests to us.
 
-## Code Style
+### Code style
 
-Please, use custom for the MB-SDK project [Code Style](codestyle/matchbookCodeStyle.xml) 
+Please, use our custom [Code Style](codestyle/matchbookCodeStyle.xml) when contribute to the MB-SDK project.
 
-## Pull requests welcome
+### Pull requests are welcome
 
-Spotted an error? Something doesn't make sense? Send a [pull request](https://github.com/matchbook-technology/matchbook-sdk/pulls)! Please avoid making stylistic changes though 
--- they are unlikely to be accepted. Thanks!
+Spotted an error? Something doesn't make sense? Send a [pull request](https://github.com/matchbook-technology/matchbook-sdk/pulls)!
+Please avoid making stylistic changes, though. They are unlikely to be accepted. Thanks!
 
 ## License
 -------
