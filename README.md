@@ -14,19 +14,19 @@
 
 ## Features
 
-*  **High performance**: we take efficiency very seriously
-*  **Full support to Matchbook REST API**: all Matchbook powerful REST API is implemented in the SDK
-*  **Session management**: user sessions are managed automatically
-*  **Configurable**: we provide a number of configuration options to control the SDK behaviour at runtime
-*  **Multi-platform**: all Java 8+ versions are supported
+*   **High performance**: we take efficiency very seriously
+*   **Full support to Matchbook REST API**: all Matchbook powerful REST API is implemented in the SDK
+*   **Session management**: user sessions are managed automatically
+*   **Configurable**: we provide a number of configuration options to control the SDK behaviour at runtime
+*   **Multi-platform**: all Java 8+ versions are supported
 
-## Getting Started
+## Getting started
 
 ![event-animation](https://user-images.githubusercontent.com/4140597/70796614-a5ad7980-1d9a-11ea-8d2f-98dbaa02235f.gif)
 
-### Maven dependency 
+### Maven dependency
 
-You should update your _pom.xml_ to pull SNAPSHOT version from Sonatype Release Repository (OSSRH)
+You should update your _pom.xml_ to pull SNAPSHOT version from Sonatype Release Repository (OSSRH).
 
 ```xml
     <repositories>
@@ -56,85 +56,87 @@ You should update your _pom.xml_ to pull SNAPSHOT version from Sonatype Release 
 
 ```java
     new EventsClientRest(connectionManager).getEvents(new EventsRequest.Builder().build(),
-        new StreamObserver<Event>() {
-                @Override
-                public void onNext(Event event) {
-                    // add your business logic here
-                }
-                @Override
-                public void onCompleted() {
-                    // all messages successfully processed
-                }
-                @Override
-                public <E extends MatchbookSDKException> void onError(E error) {
-                    // handle error
-                }
-        });
+            new StreamObserver<Event>() {
+                    @Override
+                    public void onNext(Event event) {
+                        // add your business logic here
+                    }
+                    @Override
+                    public void onCompleted() {
+                        // all messages successfully processed
+                    }
+                    @Override
+                    public <E extends MatchbookSDKException> void onError(E error) {
+                        // handle error
+                    }
+            });
 ```
 
 #### Submit multiple offers
 
 ```java
-    OfferPostRequest offerPostRequest = new OfferPostRequest.Builder(2020L,
-        Side.BACK,
-        new BigDecimal("2.5"),
-        new BigDecimal("100")
+    OfferPostRequest offerPostRequest = new OfferPostRequest.Builder(
+            1295512601550017L,
+            Side.BACK,
+            new BigDecimal("2.5"),
+            new BigDecimal("100")
     ).build();
     List<OfferPostRequest> offers = new ArrayList();
     offers.add(offerPostRequest);
-    OffersPostRequest offersPostRequest = new OffersPostRequest.Builder(OddsType.DECIMAL,
-        ExchangeType.BACK_LAY,
-        offers
+    OffersPostRequest offersPostRequest = new OffersPostRequest.Builder(
+            OddsType.DECIMAL,
+            ExchangeType.BACK_LAY,
+            offers
     ).build();
 
     new OffersClientRest(connectionManager).submitOffers(offersPostRequest,
-        new StreamObserver<Offer>() {
-                @Override
-                public void onNext(Offer offer) {
-                    // add your business logic here
-                }
-                @Override
-                public void onCompleted() {
-                    // all messages successfully processed
-                }
-                @Override
-                public <E extends MatchbookSDKException> void onError(E error) {
-                    // handle error
-                }
-        });
+            new StreamObserver<Offer>() {
+                    @Override
+                    public void onNext(Offer offer) {
+                        // add your business logic here
+                    }
+                    @Override
+                    public void onCompleted() {
+                        // all messages successfully processed
+                    }
+                    @Override
+                    public <E extends MatchbookSDKException> void onError(E error) {
+                        // handle error
+                    }
+            });
 ````
 
 #### Cancel offer
 
 ```java
     new OffersClientRest(connectionManager).cancelOffer(new OfferDeleteRequest.Builder(1000L).build(),
-        new StreamObserver<Offer>() {
-                @Override
-                public void onNext(Offer offer) {
-                    // add your business logic here
-                }
-                @Override
-                public void onCompleted() {
-                    // all messages successfully processed
-                }
-                @Override
-                public <E extends MatchbookSDKException> void onError(E error) {
-                    // handle error
-                }
-        });
+            new StreamObserver<Offer>() {
+                    @Override
+                    public void onNext(Offer offer) {
+                        // add your business logic here
+                    }
+                    @Override
+                    public void onCompleted() {
+                        // all messages successfully processed
+                    }
+                    @Override
+                    public <E extends MatchbookSDKException> void onError(E error) {
+                        // handle error
+                    }
+            });
 ```
 
 ## Core modules
 
-*  [matchbook-sdk-core](matchbook-sdk-core)
-*  [matchbook-sdk-rest](matchbook-sdk-rest)
+*   [matchbook-sdk-core](matchbook-sdk-core)
+*   [matchbook-sdk-rest](matchbook-sdk-rest)
 
 ## Built with
 
-*  [okhttp](https://square.github.io/okhttp/) - An efficient HTTP client
-*  [jackson](https://github.com/FasterXML/jackson) - JSON serialisation/deserialisation
-*  [slf4j](https://www.slf4j.org/) - Logging facade for Java
-*  [maven](https://maven.apache.org/) - Dependency management system
+*   [okhttp](https://square.github.io/okhttp/) - An efficient HTTP client
+*   [jackson](https://github.com/FasterXML/jackson) - JSON serialisation/deserialisation
+*   [slf4j](https://www.slf4j.org/) - Logging facade for Java
+*   [maven](https://maven.apache.org/) - Dependency management system
 
 ## How to contribute
 
@@ -150,9 +152,10 @@ Spotted an error? Something doesn't make sense? Send a [pull request](https://gi
 Please avoid making stylistic changes, though. They are unlikely to be accepted. Thanks!
 
 ## License
--------
+
+```text
     MIT License
-    
+
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
     in the Software without restriction, including without limitation the rights
@@ -162,3 +165,4 @@ Please avoid making stylistic changes, though. They are unlikely to be accepted.
     
     The above copyright notice and this permission notice shall be included in all
     copies or substantial portions of the Software.
+```
