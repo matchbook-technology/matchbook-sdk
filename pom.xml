@@ -14,7 +14,6 @@
     <modules>
         <module>matchbook-sdk-core</module>
         <module>matchbook-sdk-rest</module>
-        <module>matchbook-sdk-stream</module>
     </modules>
 
     <issueManagement>
@@ -63,6 +62,18 @@
         <developerConnection>scm:git:git@github.com:matchbook-technology/matchbook-sdk.git</developerConnection>
     </scm>
 
+    <!-- Required for publishing artifacts back to OSSRH -->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -73,17 +84,23 @@
         <maven.compiler.target>8</maven.compiler.target>
 
         <!-- Application dependencies -->
-        <assertj.version>3.12.2</assertj.version>
         <jackson.version>2.9.9</jackson.version>
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
-        <lmax.version>3.4.2</lmax.version>
         <logback.version>1.2.3</logback.version>
-        <mockito.version>2.28.2</mockito.version>
         <okhttp.version>4.2.0</okhttp.version>
         <slf4j.version>1.7.28</slf4j.version>
+        <junit.version>4.12</junit.version>
+        <mockito.version>2.28.2</mockito.version>
+        <assertj.version>3.12.2</assertj.version>
         <wiremock.version>2.24.1</wiremock.version>
 
         <!-- Maven plugins -->
+        <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
+        <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
+        <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
+        <maven.source.plugin.version>3.1.0</maven.source.plugin.version>
+        <maven.site.plugin.version>3.8.2</maven.site.plugin.version>
+        <maven.info.reports.plugin.version>3.0.0</maven.info.reports.plugin.version>
         <maven.jar.plugin.version>3.1.2</maven.jar.plugin.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
@@ -186,6 +203,31 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${maven.site.plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${maven.info.reports.plugin.version}</version>
             </plugin>
         </plugins>
     </build>
